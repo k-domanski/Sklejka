@@ -1,7 +1,6 @@
-project "Sklejka"
+project "Glad"
     kind "StaticLib"
-    language "C++"
-    cppdialect "C++17"
+    language "C"
     staticruntime "on"
 
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
@@ -9,30 +8,17 @@ project "Sklejka"
 
     files
     {
-        "src/**.h",
-        "src/**.cpp"
-    }
-
-    defines
-    {
-        "GLFW_INCLUDE_NONE"
+        "include/glad/glad.h",
+        "include/KHR/khrplatform.h",
+        "src/glad.c"
     }
 
     includedirs
     {
-        "src",
-        "%{IncludeDir.GLFW}",
-        "%{IncludeDir.Glad}"
-    }
-
-    links
-    {
-        "GLFW",
-        "Glad",
-        "opengl32.lib"
+        "include"
     }
     
-    filter "system.windows"
+    filter "system:windows"
         systemversion "latest"
 
     filter "configurations:Debug"

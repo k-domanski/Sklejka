@@ -13,7 +13,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.architecture}"
 -- Include directories relative to solution directory
 IncludeDir = {}
 IncludeDir["GLFW"] = "%{wks.location}/Sklejka/vendor/GLFW/include"
+IncludeDir["Glad"] = "%{wks.location}/Sklejka/vendor/Glad/include"
 
 include "Sklejka/vendor/GLFW"
+include "Sklejka/vendor/Glad"
+
 include "Sklejka"
 include "Sandbox"

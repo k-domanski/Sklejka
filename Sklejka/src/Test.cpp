@@ -1,6 +1,7 @@
 #include "Test.h"
 #include <stdio.h>
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 namespace Sklejka
 {
@@ -25,7 +26,12 @@ namespace Sklejka
 		}
 		glfwMakeContextCurrent(window);
 		glfwSwapInterval(1);
-
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		{
+			return -1;
+		}
+		unsigned int id;
+		glGenBuffers(1, &id);
 		while (!glfwWindowShouldClose(window))
 		{
 			glfwSwapBuffers(window);
