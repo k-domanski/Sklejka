@@ -16,6 +16,7 @@ IncludeDir["GLFW"] = "%{wks.location}/Sklejka/vendor/GLFW/include"
 IncludeDir["Glad"] = "%{wks.location}/Sklejka/vendor/Glad/include"
 IncludeDir["glm"] = "%{wks.location}/Sklejka/vendor/glm"
 IncludeDir["ImGui"] = "%{wks.location}/Sklejka/vendor/imgui"
+IncludeDir["stb_image"] = "%{wks.location}/Sklejka/vendor/stb_image"
 
 include "Sklejka/vendor/GLFW"
 include "Sklejka/vendor/Glad"
