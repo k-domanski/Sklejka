@@ -8,7 +8,8 @@
 #include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
 #include <glm/ext/matrix_clip_space.hpp> // glm::perspective
 #include <glm/ext/scalar_constants.hpp> // glm::pi
-
+#include "imgui_impl_glfw.h"
+#include "imguiOpenGL.h"
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate)
 {
 	glm::mat4 Projection = glm::perspective(glm::pi<float>() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
@@ -32,11 +33,12 @@ namespace Sklejka
 		if (!glfwInit())
 			return -1;
 
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		window = glfwCreateWindow(640, 480, "Test Window", NULL, NULL);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+		window = glfwCreateWindow(1280, 960, "Test Window", NULL, NULL);
 		if (!window)
 		{
+			
 			glfwTerminate();
 			return -1;
 		}
@@ -46,13 +48,29 @@ namespace Sklejka
 		{
 			return -1;
 		}
-		unsigned int id;
-		glGenBuffers(1, &id);
+
+		ImGui::CreateContext();
+		ImGui_ImplGlfw_InitForOpenGL(window, true);
+		ImGui_ImplOpenGL3_Init("#version 150");
+
+		ImGui::StyleColorsDark();
 		while (!glfwWindowShouldClose(window))
 		{
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
+
+			glClearColor(1, 0, 1, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+			ImGui::ShowDemoWindow();
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 			glfwSwapBuffers(window);
 		}
-
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
 		glfwTerminate();
 	}
 }
