@@ -13,9 +13,21 @@ project "Sklejka"
         "src/**.cpp"
     }
 
+    defines
+    {
+
+    }
+
     includedirs
     {
-        
+        "src",
+        "%{IncludeDir.GLFW}"
+    }
+
+    links
+    {
+        "GLFW",
+        "opengl32.lib"
     }
     
     filter "system.windows"

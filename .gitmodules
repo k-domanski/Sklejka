@@ -1,0 +1,3 @@
+[submodule "Sklejka/vendor/GLFW"]
+	path = Sklejka/vendor/GLFW
+	url = https://github.com/k-domanski/glfw

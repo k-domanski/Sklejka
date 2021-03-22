@@ -2,5 +2,5 @@
 
 int main()
 {
-	sk::Print();
+	Sklejka::TestWindow();
 }

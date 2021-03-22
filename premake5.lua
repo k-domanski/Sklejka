@@ -10,5 +10,10 @@ workspace "Sklejka"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.architecture}"
 
+-- Include directories relative to solution directory
+IncludeDir = {}
+IncludeDir["GLFW"] = "%{wks.location}/Sklejka/vendor/GLFW/include"
+
+include "Sklejka/vendor/GLFW"
 include "Sklejka"
 include "Sandbox"

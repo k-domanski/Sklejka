@@ -1,6 +1,7 @@
 #pragma once
 
-namespace sk
+namespace Sklejka
 {
 	void Print();
+	int TestWindow();
 }
