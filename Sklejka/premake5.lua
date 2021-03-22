@@ -10,7 +10,9 @@ project "Sklejka"
     files
     {
         "src/**.h",
-        "src/**.cpp"
+        "src/**.cpp",
+        "vendor/glm/glm/**.hpp",
+        "vendor/glm/glm/**.inl"
     }
 
     defines
@@ -22,7 +24,8 @@ project "Sklejka"
     {
         "src",
         "%{IncludeDir.GLFW}",
-        "%{IncludeDir.Glad}"
+        "%{IncludeDir.Glad}",
+        "%{IncludeDir.glm}"
     }
 
     links

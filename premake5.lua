@@ -14,6 +14,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "%{wks.location}/Sklejka/vendor/GLFW/include"
 IncludeDir["Glad"] = "%{wks.location}/Sklejka/vendor/Glad/include"
+IncludeDir["glm"] = "%{wks.location}/Sklejka/vendor/glm"
 
 include "Sklejka/vendor/GLFW"
 include "Sklejka/vendor/Glad"
