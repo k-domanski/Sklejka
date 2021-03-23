@@ -23,6 +23,11 @@ project "Sandbox"
         "Sklejka"
     }
 
+    postbuildcommands
+    {
+        ("copy %{wks.location}lib %{cfg.buildtarget.directory}")
+    }
+
     filter "system.windows"
         systemversion "latest"
 

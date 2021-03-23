@@ -11,6 +11,11 @@
 #include "imgui_impl_glfw.h"
 #include "imguiOpenGL.h"
 #include "stb_image.h"
+#include "assimp/Importer.hpp"
+#include <assimp/scene.h>
+#include <iostream>
+#include <assimp/postprocess.h>
+
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate)
 {
 	glm::mat4 Projection = glm::perspective(glm::pi<float>() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
@@ -55,6 +60,14 @@ namespace Sklejka
 		ImGui_ImplOpenGL3_Init("#version 150");
 		stbi_set_flip_vertically_on_load(true);
 		ImGui::StyleColorsDark();
+		Assimp::Importer importer;
+		bool test = importer.IsExtensionSupported(".fbx");
+		const std::string& path = "res/bumper1.fbx";
+		const aiScene* scene = importer.ReadFile("bumper1.fbx", aiProcess_Triangulate | aiProcess_FlipUVs);
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		{
+			std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
+		}
 		while (!glfwWindowShouldClose(window))
 		{
 			ImGui_ImplOpenGL3_NewFrame();
