@@ -20,11 +20,13 @@ IncludeDir["stb_image"] = "%{wks.location}/Sklejka/vendor/stb_image"
 IncludeDir["assimp"] = "%{wks.location}/Sklejka/vendor/assimp"
 IncludeDir["better_enums"] = "%{wks.location}/Sklejka/vendor/better-enums"
 IncludeDir["irrKlang"] = "%{wks.location}/Sklejka/vendor/irrKlang"
+IncludeDir["rttr"] = "%{wks.location}/Sklejka/vendor/rttr"
 
 group "Dependencies"
     include "Sklejka/vendor/GLFW"
     include "Sklejka/vendor/Glad"
     include "Sklejka/vendor/imgui"
+    include "Sklejka/vendor/rttr"
 group ""
 
 include "Sklejka"

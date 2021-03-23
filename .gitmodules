@@ -7,3 +7,6 @@
 [submodule "Sklejka/vendor/imgui"]
 	path = Sklejka/vendor/imgui
 	url = https://github.com/k-domanski/imgui
+[submodule "Sklejka/vendor/rttr"]
+	path = Sklejka/vendor/rttr
+	url = https://github.com/k-domanski/rttr

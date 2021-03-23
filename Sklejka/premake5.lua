@@ -35,7 +35,8 @@ project "Sklejka"
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.assimp}/include",
         "%{IncludeDir.better_enums}/include",
-        "%{IncludeDir.irrKlang}/include"
+        "%{IncludeDir.irrKlang}/include",
+        "%{IncludeDir.rttr}/src"
     }
     libdirs
     {
@@ -48,6 +49,7 @@ project "Sklejka"
         "GLFW",
         "Glad",
         "ImGui",
+        "rttr",
         "opengl32.lib",
         "assimp-vc142-mtd.lib",
         "irrKlang.lib"

@@ -17,6 +17,7 @@
 #include <assimp/postprocess.h>
 #include <enum.h>
 #include <irrKlang.h>
+#include <rttr/type>
 
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate)
 {
@@ -69,6 +70,7 @@ namespace Sklejka
 			<< std::endl;
 		irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
 		
+		rttr::type my_int_type = rttr::type::get<int>();
 		while (!glfwWindowShouldClose(window))
 		{
 			ImGui_ImplOpenGL3_NewFrame();
