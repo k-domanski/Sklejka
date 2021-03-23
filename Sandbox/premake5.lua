@@ -26,7 +26,7 @@ project "Sandbox"
 
     postbuildcommands
     {
-        ("copy %{wks.location}lib %{cfg.buildtarget.directory}")
+        ("copy \"%{wks.location}lib\" \"%{cfg.buildtarget.directory}\"")
     }
 
     filter "system.windows"
