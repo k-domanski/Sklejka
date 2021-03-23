@@ -15,7 +15,9 @@ project "Sklejka"
         "vendor/glm/glm/**.inl",
 		"vendor/stb_image/**.h",
         "vendor/stb_image/**.cpp",
-        "vendor/assimp/include/assimp/**"
+        "vendor/assimp/include/assimp/**",
+        "vendor/better-enums/include/**",
+        "vendor/irrKlang/include/**"
     }
 
     defines
@@ -31,11 +33,14 @@ project "Sklejka"
         "%{IncludeDir.glm}",
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.stb_image}",
-        "%{IncludeDir.assimp}/include"
+        "%{IncludeDir.assimp}/include",
+        "%{IncludeDir.better_enums}/include",
+        "%{IncludeDir.irrKlang}/include"
     }
     libdirs
     {
-        "%{IncludeDir.assimp}/lib"
+        "%{IncludeDir.assimp}/lib",
+        "%{IncludeDir.irrKlang}/lib"
     }
 
     links
@@ -44,8 +49,8 @@ project "Sklejka"
         "Glad",
         "ImGui",
         "opengl32.lib",
-        "assimp-vc142-mtd.lib"
-        --"assimpd.lib"
+        "assimp-vc142-mtd.lib",
+        "irrKlang.lib"
     }
     
     filter "system.windows"

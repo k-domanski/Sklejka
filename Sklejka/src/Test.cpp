@@ -15,6 +15,8 @@
 #include <assimp/scene.h>
 #include <iostream>
 #include <assimp/postprocess.h>
+#include <enum.h>
+#include <irrKlang.h>
 
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate)
 {
@@ -26,6 +28,7 @@ glm::mat4 camera(float Translate, glm::vec2 const& Rotate)
 	return Projection * View * Model;
 }
 
+BETTER_ENUM(Word, int, Hello, World)
 namespace Sklejka
 {
 	void Print()
@@ -54,7 +57,6 @@ namespace Sklejka
 		{
 			return -1;
 		}
-
 		ImGui::CreateContext();
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 150");
@@ -62,12 +64,11 @@ namespace Sklejka
 		ImGui::StyleColorsDark();
 		Assimp::Importer importer;
 		bool test = importer.IsExtensionSupported(".fbx");
-		const std::string& path = "res/bumper1.fbx";
-		const aiScene* scene = importer.ReadFile("bumper1.fbx", aiProcess_Triangulate | aiProcess_FlipUVs);
-		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-		{
-			std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
-		}
+		std::cout << (+Word::Hello)._to_string() << ", "
+			<< (+Word::World)._to_string() << "!"
+			<< std::endl;
+		irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
+		
 		while (!glfwWindowShouldClose(window))
 		{
 			ImGui_ImplOpenGL3_NewFrame();
@@ -86,5 +87,6 @@ namespace Sklejka
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 		glfwTerminate();
+		return 0;
 	}
 }

@@ -15,7 +15,8 @@ project "Sandbox"
 
     includedirs
     {
-        "%{wks.location}/Sklejka/src"
+        "%{wks.location}/Sklejka/src",
+        "%{IncludeDir.irrKlang}/include"
     }
 
     links
