@@ -15,13 +15,13 @@ project "Editor"
 
     includedirs
     {
-        "%{wks.location}/Sklejka/src",
+        "%{wks.location}/Engine/src",
         "%{IncludeDir.irrKlang}/include"
     }
 
     links
     {
-        "Sklejka"
+        "Engine"
     }
 
     postbuildcommands

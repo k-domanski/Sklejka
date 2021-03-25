@@ -1,12 +1,12 @@
 [submodule "Sklejka/vendor/GLFW"]
-	path = Sklejka/vendor/GLFW
+	path = Engine/vendor/GLFW
 	url = https://github.com/k-domanski/glfw
 [submodule "Sklejka/vendor/glm"]
-	path = Sklejka/vendor/glm
+	path = Engine/vendor/glm
 	url = https://github.com/k-domanski/glm
 [submodule "Sklejka/vendor/imgui"]
-	path = Sklejka/vendor/imgui
+	path = Engine/vendor/imgui
 	url = https://github.com/k-domanski/imgui
 [submodule "Sklejka/vendor/rttr"]
-	path = Sklejka/vendor/rttr
+	path = Engine/vendor/rttr
 	url = https://github.com/k-domanski/rttr

@@ -1,4 +1,4 @@
-project "Sklejka"
+project "Engine"
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
