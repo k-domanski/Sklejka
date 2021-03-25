@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Test.h"
 #include <stdio.h>
 #include <GLFW/glfw3.h>
@@ -13,7 +14,6 @@
 #include "stb_image.h"
 #include "assimp/Importer.hpp"
 #include <assimp/scene.h>
-#include <iostream>
 #include <assimp/postprocess.h>
 #include <enum.h>
 #include <irrKlang.h>

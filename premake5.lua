@@ -31,3 +31,4 @@ group ""
 
 include "Engine"
 include "Editor"
+include "Game"
