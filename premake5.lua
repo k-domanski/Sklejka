@@ -1,6 +1,6 @@
 workspace "Sklejka"
     architecture "x64"
-    startproject "Sandbox"
+    startproject "Editor"
 
     configurations
     {
@@ -30,4 +30,4 @@ group "Dependencies"
 group ""
 
 include "Sklejka"
-include "Sandbox"
+include "Editor"
