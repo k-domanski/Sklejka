@@ -13,5 +13,6 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 #include <rttr/registration.h>
 #include <enum.h>

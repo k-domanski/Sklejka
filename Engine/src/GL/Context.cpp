@@ -6,7 +6,7 @@ namespace Engine::GL {
   auto Context::VertexBuffer() noexcept -> GLenum {
     return VertexBuffer::GetCurrentHandle();
   }
-  auto Context::IndexBuffer() noexcept -> GLenum {
-    return IndexBuffer::GetCurrentHandle();
+  auto Context::IndiceBuffer() noexcept -> GLenum {
+    return IndiceBuffer::GetCurrentHandle();
   }
 }  // namespace Engine::GL

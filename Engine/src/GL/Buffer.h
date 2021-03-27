@@ -6,7 +6,7 @@ namespace Engine::GL {
   template< GLenum BufferType >
   class Buffer : public IGLResource {
   private:
-    static GLuint s_currentHandle;
+    static inline GLuint s_currentHandle = 0u;
     GLuint _handle;
 
   public:
@@ -44,6 +44,8 @@ namespace Engine::GL {
     }
     auto SetData(GLsizeiptr size, const void* data, GLenum usage = GL_STATIC_DRAW) noexcept
         -> void {
+      if (!IsValid())
+        return;
       Bind();
       glBufferData(BufferType, size, data, usage);
     }
@@ -58,10 +60,10 @@ namespace Engine::GL {
     }
   };
 
-  template< GLenum BufferType >
-  GLuint Buffer< BufferType >::s_currentHandle = 0u;
+  //template< GLenum BufferType >
+  //GLuint Buffer< BufferType >::s_currentHandle = 0u;
 
   /* GL Buffers */
   typedef Buffer< GL_ARRAY_BUFFER > VertexBuffer;
-  typedef Buffer< GL_ELEMENT_ARRAY_BUFFER > IndexBuffer;
+  typedef Buffer< GL_ELEMENT_ARRAY_BUFFER > IndiceBuffer;
 }  // namespace Engine::GL
