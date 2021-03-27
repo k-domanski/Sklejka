@@ -4,7 +4,7 @@
 namespace Engine::GL {
   class Context {
   public:
-    static GLuint VertexBuffer() noexcept;
-    static GLuint IndexBuffer() noexcept;
+    static auto VertexBuffer() noexcept -> GLuint;
+    static auto IndexBuffer() noexcept -> GLuint;
   };
 }  // namespace Engine::GL

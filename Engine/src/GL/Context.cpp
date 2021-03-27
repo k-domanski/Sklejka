@@ -3,10 +3,10 @@
 #include <GL/Buffer.h>
 
 namespace Engine::GL {
-  GLuint Context::VertexBuffer() noexcept {
+  auto Context::VertexBuffer() noexcept -> GLenum {
     return VertexBuffer::GetCurrentHandle();
   }
-  GLuint Context::IndexBuffer() noexcept {
+  auto Context::IndexBuffer() noexcept -> GLenum {
     return IndexBuffer::GetCurrentHandle();
   }
 }  // namespace Engine::GL

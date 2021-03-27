@@ -10,7 +10,7 @@ namespace Engine::GL {
     GLuint _handle;
 
   public:
-    static GLuint GetCurrentHandle() noexcept {
+    static auto GetCurrentHandle() noexcept -> GLuint {
       return s_currentHandle;
     }
     Buffer() noexcept {
@@ -19,7 +19,7 @@ namespace Engine::GL {
     Buffer(Buffer< BufferType >&& other) noexcept: _handle(other._handle) {
       other._handle = 0u;
     }
-    Buffer< BufferType >& operator=(Buffer< BufferType >&& other) noexcept {
+    auto operator=(Buffer< BufferType >&& other) noexcept -> Buffer< BufferType >& {
       if (&other == *this)
         return *this;
       Release();
@@ -27,31 +27,32 @@ namespace Engine::GL {
       other._handle = 0u;
       return *this;
     }
-    GLuint GetHandle() const override {
+    auto GetHandle() const noexcept -> GLuint override {
       return _handle;
     }
-    void Bind() noexcept {
+    auto Bind() noexcept -> void {
       if (IsBound())
         return;
       glBindBuffer(BufferType, _handle);
       s_currentHandle = _handle;
     }
-    bool IsBound() const noexcept {
+    auto IsBound() const noexcept -> bool {
       return _handle == s_currentHandle;
     }
-    bool IsValid() const noexcept {
+    auto IsValid() const noexcept -> bool {
       return _handle != 0u;
     }
-    void SetData(GLsizeiptr size, const void* data, GLenum usage = GL_STATIC_DRAW) noexcept {
+    auto SetData(GLsizeiptr size, const void* data, GLenum usage = GL_STATIC_DRAW) noexcept
+        -> void {
       Bind();
       glBufferData(BufferType, size, data, usage);
     }
-    constexpr GLenum GetBufferType() const noexcept {
+    constexpr auto GetBufferType() const noexcept -> GLenum {
       return BufferType;
     }
 
   private:
-    void Release() noexcept {
+    auto Release() noexcept -> void {
       glDeleteBuffers(1, &_handle);
       _handle = 0;
     }

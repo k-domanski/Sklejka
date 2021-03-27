@@ -2,10 +2,12 @@
 
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 #include <string>
 #include <vector>
 #include <memory>
+#include <algorithm>
 
 #include <cassert>
 

@@ -4,7 +4,7 @@
 namespace Engine::GL {
   class IGLResource{
   public:
-    virtual GLuint GetHandle() const = 0;
+    virtual auto GetHandle() const noexcept -> GLuint = 0;
     virtual ~IGLResource() = default;
   };
 }
