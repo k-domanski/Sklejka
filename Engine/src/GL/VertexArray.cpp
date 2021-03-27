@@ -2,7 +2,6 @@
 #include "VertexArray.h"
 
 namespace Engine::GL {
-  GLuint VertexArray::s_currentHandle = 0;
   auto VertexArray::GetCurrentHandle() noexcept -> GLuint {
     return s_currentHandle;
   }

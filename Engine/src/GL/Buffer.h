@@ -20,7 +20,7 @@ namespace Engine::GL {
       other._handle = 0u;
     }
     auto operator=(Buffer< BufferType >&& other) noexcept -> Buffer< BufferType >& {
-      if (&other == *this)
+      if (&other == this)
         return *this;
       Release();
       _handle       = other._handle;
@@ -59,9 +59,6 @@ namespace Engine::GL {
       _handle = 0;
     }
   };
-
-  //template< GLenum BufferType >
-  //GLuint Buffer< BufferType >::s_currentHandle = 0u;
 
   /* GL Buffers */
   typedef Buffer< GL_ARRAY_BUFFER > VertexBuffer;
