@@ -15,7 +15,7 @@
 #include <assimp/postprocess.h>
 #include <irrKlang.h>
 #include <rttr/type>
-//tmp
+// tmp
 #include <GL/Buffer.h>
 
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
@@ -49,29 +49,30 @@ namespace Sklejka {
     glfwSwapInterval(1);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
       return -1;
-    } 
+    }
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 150");
     stbi_set_flip_vertically_on_load(true);
     ImGui::StyleColorsDark();
     Assimp::Importer importer;
-    bool test = importer.IsExtensionSupported(".fbx");
+    bool test                      = importer.IsExtensionSupported(".fbx");
     irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
 
     rttr::type my_int_type = rttr::type::get< int >();
-    //Logging test
+    // Logging test
     {
-        CORE_WARN("Better-Enum test log: {0}, {1}!", (+Word::Hello)._to_string(), (+Word::World)._to_string());
+      CORE_WARN("Better-Enum test log: {0}, {1}!", (+Word::Hello)._to_string(),
+                (+Word::World)._to_string());
 
-        float f = 2.5f;
-        int i = 1;
-        CORE_TRACE("Test macro TRACE var = {0}.", f);
-        CORE_DEBUG("Test macro DEBUG var = {0}.", f);
-        CORE_INFO("Test macro INFO var = {0}, {1}.", f, i);
-        CORE_WARN("Test macro WARN var = {0}.", f);
-        CORE_ERROR("Test macro ERROR var = {1}, {0}.", f, i);
-        CORE_FATAL("Test macro FATAL var = {0}.", f);
+      float f = 2.5f;
+      int i   = 1;
+      CORE_TRACE("Test macro TRACE var = {0}.", f);
+      CORE_DEBUG("Test macro DEBUG var = {0}.", f);
+      CORE_INFO("Test macro INFO var = {0}, {1}.", f, i);
+      CORE_WARN("Test macro WARN var = {0}.", f);
+      CORE_ERROR("Test macro ERROR var = {1}, {0}.", f, i);
+      CORE_FATAL("Test macro FATAL var = {0}.", f);
     }
 
     while (!glfwWindowShouldClose(window)) {
