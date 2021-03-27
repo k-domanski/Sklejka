@@ -16,7 +16,8 @@ project "Editor"
     includedirs
     {
         "%{wks.location}/Engine/src",
-        "%{IncludeDir.irrKlang}/include"
+        "%{IncludeDir.irrKlang}/include",
+        "%{wks.location}/Engine/vendor/spdlog/include"
     }
 
     links

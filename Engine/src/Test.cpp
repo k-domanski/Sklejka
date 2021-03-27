@@ -15,11 +15,8 @@
 #include "assimp/Importer.hpp"
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <enum.h>
 #include <irrKlang.h>
 #include <rttr/type>
-#include <spdlog/spdlog.h>
-
 //tmp
 #include <GL/Buffer.h>
 
@@ -62,12 +59,28 @@ namespace Sklejka {
     ImGui::StyleColorsDark();
     Assimp::Importer importer;
     bool test = importer.IsExtensionSupported(".fbx");
-    std::cout << (+Word::Hello)._to_string() << ", " << (+Word::World)._to_string() << "!"
-              << std::endl;
+    //std::cout << (+Word::Hello)._to_string() << ", " << (+Word::World)._to_string() << "!"
+    //          << std::endl;
     irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
 
     rttr::type my_int_type = rttr::type::get< int >();
-    spdlog::info("spdlog Test");
+    //int a = 2;
+    //Engine::Log::Init();
+    //Engine::Log::GetEngineLogger()->trace("Test var = {0}.", a);
+    //CORE_TRACE("Test macro var = {0}.", a);
+    //CORE_DEBUG("Test macro var = {0}.", a);
+    //CORE_INFO("Test macro var = {0}.", a);
+    //CORE_WARN("Test macro var = {0}.", a);
+    //CORE_ERROR("Test macro var = {0}.", a);
+    CORE_FATAL("Better-Enum test log {0}, {1}!", (+Word::Hello)._to_string(), (+Word::World)._to_string());
+    //
+    //APP_TRACE("Test macro var = {0}.", a);
+    //APP_DEBUG("Test macro var = {0}.", a);
+    //APP_INFO("Test macro var = {0}.", a);
+    //APP_WARN("Test macro var = {0}.", a);
+    //APP_ERROR("Test macro var = {0}.", a);
+    //APP_FATAL("Test macro var = {0}.", a);
+
     while (!glfwWindowShouldClose(window)) {
       ImGui_ImplOpenGL3_NewFrame();
       ImGui_ImplGlfw_NewFrame();

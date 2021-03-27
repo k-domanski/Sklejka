@@ -15,3 +15,5 @@
 #include <GLFW/glfw3.h>
 #include <rttr/registration.h>
 #include <enum.h>
+
+#include <Application/Log.h>
