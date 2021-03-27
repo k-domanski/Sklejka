@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Test.h"
 #include <stdio.h>
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
 #include <glm/vec3.hpp>                   // glm::vec3
 #include <glm/vec4.hpp>                   // glm::vec4
 #include <glm/mat4x4.hpp>                 // glm::mat4
@@ -59,27 +57,22 @@ namespace Sklejka {
     ImGui::StyleColorsDark();
     Assimp::Importer importer;
     bool test = importer.IsExtensionSupported(".fbx");
-    //std::cout << (+Word::Hello)._to_string() << ", " << (+Word::World)._to_string() << "!"
-    //          << std::endl;
     irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
 
     rttr::type my_int_type = rttr::type::get< int >();
-    //int a = 2;
-    //Engine::Log::Init();
-    //Engine::Log::GetEngineLogger()->trace("Test var = {0}.", a);
-    //CORE_TRACE("Test macro var = {0}.", a);
-    //CORE_DEBUG("Test macro var = {0}.", a);
-    //CORE_INFO("Test macro var = {0}.", a);
-    //CORE_WARN("Test macro var = {0}.", a);
-    //CORE_ERROR("Test macro var = {0}.", a);
-    CORE_FATAL("Better-Enum test log {0}, {1}!", (+Word::Hello)._to_string(), (+Word::World)._to_string());
-    //
-    //APP_TRACE("Test macro var = {0}.", a);
-    //APP_DEBUG("Test macro var = {0}.", a);
-    //APP_INFO("Test macro var = {0}.", a);
-    //APP_WARN("Test macro var = {0}.", a);
-    //APP_ERROR("Test macro var = {0}.", a);
-    //APP_FATAL("Test macro var = {0}.", a);
+    //Logging test
+    {
+        CORE_WARN("Better-Enum test log: {0}, {1}!", (+Word::Hello)._to_string(), (+Word::World)._to_string());
+
+        float f = 2.5f;
+        int i = 1;
+        CORE_TRACE("Test macro TRACE var = {0}.", f);
+        CORE_DEBUG("Test macro DEBUG var = {0}.", f);
+        CORE_INFO("Test macro INFO var = {0}, {1}.", f, i);
+        CORE_WARN("Test macro WARN var = {0}.", f);
+        CORE_ERROR("Test macro ERROR var = {1}, {0}.", f, i);
+        CORE_FATAL("Test macro FATAL var = {0}.", f);
+    }
 
     while (!glfwWindowShouldClose(window)) {
       ImGui_ImplOpenGL3_NewFrame();
