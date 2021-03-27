@@ -31,6 +31,7 @@ project "Engine"
     includedirs
     {
         "src",
+        "vendor/spdlog/include",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
         "%{IncludeDir.glm}",

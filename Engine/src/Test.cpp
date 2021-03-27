@@ -18,6 +18,7 @@
 #include <enum.h>
 #include <irrKlang.h>
 #include <rttr/type>
+#include <spdlog/spdlog.h>
 
 //tmp
 #include <GL/Buffer.h>
@@ -53,7 +54,7 @@ namespace Sklejka {
     glfwSwapInterval(1);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
       return -1;
-    }
+    } 
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 150");
@@ -66,6 +67,7 @@ namespace Sklejka {
     irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
 
     rttr::type my_int_type = rttr::type::get< int >();
+    spdlog::info("spdlog Test");
     while (!glfwWindowShouldClose(window)) {
       ImGui_ImplOpenGL3_NewFrame();
       ImGui_ImplGlfw_NewFrame();

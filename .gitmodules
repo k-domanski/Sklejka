@@ -10,3 +10,6 @@
 [submodule "Sklejka/vendor/rttr"]
 	path = Engine/vendor/rttr
 	url = https://github.com/k-domanski/rttr
+[submodule "Engine/vendor/spdlog"]
+	path = Engine/vendor/spdlog
+	url = https://github.com/k-domanski/spdlog
