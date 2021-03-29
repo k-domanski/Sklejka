@@ -17,6 +17,7 @@
 #include <rttr/type>
 // tmp
 #include <GL/Buffer.h>
+#include "App/Window.h"
 
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
   glm::mat4 Projection = glm::perspective(glm::pi< float >() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
@@ -34,24 +35,25 @@ namespace Sklejka {
   }
 
   int TestWindow() {
-    GLFWwindow* window;
-    if (!glfwInit())
-      return -1;
+      std::unique_ptr < Engine::Window > window = Engine::Window::Create(Engine::WindowData());
+      //GLFWwindow* window;
+    //if (!glfwInit())
+      //return -1;
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    window = glfwCreateWindow(1280, 960, "Test Window", NULL, NULL);
-    if (!window) {
-      glfwTerminate();
-      return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-      return -1;
-    }
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    //window = glfwCreateWindow(1280, 960, "Test Window", NULL, NULL);
+    //if (!window) {
+    //  glfwTerminate();
+    //  return -1;
+    //}
+    //glfwMakeContextCurrent(window);
+    //glfwSwapInterval(1);
+    //if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    //  return -1;
+    //}
     ImGui::CreateContext();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(window->GetNativeWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 150");
     stbi_set_flip_vertically_on_load(true);
     ImGui::StyleColorsDark();
@@ -75,24 +77,24 @@ namespace Sklejka {
       CORE_FATAL("Test macro FATAL var = {0}.", f);
     }
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window->GetNativeWindow())) {
       ImGui_ImplOpenGL3_NewFrame();
       ImGui_ImplGlfw_NewFrame();
       ImGui::NewFrame();
-
+      window->OnUpdate();
       glClearColor(1, 0, 1, 1);
       glClear(GL_COLOR_BUFFER_BIT);
       ImGui::ShowDemoWindow();
       ImGui::Render();
       ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-      glfwPollEvents();
-      glfwSwapBuffers(window);
+      //
+      //glfwPollEvents();
+      //glfwSwapBuffers(window);
     }
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    glfwTerminate();
+    //glfwTerminate();
     return 0;
   }
 }  // namespace Sklejka
