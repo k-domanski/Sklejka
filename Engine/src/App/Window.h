@@ -1,4 +1,7 @@
 #pragma once
+#include <string>
+#include <memory>
+#include "GLFW/glfw3.h"
 
 namespace Engine {
   struct WindowData {
