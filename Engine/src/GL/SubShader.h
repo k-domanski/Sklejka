@@ -1,13 +1,9 @@
 #pragma once
 #include <pch.h>
 #include <GL/IGLResource.h>
+#include <GL/GLEnum.h>
 
 namespace Engine::GL {
-  BETTER_ENUM(__ShaderType, GLenum, VertexShader = GL_VERTEX_SHADER,
-              FragmentShader = GL_FRAGMENT_SHADER);
-
-  typedef __ShaderType ShaderType;
-
   class SubShader : public IGLResource {
   private:
     GLuint _handle = 0;
