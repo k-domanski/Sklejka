@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "SubShader.h"
+#include <App/Log.h>
 
 namespace Engine::GL {
   SubShader::SubShader(ShaderType type, std::string source) noexcept
       : _source(std::move(source)), _type(type) {
     _handle = glCreateShader(_type);
+    Compile();
   }
   SubShader::SubShader(SubShader&& other) noexcept
       : _handle(other._handle), _source(std::move(other._source)), _isCompiled(other._isCompiled),
@@ -66,6 +68,6 @@ namespace Engine::GL {
     glGetShaderiv(_handle, GL_INFO_LOG_LENGTH, &stringLength);
     std::string message(stringLength, '\0');
     glGetShaderInfoLog(_handle, message.size(), NULL, &message[0]);
-    // TODO: Log message
+    CORE_ERROR("Shader compilation error\nType: {0}\n{1}", _type._to_string(), message);
   }
 }  // namespace Engine::GL

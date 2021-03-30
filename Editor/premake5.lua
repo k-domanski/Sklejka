@@ -17,7 +17,9 @@ project "Editor"
     {
         "%{wks.location}/Engine/src",
         "%{IncludeDir.irrKlang}/include",
-        "%{wks.location}/Engine/vendor/spdlog/include"
+        "%{wks.location}/Engine/vendor/spdlog/include",
+        "%{wks.location}/Engine/vendor",
+        "%{IncludeDir.GLFW}"
     }
 
     links

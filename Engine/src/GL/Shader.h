@@ -24,6 +24,7 @@ namespace Engine::GL {
     auto Link() noexcept -> bool;
     auto IsValid() noexcept -> bool;
     auto InUse() noexcept -> bool;
+    auto IsLinked() noexcept -> bool;
     auto Use() noexcept -> void;
 
     auto SetValue(const std::string_view& name, int v0) noexcept -> void;

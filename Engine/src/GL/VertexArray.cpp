@@ -20,8 +20,10 @@ namespace Engine::GL {
     return *this;
   }
   auto VertexArray::Bind() noexcept -> void {
-    if (!IsBound())
-      glBindVertexArray(_handle);
+    if (IsBound())
+      return;
+    glBindVertexArray(_handle);
+    s_currentHandle = _handle;
   }
   auto VertexArray::IsBound() const noexcept -> bool {
     return s_currentHandle == _handle;
