@@ -31,10 +31,17 @@ namespace Engine::Renderer {
   auto Mesh::Use() noexcept -> void {
     _vertexArray.Bind();
     _vertexBuffer.Bind();
+    _indiceBuffer.Bind();
+  }
+  auto Mesh::ElementCount() const noexcept -> GLuint {
+    return _indiceData.size();
+  }
+  auto Mesh::GetPrimitive() const noexcept -> GL::Primitive {
+    return _primitive;
   }
   auto Mesh::SendDataToBuffers() noexcept -> void {
     _vertexArray.Bind();
     _vertexBuffer.SetData(_vertexData.size() * sizeof(Vertex), _vertexData.data());
-    _vertexBuffer.SetData(_vertexData.size() * sizeof(Vertex), _vertexData.data());
+    _indiceBuffer.SetData(_indiceData.size() * sizeof(GLuint), _indiceData.data());
   }
 }  // namespace Engine::Renderer

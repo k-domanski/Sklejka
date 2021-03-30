@@ -1,6 +1,5 @@
 #pragma once
-namespace Sklejka
-{
-	void Print();
-	int TestWindow();
-}
+namespace Engine {
+  void Print();
+  int TestWindow();
+}  // namespace Engine

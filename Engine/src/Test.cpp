@@ -16,8 +16,11 @@
 #include <irrKlang.h>
 #include <rttr/type>
 // tmp
-#include <GL/Buffer.h>
+#include <GL/GLCore.h>
 #include "App/Window.h"
+#include <App/Log.h>
+#include <Renderer/Mesh.h>
+#include <Utility/Utility.h>
 
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
   glm::mat4 Projection = glm::perspective(glm::pi< float >() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
@@ -28,73 +31,92 @@ glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
   return Projection * View * Model;
 }
 
+template< typename T >
+using ptr_t = std::shared_ptr< T >;
+
 BETTER_ENUM(Word, int, Hello, World)
-namespace Sklejka {
+namespace Engine {
+  // Remove
   void Print() {
     printf("Welcome to Sklejka Engine!\n");
   }
 
   int TestWindow() {
-      std::unique_ptr < Engine::Window > window = Engine::Window::Create(Engine::WindowData());
-      //GLFWwindow* window;
-    //if (!glfwInit())
-      //return -1;
+    Log::Init();
 
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    //window = glfwCreateWindow(1280, 960, "Test Window", NULL, NULL);
-    //if (!window) {
-    //  glfwTerminate();
-    //  return -1;
-    //}
-    //glfwMakeContextCurrent(window);
-    //glfwSwapInterval(1);
-    //if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    //  return -1;
-    //}
+    // TODO: Window as singleton
+    std::unique_ptr< Engine::Window > window = Engine::Window::Create(Engine::WindowData());
+
+    // TODO: Spearate ImGUI calls
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(window->GetNativeWindow(), true);
-    ImGui_ImplOpenGL3_Init("#version 150");
-    stbi_set_flip_vertically_on_load(true);
+    ImGui_ImplOpenGL3_Init("#version 430");
     ImGui::StyleColorsDark();
-    Assimp::Importer importer;
-    bool test                      = importer.IsExtensionSupported(".fbx");
-    irrklang::ISoundEngine* engine = irrklang::createIrrKlangDevice();
 
-    rttr::type my_int_type = rttr::type::get< int >();
-    // Logging test
-    {
-      CORE_WARN("Better-Enum test log: {0}, {1}!", (+Word::Hello)._to_string(),
-                (+Word::World)._to_string());
+    /* OpenGL calls for initialization */
+    GL::Context::Initialize();
+    GL::Context::SetClearBufferMask(GL::BufferBit::Color);
+    GL::Context::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
 
-      float f = 2.5f;
-      int i   = 1;
-      CORE_TRACE("Test macro TRACE var = {0}.", f);
-      CORE_DEBUG("Test macro DEBUG var = {0}.", f);
-      CORE_INFO("Test macro INFO var = {0}, {1}.", f, i);
-      CORE_WARN("Test macro WARN var = {0}.", f);
-      CORE_ERROR("Test macro ERROR var = {1}, {0}.", f, i);
-      CORE_FATAL("Test macro FATAL var = {0}.", f);
+    stbi_set_flip_vertically_on_load(true);
+
+    /* Example triangle */
+    std::vector< glm::vec3 > points = {{-0.5f, -0.5f, 0.0f},
+                                       {0.5f, -0.5f, 0.0f},
+                                       {0.0f, 0.5f, 0.0f}};
+    std::vector< GLuint > indices   = {0, 1, 2};
+    std::vector< Renderer::Vertex > vertices;
+    for (const auto& p : points) {
+      Renderer::Vertex v{p, glm::vec3{0.0f}, glm::vec2{0.0f}};
+      vertices.push_back(v);
     }
 
+    /* ------------------- */
+    using GL::Shader;
+    using GL::ShaderType;
+    using GL::SubShader;
+    using Renderer::Mesh;
+    ptr_t< Mesh > mesh = std::make_shared< Mesh >(vertices, indices);
+#define FOLDER_PATH "./shaders"
+    auto vert_src           = Utility::ReadTextFile(FOLDER_PATH "/pass.vert");
+    auto frag_src           = Utility::ReadTextFile(FOLDER_PATH "/color.frag");
+    ptr_t< SubShader > vert = std::make_shared< SubShader >(ShaderType::VertexShader, vert_src);
+    ptr_t< SubShader > frag = std::make_shared< SubShader >(ShaderType::FragmentShader, frag_src);
+    ptr_t< Shader > shader  = std::make_shared< Shader >();
+    shader->AttachShader(vert);
+    shader->AttachShader(frag);
+    shader->Link();
+    /* ------------------- */
+
+    /* ================ */
+
+    // TODO: Wrap WindowShouldClose in Window class
     while (!glfwWindowShouldClose(window->GetNativeWindow())) {
-      ImGui_ImplOpenGL3_NewFrame();
-      ImGui_ImplGlfw_NewFrame();
-      ImGui::NewFrame();
+      // TODO: Separate ImGUI calls
+      // ImGui_ImplOpenGL3_NewFrame();
+      // ImGui_ImplGlfw_NewFrame();
+      // ImGui::NewFrame();
+
+      GL::Context::ClearBuffers();
+
+      /* -------------------------- */
+      shader->Use();
+      mesh->Use();
+      glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+      /* -------------------------- */
+
+      // TODO: Change name
       window->OnUpdate();
-      glClearColor(1, 0, 1, 1);
-      glClear(GL_COLOR_BUFFER_BIT);
-      ImGui::ShowDemoWindow();
-      ImGui::Render();
-      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-      //
-      //glfwPollEvents();
-      //glfwSwapBuffers(window);
+
+      // ImGui::ShowDemoWindow();
+      // ImGui::Render();
+      // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
     }
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    //glfwTerminate();
+    // glfwTerminate();
     return 0;
   }
-}  // namespace Sklejka
+}  // namespace Engine

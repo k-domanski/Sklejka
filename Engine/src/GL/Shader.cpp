@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Shader.h"
+#include <App/Log.h>
 
 namespace Engine::GL {
   auto Shader::GetCurrentHandle() noexcept -> GLuint {
@@ -39,9 +40,10 @@ namespace Engine::GL {
     auto it = std::find_if(_subShaders.begin(), _subShaders.end(), [&shader](const auto& item) {
       return item->GetHandle() == shader->GetHandle();
     });
-    if (it == _subShaders.end())
+    if (_subShaders.size() > 0 && it != _subShaders.end())
       return;
     glAttachShader(_handle, shader->GetHandle());
+    _subShaders.push_back(shader);
   }
 
   auto Shader::Link() noexcept -> bool {
@@ -65,6 +67,10 @@ namespace Engine::GL {
 
   auto Shader::InUse() noexcept -> bool {
     return _handle == s_currentHandle;
+  }
+
+  auto Shader::IsLinked() noexcept -> bool {
+    return _isLinked;
   }
 
   auto Shader::Use() noexcept -> void {
@@ -126,7 +132,7 @@ namespace Engine::GL {
 
   auto Shader::SetVector(const std::string_view& name, const glm::vec1& v) {
     if (auto location = GetUniformLocation(name); location > -1) {
-      glUniform1fv(location, 1, glm::value_ptr(v));
+      glUniform1fv(location, 1, &v.x);
     }
   }
 
@@ -182,7 +188,7 @@ namespace Engine::GL {
     glGetProgramiv(_handle, GL_INFO_LOG_LENGTH, &stringLength);
     std::string message(stringLength, '\0');
     glGetProgramInfoLog(_handle, message.size(), NULL, &message[0]);
-    // TODO: Log link message
+    CORE_ERROR("Shader link error\n{0}", message);
   }
 
   auto Shader::GetUniformLocation(const std::string_view& name) noexcept -> GLint {

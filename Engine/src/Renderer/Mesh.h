@@ -2,7 +2,7 @@
 #include <pch.h>
 #include <GL/Buffer.h>
 #include <GL/VertexArray.h>
-#include <GL/Primitives.h>
+#include <GL/GLEnum.h>
 #include <Renderer/Vertex.h>
 
 namespace Engine::Renderer {
@@ -24,6 +24,8 @@ namespace Engine::Renderer {
     Mesh(Mesh&& other) noexcept;
     auto operator=(Mesh&& other) -> Mesh&;
     auto Use() noexcept -> void;
+    auto ElementCount() const noexcept -> GLuint;
+    auto GetPrimitive() const noexcept -> GL::Primitive;
 
   private:
     auto SendDataToBuffers() noexcept -> void;
