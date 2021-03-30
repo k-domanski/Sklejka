@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Model.h"
+#include "Renderer/Model.h"
 #include "Renderer/Mesh.h"
 
 #include "assimp/Importer.hpp"
