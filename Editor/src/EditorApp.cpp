@@ -1,14 +1,16 @@
-#include "App/Application.h"
+#include "Engine.h"
 #include "App/EntryPoint.h"
+#include "EditorLayer.h"
 
-class Editor : public Engine::Application
-{
+class Editor : public Engine::Application {
 public:
-	Editor() {}
-	~Editor() {}
+  Editor() {
+    AddLayer(new EditorLayer("Test"));
+  }
+  ~Editor() {
+  }
 };
 
-Engine::Application* Engine::CreateApplication()
-{
-	return new Editor();
+Engine::Application* Engine::CreateApplication() {
+  return new Editor();
 }
