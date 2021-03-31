@@ -9,6 +9,8 @@ namespace Engine::GL {
   auto Context::Initialize() noexcept -> void {
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, NULL);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     /*glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL,
                           GL_FALSE);*/
   }
