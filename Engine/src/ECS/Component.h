@@ -1,6 +1,8 @@
 #pragma once
 #include "pch.h"
 
+
+#include "Entity.h"
 #include "Types.h"
 
 namespace ECS {
@@ -14,9 +16,19 @@ namespace ECS {
     virtual ComponentTypeID GetTypeID() {
       return _typeID;
     }
+    virtual void AddToEntity(std::shared_ptr< Entity > entity)
+    {
+      entity->insert(_typeID);
+      _entity = entity;
+    }
+    virtual void RemoveFromEntity()
+    {
+      _entity->erase( _typeID);
+      _entity = nullptr;
+    }
 
   private:
     ComponentTypeID _typeID;
-    //std::shared_ptr< Entity > _entity;
+    std::shared_ptr< Entity > _entity;
   };
 }  // namespace ECS
