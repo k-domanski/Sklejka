@@ -6,6 +6,7 @@ layout(location = 2) in vec2 a_uv;
 
 out vec3 v_pos;
 out vec2 v_uv;
+out float time;
 
 uniform float u_time = 0.0f;
 

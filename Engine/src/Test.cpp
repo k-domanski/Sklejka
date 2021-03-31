@@ -27,7 +27,7 @@
 
 #include "freetype/freetype.h"
 
-#include FT_FREETYPE_H 
+#include FT_FREETYPE_H
 
 struct Character {
   unsigned int TextureID;  // ID handle of the glyph texture
@@ -102,10 +102,8 @@ namespace Engine {
   int TestWindow() {
     Log::Init();
 
-    //glEnable(GL_BLEND);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // TODO: Window as singleton
     std::unique_ptr< Engine::Window > window = Engine::Window::Create(Engine::WindowData());
@@ -285,7 +283,9 @@ namespace Engine {
       bg_mesh->Use();
       glBindTexture(GL_TEXTURE_2D, 0);
       shader->SetValue("u_time", glm::radians(90.0f));
-      shader->SetVector("u_color", glm::vec3{0.4f, 0.4f, 1.0f});
+      shader->SetVector("u_color", glm::vec3{1.0f, 0.2f, 0.f});
+      shader->SetVector("v_color", glm::vec3{0.0f, 0.0f, 0.0f});
+      shader->SetValue("rate", 0.0f);
       glDrawElements(bg_mesh->GetPrimitive(), bg_mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
 
       // Draw Jojo
@@ -298,15 +298,18 @@ namespace Engine {
       // Draw pepe
       pepe_mesh->Use();
       texture.Bind(0);
-      shader->SetVector("u_color", glm::vec3{0.0f});
+      shader->SetVector("u_color", glm::vec3{1.0f, 0.0f, 0.0f});
+      shader->SetVector("v_color", glm::vec3{0.0f, 1.0f, 0.0f});
+      shader->SetValue("rate", abs(sin(time)));
       shader->SetValue("u_mainTexture", 0);
       shader->SetValue("u_time", time);
       glDrawElements(pepe_mesh->GetPrimitive(), pepe_mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
 
-      std::string textToShow = "Time: " + std::to_string(time);
+      std::string textToShow = "Time: " + std::to_string(abs(sin(time)));
 
-      RenderText(textshader, textToShow, 25.0f, 25.0f, 1.0f,
-                 glm::vec3(0.5, 0.8f, 0.2f), textVAO, textVBO, window);
+      RenderText(textshader, textToShow, 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), textVAO,
+                 textVBO, window);
+
 
       /* -------------------------- */
 
@@ -324,7 +327,7 @@ namespace Engine {
     return 0;
   }
 
-  //void RenderText(std::shared_ptr< Engine::GL::Shader > s, std::string text, float x, float y,
+  // void RenderText(std::shared_ptr< Engine::GL::Shader > s, std::string text, float x, float y,
   //                float scale, glm::vec3 color, unsigned int VAO, unsigned int VBO,
   //                const std::unique_ptr< Engine::Window > &window) {
   //  // activate corresponding render state
