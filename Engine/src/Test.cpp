@@ -19,6 +19,7 @@
 #include <GL/GLCore.h>
 #include "App/Window.h"
 #include <App/Log.h>
+#include <App/Timer.h>
 #include <Renderer/Mesh.h>
 #include <Utility/Utility.h>
 
@@ -106,8 +107,10 @@ namespace Engine {
 
     /* ================ */
 
+    Timer timer;
     // TODO: Wrap WindowShouldClose in Window class
     while (!glfwWindowShouldClose(window->GetNativeWindow())) {
+      timer.Update();
       // TODO: Separate ImGUI calls
       // ImGui_ImplOpenGL3_NewFrame();
       // ImGui_ImplGlfw_NewFrame();
