@@ -79,14 +79,13 @@ namespace Engine {
     using GL::Shader;
     using GL::ShaderType;
     using GL::SubShader;
-    using GL::TextureBase;
+    using GL::Texture2D;
     using Renderer::Mesh;
     /* --Texture-- */
     stbi_set_flip_vertically_on_load(true);
     int x, y, n;
     auto pixel_data = stbi_load("./textures/pepo_sad.png", &x, &y, &n, 4);
-    TextureBase texture(GL_TEXTURE_2D);
-    texture.Create(x, y, pixel_data);
+    Texture2D texture(x, y, pixel_data);
     stbi_image_free(pixel_data);
     /* ----------- */
 
