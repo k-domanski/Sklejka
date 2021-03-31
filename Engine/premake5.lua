@@ -20,7 +20,8 @@ project "Engine"
         "vendor/stb_image/**.cpp",
         "vendor/assimp/include/assimp/**",
         "vendor/better-enums/include/**",
-        "vendor/irrKlang/include/**"
+        "vendor/irrKlang/include/**",
+        "vendor/freetype/include/**"
     }
 
     defines
@@ -40,12 +41,14 @@ project "Engine"
         "%{IncludeDir.assimp}/include",
         "%{IncludeDir.better_enums}/include",
         "%{IncludeDir.irrKlang}/include",
-        "%{IncludeDir.rttr}/src"
+        "%{IncludeDir.rttr}/src",
+        "%{IncludeDir.freetype}/include"
     }
     libdirs
     {
         "%{IncludeDir.assimp}/lib",
-        "%{IncludeDir.irrKlang}/lib"
+        "%{IncludeDir.irrKlang}/lib",
+        "%{IncludeDir.freetype}/lib"
     }
 
     links
@@ -56,7 +59,8 @@ project "Engine"
         "rttr",
         "opengl32.lib",
         "assimp-vc142-mtd.lib",
-        "irrKlang.lib"
+        "irrKlang.lib",
+        "freetype.lib"
     }
     
     filter "system.windows"
