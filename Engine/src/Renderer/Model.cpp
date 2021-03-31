@@ -7,6 +7,10 @@
 #include "Renderer/Vertex.h"
 
 namespace Engine::Renderer {
+  Model::Model(std::string path) {
+    loadModel(path);
+  }
+
   void Model::loadModel(std::string path) {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -20,8 +24,7 @@ namespace Engine::Renderer {
     processNode(scene->mRootNode, scene);
   }
 
-  void Model::processNode(aiNode* node, const aiScene* scene, Mesh* parent)
-  {
+  void Model::processNode(aiNode* node, const aiScene* scene, Mesh* parent) {
     Mesh* lastMesh = nullptr;
     for (size_t i = 0; i < node->mNumMeshes; i++) {
       aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
@@ -30,7 +33,7 @@ namespace Engine::Renderer {
       lastMesh = &meshes.back();
     }
 
-    	// Repeat process for all the children
+    // Repeat process for all the children
     for (size_t i = 0; i < node->mNumChildren; i++) {
       processNode(node->mChildren[i], scene, lastMesh);
     }
@@ -68,4 +71,4 @@ namespace Engine::Renderer {
     return Mesh(vertices, indices);
   }
 
-}  
+}  // namespace Engine::Renderer
