@@ -36,13 +36,13 @@ namespace Engine::GL {
     auto SetValue(const std::string_view& name, float v0, float v1, float v2) noexcept -> void;
     auto SetValue(const std::string_view& name, float v0, float v1, float v2, float v3) noexcept
         -> void;
-    auto SetVector(const std::string_view& name, const glm::vec1& v);
-    auto SetVector(const std::string_view& name, const glm::vec2& v);
-    auto SetVector(const std::string_view& name, const glm::vec3& v);
-    auto SetVector(const std::string_view& name, const glm::vec4& v);
-    auto SetMatrix(const std::string_view& name, const glm::mat2& m);
-    auto SetMatrix(const std::string_view& name, const glm::mat3& m);
-    auto SetMatrix(const std::string_view& name, const glm::mat4& m);
+    auto SetVector(const std::string_view& name, const glm::vec1& v) noexcept -> void;
+    auto SetVector(const std::string_view& name, const glm::vec2& v) noexcept -> void;
+    auto SetVector(const std::string_view& name, const glm::vec3& v) noexcept -> void;
+    auto SetVector(const std::string_view& name, const glm::vec4& v) noexcept -> void;
+    auto SetMatrix(const std::string_view& name, const glm::mat2& m) noexcept -> void;
+    auto SetMatrix(const std::string_view& name, const glm::mat3& m) noexcept -> void;
+    auto SetMatrix(const std::string_view& name, const glm::mat4& m) noexcept -> void;
 
   private:
     auto Release() noexcept -> void;

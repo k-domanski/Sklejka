@@ -69,10 +69,32 @@ namespace Engine {
     std::vector< glm::vec2 > uv     = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
     std::vector< GLuint > indices   = {0, 1, 2, 2, 3, 0};
     std::vector< Renderer::Vertex > vertices(points.size());
-    for(int i=0; i<vertices.size(); ++i) {
-      auto p = points[i];
-      auto u = uv[i];
+    for (int i = 0; i < vertices.size(); ++i) {
+      auto p      = points[i];
+      auto u      = uv[i];
       vertices[i] = {p, glm::vec3{0.0f}, u};
+    }
+
+    std::vector< glm::vec3 > bg_points = {{-1.0f, -0.7f, 0.0f},
+                                          {1.0f, -0.7f, 0.0f},
+                                          {1.f, 1.f, 0.0f},
+                                          {-1.f, 1.f, 0.0f}};
+    std::vector< Renderer::Vertex > bg_verts(bg_points.size());
+    for (int i = 0; i < vertices.size(); ++i) {
+      auto p      = bg_points[i];
+      auto u      = uv[i];
+      bg_verts[i] = {p, glm::vec3{0.0f}, u};
+    }
+
+    std::vector< glm::vec3 > jojo_points = {{-0.7f, -1.0f, 0.0f},
+                                            {-0.1f, -1.0f, 0.0f},
+                                            {-0.1f, -0.1f, 0.0f},
+                                            {-0.7f, -0.1f, 0.0f}};
+    std::vector< Renderer::Vertex > jojo_verts(jojo_points.size());
+    for (int i = 0; i < vertices.size(); ++i) {
+      auto p        = jojo_points[i];
+      auto u        = uv[i];
+      jojo_verts[i] = {p, glm::vec3{0.0f}, u};
     }
 
     /* ------------------- */
@@ -81,16 +103,25 @@ namespace Engine {
     using GL::SubShader;
     using GL::TextureBase;
     using Renderer::Mesh;
-    /* --Texture-- */
+    /* ----- Texture ----- */
+    // PEPO
     stbi_set_flip_vertically_on_load(true);
     int x, y, n;
     auto pixel_data = stbi_load("./textures/pepo_sad.png", &x, &y, &n, 4);
     TextureBase texture(GL_TEXTURE_2D);
     texture.Create(x, y, pixel_data);
     stbi_image_free(pixel_data);
+
+    // JOJO
+    pixel_data = stbi_load("./textures/jojo.png", &x, &y, &n, 4);
+    TextureBase jojo_tex(GL_TEXTURE_2D);
+    jojo_tex.Create(x, y, pixel_data);
+    stbi_image_free(pixel_data);
     /* ----------- */
 
-    ptr_t< Mesh > mesh = std::make_shared< Mesh >(vertices, indices);
+    ptr_t< Mesh > pepe_mesh = std::make_shared< Mesh >(vertices, indices);
+    ptr_t< Mesh > bg_mesh   = std::make_shared< Mesh >(bg_verts, indices);
+    ptr_t< Mesh > jojo_mesh = std::make_shared< Mesh >(jojo_verts, indices);
 #define FOLDER_PATH "./shaders"
     auto vert_src           = Utility::ReadTextFile(FOLDER_PATH "/pass.vert");
     auto frag_src           = Utility::ReadTextFile(FOLDER_PATH "/color.frag");
@@ -101,16 +132,16 @@ namespace Engine {
     shader->AttachShader(frag);
     shader->Link();
 
-    texture.Bind(0);
-    shader->SetValue("u_mainTexture", 0);
     /* ------------------- */
 
     /* ================ */
 
     Timer timer;
+    float time = 0.0f;
     // TODO: Wrap WindowShouldClose in Window class
     while (!glfwWindowShouldClose(window->GetNativeWindow())) {
       timer.Update();
+      time += timer.DeltaTime();
       // TODO: Separate ImGUI calls
       // ImGui_ImplOpenGL3_NewFrame();
       // ImGui_ImplGlfw_NewFrame();
@@ -119,9 +150,30 @@ namespace Engine {
       GL::Context::ClearBuffers();
 
       /* -------------------------- */
+
       shader->Use();
-      mesh->Use();
-      glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+      // Draw bg
+      bg_mesh->Use();
+      glBindTexture(GL_TEXTURE_2D, 0);
+      shader->SetValue("u_time", glm::radians(90.0f));
+      shader->SetVector("u_color", glm::vec3{0.4f, 0.4f, 1.0f});
+      glDrawElements(bg_mesh->GetPrimitive(), bg_mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+
+      // Draw Jojo
+      jojo_mesh->Use();
+      jojo_tex.Bind(0);
+      shader->SetVector("u_color", glm::vec3{0.0f});
+      shader->SetValue("u_mainTexture", 0);
+      glDrawElements(jojo_mesh->GetPrimitive(), jojo_mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+
+      // Draw pepe
+      pepe_mesh->Use();
+      texture.Bind(0);
+      shader->SetVector("u_color", glm::vec3{0.0f});
+      shader->SetValue("u_mainTexture", 0);
+      shader->SetValue("u_time", time);
+      glDrawElements(pepe_mesh->GetPrimitive(), pepe_mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+
       /* -------------------------- */
 
       // TODO: Change name

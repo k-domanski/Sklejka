@@ -7,9 +7,11 @@ layout(location = 2) in vec2 a_uv;
 out vec3 v_pos;
 out vec2 v_uv;
 
+uniform float u_time = 0.0f;
+
 void main()
 {
-    v_pos = a_position;
+    v_pos = a_position * sin(u_time);
     v_uv = a_uv;
-    gl_Position = vec4(a_position, 1.0f);
+    gl_Position = vec4(v_pos, 1.0f);
 }

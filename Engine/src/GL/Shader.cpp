@@ -130,43 +130,43 @@ namespace Engine::GL {
     }
   }
 
-  auto Shader::SetVector(const std::string_view& name, const glm::vec1& v) {
+  auto Shader::SetVector(const std::string_view& name, const glm::vec1& v) noexcept -> void {
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform1fv(location, 1, &v.x);
     }
   }
 
-  auto Shader::SetVector(const std::string_view& name, const glm::vec2& v) {
+  auto Shader::SetVector(const std::string_view& name, const glm::vec2& v) noexcept -> void {
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform2fv(location, 1, glm::value_ptr(v));
     }
   }
 
-  auto Shader::SetVector(const std::string_view& name, const glm::vec3& v) {
+  auto Shader::SetVector(const std::string_view& name, const glm::vec3& v) noexcept -> void {
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform3fv(location, 1, glm::value_ptr(v));
     }
   }
 
-  auto Shader::SetVector(const std::string_view& name, const glm::vec4& v) {
+  auto Shader::SetVector(const std::string_view& name, const glm::vec4& v) noexcept -> void {
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform4fv(location, 1, glm::value_ptr(v));
     }
   }
 
-  auto Shader::SetMatrix(const std::string_view& name, const glm::mat2& m) {
+  auto Shader::SetMatrix(const std::string_view& name, const glm::mat2& m) noexcept -> void {
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniformMatrix2fv(location, 1, GL_FALSE, glm::value_ptr(m));
     }
   }
 
-  auto Shader::SetMatrix(const std::string_view& name, const glm::mat3& m) {
+  auto Shader::SetMatrix(const std::string_view& name, const glm::mat3& m) noexcept -> void {
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(m));
     }
   }
 
-  auto Shader::SetMatrix(const std::string_view& name, const glm::mat4& m) {
+  auto Shader::SetMatrix(const std::string_view& name, const glm::mat4& m) noexcept -> void {
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(m));
     }
