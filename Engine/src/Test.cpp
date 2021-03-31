@@ -21,6 +21,7 @@
 #include <App/Log.h>
 #include <App/Timer.h>
 #include <Renderer/Mesh.h>
+#include <Renderer/Model.h>
 #include <Utility/Utility.h>
 
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
@@ -81,6 +82,7 @@ namespace Engine {
     using GL::SubShader;
     using GL::Texture2D;
     using Renderer::Mesh;
+    using Renderer::Model;
     /* --Texture-- */
     stbi_set_flip_vertically_on_load(true);
     int x, y, n;
@@ -96,6 +98,10 @@ namespace Engine {
     ptr_t< SubShader > vert = std::make_shared< SubShader >(ShaderType::VertexShader, vert_src);
     ptr_t< SubShader > frag = std::make_shared< SubShader >(ShaderType::FragmentShader, frag_src);
     ptr_t< Shader > shader  = std::make_shared< Shader >();
+
+    ptr_t< Model > coneModel = std::make_shared< Model >("./models/cone.fbx");
+    Mesh* coneMesh = &coneModel->meshes[0];
+
     shader->AttachShader(vert);
     shader->AttachShader(frag);
     shader->Link();
@@ -119,8 +125,8 @@ namespace Engine {
 
       /* -------------------------- */
       shader->Use();
-      mesh->Use();
-      glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+      coneMesh->Use();
+      glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
       /* -------------------------- */
 
       // TODO: Change name
