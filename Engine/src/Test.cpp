@@ -19,6 +19,7 @@
 #include <GL/GLCore.h>
 #include "App/Window.h"
 #include <App/Log.h>
+#include <App/Timer.h>
 #include <Renderer/Mesh.h>
 #include <Utility/Utility.h>
 
@@ -60,22 +61,35 @@ namespace Engine {
 
     stbi_set_flip_vertically_on_load(true);
 
-    /* Example triangle */
+    /* Example square */
     std::vector< glm::vec3 > points = {{-0.5f, -0.5f, 0.0f},
                                        {0.5f, -0.5f, 0.0f},
-                                       {0.0f, 0.5f, 0.0f}};
-    std::vector< GLuint > indices   = {0, 1, 2};
-    std::vector< Renderer::Vertex > vertices;
-    for (const auto& p : points) {
-      Renderer::Vertex v{p, glm::vec3{0.0f}, glm::vec2{0.0f}};
-      vertices.push_back(v);
+                                       {0.5f, 0.5f, 0.0f},
+                                       {-0.5f, 0.5f, 0.0f}};
+    std::vector< glm::vec2 > uv     = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
+    std::vector< GLuint > indices   = {0, 1, 2, 2, 3, 0};
+    std::vector< Renderer::Vertex > vertices(points.size());
+    for(int i=0; i<vertices.size(); ++i) {
+      auto p = points[i];
+      auto u = uv[i];
+      vertices[i] = {p, glm::vec3{0.0f}, u};
     }
 
     /* ------------------- */
     using GL::Shader;
     using GL::ShaderType;
     using GL::SubShader;
+    using GL::TextureBase;
     using Renderer::Mesh;
+    /* --Texture-- */
+    stbi_set_flip_vertically_on_load(true);
+    int x, y, n;
+    auto pixel_data = stbi_load("./textures/pepo_sad.png", &x, &y, &n, 4);
+    TextureBase texture(GL_TEXTURE_2D);
+    texture.Create(x, y, pixel_data);
+    stbi_image_free(pixel_data);
+    /* ----------- */
+
     ptr_t< Mesh > mesh = std::make_shared< Mesh >(vertices, indices);
 #define FOLDER_PATH "./shaders"
     auto vert_src           = Utility::ReadTextFile(FOLDER_PATH "/pass.vert");
@@ -86,12 +100,17 @@ namespace Engine {
     shader->AttachShader(vert);
     shader->AttachShader(frag);
     shader->Link();
+
+    texture.Bind(0);
+    shader->SetValue("u_mainTexture", 0);
     /* ------------------- */
 
     /* ================ */
 
+    Timer timer;
     // TODO: Wrap WindowShouldClose in Window class
     while (!glfwWindowShouldClose(window->GetNativeWindow())) {
+      timer.Update();
       // TODO: Separate ImGUI calls
       // ImGui_ImplOpenGL3_NewFrame();
       // ImGui_ImplGlfw_NewFrame();
@@ -111,7 +130,6 @@ namespace Engine {
       // ImGui::ShowDemoWindow();
       // ImGui::Render();
       // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
     }
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
