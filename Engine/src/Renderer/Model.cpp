@@ -11,6 +11,10 @@ namespace Engine::Renderer {
     loadModel(path);
   }
 
+  Mesh* Model::getRootMesh() {
+    return &meshes[0];
+  }
+
   void Model::loadModel(std::string path) {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);

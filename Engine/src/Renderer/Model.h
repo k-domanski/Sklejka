@@ -10,10 +10,9 @@ namespace Engine::Renderer {
     Model(std::string path);
     virtual ~Model() = default;
 
-    void draw();
-    std::vector< Mesh > meshes;
-
+    Mesh* getRootMesh();
   private:
+    std::vector< Mesh > meshes;
     void loadModel(std::string path);
     void processNode(aiNode* node, const aiScene* scene, Mesh* parent = nullptr);
     Mesh processMesh(aiMesh* mesh, const aiScene* scene);

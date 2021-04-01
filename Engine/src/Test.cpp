@@ -99,8 +99,8 @@ namespace Engine {
     ptr_t< SubShader > frag = std::make_shared< SubShader >(ShaderType::FragmentShader, frag_src);
     ptr_t< Shader > shader  = std::make_shared< Shader >();
 
-    ptr_t< Model > coneModel = std::make_shared< Model >("./models/cone.fbx");
-    Mesh* coneMesh = &coneModel->meshes[0];
+    ptr_t< Model > coneModel = std::make_shared< Model >("./models/smolCone.fbx");
+    Mesh* coneMesh           = coneModel->getRootMesh();
 
     shader->AttachShader(vert);
     shader->AttachShader(frag);
