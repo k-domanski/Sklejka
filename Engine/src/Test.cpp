@@ -25,7 +25,7 @@
 #include <Utility/Utility.h>
 
 /// <summary>
-/// 
+///
 /// </summary>
 /// <param name="Translate">Only in Z axis because yes</param>
 /// <param name="Rotate">Only in X and Y axis... You have Z axis in translate XD</param>
@@ -76,9 +76,9 @@ namespace Engine {
     std::vector< glm::vec2 > uv     = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
     std::vector< GLuint > indices   = {0, 1, 2, 2, 3, 0};
     std::vector< Renderer::Vertex > vertices(points.size());
-    for(int i=0; i<vertices.size(); ++i) {
-      auto p = points[i];
-      auto u = uv[i];
+    for (int i = 0; i < vertices.size(); ++i) {
+      auto p      = points[i];
+      auto u      = uv[i];
       vertices[i] = {p, glm::vec3{0.0f}, u};
     }
 
@@ -111,7 +111,6 @@ namespace Engine {
     shader->AttachShader(vert);
     shader->AttachShader(frag);
     shader->Link();
-    shader->SetMatrix("mvp", camera(4.f, glm::vec2(1.f)));
 
     texture.Bind(0);
     shader->SetValue("u_mainTexture", 0);
@@ -120,9 +119,11 @@ namespace Engine {
     /* ================ */
 
     Timer timer;
+    float time = 0.0f;
     // TODO: Wrap WindowShouldClose in Window class
     while (!glfwWindowShouldClose(window->GetNativeWindow())) {
       timer.Update();
+      time += timer.DeltaTime();
       // TODO: Separate ImGUI calls
       // ImGui_ImplOpenGL3_NewFrame();
       // ImGui_ImplGlfw_NewFrame();
@@ -132,6 +133,7 @@ namespace Engine {
 
       /* -------------------------- */
       shader->Use();
+      shader->SetMatrix("mvp", camera(7.f, glm::vec2(time, time)));
       coneMesh->Use();
       glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
       /* -------------------------- */
