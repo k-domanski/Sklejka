@@ -24,6 +24,12 @@
 #include <Renderer/Model.h>
 #include <Utility/Utility.h>
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="Translate">Only in Z axis because yes</param>
+/// <param name="Rotate">Only in X and Y axis... You have Z axis in translate XD</param>
+/// <returns></returns>
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
   glm::mat4 Projection = glm::perspective(glm::pi< float >() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
   glm::mat4 View       = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -Translate));
@@ -105,6 +111,7 @@ namespace Engine {
     shader->AttachShader(vert);
     shader->AttachShader(frag);
     shader->Link();
+    shader->SetMatrix("mvp", camera(4.f, glm::vec2(1.f)));
 
     texture.Bind(0);
     shader->SetValue("u_mainTexture", 0);
