@@ -98,11 +98,15 @@ namespace Engine {
     /* ----------- */
 
     ptr_t< Mesh > mesh = std::make_shared< Mesh >(vertices, indices);
-#define FOLDER_PATH "./shaders"
-    auto vert_src           = Utility::ReadTextFile(FOLDER_PATH "/pass.vert");
-    auto frag_src           = Utility::ReadTextFile(FOLDER_PATH "/color.frag");
-    ptr_t< SubShader > vert = std::make_shared< SubShader >(ShaderType::VertexShader, vert_src);
-    ptr_t< SubShader > frag = std::make_shared< SubShader >(ShaderType::FragmentShader, frag_src);
+
+    auto shader_src = Utility::ReadTextFile("./shaders/default.glsl");
+    auto parseResult = Utility::ParseShaderSource(shader_src);
+    if (parseResult.success == false) {
+      CORE_ERROR("Shader parsing error: {0}", parseResult.infoMessage);
+    }
+
+    ptr_t< SubShader > vert = std::make_shared< SubShader >(ShaderType::VertexShader, parseResult.vertexShader);
+    ptr_t< SubShader > frag = std::make_shared< SubShader >(ShaderType::FragmentShader, parseResult.fragmentShader);
     ptr_t< Shader > shader  = std::make_shared< Shader >();
 
     ptr_t< Model > coneModel = std::make_shared< Model >("./models/smolCone.fbx");

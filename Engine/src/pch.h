@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <algorithm>
+#include <cmath>
 
 #include <cassert>
 
