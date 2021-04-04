@@ -39,8 +39,6 @@ glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
   return Projection * View * Model;
 }
 
-template< typename T >
-using ptr_t = std::shared_ptr< T >;
 
 BETTER_ENUM(Word, int, Hello, World)
 namespace Engine {
@@ -97,7 +95,8 @@ namespace Engine {
     stbi_image_free(pixel_data);
     /* ----------- */
 
-    ptr_t< Mesh > mesh = std::make_shared< Mesh >(vertices, indices);
+
+    std::shared_ptr< Mesh > mesh = std::make_shared< Mesh >(vertices, indices);
 
     auto shader_src = Utility::ReadTextFile("./shaders/default.glsl");
     auto parseResult = Utility::ParseShaderSource(shader_src);
@@ -105,11 +104,11 @@ namespace Engine {
       CORE_ERROR("Shader parsing error: {0}", parseResult.infoMessage);
     }
 
-    ptr_t< SubShader > vert = std::make_shared< SubShader >(ShaderType::VertexShader, parseResult.vertexShader);
-    ptr_t< SubShader > frag = std::make_shared< SubShader >(ShaderType::FragmentShader, parseResult.fragmentShader);
-    ptr_t< Shader > shader  = std::make_shared< Shader >();
+    std::shared_ptr< SubShader > vert = std::make_shared< SubShader >(ShaderType::VertexShader, parseResult.vertexShader);
+    std::shared_ptr< SubShader > frag = std::make_shared< SubShader >(ShaderType::FragmentShader, parseResult.fragmentShader);
+    std::shared_ptr< Shader > shader  = std::make_shared< Shader >();
 
-    ptr_t< Model > coneModel = std::make_shared< Model >("./models/smolCone.fbx");
+    std::shared_ptr< Model > coneModel = std::make_shared< Model >("./models/smolCone.fbx");
     Mesh* coneMesh           = coneModel->getRootMesh();
 
     shader->AttachShader(vert);
