@@ -11,6 +11,8 @@
 #include <memory>
 #include <algorithm>
 #include <cmath>
+#include <tuple>
+#include <array>
 
 #include <cassert>
 
@@ -18,6 +20,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/euler_angles.hpp>
 #include <rttr/registration.h>
 #include <enum.h>
 #include <stb_image.h>

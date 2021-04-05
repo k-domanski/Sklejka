@@ -74,24 +74,34 @@ namespace Engine::GL {
   }
 
   auto Shader::Use() noexcept -> void {
-    if (!IsValid() || InUse())
+    if (InUse() || !IsValid())
       return;
     glUseProgram(_handle);
   }
 
+  auto Shader::BindUniformBlock(const std::string_view& name, GLuint slot) noexcept -> void {
+    Use();
+    if(auto index = GetUniformBlockIndex(name); index != GL_INVALID_INDEX) {
+      glUniformBlockBinding(_handle, index, slot);
+    }
+  }
+
   auto Shader::SetValue(const std::string_view& name, int v0) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform1i(location, v0);
     }
   }
 
   auto Shader::SetValue(const std::string_view& name, int v0, int v1) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform2i(location, v0, v1);
     }
   }
 
   auto Shader::SetValue(const std::string_view& name, int v0, int v1, int v2) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform3i(location, v0, v1, v2);
     }
@@ -99,12 +109,14 @@ namespace Engine::GL {
 
   auto Shader::SetValue(const std::string_view& name, int v0, int v1, int v2, int v3) noexcept
       -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform4i(location, v0, v1, v2, v3);
     }
   }
 
   auto Shader::SetValue(const std::string_view& name, float v0) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform1f(location, v0);
     }
@@ -118,6 +130,7 @@ namespace Engine::GL {
 
   auto Shader::SetValue(const std::string_view& name, float v0, float v1, float v2) noexcept
       -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform3f(location, v0, v1, v2);
     }
@@ -125,48 +138,56 @@ namespace Engine::GL {
 
   auto Shader::SetValue(const std::string_view& name, float v0, float v1, float v2,
                         float v3) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform4f(location, v0, v1, v2, v3);
     }
   }
 
   auto Shader::SetVector(const std::string_view& name, const glm::vec1& v) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform1fv(location, 1, &v.x);
     }
   }
 
   auto Shader::SetVector(const std::string_view& name, const glm::vec2& v) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform2fv(location, 1, glm::value_ptr(v));
     }
   }
 
   auto Shader::SetVector(const std::string_view& name, const glm::vec3& v) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform3fv(location, 1, glm::value_ptr(v));
     }
   }
 
   auto Shader::SetVector(const std::string_view& name, const glm::vec4& v) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniform4fv(location, 1, glm::value_ptr(v));
     }
   }
 
   auto Shader::SetMatrix(const std::string_view& name, const glm::mat2& m) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniformMatrix2fv(location, 1, GL_FALSE, glm::value_ptr(m));
     }
   }
 
   auto Shader::SetMatrix(const std::string_view& name, const glm::mat3& m) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(m));
     }
   }
 
   auto Shader::SetMatrix(const std::string_view& name, const glm::mat4& m) noexcept -> void {
+    Use();
     if (auto location = GetUniformLocation(name); location > -1) {
       glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(m));
     }
@@ -194,8 +215,17 @@ namespace Engine::GL {
   auto Shader::GetUniformLocation(const std::string_view& name) noexcept -> GLint {
     if (_uniformCache.count(name) != 0)
       return _uniformCache[name];
-    Use();
     return _uniformCache[name] = glGetUniformLocation(_handle, name.data());
+  }
+
+  auto Shader::GetUniformBlockIndex(const std::string_view& name) noexcept -> GLuint {
+    if (_uniformBlockCache.count(name) != 0) {
+      return _uniformBlockCache[name];
+    }
+    auto index = glGetUniformBlockIndex(_handle, name.data());
+    if (index == GL_INVALID_INDEX)
+      return index;
+    return _uniformBlockCache[name] = index;
   }
 
 }  // namespace Engine::GL

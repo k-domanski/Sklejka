@@ -25,6 +25,8 @@
 #include <Utility/Utility.h>
 #include <App/AssetManager.h>
 
+#include <GL/UniformBufferData.h>
+
 /// <summary>
 ///
 /// </summary>
@@ -94,8 +96,20 @@ namespace Engine {
 
     Mesh* coneMesh = coneModel->getRootMesh();
 
+    /* Uniform Buffer */
+    GL::CameraUniformData camera_data;
+    GL::CameraUniformBuffer camera_buffer;
+    glm::vec3 camera_pos{0.0f, 0.0f, 2.0f};
+    camera_data.view =
+        glm::lookAt(camera_pos, camera_pos + glm::vec3{0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f});
+    auto aspect            = window->GetWidth() / (float)window->GetHeight();
+    camera_data.projection = glm::perspective(45.0f, aspect, 0.001f, 1000.0f);
+
+    camera_buffer.SetData(camera_data);
+    camera_buffer.BindToSlot(0);
     texture->Bind(0);
     shader->SetValue("u_mainTexture", 0);
+    shader->BindUniformBlock("u_Camera", 0);
     /* ------------------- */
 
     /* ================ */
@@ -105,17 +119,19 @@ namespace Engine {
     // TODO: Wrap WindowShouldClose in Window class
     while (!glfwWindowShouldClose(window->GetNativeWindow())) {
       timer.Update();
-      time += timer.DeltaTime();
+      time += timer.DeltaTime() * 0.1f;
       // TODO: Separate ImGUI calls
       // ImGui_ImplOpenGL3_NewFrame();
       // ImGui_ImplGlfw_NewFrame();
       // ImGui::NewFrame();
 
       GL::Context::ClearBuffers();
-
+      auto model_matrix =
+          glm::eulerAngleXYZ(time, time, time) * glm::scale(glm::mat4{1.0f}, glm::vec3{0.2f});
       /* -------------------------- */
       shader->Use();
       shader->SetMatrix("mvp", camera(7.f, glm::vec2(time, time)));
+      shader->SetMatrix("u_model_matrix", model_matrix);
       coneMesh->Use();
       glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
       /* -------------------------- */

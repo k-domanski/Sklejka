@@ -3,13 +3,14 @@
 #include <GL/SubShader.h>
 
 namespace Engine::GL {
-  class Shader : public IGLResource {
+  class Shader {
   private:
     static inline GLuint s_currentHandle = 0u;
     GLuint _handle                       = 0;
     bool _isLinked                       = false;
     std::vector< std::shared_ptr< SubShader > > _subShaders;
-    std::map< std::string_view, GLuint > _uniformCache;
+    std::unordered_map< std::string_view, GLuint > _uniformCache;
+    std::unordered_map< std::string_view, GLuint > _uniformBlockCache;
 
   public:
     static auto GetCurrentHandle() noexcept -> GLuint;
@@ -19,13 +20,15 @@ namespace Engine::GL {
     Shader(Shader&& other) noexcept;
     ~Shader();
     auto operator=(Shader&& other) noexcept -> Shader&;
-    auto GetHandle() const noexcept -> GLuint override;
+    auto GetHandle() const noexcept -> GLuint;
     auto AttachShader(const std::shared_ptr< SubShader >& shader) noexcept -> void;
     auto Link() noexcept -> bool;
     auto IsValid() noexcept -> bool;
     auto InUse() noexcept -> bool;
     auto IsLinked() noexcept -> bool;
     auto Use() noexcept -> void;
+
+    auto BindUniformBlock(const std::string_view& name, GLuint slot) noexcept -> void;
 
     auto SetValue(const std::string_view& name, int v0) noexcept -> void;
     auto SetValue(const std::string_view& name, int v0, int v1) noexcept -> void;
@@ -49,5 +52,6 @@ namespace Engine::GL {
     auto ShaderLinkStatus() noexcept -> GLint;
     auto LogLinkMessage() noexcept -> void;
     auto GetUniformLocation(const std::string_view& name) noexcept -> GLint;
+    auto GetUniformBlockIndex(const std::string_view& name) noexcept -> GLuint;
   };
 }  // namespace Engine::GL

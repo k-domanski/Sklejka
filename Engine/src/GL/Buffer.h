@@ -1,10 +1,9 @@
 #pragma once
-#include <GL/GLResource.h>
-#include <GL/IGLResource.h>
+#include <GL/UniformBufferData.h>
 
 namespace Engine::GL {
   template< GLenum BufferType >
-  class Buffer : public IGLResource {
+  class Buffer {
   private:
     static inline GLuint s_currentHandle = 0u;
     GLuint _handle;
@@ -27,7 +26,7 @@ namespace Engine::GL {
       other._handle = 0u;
       return *this;
     }
-    auto GetHandle() const noexcept -> GLuint override {
+    auto GetHandle() const noexcept -> GLuint {
       return _handle;
     }
     auto Bind() noexcept -> void {
@@ -63,4 +62,37 @@ namespace Engine::GL {
   /* GL Buffers */
   typedef Buffer< GL_ARRAY_BUFFER > VertexBuffer;
   typedef Buffer< GL_ELEMENT_ARRAY_BUFFER > IndiceBuffer;
+
+  template< typename DataType >
+  class UniformBuffer : public Buffer< GL_UNIFORM_BUFFER > {
+  private:
+    static inline std::unordered_map< GLuint, GLuint > s_boundSlots;
+
+  public:
+    UniformBuffer() {
+      Buffer::SetData(sizeof(DataType), NULL);
+      static_assert(std::is_standard_layout_v< DataType >, "DataType has to be standard layout");
+    }
+    auto SetData(const DataType& data, GLenum usage = GL_STATIC_DRAW) noexcept -> void {
+      Buffer::SetData(sizeof(DataType), static_cast< const void* >(&data), usage);
+    }
+    auto BindToSlot(GLuint slot) noexcept -> void {
+      if (s_boundSlots.count(slot) != 0) {
+        if (s_boundSlots[slot] == GetHandle())
+          return;
+      }
+      s_boundSlots[slot] = GetHandle();
+      glBindBufferBase(GL_UNIFORM_BUFFER, slot, GetHandle());
+    }
+    auto GetBoundSlot() noexcept -> GLint {
+      auto it = std::find_if(s_boundSlots.begin(), s_boundSlots.end(),
+                             [auto handle = GetHandle()](auto& kv) { return kv.second == handle; });
+      if (it == s_boundSlots.end()) {
+        return -1;
+      }
+      return *it;
+    }
+  };
+
+  typedef UniformBuffer< CameraUniformData > CameraUniformBuffer;
 }  // namespace Engine::GL
