@@ -7,7 +7,7 @@
 #include "Renderer/Vertex.h"
 
 namespace Engine::Renderer {
-  Model::Model(std::string path) {
+  Model::Model(std::string_view path) {
     loadModel(path);
   }
 
@@ -15,12 +15,12 @@ namespace Engine::Renderer {
     return &meshes[0];
   }
 
-  void Model::loadModel(std::string path) {
+  void Model::loadModel(std::string_view path) {
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene* scene = importer.ReadFile(path.data(), aiProcess_Triangulate | aiProcess_FlipUVs);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-      std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+      CORE_ERROR("Failed to load model: {0}", importer.GetErrorString());
       return;
     }
 

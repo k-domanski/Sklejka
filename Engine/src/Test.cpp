@@ -23,6 +23,7 @@
 #include <Renderer/Mesh.h>
 #include <Renderer/Model.h>
 #include <Utility/Utility.h>
+#include <App/AssetManager.h>
 
 /// <summary>
 ///
@@ -39,8 +40,6 @@ glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
   return Projection * View * Model;
 }
 
-
-BETTER_ENUM(Word, int, Hello, World)
 namespace Engine {
   // Remove
   void Print() {
@@ -52,6 +51,7 @@ namespace Engine {
 
     // TODO: Window as singleton
     std::unique_ptr< Engine::Window > window = Engine::Window::Create(Engine::WindowData());
+    stbi_set_flip_vertically_on_load(true);
 
     // TODO: Spearate ImGUI calls
     ImGui::CreateContext();
@@ -63,8 +63,6 @@ namespace Engine {
     GL::Context::Initialize();
     GL::Context::SetClearBufferMask(GL::BufferBit::Color);
     GL::Context::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
-
-    stbi_set_flip_vertically_on_load(true);
 
     /* Example square */
     std::vector< glm::vec3 > points = {{-0.5f, -0.5f, 0.0f},
@@ -87,35 +85,16 @@ namespace Engine {
     using GL::Texture2D;
     using Renderer::Mesh;
     using Renderer::Model;
-    /* --Texture-- */
-    stbi_set_flip_vertically_on_load(true);
-    int x, y, n;
-    auto pixel_data = stbi_load("./textures/pepo_sad.png", &x, &y, &n, 4);
-    Texture2D texture(x, y, pixel_data);
-    stbi_image_free(pixel_data);
-    /* ----------- */
 
+    auto mesh      = std::make_shared< Mesh >(vertices, indices);
+    auto texture   = AssetManager::GetTexture2D("./textures/pepo_sad.png");
+    auto coneModel = AssetManager::GetModel("./models/smolCone.fbx");
+    auto shader    = AssetManager::GetShader("./shaders/default.glsl");
+    assert(("Failed to acquire shader", shader != nullptr));
 
-    std::shared_ptr< Mesh > mesh = std::make_shared< Mesh >(vertices, indices);
+    Mesh* coneMesh = coneModel->getRootMesh();
 
-    auto shader_src = Utility::ReadTextFile("./shaders/default.glsl");
-    auto parseResult = Utility::ParseShaderSource(shader_src);
-    if (parseResult.success == false) {
-      CORE_ERROR("Shader parsing error: {0}", parseResult.infoMessage);
-    }
-
-    std::shared_ptr< SubShader > vert = std::make_shared< SubShader >(ShaderType::VertexShader, parseResult.vertexShader);
-    std::shared_ptr< SubShader > frag = std::make_shared< SubShader >(ShaderType::FragmentShader, parseResult.fragmentShader);
-    std::shared_ptr< Shader > shader  = std::make_shared< Shader >();
-
-    std::shared_ptr< Model > coneModel = std::make_shared< Model >("./models/smolCone.fbx");
-    Mesh* coneMesh           = coneModel->getRootMesh();
-
-    shader->AttachShader(vert);
-    shader->AttachShader(frag);
-    shader->Link();
-
-    texture.Bind(0);
+    texture->Bind(0);
     shader->SetValue("u_mainTexture", 0);
     /* ------------------- */
 
