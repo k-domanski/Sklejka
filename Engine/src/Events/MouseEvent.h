@@ -3,6 +3,7 @@
 
 namespace Engine {
   class MouseMovedEvent : public Event {
+  public:
     MouseMovedEvent(float mouseX, float mouseY): m_MouseX(mouseX), m_MouseY(mouseY) {
     }
 
@@ -39,6 +40,7 @@ namespace Engine {
   };
 
   class MouseScrolledEvent : public Event {
+  public:
     MouseScrolledEvent(float xOffset, float yOffset): m_XOffset(xOffset), m_YOffset(yOffset) {
     }
 
