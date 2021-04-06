@@ -1,71 +1,51 @@
 #pragma once
 #include "Component.h"
+#include "ComponentList.h"
 #include "Types.h"
 //#include "pch.h"
 
 namespace ECS {
   class System {
   public:
-    System(SystemTypeID id): _typeID(id) {
-      _componentsSignatures = std::make_shared< ComponentsSignatures >();
+    System() = default;
+
+    auto ComponentsCount() -> int {
+      return _entities.size();
     }
+
+    template< class T >
+    auto AddSignature() -> void {
+      if (ContainsSignature< T >())
+        return;
+      _signatures.insert(GetComponentTypeID< T >());
+    }
+
+    template< class T >
+    auto RemoveSignature() -> void {
+      if (!ContainsSignature< T >())
+        return;
+      _signatures.erase(GetComponentTypeID< T >());
+    }
+
+    template< class T >
+    auto ContainsSignature() -> bool {
+      auto componentSignature = GetComponentTypeID< T >();
+      return _signatures.find(componentSignature) != _signatures.end();
+    }
+
+    auto ContainsSignature(ComponentTypeID componentID) -> bool {
+      return _signatures.find(componentID) != _signatures.end();
+    }
+
+    virtual void Update() = 0;
+    virtual void Draw()   = 0;
+
     virtual ~System() = default;
 
-    virtual void Awake() {
-    }
-    virtual void Update() {
-    }
-    virtual void Draw() {
-    }
-    virtual void Destroy() {
-    }
-    virtual SystemTypeID GetType();
-
-    virtual std::shared_ptr< ComponentsSignatures > GetSignatures();
-    template< typename T >
-    void AddSignature() const;
-    template< typename T >
-    void RemoveSignature() const;
-
-    template< typename T >
-    std::shared_ptr< T > AddComponent();
-    void AddComponent(std::shared_ptr< Component > component);
-    void RemoveComponent(std::shared_ptr< Component > component);
-
   private:
-    SystemTypeID _typeID;
-    std::shared_ptr< ComponentsSignatures > _componentsSignatures;
-    std::vector< std::shared_ptr< Component > > _components;
+    friend class EntityManager;
+    std::set< EntityID > _entities;
+    SystemSignature _signatures;
   };
-
-  template< typename T >
-  void System::AddSignature() const {
-    _componentsSignatures->insert(GetComponentTypeID< T >());
-  }
-
-  template< typename T >
-  void System::RemoveSignature() const {
-    _componentsSignatures->erase(GetComponentTypeID< T >());
-  }
-
-  template< typename T >
-  std::shared_ptr< T > System::AddComponent() {
-    const ComponentTypeID type = GetComponentTypeID< T >();
-
-    if (_componentsSignatures->size() == 0) {
-      return nullptr;
-    }
-
-    if (!(_componentsSignatures->find(type) != _componentsSignatures->end())) {
-      // TODO: some exception or sth maybe
-      return nullptr;
-    }
-
-    auto newComponent = std::make_shared< T >();
-
-    _components.push_back(newComponent);
-
-    return newComponent;
-  }
 
 }  // namespace ECS

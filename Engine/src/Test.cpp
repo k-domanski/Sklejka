@@ -23,6 +23,10 @@
 #include <Renderer/Mesh.h>
 #include <Utility/Utility.h>
 
+#include "ECS/ECS.h"
+#include "ECS/Component.h"
+#include "ECS/EntityManager.h"
+
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
   glm::mat4 Projection = glm::perspective(glm::pi< float >() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
   glm::mat4 View       = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -Translate));
@@ -32,11 +36,46 @@ glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
   return Projection * View * Model;
 }
 
+class Transform : public ECS::Component {};
+class MeshRenderer : public ECS::Component {};
+
+class RendererSystem : public ECS::System {
+public:
+  RendererSystem() {
+    AddSignature< Transform >();
+    AddSignature< MeshRenderer >();
+  }
+  void Update() override {
+    std::cout << "Updating renderer" << std::endl;
+  }
+  void Draw() override {
+    std::cout << "Drawing renderer" << std::endl;
+  }
+};
+
+class RandomSystem : public ECS::System
+{
+public:
+  RandomSystem()
+  {
+    AddSignature< Transform >();
+  }
+
+  void Update() override {
+    std::cout << "Updating random" << std::endl;
+  }
+  void Draw() override {
+    std::cout << "Drawing random" << std::endl;
+  }
+};
+
+ECS::Entity ent;
+
+
 template< typename T >
 using ptr_t = std::shared_ptr< T >;
 
-BETTER_ENUM(Word, int, Hello, World)
-namespace Engine {
+BETTER_ENUM(Word, int, Hello, World) namespace Engine {
   // Remove
   void Print() {
     printf("Welcome to Sklejka Engine!\n");
@@ -44,6 +83,32 @@ namespace Engine {
 
   int TestWindow() {
     Log::Init();
+
+
+    ECS::EntityManager::GetInstance().RegisterSystem< RendererSystem >();
+    ECS::EntityManager::GetInstance().RegisterSystem< RandomSystem >();
+
+    ent = ECS::EntityManager::GetInstance().CreateEntity();
+    ent.AddComponent< Transform >();
+
+    auto entity = ECS::EntityManager::GetInstance().CreateEntity();
+    entity.AddComponent< Transform >();
+
+    auto notentity = ECS::EntityManager::GetInstance().CreateEntity();
+    notentity.AddComponent< MeshRenderer >();
+
+    auto entity2 = ECS::EntityManager::GetInstance().CreateEntity();
+    entity2.AddComponent< Transform >();
+    entity2.AddComponent< MeshRenderer >();
+
+    ECS::EntityManager::GetInstance().Update();
+    ECS::EntityManager::GetInstance().Draw();
+
+    ent.AddComponent< MeshRenderer >();
+    entity.AddComponent< MeshRenderer >();
+
+    entity = ECS::EntityManager::GetInstance().GetEntity(entity.GetID());
+    ent = ECS::EntityManager::GetInstance().GetEntity(ent.GetID());
 
     // TODO: Window as singleton
     std::unique_ptr< Engine::Window > window = Engine::Window::Create(Engine::WindowData());
@@ -69,9 +134,9 @@ namespace Engine {
     std::vector< glm::vec2 > uv     = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
     std::vector< GLuint > indices   = {0, 1, 2, 2, 3, 0};
     std::vector< Renderer::Vertex > vertices(points.size());
-    for(int i=0; i<vertices.size(); ++i) {
-      auto p = points[i];
-      auto u = uv[i];
+    for (int i = 0; i < vertices.size(); ++i) {
+      auto p      = points[i];
+      auto u      = uv[i];
       vertices[i] = {p, glm::vec3{0.0f}, u};
     }
 
