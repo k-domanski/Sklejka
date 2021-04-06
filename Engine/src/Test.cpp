@@ -21,12 +21,20 @@
 #include <App/Log.h>
 #include <App/Timer.h>
 #include <Renderer/Mesh.h>
+#include <Renderer/Model.h>
 #include <Utility/Utility.h>
+#include <App/AssetManager.h>
+#include <ECS/ECS.h>
+#include <ECS/EntityManager.h>
 
-#include "ECS/ECS.h"
-#include "ECS/Component.h"
-#include "ECS/EntityManager.h"
+#include <GL/UniformBufferData.h>
 
+/// <summary>
+///
+/// </summary>
+/// <param name="Translate">Only in Z axis because yes</param>
+/// <param name="Rotate">Only in X and Y axis... You have Z axis in translate XD</param>
+/// <returns></returns>
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
   glm::mat4 Projection = glm::perspective(glm::pi< float >() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
   glm::mat4 View       = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -Translate));
@@ -53,11 +61,9 @@ public:
   }
 };
 
-class RandomSystem : public ECS::System
-{
+class RandomSystem : public ECS::System {
 public:
-  RandomSystem()
-  {
+  RandomSystem() {
     AddSignature< Transform >();
   }
 
@@ -71,7 +77,6 @@ public:
 
 ECS::Entity ent;
 
-
 template< typename T >
 using ptr_t = std::shared_ptr< T >;
 
@@ -83,7 +88,6 @@ BETTER_ENUM(Word, int, Hello, World) namespace Engine {
 
   int TestWindow() {
     Log::Init();
-
 
     ECS::EntityManager::GetInstance().RegisterSystem< RendererSystem >();
     ECS::EntityManager::GetInstance().RegisterSystem< RandomSystem >();
@@ -108,10 +112,11 @@ BETTER_ENUM(Word, int, Hello, World) namespace Engine {
     entity.AddComponent< MeshRenderer >();
 
     entity = ECS::EntityManager::GetInstance().GetEntity(entity.GetID());
-    ent = ECS::EntityManager::GetInstance().GetEntity(ent.GetID());
+    ent    = ECS::EntityManager::GetInstance().GetEntity(ent.GetID());
 
     // TODO: Window as singleton
     std::unique_ptr< Engine::Window > window = Engine::Window::Create(Engine::WindowData());
+    stbi_set_flip_vertically_on_load(true);
 
     // TODO: Spearate ImGUI calls
     ImGui::CreateContext();
@@ -123,8 +128,6 @@ BETTER_ENUM(Word, int, Hello, World) namespace Engine {
     GL::Context::Initialize();
     GL::Context::SetClearBufferMask(GL::BufferBit::Color);
     GL::Context::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
-
-    stbi_set_flip_vertically_on_load(true);
 
     /* Example square */
     std::vector< glm::vec3 > points = {{-0.5f, -0.5f, 0.0f},
@@ -144,49 +147,56 @@ BETTER_ENUM(Word, int, Hello, World) namespace Engine {
     using GL::Shader;
     using GL::ShaderType;
     using GL::SubShader;
-    using GL::TextureBase;
+    using GL::Texture2D;
     using Renderer::Mesh;
-    /* --Texture-- */
-    stbi_set_flip_vertically_on_load(true);
-    int x, y, n;
-    auto pixel_data = stbi_load("./textures/pepo_sad.png", &x, &y, &n, 4);
-    TextureBase texture(GL_TEXTURE_2D);
-    texture.Create(x, y, pixel_data);
-    stbi_image_free(pixel_data);
-    /* ----------- */
+    using Renderer::Model;
 
-    ptr_t< Mesh > mesh = std::make_shared< Mesh >(vertices, indices);
-#define FOLDER_PATH "./shaders"
-    auto vert_src           = Utility::ReadTextFile(FOLDER_PATH "/pass.vert");
-    auto frag_src           = Utility::ReadTextFile(FOLDER_PATH "/color.frag");
-    ptr_t< SubShader > vert = std::make_shared< SubShader >(ShaderType::VertexShader, vert_src);
-    ptr_t< SubShader > frag = std::make_shared< SubShader >(ShaderType::FragmentShader, frag_src);
-    ptr_t< Shader > shader  = std::make_shared< Shader >();
-    shader->AttachShader(vert);
-    shader->AttachShader(frag);
-    shader->Link();
+    auto mesh      = std::make_shared< Mesh >(vertices, indices);
+    auto texture   = AssetManager::GetTexture2D("./textures/pepo_sad.png");
+    auto coneModel = AssetManager::GetModel("./models/smolCone.fbx");
+    auto shader    = AssetManager::GetShader("./shaders/default.glsl");
+    assert(("Failed to acquire shader", shader != nullptr));
 
-    texture.Bind(0);
+    Mesh* coneMesh = coneModel->getRootMesh();
+
+    /* Uniform Buffer */
+    GL::CameraUniformData camera_data;
+    GL::CameraUniformBuffer camera_buffer;
+    glm::vec3 camera_pos{0.0f, 0.0f, 2.0f};
+    camera_data.view =
+        glm::lookAt(camera_pos, camera_pos + glm::vec3{0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f});
+    auto aspect            = window->GetWidth() / (float)window->GetHeight();
+    camera_data.projection = glm::perspective(45.0f, aspect, 0.001f, 1000.0f);
+
+    camera_buffer.SetData(camera_data);
+    camera_buffer.BindToSlot(0);
+    texture->Bind(0);
     shader->SetValue("u_mainTexture", 0);
+    shader->BindUniformBlock("u_Camera", 0);
     /* ------------------- */
 
     /* ================ */
 
     Timer timer;
+    float time = 0.0f;
     // TODO: Wrap WindowShouldClose in Window class
     while (!glfwWindowShouldClose(window->GetNativeWindow())) {
       timer.Update();
+      time += timer.DeltaTime() * 0.1f;
       // TODO: Separate ImGUI calls
       // ImGui_ImplOpenGL3_NewFrame();
       // ImGui_ImplGlfw_NewFrame();
       // ImGui::NewFrame();
 
       GL::Context::ClearBuffers();
-
+      auto model_matrix =
+          glm::eulerAngleXYZ(time, time, time) * glm::scale(glm::mat4{1.0f}, glm::vec3{0.2f});
       /* -------------------------- */
       shader->Use();
-      mesh->Use();
-      glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+      shader->SetMatrix("mvp", camera(7.f, glm::vec2(time, time)));
+      shader->SetMatrix("u_model_matrix", model_matrix);
+      coneMesh->Use();
+      glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
       /* -------------------------- */
 
       // TODO: Change name

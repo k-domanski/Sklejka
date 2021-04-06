@@ -1,5 +1,6 @@
 #pragma once
 #include "assimp/scene.h"
+#include <pch.h>
 
 namespace Engine::Renderer {
   class Mesh;
@@ -7,14 +8,13 @@ namespace Engine::Renderer {
   class Model
   {
   public:
-    Model(std::string path);
+    Model(std::string_view path);
     virtual ~Model() = default;
 
-    void draw();
-    std::vector< Mesh > meshes;
-
+    Mesh* getRootMesh();
   private:
-    void loadModel(std::string path);
+    std::vector< Mesh > meshes;
+    void loadModel(std::string_view path);
     void processNode(aiNode* node, const aiScene* scene, Mesh* parent = nullptr);
     Mesh processMesh(aiMesh* mesh, const aiScene* scene);
   };

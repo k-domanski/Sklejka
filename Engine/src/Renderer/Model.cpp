@@ -7,12 +7,20 @@
 #include "Renderer/Vertex.h"
 
 namespace Engine::Renderer {
-  void Model::loadModel(std::string path) {
+  Model::Model(std::string_view path) {
+    loadModel(path);
+  }
+
+  Mesh* Model::getRootMesh() {
+    return &meshes[0];
+  }
+
+  void Model::loadModel(std::string_view path) {
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene* scene = importer.ReadFile(path.data(), aiProcess_Triangulate | aiProcess_FlipUVs);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-      std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+      CORE_ERROR("Failed to load model: {0}", importer.GetErrorString());
       return;
     }
 
@@ -20,8 +28,7 @@ namespace Engine::Renderer {
     processNode(scene->mRootNode, scene);
   }
 
-  void Model::processNode(aiNode* node, const aiScene* scene, Mesh* parent)
-  {
+  void Model::processNode(aiNode* node, const aiScene* scene, Mesh* parent) {
     Mesh* lastMesh = nullptr;
     for (size_t i = 0; i < node->mNumMeshes; i++) {
       aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
@@ -30,7 +37,7 @@ namespace Engine::Renderer {
       lastMesh = &meshes.back();
     }
 
-    	// Repeat process for all the children
+    // Repeat process for all the children
     for (size_t i = 0; i < node->mNumChildren; i++) {
       processNode(node->mChildren[i], scene, lastMesh);
     }
@@ -68,4 +75,4 @@ namespace Engine::Renderer {
     return Mesh(vertices, indices);
   }
 
-}  
+}  // namespace Engine::Renderer

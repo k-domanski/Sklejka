@@ -6,5 +6,5 @@
 #include <GL/VertexArray.h>
 #include <GL/SubShader.h>
 #include <GL/Shader.h>
-#include <GL/TextureBase.h>
+#include <GL/Texture2D.h>
 #include <GL/Context.h>
