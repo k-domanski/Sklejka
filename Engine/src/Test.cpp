@@ -80,10 +80,10 @@ ECS::Entity ent;
 template< typename T >
 using ptr_t = std::shared_ptr< T >;
 
-BETTER_ENUM(Word, int, Hello, World) namespace Engine {
-  // Remove
-  void Print() {
-    printf("Welcome to Sklejka Engine!\n");
+namespace Engine {
+  // Event test
+  void OnEvent(Event& event) {
+    CORE_TRACE("{0}", event);
   }
 
   int TestWindow() {
@@ -115,7 +115,8 @@ BETTER_ENUM(Word, int, Hello, World) namespace Engine {
     ent    = ECS::EntityManager::GetInstance().GetEntity(ent.GetID());
 
     // TODO: Window as singleton
-    std::unique_ptr< Engine::Window > window = Engine::Window::Create(Engine::WindowData());
+    std::unique_ptr< Engine::Window > window = Engine::Window::Create(Engine::WindowProperties());
+    window->SetEventCallback(std::bind(OnEvent, std::placeholders::_1));
     stbi_set_flip_vertically_on_load(true);
 
     // TODO: Spearate ImGUI calls

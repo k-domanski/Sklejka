@@ -13,13 +13,25 @@ project "Editor"
         "src/**.cpp"
     }
 
+    defines
+    {
+        "GLFW_INCLUDE_NONE"
+    }
+
     includedirs
     {
         "%{wks.location}/Engine/src",
         "%{IncludeDir.irrKlang}/include",
         "%{wks.location}/Engine/vendor/spdlog/include",
         "%{wks.location}/Engine/vendor",
-        "%{IncludeDir.GLFW}"
+        "%{IncludeDir.GLFW}",
+        "%{IncludeDir.Glad}",
+        "%{IncludeDir.glm}",
+        "%{IncludeDir.stb_image}",
+        "%{IncludeDir.better_enums}/include",
+        "%{IncludeDir.stb_image}",
+        "%{IncludeDir.rttr}/src",
+
     }
 
     links
