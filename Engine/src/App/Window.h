@@ -16,12 +16,14 @@ namespace Engine {
             : Width(width), Height(height), Name(name) {
         }
     };
+
   class Window {
   public:
       using EventCallBackFn = std::function<void(Event&)>;
 
     Window(const WindowProperties& data);
     ~Window();
+    static Window& Get() { return *s_Instance; }
     void OnUpdate();
     int GetWidth() const { return m_Data.Width; }
     int GetHeight() const { return m_Data.Height; }
@@ -34,6 +36,7 @@ namespace Engine {
     void ShutDown();
 
   private:
+     static Window* s_Instance;
     GLFWwindow* m_Window;
     struct WindowData
     {
