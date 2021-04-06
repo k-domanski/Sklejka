@@ -1,13 +1,74 @@
 #include "pch.h"
 #include "EntityManager.h"
+#include <random>
 
 namespace ECS {
-  std::shared_ptr< Entity > EntityManager::CreateEntity() {
-    std::shared_ptr< Entity > newEntity = std::make_shared< Entity >();
+  auto EntityManager::UpdateSystem(SystemTypeID systemID) -> void {
+    for (auto& entity : _entities) {
+      if (BelongsToSystem(systemID, entity.GetID()))
+        continue;
+      int signatureCorrect         = 0;
+      const auto& entitySignatures = entity.GetSignature();
+      for (auto entitySignature : entitySignatures) {
+        if (!_registeredSystems[systemID]->ContainsSignature(entitySignature)) {
+          signatureCorrect++;
+        }
+      }
+      if (signatureCorrect == _registeredSystems[systemID]->_signatures.size())
+        AddToSystem(systemID, entity.GetID());
+    }
+  }
 
-    // TODO: add transform component?
+  auto EntityManager::UpdateEntity(const Entity entity) -> void {
+    for (auto [systemID, system] : _registeredSystems) {
+      int correctSignatures = 0;
+      const auto& entitySignatures = entity.GetSignature();
+      for (auto signature : entitySignatures) {
+        if (system->ContainsSignature(signature))
+          correctSignatures++;
+      }
+      if (correctSignatures == system->_signatures.size())
+        AddToSystem(systemID, entity.GetID());
+    }
+  }
 
-    _entities.insert(newEntity);
-    return newEntity;
+  auto EntityManager::BelongsToSystem(SystemTypeID systemID, EntityID entityID) -> bool {
+    return _registeredSystems[systemID]->_entities.find(entityID)
+           != _registeredSystems[systemID]->_entities.end();
+  }
+
+  auto EntityManager::AddToSystem(SystemTypeID systemID, EntityID entityID) -> void {
+    if (BelongsToSystem(systemID, entityID))
+      return;
+    _registeredSystems[systemID]->_entities.insert(entityID);
+  }
+
+  auto EntityManager::CreateEntity() -> Entity& {
+    std::random_device dv;
+    std::mt19937_64 mt(dv());
+    Entity entity;
+    entity._entityID = static_cast< EntityID >(mt());
+    _entities.push_back(entity);
+    return _entities.back();
+     //return entity;
+  }
+  auto EntityManager::GetEntity(EntityID id) -> Entity& {
+    const auto it = std::find_if(_entities.begin(), _entities.end(),
+                                 [id](auto ent) { return ent._entityID == id; });
+    assert(it != _entities.end());
+
+    return *it;
+  }
+
+  auto EntityManager::Update() -> void {
+    for (auto [id, system] : _registeredSystems) {
+      system->Update();
+    }
+  }
+
+  auto EntityManager::Draw() -> void {
+    for (auto [id, system] : _registeredSystems) {
+      system->Draw();
+    }
   }
 }  // namespace ECS

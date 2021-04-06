@@ -1,8 +1,10 @@
 #pragma once
 namespace ECS {
-  typedef size_t ComponentTypeID;
-  typedef size_t SystemTypeID;
-  typedef std::set< ComponentTypeID > ComponentsSignatures;
+  typedef std::size_t ComponentTypeID;
+  typedef std::size_t SystemTypeID;
+  typedef std::size_t EntityID;
+  typedef std::set< ComponentTypeID > EntitySignature;
+  typedef std::set< ComponentTypeID > SystemSignature;
 
   static const ComponentTypeID GetRuntimeComponentTypeID() {
     static ComponentTypeID typeID = 0u;
