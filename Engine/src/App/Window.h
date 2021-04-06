@@ -2,34 +2,47 @@
 #include <string>
 #include <memory>
 #include "GLFW/glfw3.h"
+#include "Events/Event.h"
+#include "Events/ApplicationEvent.h"
 
 namespace Engine {
-  struct WindowData {
-    std::string Name;
-    int Width;
-    int Height;
+  
+    struct WindowProperties {
+        std::string Name;
+        int Width;
+        int Height;
 
-    WindowData(int width = 1280, int height = 720, const std::string& name = "Engine")
-        : Width(width), Height(height), Name(name) {
-    }
-  };
-
+        WindowProperties(int width = 1280, int height = 720, const std::string& name = "Engine")
+            : Width(width), Height(height), Name(name) {
+        }
+    };
   class Window {
   public:
-    Window(const WindowData& data);
+      using EventCallBackFn = std::function<void(Event&)>;
+
+    Window(const WindowProperties& data);
     ~Window();
     void OnUpdate();
     int GetWidth() const { return m_Data.Width; }
     int GetHeight() const { return m_Data.Height; }
+    void SetEventCallback(const EventCallBackFn& callback) { m_Data.EventCallback = callback; }
     GLFWwindow* GetNativeWindow() const { return m_Window; }
-    static std::unique_ptr< Window > Create(const WindowData& data = WindowData());
+    static std::unique_ptr< Window > Create(const WindowProperties& data = WindowProperties());
 
   private:
-    void Init(const WindowData& data);
+    void Init(const WindowProperties& data);
     void ShutDown();
 
   private:
     GLFWwindow* m_Window;
+    struct WindowData
+    {
+        std::string Name;
+        int Width;
+        int Height;
+
+        EventCallBackFn EventCallback;
+    };
     WindowData m_Data;
   };
 }  // namespace Engine

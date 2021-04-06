@@ -40,7 +40,7 @@ namespace Engine {
 
     template< typename T >
     bool Dispatch(EventFn< T > fun) {
-      if (m_Event.GetEventType == T::GetStaticType()) {
+      if (m_Event.GetEventType() == T::GetStaticType()) {
         m_Event.m_Handled = fun(*(T*)&m_Event);
         return true;
       }
