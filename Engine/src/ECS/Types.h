@@ -1,5 +1,5 @@
 #pragma once
-namespace ECS {
+namespace Engine::ECS {
   typedef std::size_t ComponentTypeID;
   typedef std::size_t SystemTypeID;
   typedef std::size_t EntityID;

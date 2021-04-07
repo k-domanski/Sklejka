@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Entity.h"
 
-auto ECS::Entity::GetID() const -> EntityID {
+auto Engine::ECS::Entity::GetID() const -> EntityID {
   return _entityID;
 }
 
-auto ECS::Entity::GetSignature() const -> const EntitySignature& {
+auto Engine::ECS::Entity::GetSignature() const -> const EntitySignature& {
   return _signature;
 }

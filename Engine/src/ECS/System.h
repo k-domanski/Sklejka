@@ -4,7 +4,7 @@
 #include "Types.h"
 //#include "pch.h"
 
-namespace ECS {
+namespace Engine::ECS {
   class System {
   public:
     System() = default;

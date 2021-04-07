@@ -2,7 +2,7 @@
 //#include "pch.h"
 #include "Types.h"
 
-namespace ECS {
+namespace Engine::ECS {
   class Entity {
     friend class EntityManager;
 

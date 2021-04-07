@@ -1,7 +1,7 @@
 #pragma once
 #include "Types.h"
 
-namespace ECS {
+namespace Engine::ECS {
   class IComponentList {
   public:
     IComponentList()                      = default;
