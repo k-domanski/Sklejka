@@ -14,14 +14,14 @@ namespace ECS {
   template< typename T >
   class ComponentList : public IComponentList {
   public:
-    auto GetComponent(EntityID entityID) -> T& {
+    auto GetComponent(EntityID entityID) -> std::shared_ptr< T > {
       auto it = FindIterator(entityID);
       assert(it != _components.end());
       return *it;
     }
-    auto AddComponent(const T& component) -> void {
+    auto AddComponent(const std::shared_ptr< T > component) -> void {
       // Only one component of type T on the Entity
-      auto it = FindIterator(component.GetEntityID());
+      auto it = FindIterator(component->GetEntityID());
       if (it == _components.end())
         _components.push_back(component);
     }
@@ -36,10 +36,10 @@ namespace ECS {
     }
 
   private:
-    std::vector< T > _components;
+    std::vector< std::shared_ptr< T > > _components;
     auto FindIterator(EntityID entityID) {
       return std::find_if(_components.begin(), _components.end(),
-                          [entityID](auto comp) { return comp.GetEntityID() == entityID; });
+                          [entityID](auto comp) { return comp->GetEntityID() == entityID; });
     }
   };
 }  // namespace ECS

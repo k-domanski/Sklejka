@@ -5,6 +5,6 @@ auto ECS::Entity::GetID() const -> EntityID {
   return _entityID;
 }
 
-auto ECS::Entity::GetSignature() const -> const EntitySignature& {
+auto ECS::Entity::GetSignature() const -> std::shared_ptr< EntitySignature > {
   return _signature;
 }

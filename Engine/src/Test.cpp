@@ -75,7 +75,7 @@ public:
   }
 };
 
-ECS::Entity ent;
+std::shared_ptr< ECS::Entity > ent;
 
 template< typename T >
 using ptr_t = std::shared_ptr< T >;
@@ -93,26 +93,23 @@ namespace Engine {
     ECS::EntityManager::GetInstance().RegisterSystem< RandomSystem >();
 
     ent = ECS::EntityManager::GetInstance().CreateEntity();
-    ent.AddComponent< Transform >();
+    ent->AddComponent< Transform >();
 
     auto entity = ECS::EntityManager::GetInstance().CreateEntity();
-    entity.AddComponent< Transform >();
+    entity->AddComponent< Transform >();
 
     auto notentity = ECS::EntityManager::GetInstance().CreateEntity();
-    notentity.AddComponent< MeshRenderer >();
+    notentity->AddComponent< MeshRenderer >();
 
     auto entity2 = ECS::EntityManager::GetInstance().CreateEntity();
-    entity2.AddComponent< Transform >();
-    entity2.AddComponent< MeshRenderer >();
+    entity2->AddComponent< Transform >();
+    entity2->AddComponent< MeshRenderer >();
 
     ECS::EntityManager::GetInstance().Update();
     ECS::EntityManager::GetInstance().Draw();
 
-    ent.AddComponent< MeshRenderer >();
-    entity.AddComponent< MeshRenderer >();
-
-    entity = ECS::EntityManager::GetInstance().GetEntity(entity.GetID());
-    ent    = ECS::EntityManager::GetInstance().GetEntity(ent.GetID());
+    ent->AddComponent< MeshRenderer >();
+    entity->AddComponent< MeshRenderer >();
 
     // TODO: Window as singleton
     std::unique_ptr< Engine::Window > window = Engine::Window::Create(Engine::WindowProperties());

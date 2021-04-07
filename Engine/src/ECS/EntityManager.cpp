@@ -4,31 +4,31 @@
 
 namespace ECS {
   auto EntityManager::UpdateSystem(SystemTypeID systemID) -> void {
-    for (auto& entity : _entities) {
-      if (BelongsToSystem(systemID, entity.GetID()))
+    for (const auto entity : _entities) {
+      if (BelongsToSystem(systemID, entity->GetID()))
         continue;
-      int signatureCorrect         = 0;
-      const auto& entitySignatures = entity.GetSignature();
-      for (auto entitySignature : entitySignatures) {
+      int signatureCorrect  = 0;
+      auto entitySignatures = entity->GetSignature();
+      for (auto entitySignature : *entitySignatures) {
         if (!_registeredSystems[systemID]->ContainsSignature(entitySignature)) {
           signatureCorrect++;
         }
       }
       if (signatureCorrect == _registeredSystems[systemID]->_signatures.size())
-        AddToSystem(systemID, entity.GetID());
+        AddToSystem(systemID, entity->GetID());
     }
   }
 
-  auto EntityManager::UpdateEntity(const Entity entity) -> void {
+  auto EntityManager::UpdateEntity(std::shared_ptr< Entity > entity) -> void {
     for (auto [systemID, system] : _registeredSystems) {
-      int correctSignatures = 0;
-      const auto& entitySignatures = entity.GetSignature();
-      for (auto signature : entitySignatures) {
+      int correctSignatures        = 0;
+      const auto& entitySignatures = entity->GetSignature();
+      for (auto signature : *entitySignatures) {
         if (system->ContainsSignature(signature))
           correctSignatures++;
       }
       if (correctSignatures == system->_signatures.size())
-        AddToSystem(systemID, entity.GetID());
+        AddToSystem(systemID, entity->GetID());
     }
   }
 
@@ -43,18 +43,18 @@ namespace ECS {
     _registeredSystems[systemID]->_entities.insert(entityID);
   }
 
-  auto EntityManager::CreateEntity() -> Entity& {
+  auto EntityManager::CreateEntity() -> std::shared_ptr< Entity > {
     std::random_device dv;
     std::mt19937_64 mt(dv());
-    Entity entity;
-    entity._entityID = static_cast< EntityID >(mt());
+    std::shared_ptr< Entity > entity = std::make_shared< Entity >();
+    entity->_entityID                = static_cast< EntityID >(mt());
     _entities.push_back(entity);
     return _entities.back();
-     //return entity;
+    // return entity;
   }
-  auto EntityManager::GetEntity(EntityID id) -> Entity& {
+  auto EntityManager::GetEntity(EntityID id) -> std::shared_ptr< Entity > {
     const auto it = std::find_if(_entities.begin(), _entities.end(),
-                                 [id](auto ent) { return ent._entityID == id; });
+                                 [id](auto ent) { return ent->_entityID == id; });
     assert(it != _entities.end());
 
     return *it;
