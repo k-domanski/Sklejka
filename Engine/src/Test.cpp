@@ -28,6 +28,7 @@
 #include <ECS/EntityManager.h>
 
 #include <GL/UniformBufferData.h>
+#include <Components/Transform.h>
 
 /// <summary>
 ///
@@ -44,7 +45,8 @@ glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
   return Projection * View * Model;
 }
 
-class Transform : public ECS::Component {};
+using namespace Engine;
+
 class MeshRenderer : public ECS::Component {};
 
 class RendererSystem : public ECS::System {
@@ -83,7 +85,7 @@ using ptr_t = std::shared_ptr< T >;
 namespace Engine {
   // Event test
   void OnEvent(Event& event) {
-    CORE_TRACE("{0}", event);
+    //CORE_TRACE("{0}", event);
   }
 
   int TestWindow() {
@@ -156,6 +158,12 @@ namespace Engine {
     assert(("Failed to acquire shader", shader != nullptr));
 
     Mesh* coneMesh = coneModel->getRootMesh();
+    Transform tr;
+    tr.Rotate(glm::radians(90.0f), {0.0f, 1.0f, 0.0f});
+    tr.Rotate(glm::radians(90.0f), {0.0f, 0.0f, 1.0f});
+    CORE_TRACE("Right   [{0}, {1}, {2}]", tr.Right().x, tr.Right().y, tr.Right().z);
+    CORE_TRACE("Up      [{0}, {1}, {2}]", tr.Up().x, tr.Up().y, tr.Up().z);
+    CORE_TRACE("Forward [{0}, {1}, {2}]", tr.Forward().x, tr.Forward().y, tr.Forward().z);
 
     /* Uniform Buffer */
     GL::CameraUniformData camera_data;

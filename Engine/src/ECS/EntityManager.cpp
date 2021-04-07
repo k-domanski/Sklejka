@@ -2,7 +2,7 @@
 #include "EntityManager.h"
 #include <random>
 
-namespace ECS {
+namespace Engine::ECS {
   auto EntityManager::UpdateSystem(SystemTypeID systemID) -> void {
     for (const auto entity : _entities) {
       if (BelongsToSystem(systemID, entity->GetID()))

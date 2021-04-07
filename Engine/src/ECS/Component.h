@@ -4,7 +4,7 @@
 #include "Entity.h"
 #include "Types.h"
 
-namespace ECS {
+namespace Engine::ECS {
   class Component {
     friend class EntityManager;
 

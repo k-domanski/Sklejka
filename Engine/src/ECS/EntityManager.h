@@ -4,7 +4,7 @@
 #include "ComponentList.h"
 #include "System.h"
 
-namespace ECS {
+namespace Engine::ECS {
   class EntityManager {
   public:
     ~EntityManager()                    = default;
