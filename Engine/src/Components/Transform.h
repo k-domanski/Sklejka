@@ -18,6 +18,8 @@ namespace Engine {
     auto Position(const glm::vec3& position) noexcept -> glm::vec3;
     auto Rotation() const noexcept -> glm::quat;
     auto Rotation(const glm::quat& rotation) noexcept -> glm::quat;
+    auto Euler() const noexcept -> glm::vec3;
+    auto Euler(const glm::vec3 angles) noexcept -> glm::quat;
     auto Scale() const noexcept -> glm::vec3;
     auto Scale(const glm::vec3& scale) noexcept -> glm::vec3;
     auto GetLocalMatrix() const noexcept -> glm::mat4;

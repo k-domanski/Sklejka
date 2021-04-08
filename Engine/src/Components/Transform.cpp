@@ -16,6 +16,12 @@ namespace Engine {
     flags.SetFlag(TransformFlags::Dirty);
     return _rotation = rotation;
   }
+  auto Transform::Euler() const noexcept -> glm::vec3 {
+    return glm::eulerAngles(_rotation);
+  }
+  auto Transform::Euler(const glm::vec3 angles) noexcept -> glm::quat {
+    return _rotation = glm::quat(angles);
+  }
   auto Transform::Scale() const noexcept -> glm::vec3 {
     return _scale;
   }
@@ -24,7 +30,8 @@ namespace Engine {
     return _scale = scale;
   }
   auto Transform::GetLocalMatrix() const noexcept -> glm::mat4 {
-    return glm::translate(glm::toMat4(_rotation) * glm::scale(glm::mat4{1.0f}, _scale), _position);
+    return glm::translate(glm::mat4(1.0f), _position) * glm::toMat4(_rotation)
+           * glm::scale(glm::mat4(1.0f), _scale);
   }
   auto Transform::Right() const noexcept -> glm::vec3 {
     return _rotation * glm::vec3{1.0f, 0.0f, 0.0f};

@@ -29,6 +29,9 @@
 
 #include <GL/UniformBufferData.h>
 #include <Components/Transform.h>
+#include <Camera.h>
+#include <Events/MouseEvent.h>
+#include <App/Input.h>
 
 /// <summary>
 ///
@@ -85,7 +88,7 @@ using ptr_t = std::shared_ptr< T >;
 namespace Engine {
   // Event test
   void OnEvent(Event& event) {
-    //CORE_TRACE("{0}", event);
+    CORE_TRACE("{0}", event);
   }
 
   int TestWindow() {
@@ -113,9 +116,8 @@ namespace Engine {
     ent->AddComponent< MeshRenderer >();
     entity->AddComponent< MeshRenderer >();
 
-    // TODO: Window as singleton
     std::unique_ptr< Engine::Window > window = Engine::Window::Create(Engine::WindowProperties());
-    window->SetEventCallback(std::bind(OnEvent, std::placeholders::_1));
+
     stbi_set_flip_vertically_on_load(true);
 
     // TODO: Spearate ImGUI calls
@@ -168,13 +170,58 @@ namespace Engine {
     /* Uniform Buffer */
     GL::CameraUniformData camera_data;
     GL::CameraUniformBuffer camera_buffer;
-    glm::vec3 camera_pos{0.0f, 0.0f, 2.0f};
-    camera_data.view =
-        glm::lookAt(camera_pos, camera_pos + glm::vec3{0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f});
-    auto aspect            = window->GetWidth() / (float)window->GetHeight();
-    camera_data.projection = glm::perspective(45.0f, aspect, 0.001f, 1000.0f);
-
+    auto aspect = window->GetWidth() / (float)window->GetHeight();
+    Camera camera(45.0f, aspect, 0.001f, 1000.0f);
+    camera.transform.Position({0.0f, 0.0f, 2.0f});
+    camera.transform.Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
+    camera_data.view       = camera.GetViewMatrix();
+    camera_data.projection = camera.GetProjectionMatrix();
     camera_buffer.SetData(camera_data);
+
+    /* Event callback */
+    struct {
+      bool m2Pressed    = false;
+      bool m3Pressed    = false;
+      bool m2FirstPress = true;
+      bool m3FirstPress = true;
+      glm::vec2 screenSize;
+      glm::vec2 m2LastPos;
+      glm::vec2 m3LastPos;
+      float sensitivity = 1.0f;
+      float scrollDelta = 0.0f;
+    } mouseState;
+    mouseState.screenSize            = {window->GetWidth(), window->GetHeight()};
+    Window::EventCallBackFn callback = [&camera, &mouseState, &window](Event& event) {
+      if (event.GetEventType() == +EventType::MouseButtonPressed) {
+        auto mbtn_ev = static_cast< MouseButtonEvent* >(&event);
+        if (auto mb = mbtn_ev->GetMouseButton(); mb == 2) {
+          // Scroll Button
+          mouseState.m3Pressed = true;
+        } else if (mb == 1) {
+          // Right Mouse Button
+          mouseState.m2Pressed = true;
+        }
+      } else if (event.GetEventType() == +EventType::MouseButtonReleased) {
+        auto mbtn_ev = static_cast< MouseButtonEvent* >(&event);
+        if (auto mb = mbtn_ev->GetMouseButton(); mb == 2) {
+          // Scroll Button
+          mouseState.m3Pressed    = false;
+          mouseState.m3FirstPress = true;
+        } else if (mb == 1) {
+          // Right Mouse Button
+          mouseState.m2Pressed    = false;
+          mouseState.m2FirstPress = true;
+        }
+      }
+      if(event.GetEventType() == +EventType::MouseScrolled){
+        auto mscr_ev = static_cast< MouseScrolledEvent* >(&event);
+        mouseState.scrollDelta = mscr_ev->GetYOffset();
+      }
+    };
+    // TODO: Window as singleton
+    window->SetEventCallback(callback);
+    // window->SetEventCallback(std::bind(OnEvent, std::placeholders::_1));
+
     camera_buffer.BindToSlot(0);
     texture->Bind(0);
     shader->SetValue("u_mainTexture", 0);
@@ -188,7 +235,7 @@ namespace Engine {
     // TODO: Wrap WindowShouldClose in Window class
     while (!glfwWindowShouldClose(window->GetNativeWindow())) {
       timer.Update();
-      time += timer.DeltaTime() * 0.1f;
+      // time += timer.DeltaTime() * 0.1f;
       // TODO: Separate ImGUI calls
       // ImGui_ImplOpenGL3_NewFrame();
       // ImGui_ImplGlfw_NewFrame();
@@ -198,8 +245,59 @@ namespace Engine {
       auto model_matrix =
           glm::eulerAngleXYZ(time, time, time) * glm::scale(glm::mat4{1.0f}, glm::vec3{0.2f});
       /* -------------------------- */
+
+      /* INPUT */
+      if (mouseState.m3Pressed) {
+        // Scroll Button
+        if (mouseState.m3FirstPress) {
+          mouseState.m3FirstPress = false;
+          mouseState.m3LastPos    = Input::GetMousePosition();
+
+        } else {
+          auto cursorPos = Input::GetMousePosition();
+          auto delta     = cursorPos - mouseState.m3LastPos;
+          delta /= mouseState.screenSize;
+
+          auto position = camera.transform.Position();
+          position += camera.transform.Right() * delta.x * mouseState.sensitivity;
+          position += camera.transform.Up() * delta.y * mouseState.sensitivity;
+          camera.transform.Position(position);
+
+          mouseState.m3LastPos = cursorPos;
+        }
+      } else if (mouseState.m2Pressed) {
+        // Right Mouse Button
+        if (mouseState.m2FirstPress) {
+          mouseState.m2FirstPress = false;
+          mouseState.m2LastPos    = Input::GetMousePosition();
+        } else {
+          auto cursorPos = Input::GetMousePosition();
+          auto delta     = cursorPos - mouseState.m2LastPos;
+          delta /= mouseState.screenSize;
+
+          // TODO: Add clamping in X axis;
+           const auto sensitivity = 120.0f;
+          camera.transform.Rotate(glm::radians(delta.y * sensitivity), camera.transform.Right());
+          camera.transform.Rotate(glm::radians(-delta.x * sensitivity), {0.0f, 1.0f, 0.0f});
+
+          mouseState.m2LastPos = cursorPos;
+        }
+      }
+
+      if(mouseState.scrollDelta != 0.0f) {
+        camera.transform.Position(camera.transform.Position()
+                                  + camera.transform.Forward() * mouseState.scrollDelta * 0.1f);
+        mouseState.scrollDelta = 0.0f;
+      }
+      /* ----- */
+
+      /* Update camera */
+      camera_data.view       = camera.GetViewMatrix();
+      camera_data.projection = camera.GetProjectionMatrix();
+      camera_buffer.SetData(camera_data);
+
       shader->Use();
-      shader->SetMatrix("mvp", camera(7.f, glm::vec2(time, time)));
+      // shader->SetMatrix("mvp", camera(7.f, glm::vec2(time, time)));
       shader->SetMatrix("u_model_matrix", model_matrix);
       coneMesh->Use();
       glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
