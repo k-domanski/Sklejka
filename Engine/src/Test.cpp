@@ -213,8 +213,8 @@ namespace Engine {
           mouseState.m2FirstPress = true;
         }
       }
-      if(event.GetEventType() == +EventType::MouseScrolled){
-        auto mscr_ev = static_cast< MouseScrolledEvent* >(&event);
+      if (event.GetEventType() == +EventType::MouseScrolled) {
+        auto mscr_ev           = static_cast< MouseScrolledEvent* >(&event);
         mouseState.scrollDelta = mscr_ev->GetYOffset();
       }
     };
@@ -235,7 +235,7 @@ namespace Engine {
     // TODO: Wrap WindowShouldClose in Window class
     while (!glfwWindowShouldClose(window->GetNativeWindow())) {
       timer.Update();
-      // time += timer.DeltaTime() * 0.1f;
+      time += timer.DeltaTime() * 0.1f;
       // TODO: Separate ImGUI calls
       // ImGui_ImplOpenGL3_NewFrame();
       // ImGui_ImplGlfw_NewFrame();
@@ -276,15 +276,22 @@ namespace Engine {
           delta /= mouseState.screenSize;
 
           // TODO: Add clamping in X axis;
-           const auto sensitivity = 120.0f;
-          camera.transform.Rotate(glm::radians(delta.y * sensitivity), camera.transform.Right());
+          const auto sensitivity = 120.0f;
           camera.transform.Rotate(glm::radians(-delta.x * sensitivity), {0.0f, 1.0f, 0.0f});
+          auto dy = delta.y * sensitivity;
+          // Locking rotation in [-89.0f, 89.0f] range
+          auto angle = glm::degrees(
+              glm::angle(glm::rotation(camera.transform.Forward(), {0.0f, 1.0f, 0.0f})));
+          if (auto fa = angle + dy; fa < 1.0f || fa > 179.0f) {
+            dy = 0.0f;
+          }
+          camera.transform.Rotate(glm::radians(dy), camera.transform.Right());
 
           mouseState.m2LastPos = cursorPos;
         }
       }
 
-      if(mouseState.scrollDelta != 0.0f) {
+      if (mouseState.scrollDelta != 0.0f) {
         camera.transform.Position(camera.transform.Position()
                                   + camera.transform.Forward() * mouseState.scrollDelta * 0.1f);
         mouseState.scrollDelta = 0.0f;
@@ -298,8 +305,16 @@ namespace Engine {
 
       shader->Use();
       // shader->SetMatrix("mvp", camera(7.f, glm::vec2(time, time)));
-      shader->SetMatrix("u_model_matrix", model_matrix);
       coneMesh->Use();
+
+      model_matrix = glm::scale(glm::mat4{1.0f}, glm::vec3{0.2f});
+      shader->SetMatrix("u_model_matrix", model_matrix);
+      glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+
+      model_matrix = glm::translate(glm::mat4(1.0f), {-2.0f, 0.0f, 0.0f})
+                     * glm::eulerAngleXYZ(time, time, time)
+                     * glm::scale(glm::mat4{1.0f}, glm::vec3{0.2f});
+      shader->SetMatrix("u_model_matrix", model_matrix);
       glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
       /* -------------------------- */
 

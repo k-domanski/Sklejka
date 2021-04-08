@@ -43,6 +43,7 @@ namespace Engine {
     return _rotation * glm::vec3{0.0f, 0.0f, 1.0f};
   }
   auto Transform::Rotate(float radians, const glm::vec3& axis) noexcept -> glm::quat {
+    flags.SetFlag(TransformFlags::Dirty);
     return _rotation = glm::rotate(glm::quat{1.0f, 0.0f, 0.0f, 0.0f}, radians, axis) * _rotation;
   }
 }  // namespace Engine
