@@ -12,8 +12,10 @@ namespace Engine::ECS {
     EntityID _entityID;
 
   public:
+    Component()          = default;
+    virtual ~Component() = default;
     auto GetEntityID() const -> EntityID {
       return _entityID;
     }
   };
-}  // namespace ECS
+}  // namespace Engine::ECS

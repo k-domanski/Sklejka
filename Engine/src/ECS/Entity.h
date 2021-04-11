@@ -21,7 +21,7 @@ namespace Engine::ECS {
     }
 
     template< class T >
-    T& GetComponent() {
+    std::shared_ptr<T> GetComponent() {
       return EntityManager::GetInstance().GetComponent< T >(_entityID);
     }
 

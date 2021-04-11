@@ -13,7 +13,10 @@ namespace Engine {
 
   public:
     TransformBitFlags flags;
-    Transform() = default;
+    // Transform() = default;
+    Transform(): Component(), _modelMatrix(glm::mat4(1.0f)) {
+    }
+    ~Transform() override = default;
     auto Position() const noexcept -> glm::vec3;
     auto Position(const glm::vec3& position) noexcept -> glm::vec3;
     auto Rotation() const noexcept -> glm::quat;

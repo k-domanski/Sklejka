@@ -33,6 +33,9 @@
 #include <Events/MouseEvent.h>
 #include <App/Input.h>
 
+#include "Components/MeshRenderer.h"
+#include "Systems/Renderer.h"
+
 /// <summary>
 ///
 /// </summary>
@@ -50,21 +53,16 @@ glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
 
 using namespace Engine;
 
-class MeshRenderer : public ECS::Component {};
-
-class RendererSystem : public ECS::System {
-public:
-  RendererSystem() {
-    AddSignature< Transform >();
-    AddSignature< MeshRenderer >();
-  }
-  void Update() override {
-    std::cout << "Updating renderer" << std::endl;
-  }
-  void Draw() override {
-    std::cout << "Drawing renderer" << std::endl;
-  }
-};
+//class RendererSystem : public ECS::System {
+//public:
+//  RendererSystem() {
+//    AddSignature< Transform >();
+//    AddSignature< Components::MeshRenderer >();
+//  }
+//  void Update() override {
+//    std::cout << "Updating renderer" << std::endl;
+//  }
+//};
 
 class RandomSystem : public ECS::System {
 public:
@@ -74,9 +72,6 @@ public:
 
   void Update() override {
     std::cout << "Updating random" << std::endl;
-  }
-  void Draw() override {
-    std::cout << "Drawing random" << std::endl;
   }
 };
 
@@ -94,7 +89,7 @@ namespace Engine {
   int TestWindow() {
     Log::Init();
 
-    ECS::EntityManager::GetInstance().RegisterSystem< RendererSystem >();
+    //ECS::EntityManager::GetInstance().RegisterSystem< RendererSystem >();
     ECS::EntityManager::GetInstance().RegisterSystem< RandomSystem >();
 
     ent = ECS::EntityManager::GetInstance().CreateEntity();
@@ -104,17 +99,16 @@ namespace Engine {
     entity->AddComponent< Transform >();
 
     auto notentity = ECS::EntityManager::GetInstance().CreateEntity();
-    notentity->AddComponent< MeshRenderer >();
+    notentity->AddComponent< Components::MeshRenderer >();
 
     auto entity2 = ECS::EntityManager::GetInstance().CreateEntity();
     entity2->AddComponent< Transform >();
-    entity2->AddComponent< MeshRenderer >();
+    entity2->AddComponent< Components::MeshRenderer >();
 
     ECS::EntityManager::GetInstance().Update();
-    ECS::EntityManager::GetInstance().Draw();
 
-    ent->AddComponent< MeshRenderer >();
-    entity->AddComponent< MeshRenderer >();
+    ent->AddComponent< Components::MeshRenderer >();
+    entity->AddComponent< Components::MeshRenderer >();
 
     std::unique_ptr< Engine::Window > window = Engine::Window::Create(Engine::WindowProperties());
 
@@ -230,6 +224,20 @@ namespace Engine {
 
     /* ================ */
 
+    // Test render system and mesh renderer
+    auto rendererSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
+
+    auto coneEntity = ECS::EntityManager::GetInstance().CreateEntity();
+    auto material   = std::make_shared< Renderer::Material >(0);
+    material->SetShader(shader, "wtf");
+    //std::shared_ptr< Mesh > coneMeshPtr(coneMesh);
+    //coneEntity->AddComponent< Components::MeshRenderer >(coneMeshPtr, material);
+    coneEntity->AddComponent< Components::MeshRenderer >(mesh, material);
+    coneEntity->AddComponent< Transform >();
+    auto transform = coneEntity->GetComponent< Transform >();
+    transform->Position(glm::vec3(2.0f, 0.0f, 0.0f));
+    transform->Scale(glm::vec3(0.2f));
+
     Timer timer;
     float time = 0.0f;
     // TODO: Wrap WindowShouldClose in Window class
@@ -318,6 +326,8 @@ namespace Engine {
       glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
       /* -------------------------- */
 
+      rendererSystem->Update();
+
       // TODO: Change name
       window->OnUpdate();
 
@@ -325,6 +335,8 @@ namespace Engine {
       // ImGui::Render();
       // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
+    //ECS::EntityManager::GetInstance().Clear();
+    //delete coneMesh;
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();

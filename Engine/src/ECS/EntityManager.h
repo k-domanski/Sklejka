@@ -37,9 +37,9 @@ namespace Engine::ECS {
       UpdateEntity(entity);
 
       // TODO: Create Component Instance
-      auto component = std::make_shared<T>(std::forward< Args >(args)...);
+      auto component       = std::make_shared< T >(std::forward< Args >(args)...);
       component->_entityID = entityID;
-      auto list           = GetComponentList< T >();
+      auto list            = GetComponentList< T >();
       list->AddComponent(component);
       return list->GetComponent(entityID);
     }
@@ -48,22 +48,24 @@ namespace Engine::ECS {
     auto GetComponent(EntityID entityID) -> std::shared_ptr< T > {
       auto compTypeID = GetComponentTypeID< T >();
       auto list       = GetComponentList< T >();
-      for (auto element : *list) {
+      /*for (auto element : *list) {
         if (element.GetEntityID() == entityID)
           return element;
-      }
+      }*/
+      return list->GetComponent(entityID);
 
-      return nullptr;
+      // return nullptr;
     }
 
     template< class T >
-    auto RegisterSystem() -> void {
+    auto RegisterSystem() -> std::shared_ptr< System > {
       auto systemID = GetSystemTypeID< T >();
       if (_registeredSystems.count(systemID) == 0) {
         auto system                  = std::make_shared< T >();
         _registeredSystems[systemID] = std::move(system);
         UpdateSystem(systemID);
       }
+      return _registeredSystems[systemID];
     }
 
     auto UpdateSystem(SystemTypeID systemID) -> void;
@@ -76,8 +78,9 @@ namespace Engine::ECS {
     auto CreateEntity() -> std::shared_ptr< Entity >;
     auto GetEntity(EntityID) -> std::shared_ptr< Entity >;
     auto Update() -> void;
+    auto Clear() -> void;
 
-    auto Draw() -> void;
+    // auto Draw() -> void;
 
   private:
     EntityManager() = default;
@@ -91,4 +94,4 @@ namespace Engine::ECS {
       _componentLists[compTypeID] = std::make_shared< ComponentList< T > >();
     }
   };
-}  // namespace ECS
+}  // namespace Engine::ECS

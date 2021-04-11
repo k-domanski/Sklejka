@@ -18,6 +18,7 @@ namespace Engine::Renderer {
                    const std::string& filePath) noexcept -> void;
     auto SetDiffuse(const std::shared_ptr< GL::Texture2D >& diffuse,
                     const std::string& filePath) noexcept -> void;
+    auto SetTransform(glm::mat4 m) -> void;
     auto Use() noexcept -> void;
   };
 }  // namespace Engine::Renderer
