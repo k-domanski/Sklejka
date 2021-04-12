@@ -11,8 +11,8 @@ namespace Engine::Renderer {
     loadModel(path);
   }
 
-  Mesh* Model::getRootMesh() {
-    return &meshes[0];
+  std::shared_ptr< Mesh > Model::getRootMesh() {
+    return meshes[0];
   }
 
   void Model::loadModel(std::string_view path) {
@@ -28,13 +28,13 @@ namespace Engine::Renderer {
     processNode(scene->mRootNode, scene);
   }
 
-  void Model::processNode(aiNode* node, const aiScene* scene, Mesh* parent) {
-    Mesh* lastMesh = nullptr;
+  void Model::processNode(aiNode* node, const aiScene* scene, std::shared_ptr< Mesh > parent) {
+    std::shared_ptr< Mesh > lastMesh = nullptr;
     for (size_t i = 0; i < node->mNumMeshes; i++) {
       aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
       meshes.push_back(processMesh(mesh, scene));
 
-      lastMesh = &meshes.back();
+      lastMesh = meshes.back();
     }
 
     // Repeat process for all the children
@@ -43,7 +43,7 @@ namespace Engine::Renderer {
     }
   }
 
-  Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
+  std::shared_ptr< Mesh > Model::processMesh(aiMesh* mesh, const aiScene* scene) {
     std::vector< Vertex > vertices;
     std::vector< GLuint > indices;
 
@@ -72,7 +72,7 @@ namespace Engine::Renderer {
       }
     }
 
-    return Mesh(vertices, indices);
+    return std::make_shared<Mesh>(vertices, indices);
   }
 
 }  // namespace Engine::Renderer

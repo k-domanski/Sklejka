@@ -11,11 +11,11 @@ namespace Engine::Renderer {
     Model(std::string_view path);
     virtual ~Model() = default;
 
-    Mesh* getRootMesh();
+    std::shared_ptr<Mesh> getRootMesh();
   private:
-    std::vector< Mesh > meshes;
+    std::vector< std::shared_ptr<Mesh> > meshes;
     void loadModel(std::string_view path);
-    void processNode(aiNode* node, const aiScene* scene, Mesh* parent = nullptr);
-    Mesh processMesh(aiMesh* mesh, const aiScene* scene);
+    void processNode(aiNode* node, const aiScene* scene, std::shared_ptr< Mesh > parent = nullptr);
+    std::shared_ptr< Mesh > processMesh(aiMesh* mesh, const aiScene* scene);
   };
 }  

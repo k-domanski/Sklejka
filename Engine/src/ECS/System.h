@@ -32,6 +32,7 @@ namespace Engine::ECS {
     }
 
     auto ContainsSignature(ComponentTypeID componentID) -> bool;
+    auto SignatureMatch(const EntitySignature& entitySignature) -> bool;
 
     virtual auto AddEntity(EntityID id) -> void;
 

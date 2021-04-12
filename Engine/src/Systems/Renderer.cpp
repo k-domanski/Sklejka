@@ -8,6 +8,8 @@
 void Engine::Systems::Renderer::Update() {
   SortByMaterial();
   for (auto [material, vec] : _sortedEntities) {
+    if (material == nullptr)
+      continue;
     material->Use();
     for (auto entityID : vec) {
       auto meshRenderer =
@@ -15,8 +17,8 @@ void Engine::Systems::Renderer::Update() {
       auto mesh      = meshRenderer->GetMesh();
       auto transform = ECS::EntityManager ::GetInstance().GetComponent< Transform >(entityID);
       mesh->Use();
-      //TODO: change for world matrix
-      material->SetTransform(transform->GetLocalMatrix());
+      // TODO: change for world matrix
+      material->SetTransform(transform->GetWorldMatrix());
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
     }
   }
@@ -40,6 +42,8 @@ auto Engine::Systems::Renderer::SortByMaterial() -> void {
     auto meshRenderer =
         ECS::EntityManager::GetInstance().GetComponent< Components::MeshRenderer >(entityID);
     auto material = meshRenderer->GetMaterial();
+    if (material == nullptr)
+      continue;
     for (auto [materialFRST, vec] : _sortedEntities) {
       auto it =
           std::find_if(vec.begin(), vec.end(), [entityID](auto id) { return id == entityID; });

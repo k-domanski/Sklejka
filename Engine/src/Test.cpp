@@ -35,6 +35,7 @@
 
 #include "Components/MeshRenderer.h"
 #include "Systems/Renderer.h"
+#include <Engine/Scene.h>
 
 /// <summary>
 ///
@@ -53,8 +54,8 @@ glm::mat4 camera(float Translate, glm::vec2 const& Rotate) {
 
 using namespace Engine;
 
-//class RendererSystem : public ECS::System {
-//public:
+// class RendererSystem : public ECS::System {
+// public:
 //  RendererSystem() {
 //    AddSignature< Transform >();
 //    AddSignature< Components::MeshRenderer >();
@@ -89,8 +90,8 @@ namespace Engine {
   int TestWindow() {
     Log::Init();
 
-    //ECS::EntityManager::GetInstance().RegisterSystem< RendererSystem >();
-    ECS::EntityManager::GetInstance().RegisterSystem< RandomSystem >();
+    // ECS::EntityManager::GetInstance().RegisterSystem< RendererSystem >();
+    //ECS::EntityManager::GetInstance().RegisterSystem< RandomSystem >();
 
     ent = ECS::EntityManager::GetInstance().CreateEntity();
     ent->AddComponent< Transform >();
@@ -153,7 +154,7 @@ namespace Engine {
     auto shader    = AssetManager::GetShader("./shaders/default.glsl");
     assert(("Failed to acquire shader", shader != nullptr));
 
-    Mesh* coneMesh = coneModel->getRootMesh();
+    auto coneMesh = coneModel->getRootMesh();
     Transform tr;
     tr.Rotate(glm::radians(90.0f), {0.0f, 1.0f, 0.0f});
     tr.Rotate(glm::radians(90.0f), {0.0f, 0.0f, 1.0f});
@@ -225,18 +226,46 @@ namespace Engine {
     /* ================ */
 
     // Test render system and mesh renderer
+    /*
     auto rendererSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
 
     auto coneEntity = ECS::EntityManager::GetInstance().CreateEntity();
     auto material   = std::make_shared< Renderer::Material >(0);
-    material->SetShader(shader, "wtf");
-    //std::shared_ptr< Mesh > coneMeshPtr(coneMesh);
-    //coneEntity->AddComponent< Components::MeshRenderer >(coneMeshPtr, material);
+    material->SetShader(shader, "path/to/shader.glsl");
+    // std::shared_ptr< Mesh > coneMeshPtr(coneMesh);
+    // coneEntity->AddComponent< Components::MeshRenderer >(coneMeshPtr, material);
     coneEntity->AddComponent< Components::MeshRenderer >(mesh, material);
     coneEntity->AddComponent< Transform >();
     auto transform = coneEntity->GetComponent< Transform >();
     transform->Position(glm::vec3(2.0f, 0.0f, 0.0f));
     transform->Scale(glm::vec3(0.2f));
+    */
+
+    using ECS::EntityManager;
+    using Components::MeshRenderer;
+
+    Scene scene;
+
+    auto material = std::make_shared< Renderer::Material >(0);
+    material->SetShader(shader, "path/to/shader.glsl");
+    auto ent1 = EntityManager::GetInstance().CreateEntity();
+    auto ent2 = EntityManager::GetInstance().CreateEntity();
+    ent1->AddComponent< Transform >();
+    ent1->AddComponent< MeshRenderer >(coneModel->getRootMesh(), material);
+    ent2->AddComponent< Transform >();
+    ent2->AddComponent< MeshRenderer >(coneModel->getRootMesh(), material);
+
+    auto sg = scene.SceneGraph();
+    auto id = ent1->GetID();
+    sg->AddEntity(id);
+    scene.SceneGraph()->AddEntity(ent2->GetID(), ent1->GetID());
+
+    auto tr1 = ent1->GetComponent< Transform >();
+    auto tr2 = ent2->GetComponent< Transform >();
+
+    tr1->Position({1.0f, 0.0f, 0.0f});
+    tr1->Scale({0.2f, 0.2f, 0.2f});
+    tr2->Position({-10.0f, 0.0f, 0.0f});
 
     Timer timer;
     float time = 0.0f;
@@ -244,10 +273,6 @@ namespace Engine {
     while (!glfwWindowShouldClose(window->GetNativeWindow())) {
       timer.Update();
       time += timer.DeltaTime() * 0.1f;
-      // TODO: Separate ImGUI calls
-      // ImGui_ImplOpenGL3_NewFrame();
-      // ImGui_ImplGlfw_NewFrame();
-      // ImGui::NewFrame();
 
       GL::Context::ClearBuffers();
       auto model_matrix =
@@ -311,6 +336,12 @@ namespace Engine {
       camera_data.projection = camera.GetProjectionMatrix();
       camera_buffer.SetData(camera_data);
 
+      tr1->Rotate(timer.DeltaTime() * 0.3, {0.0f, 1.0f, 0.0f});
+
+      scene.Update(timer.DeltaTime());
+      scene.Draw();
+
+      /*
       shader->Use();
       // shader->SetMatrix("mvp", camera(7.f, glm::vec2(time, time)));
       coneMesh->Use();
@@ -324,9 +355,12 @@ namespace Engine {
                      * glm::scale(glm::mat4{1.0f}, glm::vec3{0.2f});
       shader->SetMatrix("u_model_matrix", model_matrix);
       glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+      */
       /* -------------------------- */
 
-      rendererSystem->Update();
+      //rendererSystem->Update();
+      /*scene.Update(timer.DeltaTime());
+      scene.Draw();*/
 
       // TODO: Change name
       window->OnUpdate();
@@ -335,8 +369,8 @@ namespace Engine {
       // ImGui::Render();
       // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
-    //ECS::EntityManager::GetInstance().Clear();
-    //delete coneMesh;
+    // ECS::EntityManager::GetInstance().Clear();
+    // delete coneMesh;
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
