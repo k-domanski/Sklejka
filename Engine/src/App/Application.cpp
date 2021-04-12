@@ -1,9 +1,16 @@
 #include "pch.h"
 #include "Application.h"
+#include "GL/GLCore.h"
+
 
 namespace Engine {
 	Application::Application() {
 		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+
+		GL::Context::Initialize();
+		GL::Context::SetClearBufferMask(GL::BufferBit::Color);
+		GL::Context::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 	}
 	Application::~Application() {
 
@@ -13,12 +20,12 @@ namespace Engine {
 	{
 		while (m_Running)
 		{
-			m_Running = !glfwWindowShouldClose(m_Window->GetNativeWindow());
+			timer.Update();
+			GL::Context::ClearBuffers();
+			
 			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(timer.DeltaTime());
 
-			glClearColor(1, 0, 1, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
 			m_Window->OnUpdate();
 		}
 	}
@@ -26,5 +33,15 @@ namespace Engine {
 	{
 		layer->OnAttach();
 		m_LayerStack.AddLayer(layer);
+	}
+	void Application::OnEvent(Event& event)
+	{
+		EventDispatcher dispatcher(event);
+		//CORE_DEBUG("{0}", event);
+		dispatcher.Dispatch<WindowCloseEvent>([this](WindowCloseEvent& e)
+			{
+				m_Running = false;
+				return true;
+			});
 	}
 }
