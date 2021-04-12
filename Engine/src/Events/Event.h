@@ -1,6 +1,8 @@
 #pragma once
 #include "pch.h"
 
+#define BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...);}
+
 namespace Engine {
   BETTER_ENUM(__EventType, int, None = 0, WindowClose, WindowResize, KeyPressed, KeyReleased,
               MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled);
@@ -15,6 +17,9 @@ namespace Engine {
 
   public:
     virtual ~Event()                       = default;
+    
+    bool Handled = false;
+    
     virtual EventType GetEventType() const = 0;
     virtual const char* GetName() const    = 0;
     virtual int GetCategoryFlags() const   = 0;
@@ -25,9 +30,6 @@ namespace Engine {
     bool IsInCategory(EventCategory category) {
       return GetCategoryFlags() & category;
     }
-
-  protected:
-    bool m_Handled = false;
   };
 
   class EventDispatcher {
@@ -41,7 +43,7 @@ namespace Engine {
     template< typename T >
     bool Dispatch(EventFn< T > fun) {
       if (m_Event.GetEventType() == T::GetStaticType()) {
-        m_Event.m_Handled = fun(*(T*)&m_Event);
+        m_Event.Handled = fun(*(T*)&m_Event);
         return true;
       }
       return false;

@@ -14,8 +14,9 @@ namespace Engine {
 
   public:
     Transform transform;
-    Camera(float fov, float aspect, float nearPlane, float farPlane)
-        : _fov(fov), _aspect(aspect), _nearPlane(nearPlane), _farPlane(farPlane) {
+    Camera(float fov, /*float aspect,*/ float nearPlane, float farPlane)
+        : _fov(fov),/* _aspect(aspect),*/ _nearPlane(nearPlane), _farPlane(farPlane) {
+        _aspect = Window::Get().GetWidth() / (float)Window::Get().GetHeight();
     }
     auto GetViewMatrix() noexcept -> glm::mat4 {
       // TODO: Check if dirty

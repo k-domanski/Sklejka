@@ -1,16 +1,20 @@
 #include "pch.h"
 #include "Application.h"
 #include "GL/GLCore.h"
+#include "ECS/EntityManager.h"
+#include "Systems/Renderer.h"
 
 
 namespace Engine {
 	Application::Application() {
 		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
 		GL::Context::Initialize();
 		GL::Context::SetClearBufferMask(GL::BufferBit::Color);
 		GL::Context::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+
+		m_RendererSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
 	}
 	Application::~Application() {
 
@@ -26,6 +30,7 @@ namespace Engine {
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate(timer.DeltaTime());
 
+			m_RendererSystem->Update();
 			m_Window->OnUpdate();
 		}
 	}
@@ -37,11 +42,25 @@ namespace Engine {
 	void Application::OnEvent(Event& event)
 	{
 		EventDispatcher dispatcher(event);
-		//CORE_DEBUG("{0}", event);
-		dispatcher.Dispatch<WindowCloseEvent>([this](WindowCloseEvent& e)
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
+
+		for (auto it = m_LayerStack.begin(); it != m_LayerStack.end(); ++it)
+		{
+			if(event.Handled)
 			{
-				m_Running = false;
-				return true;
-			});
+				break;
+			}
+			(*it)->OnEvent(event);
+		}
+	}
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false;
+		return true;
+	}
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		return false;
 	}
 }

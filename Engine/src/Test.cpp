@@ -154,6 +154,7 @@ namespace Engine {
     assert(("Failed to acquire shader", shader != nullptr));
 
     Mesh* coneMesh = coneModel->getRootMesh();
+    //std::shared_ptr<Mesh> coneMesh = std::shared_ptr<Mesh>(coneModel->getRootMesh());
     Transform tr;
     tr.Rotate(glm::radians(90.0f), {0.0f, 1.0f, 0.0f});
     tr.Rotate(glm::radians(90.0f), {0.0f, 0.0f, 1.0f});
@@ -165,7 +166,7 @@ namespace Engine {
     GL::CameraUniformData camera_data;
     GL::CameraUniformBuffer camera_buffer;
     auto aspect = window->GetWidth() / (float)window->GetHeight();
-    Camera camera(45.0f, aspect, 0.001f, 1000.0f);
+    Camera camera(45.0f, 0.001f, 1000.0f);
     camera.transform.Position({0.0f, 0.0f, 2.0f});
     camera.transform.Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
     camera_data.view       = camera.GetViewMatrix();
@@ -317,13 +318,13 @@ namespace Engine {
 
       model_matrix = glm::scale(glm::mat4{1.0f}, glm::vec3{0.2f});
       shader->SetMatrix("u_model_matrix", model_matrix);
-      glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+      //glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
 
       model_matrix = glm::translate(glm::mat4(1.0f), {-2.0f, 0.0f, 0.0f})
                      * glm::eulerAngleXYZ(time, time, time)
                      * glm::scale(glm::mat4{1.0f}, glm::vec3{0.2f});
       shader->SetMatrix("u_model_matrix", model_matrix);
-      glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+      //glDrawElements(coneMesh->GetPrimitive(), coneMesh->ElementCount(), GL_UNSIGNED_INT, NULL);
       /* -------------------------- */
 
       rendererSystem->Update();
