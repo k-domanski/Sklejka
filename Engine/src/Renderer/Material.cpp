@@ -11,12 +11,18 @@ namespace Engine::Renderer {
   }
   auto Material::SetDiffuse(const std::shared_ptr< GL::Texture2D >& diffuse,
                             const std::string& filePath) noexcept -> void {
-    _diffuse = diffuse;
+    _diffuse     = diffuse;
     _diffuseFile = filePath;
   }
+
+  auto Material::SetTransform(glm::mat4 m) -> void {
+    _shader->Use();
+    _shader->SetMatrix("u_model_matrix", m);
+  }
+
   auto Material::Use() noexcept -> void {
     _shader->Use();
-    _diffuse->Bind(0);
-    _shader->SetValue("u_diffuse", 0);
+    //_diffuse->Bind(0);
+    //_shader->SetValue("u_diffuse", 0);
   }
 }  // namespace Engine::Renderer

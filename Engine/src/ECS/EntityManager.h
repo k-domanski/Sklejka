@@ -4,7 +4,7 @@
 #include "ComponentList.h"
 #include "System.h"
 
-namespace ECS {
+namespace Engine::ECS {
   class EntityManager {
   public:
     ~EntityManager()                    = default;
@@ -28,60 +28,63 @@ namespace ECS {
     }
 
     template< typename T, typename... Args >
-    auto AddComponent(EntityID entityID, Args&&... args) -> T& {
+    auto AddComponent(EntityID entityID, Args&&... args) -> std::shared_ptr< T > {
       auto compTypeID = GetComponentTypeID< T >();
-      auto& entity    = GetEntity(entityID);
-      auto it         = entity._signature.find(compTypeID);
-      assert(it == entity._signature.end());
-      entity._signature.insert(compTypeID);
+      auto entity     = GetEntity(entityID);
+      auto it         = entity->_signature->find(compTypeID);
+      assert(it == entity->_signature->end());
+      entity->_signature->insert(compTypeID);
       UpdateEntity(entity);
 
       // TODO: Create Component Instance
-      T component(std::forward< Args >(args)...);
-      component._entityID = entityID;
-      auto& list          = GetComponentList< T >();
+      auto component       = std::make_shared< T >(std::forward< Args >(args)...);
+      component->_entityID = entityID;
+      auto list            = GetComponentList< T >();
       list->AddComponent(component);
       return list->GetComponent(entityID);
     }
 
     template< class T >
-    auto GetComponent(EntityID entityID) -> T& {
+    auto GetComponent(EntityID entityID) -> std::shared_ptr< T > {
       auto compTypeID = GetComponentTypeID< T >();
       auto list       = GetComponentList< T >();
-      for (auto element : *list) {
+      /*for (auto element : *list) {
         if (element.GetEntityID() == entityID)
           return element;
-      }
+      }*/
+      return list->GetComponent(entityID);
 
-      return nullptr;
+      // return nullptr;
     }
 
     template< class T >
-    auto RegisterSystem() -> void {
+    auto RegisterSystem() -> std::shared_ptr< System > {
       auto systemID = GetSystemTypeID< T >();
       if (_registeredSystems.count(systemID) == 0) {
         auto system                  = std::make_shared< T >();
         _registeredSystems[systemID] = std::move(system);
         UpdateSystem(systemID);
       }
+      return _registeredSystems[systemID];
     }
 
     auto UpdateSystem(SystemTypeID systemID) -> void;
-    auto UpdateEntity(Entity entity) -> void;
+    auto UpdateEntity(std::shared_ptr< Entity > entity) -> void;
 
     auto BelongsToSystem(SystemTypeID systemID, EntityID entityID) -> bool;
 
     auto AddToSystem(SystemTypeID systemID, EntityID entityID) -> void;
 
-    auto CreateEntity() -> Entity&;
-    auto GetEntity(EntityID) -> Entity&;
+    auto CreateEntity() -> std::shared_ptr< Entity >;
+    auto GetEntity(EntityID) -> std::shared_ptr< Entity >;
     auto Update() -> void;
+    auto Clear() -> void;
 
-    auto Draw() -> void;
+    // auto Draw() -> void;
 
   private:
     EntityManager() = default;
-    std::vector< Entity > _entities;
+    std::vector< std::shared_ptr< Entity > > _entities;
     std::map< ComponentTypeID, std::shared_ptr< IComponentList > > _componentLists;
     std::map< SystemTypeID, std::shared_ptr< System > > _registeredSystems;
 
@@ -91,4 +94,4 @@ namespace ECS {
       _componentLists[compTypeID] = std::make_shared< ComponentList< T > >();
     }
   };
-}  // namespace ECS
+}  // namespace Engine::ECS

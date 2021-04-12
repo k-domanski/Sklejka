@@ -2,7 +2,7 @@
 #include "Types.h"
 #include "Component.h"
 
-namespace ECS {
+namespace Engine::ECS {
   template< class T >
   class ComponentManager {
   public:

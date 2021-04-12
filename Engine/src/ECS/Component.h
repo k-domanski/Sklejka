@@ -4,7 +4,7 @@
 #include "Entity.h"
 #include "Types.h"
 
-namespace ECS {
+namespace Engine::ECS {
   class Component {
     friend class EntityManager;
 
@@ -12,8 +12,10 @@ namespace ECS {
     EntityID _entityID;
 
   public:
+    Component()          = default;
+    virtual ~Component() = default;
     auto GetEntityID() const -> EntityID {
       return _entityID;
     }
   };
-}  // namespace ECS
+}  // namespace Engine::ECS

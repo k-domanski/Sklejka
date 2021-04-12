@@ -1,17 +1,15 @@
 #pragma once
 #include "Component.h"
-#include "ComponentList.h"
+//#include "ComponentList.h"
 #include "Types.h"
 //#include "pch.h"
 
-namespace ECS {
+namespace Engine::ECS {
   class System {
   public:
     System() = default;
 
-    auto ComponentsCount() -> int {
-      return _entities.size();
-    }
+    auto ComponentsCount() -> int;
 
     template< class T >
     auto AddSignature() -> void {
@@ -33,19 +31,20 @@ namespace ECS {
       return _signatures.find(componentSignature) != _signatures.end();
     }
 
-    auto ContainsSignature(ComponentTypeID componentID) -> bool {
-      return _signatures.find(componentID) != _signatures.end();
-    }
+    auto ContainsSignature(ComponentTypeID componentID) -> bool;
+
+    virtual auto AddEntity(EntityID id) -> void;
 
     virtual void Update() = 0;
-    virtual void Draw()   = 0;
 
     virtual ~System() = default;
 
   private:
     friend class EntityManager;
-    std::set< EntityID > _entities;
     SystemSignature _signatures;
+
+  protected:
+    std::set< EntityID > _entities;
   };
 
-}  // namespace ECS
+}  // namespace Engine::ECS

@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "Entity.h"
+namespace Engine::ECS {
+  auto Entity::GetID() const -> EntityID {
+    return _entityID;
+  }
 
-auto ECS::Entity::GetID() const -> EntityID {
-  return _entityID;
-}
-
-auto ECS::Entity::GetSignature() const -> const EntitySignature& {
-  return _signature;
-}
+  auto Entity::GetSignature() const -> std::shared_ptr< EntitySignature > {
+    return _signature;
+  }
+}  // namespace Engine::ECS
