@@ -6,6 +6,7 @@ EditorLayer::EditorLayer(const std::string& name): Layer(name), m_Camera(45.0f, 
 }
 void EditorLayer::OnAttach() {
   /*Assets*/
+  auto texture   = AssetManager::GetTexture2D("./textures/pepo_sad.png");
   auto coneModel = AssetManager::GetModel("./models/smolCone.fbx");
   m_Shader       = AssetManager::GetShader("./shaders/default.glsl");
   assert(("Failed to acquire shader", m_Shader != nullptr));
@@ -26,8 +27,9 @@ void EditorLayer::OnAttach() {
   /*ECS Scene*/
   m_Entity1  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Entity2  = ECS::EntityManager::GetInstance().CreateEntity();
-  m_Material = std::make_shared< Renderer::Material >(0);
-  m_Material->SetShader(m_Shader, "path/to/shader.glsl");
+  m_Material = AssetManager::GetMaterial(m_Shader, "path/to/shader.glsl,",
+                                         "./textures/pepo_sad.png", texture);
+  // m_Material->SetShader(m_Shader, "path/to/shader.glsl");
 
   m_Entity1->AddComponent< Transform >();
   m_Entity1->AddComponent< Components::MeshRenderer >(m_ConeMesh, m_Material);
@@ -47,8 +49,6 @@ void EditorLayer::OnAttach() {
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {
-  m_Time += deltaTime * 0.1f;
-
   /* -------------------------- */
   /* TODO: CameraController move to separate class?*/
   /*Mouse Scroll*/
@@ -100,7 +100,7 @@ void EditorLayer::OnUpdate(double deltaTime) {
 
   m_Scene.Update(deltaTime);
   /*Update systemów w aplikacji?*/
-  // m_Scene.Draw();
+  m_Scene.Draw();
 }
 
 void EditorLayer::OnDetach() {

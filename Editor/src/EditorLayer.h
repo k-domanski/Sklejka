@@ -40,7 +40,7 @@ private:
     float sensitivity = 1.0f;
     float scrollDelta = 0.0f;
   } mouseState;
-  
+
   /*ECS*/
   Scene m_Scene;
   ptr_t< ECS::Entity > m_Entity1;
