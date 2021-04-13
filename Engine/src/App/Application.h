@@ -5,26 +5,24 @@
 #include "ECS/System.h"
 
 namespace Engine {
-	class Application
-	{
-	public:
-		Application();
-		virtual ~Application();
-		void Run();
-		void AddLayer(Layer* layer);
-		void OnEvent(Event& event);
-	private:
-		bool OnWindowClose(WindowCloseEvent& e);
-		bool OnWindowResize(WindowResizeEvent& e);
-	private:
-		std::unique_ptr<Window> m_Window;
-		bool m_Running = true;
-		LayerStack m_LayerStack;
-		Timer timer;
+  class Application {
+  public:
+    Application();
+    virtual ~Application();
+    void Run();
+    void AddLayer(Layer* layer);
+    void OnEvent(Event& event);
 
-		//ECS
-		std::shared_ptr<ECS::System> m_RendererSystem;
-	};
+  private:
+    bool OnWindowClose(WindowCloseEvent& e);
+    bool OnWindowResize(WindowResizeEvent& e);
 
-	Application* CreateApplication();
-}
+  private:
+    std::unique_ptr< Window > m_Window;
+    bool m_Running = true;
+    LayerStack m_LayerStack;
+    Timer timer;
+  };
+
+  Application* CreateApplication();
+}  // namespace Engine

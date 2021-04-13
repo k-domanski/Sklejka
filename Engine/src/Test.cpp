@@ -166,7 +166,7 @@ namespace Engine {
     GL::CameraUniformData camera_data;
     GL::CameraUniformBuffer camera_buffer;
     auto aspect = window->GetWidth() / (float)window->GetHeight();
-    Camera camera(45.0f, aspect, 0.001f, 1000.0f);
+    Camera camera(45.0f, 0.001f, 1000.0f);
     camera.transform.Position({0.0f, 0.0f, 2.0f});
     camera.transform.Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
     camera_data.view       = camera.GetViewMatrix();

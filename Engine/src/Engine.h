@@ -11,6 +11,7 @@
 #include "GL/UniformBufferData.h"
 #include "App/AssetManager.h"
 
+#include "Engine/Scene.h"
 #include "Camera.h"
 #include "ECS/EntityManager.h"
 #include "Systems/Renderer.h"
