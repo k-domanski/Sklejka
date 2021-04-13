@@ -246,8 +246,10 @@ namespace Engine {
 
     Scene scene;
 
-    auto material = std::make_shared< Renderer::Material >(0);
-    material->SetShader(shader, "path/to/shader.glsl");
+    auto material = AssetManager::GetMaterial(shader, "path/to/shader.glsl",
+                                              "./textures/pepo_sad.png", texture);
+    //auto material = std::make_shared< Renderer::Material >(0);
+    //material->SetShader(shader, "path/to/shader.glsl");
     auto ent1 = EntityManager::GetInstance().CreateEntity();
     auto ent2 = EntityManager::GetInstance().CreateEntity();
     ent1->AddComponent< Transform >();
