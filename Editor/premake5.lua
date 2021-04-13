@@ -24,6 +24,7 @@ project "Editor"
         "%{IncludeDir.irrKlang}/include",
         "%{wks.location}/Engine/vendor/spdlog/include",
         "%{wks.location}/Engine/vendor",
+        "%{wks.location}/Engine/vendor/assimp/include",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
         "%{IncludeDir.glm}",
