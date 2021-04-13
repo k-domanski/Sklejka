@@ -21,7 +21,8 @@ namespace Engine::Renderer {
   }
 
   auto Material::Use() noexcept -> void {
-    _shader->Use();
+    if (_shader != nullptr)
+      _shader->Use();
     //_diffuse->Bind(0);
     //_shader->SetValue("u_diffuse", 0);
   }

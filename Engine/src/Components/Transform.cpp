@@ -33,6 +33,9 @@ namespace Engine {
     return glm::translate(glm::mat4(1.0f), _position) * glm::toMat4(_rotation)
            * glm::scale(glm::mat4(1.0f), _scale);
   }
+  auto Transform::GetWorldMatrix() const noexcept -> glm::mat4 {
+    return _modelMatrix;
+  }
   auto Transform::Right() const noexcept -> glm::vec3 {
     return _rotation * glm::vec3{1.0f, 0.0f, 0.0f};
   }

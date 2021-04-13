@@ -3,8 +3,13 @@
 #include <ECS/ECS.h>
 #include <Components/Flags.h>
 
+namespace Engine::Systems {
+  class SceneGraph;
+}
+
 namespace Engine {
   class Transform : public ECS::Component {
+
   private:
     glm::vec3 _position{0.0f};
     glm::quat _rotation{1.0f, 0.0f, 0.0f, 0.0f};
@@ -12,8 +17,8 @@ namespace Engine {
     glm::mat4 _modelMatrix;
 
   public:
+    friend class Engine::Systems::SceneGraph;
     TransformBitFlags flags;
-    // Transform() = default;
     Transform(): Component(), _modelMatrix(glm::mat4(1.0f)) {
     }
     ~Transform() override = default;
@@ -26,6 +31,7 @@ namespace Engine {
     auto Scale() const noexcept -> glm::vec3;
     auto Scale(const glm::vec3& scale) noexcept -> glm::vec3;
     auto GetLocalMatrix() const noexcept -> glm::mat4;
+    auto GetWorldMatrix() const noexcept -> glm::mat4;
     auto Right() const noexcept -> glm::vec3;
     auto Up() const noexcept -> glm::vec3;
     auto Forward() const noexcept -> glm::vec3;

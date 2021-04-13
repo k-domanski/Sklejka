@@ -9,13 +9,19 @@ namespace Engine::ECS {
         continue;
       int signatureCorrect  = 0;
       auto entitySignatures = entity->GetSignature();
-      for (auto entitySignature : *entitySignatures) {
-        if (!_registeredSystems[systemID]->ContainsSignature(entitySignature)) {
+      /*for (auto& entitySignature : *entitySignatures) {
+        auto rs = _registeredSystems[systemID];
+        if (rs->ContainsSignature(entitySignature)) {
           signatureCorrect++;
         }
       }
-      if (signatureCorrect == _registeredSystems[systemID]->_signatures.size())
+      if (signatureCorrect == _registeredSystems[systemID]->_signatures.size()) {
         AddToSystem(systemID, entity->GetID());
+      }*/
+      auto& s = _registeredSystems[systemID]->_signatures;
+      if (_registeredSystems[systemID]->SignatureMatch(*entitySignatures)) {
+        AddToSystem(systemID, entity->GetID());
+      }
     }
   }
 
@@ -50,7 +56,7 @@ namespace Engine::ECS {
     std::shared_ptr< Entity > entity = std::make_shared< Entity >();
     entity->_entityID                = static_cast< EntityID >(mt());
     _entities.push_back(entity);
-    return _entities.back();
+    return entity;
     // return entity;
   }
   auto EntityManager::GetEntity(EntityID id) -> std::shared_ptr< Entity > {

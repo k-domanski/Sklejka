@@ -58,14 +58,15 @@ namespace Engine::ECS {
     }
 
     template< class T >
-    auto RegisterSystem() -> std::shared_ptr< System > {
+    auto RegisterSystem() -> std::shared_ptr< T > {
       auto systemID = GetSystemTypeID< T >();
       if (_registeredSystems.count(systemID) == 0) {
-        auto system                  = std::make_shared< T >();
-        _registeredSystems[systemID] = std::move(system);
+        /*auto system                  = std::make_shared< T >();
+        _registeredSystems[systemID] = std::move(system);*/
+        _registeredSystems[systemID] = std::make_shared< T >();
         UpdateSystem(systemID);
       }
-      return _registeredSystems[systemID];
+      return std::static_pointer_cast< T >(_registeredSystems[systemID]);
     }
 
     auto UpdateSystem(SystemTypeID systemID) -> void;

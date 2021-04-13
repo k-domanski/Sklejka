@@ -16,7 +16,9 @@ namespace Engine::ECS {
   public:
     auto GetComponent(EntityID entityID) -> std::shared_ptr< T > {
       auto it = FindIterator(entityID);
-      assert(it != _components.end());
+      if (it == _components.end())
+        return nullptr;
+
       return *it;
     }
     auto AddComponent(const std::shared_ptr< T > component) -> void {
@@ -42,4 +44,4 @@ namespace Engine::ECS {
                           [entityID](auto comp) { return comp->GetEntityID() == entityID; });
     }
   };
-}  // namespace ECS
+}  // namespace Engine::ECS
