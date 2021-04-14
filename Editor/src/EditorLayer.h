@@ -26,6 +26,7 @@ private:
 private:
   /*Temporary*/
   float m_Time = 0;
+  float m_it = 0;
 
   ptr_t< Engine::GL::Shader > m_Shader;
   ptr_t< Engine::Renderer::Mesh > m_ConeMesh;

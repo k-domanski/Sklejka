@@ -79,7 +79,7 @@ namespace Engine::ECS {
     auto CreateEntity() -> std::shared_ptr< Entity >;
     auto CreateEntity(EntityID id) -> std::shared_ptr< Entity >;
     auto GetEntity(EntityID) -> std::shared_ptr< Entity >;
-    auto Update() -> void;
+    auto Update(float deltaTime) -> void;
     auto Clear() -> void;
 
     // auto Draw() -> void;

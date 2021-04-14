@@ -56,7 +56,7 @@ void Engine::Systems::Physics::Update(float deltaTime) {
       }
     }
   }
-  //separation
+  // separation
   for (auto& [frst, vec] : _collisions) {
     for (auto& sec : vec) {
       auto collider =
@@ -82,21 +82,35 @@ void Engine::Systems::Physics::Update(float deltaTime) {
 
       glm::vec3 secMax(secPos.x + secSize.x, secPos.y + secSize.y, secPos.z + secSize.z);
 
-      float left = firstMax.x - secMin.x;
-      float right = secMax.x - firstMin.x;
-      float top = firstMax.y - secMin.y;
-      float bottom = secMax.y - firstMin.y;
-      float front = firstMax.z - secMin.z;
-      float back = secMax.z - firstMin.z;
+      float left   = firstMax.x - secMin.x;
+      float right  = secMax.x - firstMin.x;
+      float bottom = firstMax.y - secMin.y;
+      float top    = secMax.y - firstMin.y;
+      float back   = firstMax.z - secMin.z;
+      float front  = secMax.z - firstMin.z;
 
       glm::vec3 separation(0.0f);
 
       separation.x = left < right ? -left : right;
-      separation.y = top < bottom ? -top : bottom;
-      separation.z = front < back ? -front : back;
+      separation.y = bottom < top ? -bottom : top;
+      separation.z = back < front ? -back : front;
+
+      if (separation.x < separation.y) {
+        separation.y = 0.0f;
+        if (separation.x < separation.z)
+
+          separation.z = 0.0f;
+        else
+          separation.x = 0.0f;
+      } else {
+        separation.x = 0.0f;
+        if (separation.y < separation.z)
+          separation.z = 0.0f;
+        else
+          separation.y = 0.0f;
+      }
 
       transform->Position(firstPos + separation);
-
     }
   }
 
