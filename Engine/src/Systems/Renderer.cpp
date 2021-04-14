@@ -5,7 +5,7 @@
 #include "Components/Transform.h"
 #include "ECS/EntityManager.h"
 
-void Engine::Systems::Renderer::Update() {
+void Engine::Systems::Renderer::Update(float deltaTime) {
   SortByMaterial();
   for (auto [material, vec] : _sortedEntities) {
     if (material == nullptr)

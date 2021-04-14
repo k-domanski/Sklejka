@@ -10,7 +10,7 @@ namespace Engine::Systems {
     AddSignature< Camera >();
     AddSignature< Transform >();
   }
-  auto CameraSystem::Update() -> void {
+  auto CameraSystem::Update(float deltaTime) -> void {
     // Update Cameras
     for (auto entityID : _entities) {
       auto transform = EntityManager::GetInstance().GetComponent< Transform >(entityID);

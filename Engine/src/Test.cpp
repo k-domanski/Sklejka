@@ -65,16 +65,16 @@ using namespace Engine;
 //  }
 //};
 
-class RandomSystem : public ECS::System {
-public:
-  RandomSystem() {
-    AddSignature< Transform >();
-  }
-
-  void Update() override {
-    std::cout << "Updating random" << std::endl;
-  }
-};
+//class RandomSystem : public ECS::System {
+//public:
+//  RandomSystem() {
+//    AddSignature< Transform >();
+//  }
+//
+//  void Update() override {
+//    std::cout << "Updating random" << std::endl;
+//  }
+//};
 
 std::shared_ptr< ECS::Entity > ent;
 

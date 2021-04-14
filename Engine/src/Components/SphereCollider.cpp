@@ -10,9 +10,9 @@ auto Engine::Components::SphereCollider::SetRadius(float radius) -> void {
 }
 
 auto Engine::Components::SphereCollider::IsTrigger() -> bool {
-  return _triggger;
+  return _trigger;
 }
 
 auto Engine::Components::SphereCollider::SetTrigger(bool trigger) -> void {
-  _triggger = trigger;
+  _trigger = trigger;
 }

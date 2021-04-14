@@ -74,9 +74,9 @@ namespace Engine::ECS {
     return *it;
   }
 
-  auto EntityManager::Update() -> void {
+  auto EntityManager::Update(float deltaTime) -> void {
     for (auto [id, system] : _registeredSystems) {
-      system->Update();
+      system->Update(deltaTime);
     }
   }
 

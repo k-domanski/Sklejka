@@ -13,7 +13,7 @@ namespace Engine::Systems {
       AddSignature< Transform >();
     }
     ~Renderer() override = default;
-    void Update() override;
+    void Update(float deltaTime) override;
     auto AddEntity(ECS::EntityID id) -> void override;
 
   private:

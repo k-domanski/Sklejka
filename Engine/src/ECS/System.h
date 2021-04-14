@@ -36,7 +36,7 @@ namespace Engine::ECS {
 
     virtual auto AddEntity(EntityID id) -> void;
 
-    virtual void Update() = 0;
+    virtual void Update(float deltaTime) = 0;
 
     virtual ~System() = default;
 

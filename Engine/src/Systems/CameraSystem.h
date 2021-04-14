@@ -15,6 +15,6 @@ namespace Engine::Systems {
 
   public:
     CameraSystem();
-    auto Update() -> void override;
+    auto Update(float deltaTime) -> void override;
   };
 }

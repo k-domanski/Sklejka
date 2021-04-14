@@ -14,7 +14,7 @@ namespace Engine::Systems {
 
   public:
     SceneGraph();
-    auto Update() -> void override;
+    auto Update(float deltaTime) -> void override;
     auto SetParent(ECS::EntityID child, ECS::EntityID parent) -> void;
     auto AddChild(ECS::EntityID parent, ECS::EntityID child) -> void;
     auto AddEntity(ECS::EntityID id) -> void override;

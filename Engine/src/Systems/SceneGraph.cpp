@@ -10,7 +10,7 @@ namespace Engine::Systems {
     _rootEntity->AddComponent< Transform >();
     AddEntity(_rootEntity->GetID());
   }
-  auto SceneGraph::Update() -> void {
+  auto SceneGraph::Update(float deltaTime) -> void {
     // Check if any transform is dirty and update it's branch
     for(auto& entity_id : _entities) {
       auto& transform = EntityManager::GetInstance().GetComponent< Transform >(entity_id);

@@ -2,9 +2,9 @@
 #include "ECS/Component.h"
 
 namespace Engine::Components {
-  class SphereCollider : public Engine::ECS::Component {
+  class SphereCollider : public ECS::Component {
   public:
-    SphereCollider(): Component(), _radius(1.0f), _triggger(false) {
+    SphereCollider(): Component(), _radius(1.0f), _trigger(false) {
     }
     ~SphereCollider() override = default;
 
@@ -15,7 +15,7 @@ namespace Engine::Components {
 
   private:
     float _radius;
-    bool _triggger;
+    bool _trigger;
   };
 
 }  // namespace Engine::Components
