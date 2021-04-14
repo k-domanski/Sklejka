@@ -10,8 +10,8 @@ namespace Engine::GL {
     /* Debug */
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, NULL);
-    /*glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL,
-                          GL_FALSE);*/
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL,
+                          GL_FALSE);
 
     /* Alpha Blending */
     glEnable(GL_BLEND);
