@@ -42,7 +42,7 @@ vec3 remap(vec3 val) {
 
 void main() {
   vec3 texel = texture(u_mainTexture, v_uv).rgb;
-  // out_color  = vec4(texel, 1.0f);
-  out_color = vec4(remap(v_pos), 1.0f);
+  out_color  = vec4(texel, 1.0f);
+  //out_color = vec4(remap(v_pos), 1.0f);
 }
 #endshader

@@ -38,7 +38,7 @@ namespace Engine::Renderer {
     }
     if (_shader != nullptr) {
       _shader->Use();
-      _shader->SetValue("u_diffuse", 0);
+      _shader->SetValue("u_mainTexture", 0);
     }
   }
 }  // namespace Engine::Renderer
