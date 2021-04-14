@@ -20,24 +20,25 @@ namespace Engine::Renderer {
     _shader->SetMatrix("u_model_matrix", m);
   }
 
-  std::shared_ptr< GL::Shader > Material::GetShaderPtr()
-  {
+  std::shared_ptr< GL::Shader > Material::GetShader() {
     return _shader;
   }
 
-  std::shared_ptr< GL::Texture2D > Material::GetDiffusePtr() {
+  std::shared_ptr< GL::Texture2D > Material::GetDiffuse() {
     return _diffuse;
   }
 
-  std::size_t Material::GetAssetID()
-  {
+  std::size_t Material::GetAssetID() {
     return _assetID;
   }
 
   auto Material::Use() noexcept -> void {
-    if (_shader != nullptr)
+    if (_diffuse != nullptr) {
+      _diffuse->Bind(0);
+    }
+    if (_shader != nullptr) {
       _shader->Use();
-    _diffuse->Bind(0);
-    _shader->SetValue("u_diffuse", 0);
+      _shader->SetValue("u_diffuse", 0);
+    }
   }
 }  // namespace Engine::Renderer

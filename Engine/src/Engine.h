@@ -12,7 +12,7 @@
 #include "App/AssetManager.h"
 
 #include "Engine/Scene.h"
-#include "Camera.h"
+#include "Components/Camera.h"
 #include "ECS/EntityManager.h"
 #include "Systems/Renderer.h"
 

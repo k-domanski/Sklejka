@@ -8,6 +8,7 @@ namespace Engine::Systems {
   class SceneGraph : public ECS::System {
   private:
     ECS::EntityID _rootID{0};
+    std::shared_ptr< ECS::Entity > _rootEntity;
     std::unordered_map< ECS::EntityID, std::vector< ECS::EntityID > > _parentChildMap;
     std::unordered_map< ECS::EntityID, ECS::EntityID > _childParentMap;
 

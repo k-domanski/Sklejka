@@ -2,7 +2,8 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-EditorLayer::EditorLayer(const std::string& name): Layer(name), m_Camera(45.0f, 0.001f, 1000.0f) {
+using namespace Engine;
+EditorLayer::EditorLayer(const std::string& name): Layer(name) {
 }
 void EditorLayer::OnAttach() {
   /*Assets*/
@@ -11,17 +12,18 @@ void EditorLayer::OnAttach() {
   assert(("Failed to acquire shader", m_Shader != nullptr));
   m_ConeMesh = coneModel->getRootMesh();
 
-  /*Camera*/
-  mouseState.screenSize = {Window::Get().GetWidth(), Window::Get().GetHeight()};
-  m_Camera.transform.Position({0.0f, 0.0f, 2.0f});
-  m_Camera.transform.Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
-  camera_data.view       = m_Camera.GetViewMatrix();
-  camera_data.projection = m_Camera.GetProjectionMatrix();
-  camera_buffer.SetData(camera_data);
+  auto aspect           = Engine::Window::Get().GetAspectRatio();
+  auto camera_entity = Engine::ECS::EntityManager::GetInstance().CreateEntity();
+  m_EditorCamera.camera = camera_entity->AddComponent< Engine::Camera >(45.0f, aspect, 0.001f, 1000.0f);
+  m_EditorCamera.transform = camera_entity->AddComponent< Engine::Transform >();
+  m_Scene.SceneGraph()->AddEntity(camera_entity->GetID());
 
-  camera_buffer.BindToSlot(0);
-  m_Shader->SetValue("u_mainTexture", 0);
-  m_Shader->BindUniformBlock("u_Camera", 0);
+  /*Camera*/
+  m_EditorCamera.camera->flags.Set(Engine::CameraFlag::MainCamera);
+  editorCameraArgs.screenSize = Window::Get().GetScreenSize();
+  m_EditorCamera.transform->Position({0.0f, 0.0f, 2.0f});
+  m_EditorCamera.transform->Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
+  
 
   /*ECS Scene*/
   m_Entity1  = ECS::EntityManager::GetInstance().CreateEntity();
@@ -51,49 +53,8 @@ void EditorLayer::OnUpdate(double deltaTime) {
 
   /* -------------------------- */
   /* TODO: CameraController move to separate class?*/
-  /*Mouse Scroll*/
-  if (mouseState.scrollDelta != 0.0f) {
-    m_Camera.transform.Position(m_Camera.transform.Position()
-                                + m_Camera.transform.Forward() * mouseState.scrollDelta * 0.1f);
-    mouseState.scrollDelta = 0.0f;
-  }
-  /*Scroll Pressed Movement*/
-  if (Input::IsMouseButtonPressed(2)) {
-    auto cursorPos = Input::GetMousePosition();
-    auto delta     = cursorPos - mouseState.m3LastPos;
-    delta /= mouseState.screenSize;
-
-    auto position = m_Camera.transform.Position();
-    position += m_Camera.transform.Right() * delta.x * mouseState.sensitivity;
-    position += m_Camera.transform.Up() * delta.y * mouseState.sensitivity;
-    m_Camera.transform.Position(position);
-    mouseState.m3LastPos = cursorPos;
-  }
-  /*Right Mouse Button*/
-  else if (Input::IsMouseButtonPressed(1)) {
-    auto cursorPos = Input::GetMousePosition();
-    auto delta     = cursorPos - mouseState.m2LastPos;
-    delta /= mouseState.screenSize;
-
-    // TODO: Add clamping in X axis;
-    const auto sensitivity = 120.0f;
-    m_Camera.transform.Rotate(glm::radians(-delta.x * sensitivity), {0.0f, 1.0f, 0.0f});
-    auto dy = delta.y * sensitivity;
-    // Locking rotation in [-89.0f, 89.0f] range
-    auto angle =
-        glm::degrees(glm::angle(glm::rotation(m_Camera.transform.Forward(), {0.0f, 1.0f, 0.0f})));
-    if (auto fa = angle + dy; fa < 1.0f || fa > 179.0f) {
-      dy = 0.0f;
-    }
-    m_Camera.transform.Rotate(glm::radians(dy), m_Camera.transform.Right());
-
-    mouseState.m2LastPos = cursorPos;
-  }
+  UpdateEditorCamera();
   /* -------------------------- */
-  /*Update camera*/
-  camera_data.view       = m_Camera.GetViewMatrix();
-  camera_data.projection = m_Camera.GetProjectionMatrix();
-  camera_buffer.SetData(camera_data);
 
   auto tr1 = m_Entity1->GetComponent< Transform >();
   tr1->Rotate(deltaTime * 0.3, {0.0f, 1.0f, 0.0f});
@@ -114,19 +75,59 @@ void EditorLayer::OnEvent(Event& event) {
 }
 
 bool EditorLayer::OnMouseScroll(MouseScrolledEvent& e) {
-  mouseState.scrollDelta = e.GetYOffset();
+  editorCameraArgs.scrollDelta = e.GetYOffset();
   return true;
 }
 
 bool EditorLayer::OnMouseButtonPress(MouseButtonPressedEvent& e) {
   if (e.GetMouseButton() == 2)
-    mouseState.m3LastPos = Input::GetMousePosition();
+    editorCameraArgs.m3LastPos = Input::GetMousePosition();
   else if (e.GetMouseButton() == 1)
-    mouseState.m2LastPos = Input::GetMousePosition();
+    editorCameraArgs.m2LastPos = Input::GetMousePosition();
 
   return true;
 }
 
 bool EditorLayer::OnMouseButtonRelease(MouseButtonReleasedEvent& e) {
   return false;
+}
+
+auto EditorLayer::UpdateEditorCamera() -> void {
+  if (editorCameraArgs.scrollDelta != 0.0f) {
+    m_EditorCamera.transform->Position(m_EditorCamera.transform->Position()
+                                + m_EditorCamera.transform->Forward() * editorCameraArgs.scrollDelta * 0.1f);
+    editorCameraArgs.scrollDelta = 0.0f;
+  }
+  /*Scroll Pressed Movement*/
+  if (Input::IsMouseButtonPressed(2)) {
+    auto cursorPos = Input::GetMousePosition();
+    auto delta     = cursorPos - editorCameraArgs.m3LastPos;
+    delta /= editorCameraArgs.screenSize;
+
+    auto position = m_EditorCamera.transform->Position();
+    position += m_EditorCamera.transform->Right() * delta.x * editorCameraArgs.sensitivity;
+    position += m_EditorCamera.transform->Up() * delta.y * editorCameraArgs.sensitivity;
+    m_EditorCamera.transform->Position(position);
+    editorCameraArgs.m3LastPos = cursorPos;
+  }
+  /*Right Mouse Button*/
+  else if (Input::IsMouseButtonPressed(1)) {
+    auto cursorPos = Input::GetMousePosition();
+    auto delta     = cursorPos - editorCameraArgs.m2LastPos;
+    delta /= editorCameraArgs.screenSize;
+
+    // TODO: Add clamping in X axis;
+    const auto sensitivity = 120.0f;
+    m_EditorCamera.transform->Rotate(glm::radians(-delta.x * sensitivity), {0.0f, 1.0f, 0.0f});
+    auto dy = delta.y * sensitivity;
+    // Locking rotation in [-89.0f, 89.0f] range
+    auto angle =
+        glm::degrees(glm::angle(glm::rotation(m_EditorCamera.transform->Forward(), {0.0f, 1.0f, 0.0f})));
+    if (auto fa = angle + dy; fa < 1.0f || fa > 179.0f) {
+      dy = 0.0f;
+    }
+    m_EditorCamera.transform->Rotate(glm::radians(dy), m_EditorCamera.transform->Right());
+
+    editorCameraArgs.m2LastPos = cursorPos;
+  }
 }

@@ -19,8 +19,8 @@ namespace Engine::Renderer {
     auto SetDiffuse(const std::shared_ptr< GL::Texture2D >& diffuse,
                     const std::string& filePath) noexcept -> void;
     auto SetTransform(glm::mat4 m) -> void;
-    std::shared_ptr< GL::Shader > GetShaderPtr();
-    std::shared_ptr< GL::Texture2D > GetDiffusePtr();
+    std::shared_ptr< GL::Shader > GetShader();
+    std::shared_ptr< GL::Texture2D > GetDiffuse();
     std::size_t GetAssetID();
     auto Use() noexcept -> void;
   };

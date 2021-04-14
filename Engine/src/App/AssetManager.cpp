@@ -66,7 +66,7 @@ namespace Engine {
   {
       for (auto [key, loaded_material]: _loadedMaterials)
       {
-          if(loaded_material->GetShaderPtr() == shared_ptr && loaded_material->GetDiffusePtr() == texture_2d)
+          if(loaded_material->GetShader() == shared_ptr && loaded_material->GetDiffuse() == texture_2d)
           {
             return loaded_material;
           }
