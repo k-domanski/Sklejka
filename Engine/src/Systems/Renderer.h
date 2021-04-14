@@ -19,6 +19,7 @@ namespace Engine::Systems {
   private:
     std::map< std::shared_ptr< Engine::Renderer::Material >, std::vector< ECS::EntityID > >
         _sortedEntities;
+    std::set< ECS::EntityID > _entitiesToSort;
 
     auto SortByMaterial() -> void;
   };
