@@ -87,7 +87,7 @@ void EditorLayer::OnUpdate(double deltaTime) {
   //auto pos = tr1->Position();
   tr1->Position(glm::vec3(sin(m_Time) * m_it, 0.0f, 0.0f));
   m_it += deltaTime / 20.0f;
-  std::cout << "sin time: " << sin(m_Time)*m_it << std::endl;
+  //std::cout << "sin time: " << sin(m_Time)*m_it << std::endl;
 
   m_Scene.Update(deltaTime);
   /*Update systemów w aplikacji?*/

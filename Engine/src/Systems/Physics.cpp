@@ -52,6 +52,7 @@ void Engine::Systems::Physics::Update(float deltaTime) {
             && (firstMin.y <= secMax.y && firstMax.y >= secMin.y)
             && (firstMin.z <= secMax.z && firstMax.z >= secMin.z)) {
           _collisions[entity].push_back(entitySec);
+          std::cout << "Colliding" << std::endl;
         }
       }
     }
