@@ -62,9 +62,9 @@ void Engine::Systems::Physics::Update(float deltaTime) {
     for (auto& sec : vec) {
       auto collider =
           ECS::EntityManager::GetInstance().GetComponent< Components::BoxCollider >(frst);
-      auto transform = ECS::EntityManager::GetInstance().GetComponent< Transform >(frst);
+      auto& transform = ECS::EntityManager::GetInstance().GetComponent< Transform >(frst);
 
-      auto firstPos  = transform->Position();
+      auto& firstPos  = transform->Position();
       auto firstSize = collider->GetSize();
 
       glm::vec3 firstMin(firstPos.x - firstSize.x, firstPos.y - firstSize.y,
@@ -111,7 +111,14 @@ void Engine::Systems::Physics::Update(float deltaTime) {
           separation.y = 0.0f;
       }
 
+      separation = separation / 2.0f;
+
+      if (separation.length() < 0.0001f)
+          continue;
+
+      std::cout << "before: " << transform->Position().x << std::endl;
       transform->Position(firstPos + separation);
+      std::cout << "after: " << transform->Position().x << std::endl;
     }
   }
 
