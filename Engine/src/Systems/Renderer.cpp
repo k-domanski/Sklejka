@@ -32,24 +32,24 @@ auto Engine::Systems::Renderer::AddEntity(ECS::EntityID id) -> void {
 }
 
 auto Engine::Systems::Renderer::SortByMaterial() -> void {
-  std::set< ECS::EntityID > entitiesToSort;
+  
 
   for (auto entityID : _entities) {
     auto meshRenderer =
         ECS::EntityManager::GetInstance().GetComponent< Components::MeshRenderer >(entityID);
     if (meshRenderer->IsDirty()) {
-      entitiesToSort.insert(entityID);
+      _entitiesToSort.insert(entityID);
       meshRenderer->SetDirty(false);
     }
   }
 
-  for (auto entityID : entitiesToSort) {
+  for (auto entityID : _entitiesToSort) {
     auto meshRenderer =
         ECS::EntityManager::GetInstance().GetComponent< Components::MeshRenderer >(entityID);
     auto material = meshRenderer->GetMaterial();
     if (material == nullptr)
       continue;
-    for (auto [materialFRST, vec] : _sortedEntities) {
+    for (auto& [materialFRST, vec] : _sortedEntities) {
       auto it =
           std::find_if(vec.begin(), vec.end(), [entityID](auto id) { return id == entityID; });
       if (it != vec.end()) {
@@ -60,8 +60,10 @@ auto Engine::Systems::Renderer::SortByMaterial() -> void {
     if (_sortedEntities.count(material) == 0) {
       std::vector< ECS::EntityID > vec;
       vec.push_back(entityID);
-      _sortedEntities[material] = vec;
+      _sortedEntities[material] = std::move(vec);
     } else
       _sortedEntities[material].push_back(entityID);
   }
+
+  _entitiesToSort.clear();
 }
