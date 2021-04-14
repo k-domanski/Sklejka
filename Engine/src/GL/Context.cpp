@@ -17,6 +17,8 @@ namespace Engine::GL {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    glEnable(GL_DEPTH_TEST);
+
     /* Textures */
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &_maxTextureUnits);
     _boundTexture.resize(_maxTextureUnits, 0u);

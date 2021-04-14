@@ -51,6 +51,7 @@ namespace Engine::Renderer {
     for (size_t i = 0; i < mesh->mNumVertices; i++) {
       Vertex vertex;
       glm::vec3 vec;
+      glm::vec2 uv;
 
       vec.x           = mesh->mVertices[i].x;
       vec.y           = mesh->mVertices[i].y;
@@ -61,6 +62,10 @@ namespace Engine::Renderer {
       vec.y         = mesh->mNormals[i].y;
       vec.z         = mesh->mNormals[i].z;
       vertex.normal = vec;
+      
+      uv.x      = mesh->mTextureCoords[0][i].x;
+      uv.y      = mesh->mTextureCoords[0][i].y;
+      vertex.uv = uv;
 
       if (mesh->mTextureCoords[0]) {
         glm::vec2 vec;
