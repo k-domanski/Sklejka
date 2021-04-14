@@ -34,8 +34,10 @@ auto Engine::Systems::Renderer::SortByMaterial() -> void {
   for (auto entityID : _entities) {
     auto meshRenderer =
         ECS::EntityManager::GetInstance().GetComponent< Components::MeshRenderer >(entityID);
-    if (meshRenderer->IsDirty())
+    if (meshRenderer->IsDirty()) {
       entitiesToSort.insert(entityID);
+      meshRenderer->SetDirty(false);
+    }
   }
 
   for (auto entityID : entitiesToSort) {
