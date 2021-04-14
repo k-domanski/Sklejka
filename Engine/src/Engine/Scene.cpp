@@ -7,10 +7,14 @@ namespace Engine {
     using ECS::EntityManager;
     _sceneGraph   = EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();
     _renderSystem = EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
+    _cameraSystem = EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
   }
   auto Scene::Update(float deltaTime) -> void {
     // Update other systems before
     _sceneGraph->Update();
+    // Physics go here
+    // And after them scene graph again?
+    _cameraSystem->Update();
   }
   auto Scene::Draw() -> void {
     _renderSystem->Update();

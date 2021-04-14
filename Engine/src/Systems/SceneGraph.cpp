@@ -3,22 +3,35 @@
 #include <Components/Transform.h>
 
 namespace Engine::Systems {
-  SceneGraph::SceneGraph(): ECS::System() {
+  using ECS::EntityManager;
+  SceneGraph::SceneGraph() {
     AddSignature< Transform >();
+    _rootEntity = EntityManager::GetInstance().CreateEntity(_rootID);
+    _rootEntity->AddComponent< Transform >();
+    AddEntity(_rootEntity->GetID());
   }
   auto SceneGraph::Update() -> void {
-    using ECS::EntityManager;
     // Check if any transform is dirty and update it's branch
-    for (auto& kv : _parentChildMap) {
-      if (kv.first == _rootID)
-        continue;
-      auto& transform = EntityManager::GetInstance().GetComponent< Transform >(kv.first);
-      if (transform->flags.GetFlag(TransformFlags::Dirty)) {
+    for(auto& entity_id : _entities) {
+      auto& transform = EntityManager::GetInstance().GetComponent< Transform >(entity_id);
+      if (transform->flags.Get(TransformFlag::Dirty)) {
         auto& parent_tr =
-            EntityManager::GetInstance().GetComponent< Transform >(_childParentMap[kv.first]);
+            EntityManager::GetInstance().GetComponent< Transform >(_childParentMap[entity_id]);
         RecursiveUpdateParentAndChildren(transform, parent_tr);
       }
     }
+
+    /* O L D */
+    //for (auto& kv : _parentChildMap) {
+    //  /*if (kv.first == _rootID)
+    //    continue;*/
+    //  auto& transform = EntityManager::GetInstance().GetComponent< Transform >(kv.first);
+    //  if (transform->flags.Get(TransformFlag::Dirty)) {
+    //    auto& parent_tr =
+    //        EntityManager::GetInstance().GetComponent< Transform >(_childParentMap[kv.first]);
+    //    RecursiveUpdateParentAndChildren(transform, parent_tr);
+    //  }
+    //}
   }
   auto SceneGraph::SetParent(ECS::EntityID child, ECS::EntityID parent) -> void {
     // Remove from current parent
@@ -32,15 +45,17 @@ namespace Engine::Systems {
       }
     }
     // Assign to new parent
-    _parentChildMap[parent].push_back(child);
-    _childParentMap[child] = parent;
+    if (child != _rootID) {
+      _parentChildMap[parent].push_back(child);
+      _childParentMap[child] = parent;
+    }
   }
   auto SceneGraph::AddChild(ECS::EntityID parent, ECS::EntityID child) -> void {
     SetParent(child, parent);
   }
   auto SceneGraph::AddEntity(ECS::EntityID id) -> void {
+    ECS::System::AddEntity(id);
     SetParent(id, _rootID);
-    //ECS::System::AddEntity(id);
   }
   auto SceneGraph::AddEntity(ECS::EntityID id, ECS::EntityID parent) -> void {
     ECS::System::AddEntity(id);
@@ -53,7 +68,7 @@ namespace Engine::Systems {
     } else {
       transform->_modelMatrix = parent->_modelMatrix * transform->GetLocalMatrix();
     }
-    transform->flags.ClearFlag(TransformFlags::Dirty);
+    transform->flags.Clear(TransformFlag::Dirty);
     if (_parentChildMap.count(transform->GetEntityID()) == 0)
       return;
     for (auto& childID : _parentChildMap[transform->GetEntityID()]) {

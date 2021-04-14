@@ -1,15 +1,18 @@
 #pragma once
 #include <pch.h>
 #include <ECS/ECS.h>
-#include <Components/Flags.h>
+#include <Utility/Utility.h>
 
 namespace Engine::Systems {
   class SceneGraph;
 }
 
 namespace Engine {
-  class Transform : public ECS::Component {
+  BETTER_ENUM(__TransformFlag, uint32_t, Dirty = Helpers::Bit32(0), NewData = Helpers::Bit32(1));
+  typedef __TransformFlag TransformFlag;
+  typedef Utility::BitFlags< TransformFlag > TransformBitFlags;
 
+  class Transform : public ECS::Component {
   private:
     glm::vec3 _position{0.0f};
     glm::quat _rotation{1.0f, 0.0f, 0.0f, 0.0f};
@@ -19,9 +22,7 @@ namespace Engine {
   public:
     friend class Engine::Systems::SceneGraph;
     TransformBitFlags flags;
-    Transform(): Component(), _modelMatrix(glm::mat4(1.0f)) {
-    }
-    ~Transform() override = default;
+    Transform();
     auto Position() const noexcept -> glm::vec3;
     auto Position(const glm::vec3& position) noexcept -> glm::vec3;
     auto Rotation() const noexcept -> glm::quat;

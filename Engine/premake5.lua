@@ -26,7 +26,8 @@ project "Engine"
 
     defines
     {
-        "GLFW_INCLUDE_NONE"
+        "GLFW_INCLUDE_NONE",
+        "LOG_CORE"
     }
 
     includedirs

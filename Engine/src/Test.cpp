@@ -29,7 +29,7 @@
 
 #include <GL/UniformBufferData.h>
 #include <Components/Transform.h>
-#include <Camera.h>
+#include <Components/Camera.h>
 #include <Events/MouseEvent.h>
 #include <App/Input.h>
 
@@ -166,11 +166,11 @@ namespace Engine {
     GL::CameraUniformData camera_data;
     GL::CameraUniformBuffer camera_buffer;
     auto aspect = window->GetWidth() / (float)window->GetHeight();
-    Camera camera(45.0f, 0.001f, 1000.0f);
+    /*Camera camera(45.0f, 0.001f, 1000.0f);
     camera.transform.Position({0.0f, 0.0f, 2.0f});
     camera.transform.Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
     camera_data.view       = camera.GetViewMatrix();
-    camera_data.projection = camera.GetProjectionMatrix();
+    camera_data.projection = camera.GetProjectionMatrix();*/
     camera_buffer.SetData(camera_data);
 
     /* Event callback */
@@ -186,35 +186,35 @@ namespace Engine {
       float scrollDelta = 0.0f;
     } mouseState;
     mouseState.screenSize            = {window->GetWidth(), window->GetHeight()};
-    Window::EventCallBackFn callback = [&camera, &mouseState, &window](Event& event) {
-      if (event.GetEventType() == +EventType::MouseButtonPressed) {
-        auto mbtn_ev = static_cast< MouseButtonEvent* >(&event);
-        if (auto mb = mbtn_ev->GetMouseButton(); mb == 2) {
-          // Scroll Button
-          mouseState.m3Pressed = true;
-        } else if (mb == 1) {
-          // Right Mouse Button
-          mouseState.m2Pressed = true;
-        }
-      } else if (event.GetEventType() == +EventType::MouseButtonReleased) {
-        auto mbtn_ev = static_cast< MouseButtonEvent* >(&event);
-        if (auto mb = mbtn_ev->GetMouseButton(); mb == 2) {
-          // Scroll Button
-          mouseState.m3Pressed    = false;
-          mouseState.m3FirstPress = true;
-        } else if (mb == 1) {
-          // Right Mouse Button
-          mouseState.m2Pressed    = false;
-          mouseState.m2FirstPress = true;
-        }
-      }
-      if (event.GetEventType() == +EventType::MouseScrolled) {
-        auto mscr_ev           = static_cast< MouseScrolledEvent* >(&event);
-        mouseState.scrollDelta = mscr_ev->GetYOffset();
-      }
-    };
+    //Window::EventCallBackFn callback = [&camera, &mouseState, &window](Event& event) {
+    //  if (event.GetEventType() == +EventType::MouseButtonPressed) {
+    //    auto mbtn_ev = static_cast< MouseButtonEvent* >(&event);
+    //    if (auto mb = mbtn_ev->GetMouseButton(); mb == 2) {
+    //      // Scroll Button
+    //      mouseState.m3Pressed = true;
+    //    } else if (mb == 1) {
+    //      // Right Mouse Button
+    //      mouseState.m2Pressed = true;
+    //    }
+    //  } else if (event.GetEventType() == +EventType::MouseButtonReleased) {
+    //    auto mbtn_ev = static_cast< MouseButtonEvent* >(&event);
+    //    if (auto mb = mbtn_ev->GetMouseButton(); mb == 2) {
+    //      // Scroll Button
+    //      mouseState.m3Pressed    = false;
+    //      mouseState.m3FirstPress = true;
+    //    } else if (mb == 1) {
+    //      // Right Mouse Button
+    //      mouseState.m2Pressed    = false;
+    //      mouseState.m2FirstPress = true;
+    //    }
+    //  }
+    //  if (event.GetEventType() == +EventType::MouseScrolled) {
+    //    auto mscr_ev           = static_cast< MouseScrolledEvent* >(&event);
+    //    mouseState.scrollDelta = mscr_ev->GetYOffset();
+    //  }
+    //};
     // TODO: Window as singleton
-    window->SetEventCallback(callback);
+    //window->SetEventCallback(callback);
     // window->SetEventCallback(std::bind(OnEvent, std::placeholders::_1));
 
     camera_buffer.BindToSlot(0);
@@ -282,61 +282,61 @@ namespace Engine {
       /* -------------------------- */
 
       /* INPUT */
-      if (mouseState.m3Pressed) {
-        // Scroll Button
-        if (mouseState.m3FirstPress) {
-          mouseState.m3FirstPress = false;
-          mouseState.m3LastPos    = Input::GetMousePosition();
+      //if (mouseState.m3Pressed) {
+      //  // Scroll Button
+      //  if (mouseState.m3FirstPress) {
+      //    mouseState.m3FirstPress = false;
+      //    mouseState.m3LastPos    = Input::GetMousePosition();
 
-        } else {
-          auto cursorPos = Input::GetMousePosition();
-          auto delta     = cursorPos - mouseState.m3LastPos;
-          delta /= mouseState.screenSize;
+      //  } else {
+      //    auto cursorPos = Input::GetMousePosition();
+      //    auto delta     = cursorPos - mouseState.m3LastPos;
+      //    delta /= mouseState.screenSize;
 
-          auto position = camera.transform.Position();
-          position += camera.transform.Right() * delta.x * mouseState.sensitivity;
-          position += camera.transform.Up() * delta.y * mouseState.sensitivity;
-          camera.transform.Position(position);
+      //    auto position = camera.transform.Position();
+      //    position += camera.transform.Right() * delta.x * mouseState.sensitivity;
+      //    position += camera.transform.Up() * delta.y * mouseState.sensitivity;
+      //    camera.transform.Position(position);
 
-          mouseState.m3LastPos = cursorPos;
-        }
-      } else if (mouseState.m2Pressed) {
-        // Right Mouse Button
-        if (mouseState.m2FirstPress) {
-          mouseState.m2FirstPress = false;
-          mouseState.m2LastPos    = Input::GetMousePosition();
-        } else {
-          auto cursorPos = Input::GetMousePosition();
-          auto delta     = cursorPos - mouseState.m2LastPos;
-          delta /= mouseState.screenSize;
+      //    mouseState.m3LastPos = cursorPos;
+      //  }
+      //} else if (mouseState.m2Pressed) {
+      //  // Right Mouse Button
+      //  if (mouseState.m2FirstPress) {
+      //    mouseState.m2FirstPress = false;
+      //    mouseState.m2LastPos    = Input::GetMousePosition();
+      //  } else {
+      //    auto cursorPos = Input::GetMousePosition();
+      //    auto delta     = cursorPos - mouseState.m2LastPos;
+      //    delta /= mouseState.screenSize;
 
-          // TODO: Add clamping in X axis;
-          const auto sensitivity = 120.0f;
-          camera.transform.Rotate(glm::radians(-delta.x * sensitivity), {0.0f, 1.0f, 0.0f});
-          auto dy = delta.y * sensitivity;
-          // Locking rotation in [-89.0f, 89.0f] range
-          auto angle = glm::degrees(
-              glm::angle(glm::rotation(camera.transform.Forward(), {0.0f, 1.0f, 0.0f})));
-          if (auto fa = angle + dy; fa < 1.0f || fa > 179.0f) {
-            dy = 0.0f;
-          }
-          camera.transform.Rotate(glm::radians(dy), camera.transform.Right());
+      //    // TODO: Add clamping in X axis;
+      //    const auto sensitivity = 120.0f;
+      //    camera.transform.Rotate(glm::radians(-delta.x * sensitivity), {0.0f, 1.0f, 0.0f});
+      //    auto dy = delta.y * sensitivity;
+      //    // Locking rotation in [-89.0f, 89.0f] range
+      //    auto angle = glm::degrees(
+      //        glm::angle(glm::rotation(camera.transform.Forward(), {0.0f, 1.0f, 0.0f})));
+      //    if (auto fa = angle + dy; fa < 1.0f || fa > 179.0f) {
+      //      dy = 0.0f;
+      //    }
+      //    camera.transform.Rotate(glm::radians(dy), camera.transform.Right());
 
-          mouseState.m2LastPos = cursorPos;
-        }
-      }
+      //    mouseState.m2LastPos = cursorPos;
+      //  }
+      //}
 
-      if (mouseState.scrollDelta != 0.0f) {
-        camera.transform.Position(camera.transform.Position()
-                                  + camera.transform.Forward() * mouseState.scrollDelta * 0.1f);
-        mouseState.scrollDelta = 0.0f;
-      }
+      //if (mouseState.scrollDelta != 0.0f) {
+      //  camera.transform.Position(camera.transform.Position()
+      //                            + camera.transform.Forward() * mouseState.scrollDelta * 0.1f);
+      //  mouseState.scrollDelta = 0.0f;
+      //}
       /* ----- */
 
       /* Update camera */
-      camera_data.view       = camera.GetViewMatrix();
+      /*camera_data.view       = camera.GetViewMatrix();
       camera_data.projection = camera.GetProjectionMatrix();
-      camera_buffer.SetData(camera_data);
+      camera_buffer.SetData(camera_data);*/
 
       tr1->Rotate(timer.DeltaTime() * 0.3, {0.0f, 1.0f, 0.0f});
 

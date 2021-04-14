@@ -36,3 +36,19 @@ namespace Engine {
 #define APP_WARN(...) Engine::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define APP_ERROR(...) Engine::Log::GetClientLogger()->error(__VA_ARGS__)
 #define APP_FATAL(...) Engine::Log::GetClientLogger()->critical(__VA_ARGS__)
+
+#ifdef LOG_CORE
+  #define LOG_TRACE(...) Engine::Log::GetEngineLogger()->trace(__VA_ARGS__)
+  #define LOG_DEBUG(...) Engine::Log::GetEngineLogger()->debug(__VA_ARGS__)
+  #define LOG_INFO(...) Engine::Log::GetEngineLogger()->info(__VA_ARGS__)
+  #define LOG_WARN(...) Engine::Log::GetEngineLogger()->warn(__VA_ARGS__)
+  #define LOG_ERROR(...) Engine::Log::GetEngineLogger()->error(__VA_ARGS__)
+  #define LOG_FATAL(...) Engine::Log::GetEngineLogger()->critical(__VA_ARGS__)
+#else
+  #define LOG_TRACE(...) Engine::Log::GetClientLogger()->trace(__VA_ARGS__)
+  #define LOG_DEBUG(...) Engine::Log::GetClientLogger()->debug(__VA_ARGS__)
+  #define LOG_INFO(...) Engine::Log::GetClientLogger()->info(__VA_ARGS__)
+  #define LOG_WARN(...) Engine::Log::GetClientLogger()->warn(__VA_ARGS__)
+  #define LOG_ERROR(...) Engine::Log::GetClientLogger()->error(__VA_ARGS__)
+  #define LOG_FATAL(...) Engine::Log::GetClientLogger()->critical(__VA_ARGS__)
+#endif
