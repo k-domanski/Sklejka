@@ -49,7 +49,7 @@ namespace Engine {
       -> std::shared_ptr< GL::Texture2D > {
     if (_loadedTextures2D.count(file) == 0) {
       int x, y, n;
-      auto pixel_data = stbi_load("./textures/pepo_sad.png", &x, &y, &n, 4);
+      auto pixel_data = stbi_load(file.data(), &x, &y, &n, 4);
       auto texture    = std::make_shared< GL::Texture2D >(x, y, pixel_data);
       stbi_image_free(pixel_data);
       _loadedTextures2D[file] = texture;

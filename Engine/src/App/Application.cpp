@@ -13,7 +13,7 @@ namespace Engine {
     AddOverlay(m_ImGuiLayer);
 
     GL::Context::Initialize();
-    GL::Context::SetClearBufferMask(GL::BufferBit::Color);
+    GL::Context::SetClearBufferMask(GL::BufferBit::Color | GL::BufferBit::Depth);
     GL::Context::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
   }
   Application::~Application() {

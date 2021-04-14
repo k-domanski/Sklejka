@@ -12,6 +12,10 @@ void EditorLayer::OnAttach() {
   m_Shader       = AssetManager::GetShader("./shaders/default.glsl");
   assert(("Failed to acquire shader", m_Shader != nullptr));
   m_ConeMesh = coneModel->getRootMesh();
+  m_PepeModel = AssetManager::GetModel("./models/Pepe.obj");
+  auto tex_shader = AssetManager::GetShader("./shaders/texture_shader.glsl");
+  auto pepe_texture = AssetManager::GetTexture2D("./textures/Pepe_Texture.png");
+  m_PepeMaterial    = AssetManager::GetMaterial(tex_shader, "pepe_sh", "pepe_tex", pepe_texture);
 
   auto aspect           = Engine::Window::Get().GetAspectRatio();
   auto camera_entity = Engine::ECS::EntityManager::GetInstance().CreateEntity();
@@ -29,6 +33,7 @@ void EditorLayer::OnAttach() {
   /*ECS Scene*/
   m_Entity1  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Entity2  = ECS::EntityManager::GetInstance().CreateEntity();
+  m_Pepe  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Material = AssetManager::GetMaterial(m_Shader, "path/to/shader.glsl,",
                                          "./textures/pepo_sad.png", texture);
   // m_Material->SetShader(m_Shader, "path/to/shader.glsl");
@@ -37,6 +42,8 @@ void EditorLayer::OnAttach() {
   m_Entity1->AddComponent< Components::MeshRenderer >(m_ConeMesh, m_Material);
   m_Entity2->AddComponent< Transform >();
   m_Entity2->AddComponent< Components::MeshRenderer >(m_ConeMesh, m_Material);
+  m_PepeTransform = m_Pepe->AddComponent< Transform >();
+  m_Pepe->AddComponent< Components::MeshRenderer >(m_PepeModel->getRootMesh(), m_PepeMaterial);
   auto sg = m_Scene.SceneGraph();
   auto id = m_Entity1->GetID();
   sg->AddEntity(id);
@@ -48,6 +55,8 @@ void EditorLayer::OnAttach() {
   tr1->Position({1.0f, 0.0f, 0.0f});
   tr1->Scale({0.2f, 0.2f, 0.2f});
   tr2->Position({-10.0f, 0.0f, 0.0f});
+  m_PepeTransform->Position({0.0f, 1.0f, 0.0f});
+  m_Scene.SceneGraph()->AddEntity(m_PepeTransform->GetEntityID(), tr2->GetEntityID());
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {
@@ -58,6 +67,7 @@ void EditorLayer::OnUpdate(double deltaTime) {
 
   auto tr1 = m_Entity1->GetComponent< Transform >();
   tr1->Rotate(deltaTime * 0.3, {0.0f, 1.0f, 0.0f});
+  m_PepeTransform->Rotate(deltaTime * 0.1, {0.0f, 1.0f, 0.0f});
 
   m_Scene.Update(deltaTime);
   /*Update systemów w aplikacji?*/
