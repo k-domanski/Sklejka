@@ -15,7 +15,8 @@ project "Editor"
 
     defines
     {
-        "GLFW_INCLUDE_NONE"
+        "GLFW_INCLUDE_NONE",
+        "LOG_CORE"
     }
 
     includedirs
@@ -27,6 +28,7 @@ project "Editor"
         "%{wks.location}/Engine/vendor/assimp/include",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
+        "%{IncludeDir.ImGui}",
         "%{IncludeDir.glm}",
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.better_enums}/include",

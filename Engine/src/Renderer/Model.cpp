@@ -17,7 +17,8 @@ namespace Engine::Renderer {
 
   void Model::loadModel(std::string_view path) {
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path.data(), aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene* scene =
+        importer.ReadFile(path.data(), aiProcess_Triangulate | aiProcess_FlipUVs);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
       CORE_ERROR("Failed to load model: {0}", importer.GetErrorString());
@@ -61,6 +62,15 @@ namespace Engine::Renderer {
       vec.z         = mesh->mNormals[i].z;
       vertex.normal = vec;
 
+      if (mesh->mTextureCoords[0]) {
+        glm::vec2 vec;
+        vec.x            = mesh->mTextureCoords[0][i].x;
+        vec.y            = mesh->mTextureCoords[0][i].y;
+        vertex.uv        = vec;
+      } else {
+        vertex.uv = glm::vec2(0.0f, 0.0f);
+      }
+
       // Add the created vertex to the vector
       vertices.push_back(vertex);
     }
@@ -72,7 +82,7 @@ namespace Engine::Renderer {
       }
     }
 
-    return std::make_shared<Mesh>(vertices, indices);
+    return std::make_shared< Mesh >(vertices, indices);
   }
 
 }  // namespace Engine::Renderer

@@ -16,12 +16,13 @@ namespace Engine::ECS {
     [[nodiscard]] auto GetSignature() const -> std::shared_ptr< EntitySignature >;
 
     template< class T, typename... Args >
-    void AddComponent(Args&&... args) {
-      EntityManager::GetInstance().AddComponent< T >(_entityID, std::forward< Args >(args)...);
+    auto AddComponent(Args&&... args) -> std::shared_ptr< T > {
+      return EntityManager::GetInstance().AddComponent< T >(_entityID,
+                                                            std::forward< Args >(args)...);
     }
 
     template< class T >
-    std::shared_ptr<T> GetComponent() {
+    std::shared_ptr< T > GetComponent() {
       return EntityManager::GetInstance().GetComponent< T >(_entityID);
     }
 
@@ -29,4 +30,4 @@ namespace Engine::ECS {
     EntityID _entityID;
     std::shared_ptr< EntitySignature > _signature;
   };
-}  // namespace ECS
+}  // namespace Engine::ECS

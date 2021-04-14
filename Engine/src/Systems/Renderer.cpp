@@ -19,6 +19,9 @@ void Engine::Systems::Renderer::Update() {
       mesh->Use();
       // TODO: change for world matrix
       material->SetTransform(transform->GetWorldMatrix());
+      // HACK: Assume for now that under slot 1 is camera uniform buffer
+      // TODO: Get the actual slot number from somewhere, somehow :)
+      material->GetShader()->BindUniformBlock("u_Camera", 1); 
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
     }
   }

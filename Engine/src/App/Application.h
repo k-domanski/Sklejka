@@ -1,6 +1,7 @@
 #pragma once
 #include "Window.h"
-#include <App/LayerStack.h>
+#include "App/LayerStack.h"
+#include "ImGui/ImGuiLayer.h"
 #include "Timer.h"
 #include "ECS/System.h"
 
@@ -11,6 +12,7 @@ namespace Engine {
     virtual ~Application();
     void Run();
     void AddLayer(Layer* layer);
+    void AddOverlay(Layer* layer);
     void OnEvent(Event& event);
 
   private:
@@ -20,6 +22,7 @@ namespace Engine {
   private:
     std::unique_ptr< Window > m_Window;
     bool m_Running = true;
+    ImGuiLayer* m_ImGuiLayer;
     LayerStack m_LayerStack;
     Timer timer;
   };

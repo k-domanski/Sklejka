@@ -11,13 +11,18 @@ namespace Engine {
     }
   }
   void LayerStack::AddLayer(Layer* layer) {
-    m_Layers.push_back(layer);
+    m_Layers.emplace(m_Layers.begin() + m_Index, layer);
+    m_Index++;
+  }
+  void LayerStack::AddOverlay(Layer* layer) {
+    m_Layers.emplace_back(layer);
   }
   void LayerStack::RemoveLayer(Layer* layer) {
     auto it = std::find(m_Layers.begin(), m_Layers.end(), layer);
     if (it != m_Layers.end()) {
       layer->OnDetach();
       m_Layers.erase(it);
+      m_Index--;
     }
   }
 }  // namespace Engine

@@ -59,6 +59,13 @@ namespace Engine::ECS {
     return entity;
     // return entity;
   }
+  auto EntityManager::CreateEntity(EntityID id) -> std::shared_ptr< Entity > {
+    std::shared_ptr< Entity > entity = std::make_shared< Entity >();
+    entity->_entityID                = id;
+    _entities.push_back(entity);
+    return entity;
+    // return entity;
+  }
   auto EntityManager::GetEntity(EntityID id) -> std::shared_ptr< Entity > {
     const auto it = std::find_if(_entities.begin(), _entities.end(),
                                  [id](auto ent) { return ent->_entityID == id; });

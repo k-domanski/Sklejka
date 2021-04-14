@@ -41,7 +41,7 @@ namespace Engine::ECS {
       component->_entityID = entityID;
       auto list            = GetComponentList< T >();
       list->AddComponent(component);
-      return list->GetComponent(entityID);
+      return component;
     }
 
     template< class T >
@@ -77,6 +77,7 @@ namespace Engine::ECS {
     auto AddToSystem(SystemTypeID systemID, EntityID entityID) -> void;
 
     auto CreateEntity() -> std::shared_ptr< Entity >;
+    auto CreateEntity(EntityID id) -> std::shared_ptr< Entity >;
     auto GetEntity(EntityID) -> std::shared_ptr< Entity >;
     auto Update() -> void;
     auto Clear() -> void;

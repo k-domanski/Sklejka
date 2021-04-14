@@ -10,8 +10,9 @@ namespace Engine {
 
     virtual void OnAttach() = 0;
     virtual void OnDetach() = 0;
-    virtual void OnUpdate(double deltaTime) = 0;
+    virtual void OnUpdate(double deltaTime) {};
     virtual void OnEvent(Event& event) = 0;
+    virtual void OnImGuiRender() {};
 
   private:
     std::string m_LayerName;

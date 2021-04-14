@@ -13,6 +13,11 @@ project "Game"
         "src/**.cpp"
     }
 
+    defines
+    {
+        "LOG_APP"
+    }
+
     includedirs
     {
         "%{wks.location}/Engine/src",
