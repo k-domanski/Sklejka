@@ -12,9 +12,11 @@ void EditorLayer::OnAttach() {
   m_Shader       = AssetManager::GetShader("./shaders/default.glsl");
   assert(("Failed to acquire shader", m_Shader != nullptr));
   m_ConeMesh        = coneModel->getRootMesh();
-  m_PepeModel       = AssetManager::GetModel("./models/squirrel.fbx");
+  //m_PepeModel       = AssetManager::GetModel("./models/squirrel.fbx");
+  m_PepeModel       = AssetManager::GetModel("./models/silly_dancing.fbx");
   auto tex_shader   = AssetManager::GetShader("./shaders/texture_shader.glsl");
-  auto pepe_texture = AssetManager::GetTexture2D("./textures/Untilted.png");
+  auto pepe_texture = AssetManager::GetTexture2D("./textures/Stormtrooper_D.png");
+  //auto pepe_texture = AssetManager::GetTexture2D("./textures/Untilted.png");
   m_PepeMaterial    = AssetManager::GetMaterial(tex_shader, "pepe_sh", "pepe_tex", pepe_texture);
 
   auto aspect        = Engine::Window::Get().GetAspectRatio();
