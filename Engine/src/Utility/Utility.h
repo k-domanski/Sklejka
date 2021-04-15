@@ -1,9 +1,10 @@
 #pragma once
 #include <pch.h>
 #include <Utility/Helpers.h>
+#include <GL/GLEnum.h>
 
 namespace Engine::Utility {
-  template<typename EType>
+  template< typename EType >
   class BitFlags {
   public:
     typedef typename EType::_integral value_t;
@@ -31,6 +32,7 @@ namespace Engine::Utility {
     auto GetState() const noexcept -> value_t {
       return _state;
     }
+
   private:
     value_t _state{0};
   };
@@ -38,11 +40,10 @@ namespace Engine::Utility {
   struct ShaderParseResult {
     bool success = false;
     std::string version;
-    std::string vertexShader;
-    std::string fragmentShader;
     std::string infoMessage;
+    std::vector< std::pair< GL::ShaderType, std::string > > shaders;
   };
 
   auto ReadTextFile(const std::string_view& fileName) -> std::string;
-  auto ParseShaderSource(std::string source) -> ShaderParseResult;
-}
+  auto ParseShaderSource(std::string source, const std::string& file_path) -> ShaderParseResult;
+}  // namespace Engine::Utility

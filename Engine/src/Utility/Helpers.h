@@ -12,6 +12,8 @@ namespace Engine::Helpers {
   auto GetLineFromPosition(const std::string& str, std::size_t pos) -> std::size_t;
   auto GetLineBeginning(const std::string& str, std::size_t line) -> std::size_t;
   auto GetLineEnd(const std::string& str, std::size_t line) -> std::size_t;
+  auto GetParentFolderPath(const std::string& str) -> std::string;
+  auto RemoveAllComments(std::string str, const std::string& commentToken) -> std::string;
 
   /* Bit helpers */
   template< std::size_t bit_count >

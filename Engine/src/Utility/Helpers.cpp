@@ -72,4 +72,24 @@ namespace Engine::Helpers {
     }
     return end_pos;
   }
+  auto GetParentFolderPath(const std::string& str) -> std::string {
+    auto last_slash = str.find_last_of('/');
+    if (last_slash == std::string::npos) {
+      return "./";
+    }
+    return str.substr(0, last_slash + 1);
+  }
+  auto RemoveAllComments(std::string str, const std::string& commentToken) -> std::string {
+    for (auto pos = FindToken(str, commentToken); pos != std::string::npos;
+         pos      = FindToken(str, commentToken)) {
+      auto line = GetLineFromPosition(str, pos);
+      auto end  = GetLineEnd(str, line);
+      if (str[end] == '\n') {
+        str.erase(pos, end - pos);
+      } else {
+        str.erase(pos, end - pos + 1);
+      }
+    }
+    return str;
+  }
 }  // namespace Engine::Helpers

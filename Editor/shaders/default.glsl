@@ -3,20 +3,13 @@
 // sub shaders between #shader and #endshader tags
 // after #shader specify shader type: vertex, fragment, geometry, etc
 #shader vertex
-layout(location = 0) in vec3 a_position;
-layout(location = 1) in vec3 a_normal;
-layout(location = 2) in vec2 a_uv;
-
-out vec3 v_pos;
-out vec2 v_uv;
-
-layout(std140) uniform u_Camera {
-  mat4 view_matrix;
-  mat4 projection_matrix;
-};
+#include "common.incl"
 
 uniform mat4 mvp;
 uniform mat4 u_model_matrix;
+
+out vec3 v_pos;
+out vec2 v_uv;
 
 void main() {
   v_uv = a_uv;
@@ -43,6 +36,6 @@ vec3 remap(vec3 val) {
 void main() {
   vec3 texel = texture(u_mainTexture, v_uv).rgb;
   out_color  = vec4(texel, 1.0f);
-  //out_color = vec4(remap(v_pos), 1.0f);
+  // out_color = vec4(remap(v_pos), 1.0f);
 }
 #endshader

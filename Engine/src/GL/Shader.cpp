@@ -29,6 +29,14 @@ namespace Engine::GL {
     return *this;
   }
 
+  auto Shader::FilePath() const noexcept -> std::string_view {
+    return _filePath;
+  }
+
+  auto Shader::FilePath(const std::string_view& filePath) -> std::string_view {
+    return _filePath = filePath;
+  }
+
   auto Shader::GetHandle() const noexcept -> GLuint {
     return _handle;
   }

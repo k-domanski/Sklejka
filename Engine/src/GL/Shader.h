@@ -11,6 +11,7 @@ namespace Engine::GL {
     std::vector< std::shared_ptr< SubShader > > _subShaders;
     std::unordered_map< std::string_view, GLuint > _uniformCache;
     std::unordered_map< std::string_view, GLuint > _uniformBlockCache;
+    std::string_view _filePath;
 
   public:
     static auto GetCurrentHandle() noexcept -> GLuint;
@@ -20,6 +21,8 @@ namespace Engine::GL {
     Shader(Shader&& other) noexcept;
     ~Shader();
     auto operator=(Shader&& other) noexcept -> Shader&;
+    auto FilePath() const noexcept -> std::string_view;
+    auto FilePath(const std::string_view& filePath) -> std::string_view;
     auto GetHandle() const noexcept -> GLuint;
     auto AttachShader(const std::shared_ptr< SubShader >& shader) noexcept -> void;
     auto Link() noexcept -> bool;

@@ -2,10 +2,60 @@
 #include "Utility.h"
 #include <Utility/Helpers.h>
 #include <GL/GLEnum.h>
+#include <App/Log.h>
+
+auto RecursiveIncludeProcess(std::string& content, const std::string& parent_dir,
+                             std::vector< std::string >& included_files) -> void {
+  using namespace Engine::Helpers;
+  using namespace Engine::Utility;
+
+  const std::string tag = "#include";
+  const auto tag_len    = tag.size();
+
+  const auto include_pos = FindTokens(content, tag);
+  int include_count      = 0;
+
+  for (int i = include_pos.size() - 1; i >= 0; --i) {
+    auto fp = GetNextWord(content, include_pos[i] + tag_len);
+    fp      = fp.substr(1, fp.size() - 2);
+
+    auto line_end = GetLineEnd(content, GetLineFromPosition(content, include_pos[i]));
+    content.erase(include_pos[i], line_end - include_pos[i] + 1);
+
+    auto it = std::find(included_files.begin(), included_files.end(), fp);
+    if (it != included_files.end()) {
+      // Already included
+      continue;
+    }
+
+    included_files.push_back(fp);
+    auto include_content = ReadTextFile(parent_dir + fp);
+    include_content      = RemoveAllComments(include_content, "//");
+    content.insert(include_pos[i], include_content);
+
+    ++include_count;
+  }
+
+  if (include_count == 0)
+    return;
+
+  RecursiveIncludeProcess(content, parent_dir, included_files);
+}
+
+auto ProcessIncludeDirective(std::string content, const std::string& parent_dir) -> std::string {
+  using namespace Engine::Helpers;
+  using namespace Engine::Utility;
+
+  std::vector< std::string > included_files;
+  RecursiveIncludeProcess(content, parent_dir, included_files);
+
+  return content;
+}
 
 auto Engine::Utility::ReadTextFile(const std::string_view& fileName) -> std::string {
   std::ifstream file(fileName.data());
   if (!file.good()) {
+    LOG_ERROR("Failed to open the file: {}", fileName);
     return "";
   }
 
@@ -13,20 +63,17 @@ auto Engine::Utility::ReadTextFile(const std::string_view& fileName) -> std::str
   return content;
 }
 
-auto Engine::Utility::ParseShaderSource(std::string source) -> ShaderParseResult {
+auto Engine::Utility::ParseShaderSource(std::string source, const std::string& file_path)
+    -> ShaderParseResult {
   // Search for #version
   using namespace Helpers;
   const std::string_view default_version("#version 430");
+  const std::string parentDirectory = GetParentFolderPath(source);
   ShaderParseResult result;
   result.success = false;
 
   /* Remove all comments */
-  for (auto pos = FindToken(source, "//"); pos != std::string::npos;
-       pos      = FindToken(source, "//")) {
-    auto line = GetLineFromPosition(source, pos);
-    auto end  = GetLineEnd(source, line);
-    source.erase(pos, end - pos);
-  }
+  source = RemoveAllComments(source, "//");
 
   /* Find version */
   std::string version;
@@ -114,19 +161,13 @@ auto Engine::Utility::ParseShaderSource(std::string source) -> ShaderParseResult
     auto end_pos    = GetLineEnd(source, end_line - 1);
     auto content    = source.substr(begin_pos, end_pos - begin_pos + 1);
 
+    // Parse #include in extracted content
+    auto parent_dir = GetParentFolderPath(file_path);
+    content         = ProcessIncludeDirective(content, parent_dir);
+
     // Inject version
     content.insert(0, version);
-
-    switch (sh_types[index]) {
-      case GL::ShaderType::VertexShader: {
-        result.vertexShader = content;
-        break;
-      }
-      case GL::ShaderType::FragmentShader: {
-        result.fragmentShader = content;
-        break;
-      }
-    }
+    result.shaders.emplace_back(sh_types[index], content);
   }
   // Finished
   result.success = true;

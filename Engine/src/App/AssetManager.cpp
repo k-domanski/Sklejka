@@ -17,18 +17,23 @@ namespace Engine {
   auto AssetManager::GetShader(const std::string_view& file) -> std::shared_ptr< GL::Shader > {
     if (_loadedShaders.count(file) == 0) {
       auto shaderSource = Utility::ReadTextFile(file);
-      auto parseResult  = Utility::ParseShaderSource(shaderSource);
+      auto parseResult  = Utility::ParseShaderSource(shaderSource, std::string(file));
       if (!parseResult.success) {
         CORE_ERROR("Shader parsing error: {0}", parseResult.infoMessage);
         return nullptr;
       }
-      auto vert =
+      auto shader = std::make_shared< GL::Shader >();
+      shader->FilePath(file);
+      for(auto& sh : parseResult.shaders) {
+        auto subShader = std::make_shared< GL::SubShader >(sh.first, sh.second);
+        shader->AttachShader(subShader);
+      }
+      /*auto vert =
           std::make_shared< GL::SubShader >(GL::ShaderType::VertexShader, parseResult.vertexShader);
       auto frag   = std::make_shared< GL::SubShader >(GL::ShaderType::FragmentShader,
-                                                    parseResult.fragmentShader);
-      auto shader = std::make_shared< GL::Shader >();
-      shader->AttachShader(vert);
-      shader->AttachShader(frag);
+                                                    parseResult.fragmentShader);*/
+      /*shader->AttachShader(vert);
+      shader->AttachShader(frag);*/
       if (!shader->Link()) {
         return nullptr;
       }
