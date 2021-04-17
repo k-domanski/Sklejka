@@ -28,6 +28,16 @@ namespace Engine::Renderer {
     return _diffuse;
   }
 
+  std::string Material::GetShaderFilepath()
+  {
+    return _shaderFile;
+  }
+
+  std::string Material::GetDiffuseFilepath()
+  {
+    return _diffuseFile;
+  }
+
   std::size_t Material::GetAssetID() {
     return _assetID;
   }

@@ -21,6 +21,8 @@ namespace Engine::Renderer {
     auto SetTransform(glm::mat4 m) -> void;
     std::shared_ptr< GL::Shader > GetShader();
     std::shared_ptr< GL::Texture2D > GetDiffuse();
+    std::string GetShaderFilepath();
+    std::string GetDiffuseFilepath();
     std::size_t GetAssetID();
     auto Use() noexcept -> void;
   };
