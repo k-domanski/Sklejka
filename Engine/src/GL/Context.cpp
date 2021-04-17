@@ -115,6 +115,27 @@ namespace Engine::GL {
     _textureTarget[_activeTexture] = target;
     glBindTexture(target, handle);
   }
+  auto Context::BindFramebuffer(GLenum target, GLuint handle) noexcept -> void {
+    if (IsFramebufferBound(target, handle)) {
+      return;
+    }
+    _boundFramebuffers[target] = handle;
+    glBindFramebuffer(target, handle);
+  }
+  auto Context::IsFramebufferBound(GLenum target, GLuint handle) noexcept -> bool {
+    if (_boundFramebuffers.count(target) != 0) {
+      if (_boundFramebuffers[target] == handle) {
+        return true;
+      }
+    }
+    return false;
+  }
+  auto Context::GetBoundFramebuffer(GLenum target) -> GLuint {
+    if (_boundFramebuffers.count(target) == 0) {
+      return 0;
+    }
+    return _boundFramebuffers[target];
+  }
   auto Context::ClearBuffers() noexcept -> void {
     glClear(_clearBitMask);
   }
