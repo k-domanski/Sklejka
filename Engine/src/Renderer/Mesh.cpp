@@ -44,4 +44,39 @@ namespace Engine::Renderer {
     _vertexBuffer.SetData(_vertexData.size() * sizeof(Vertex), _vertexData.data());
     _indiceBuffer.SetData(_indiceData.size() * sizeof(GLuint), _indiceData.data());
   }
+  auto Mesh::GetPrimitive(MeshPrimitive primitive) noexcept -> std::shared_ptr< Mesh > {
+    if (_primitiveMeshes.count(primitive) == 0) {
+      _primitiveMeshes[primitive] = CreatePrimitive(primitive);
+    }
+    return _primitiveMeshes[primitive];
+  }
+  auto Mesh::CreatePrimitive(MeshPrimitive primitive) noexcept -> std::shared_ptr< Mesh > {
+    switch (primitive) {
+      case MeshPrimitive::Plane: {
+        return CreatePlane();
+      }
+    }
+    LOG_WARN("No matching mesh primitive function: Primitive [{}]", primitive._to_string());
+    return nullptr;
+  }
+  auto Mesh::CreatePlane() noexcept -> std::shared_ptr< Mesh > {
+    const std::vector< Vertex > verts{{// Vert 0
+                                       {-1.0f, -1.0f, 0.0f},
+                                       {0.0f, 0.0f, 1.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 1
+                                       {1.0f, -1.0f, 0.0f},
+                                       {0.0f, 0.0f, 1.0f},
+                                       {1.0f, 0.0f}},
+                                      {// Vert 2
+                                       {1.0f, 1.0f, 0.0f},
+                                       {0.0f, 0.0f, 1.0f},
+                                       {1.0f, 1.0f}},
+                                      {// Vert 3
+                                       {-1.0f, 1.0f, 0.0f},
+                                       {0.0f, 0.0f, 1.0f},
+                                       {0.0f, 1.0f}}};
+    const std::vector< GLuint > inds{0, 1, 2, 2, 3, 0};
+    return std::make_shared< Mesh >(verts, inds);
+  }
 }  // namespace Engine::Renderer
