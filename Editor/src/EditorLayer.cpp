@@ -34,17 +34,17 @@ void EditorLayer::OnAttach() {
   m_EditorCamera.transform->Position({0.0f, 0.0f, 2.0f});
   m_EditorCamera.transform->Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
 
+  Engine::Serializer* serializer = new Serializer();
   /*ECS Scene*/
   m_Entity1  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Entity2  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Pepe     = ECS::EntityManager::GetInstance().CreateEntity();
-  m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
-                                         "./textures/pepo_sad.png", texture);
+  m_Material = serializer->LoadMaterial("./material.json");
+  //m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
+  //                                       "./textures/pepo_sad.png", texture);
 
-  Engine::Serializer* serializer = new Serializer();
 
   //serializer->SaveMaterial(m_Material, "./material.json");
-  serializer->LoadMaterial("./material.json");
 
   m_Entity1->AddComponent< Transform >();
   m_Entity1->AddComponent< Components::MeshRenderer >(m_ConeMesh, m_Material);

@@ -86,9 +86,7 @@ std::shared_ptr< Engine::Renderer::Material > Engine::Serializer::LoadMaterial(s
   std::shared_ptr< GL::Shader > shader_ptr = AssetManager::GetShader(shaderFilepath_string);
   std::shared_ptr< GL::Texture2D > texture_ptr = AssetManager::GetTexture2D(diffuseFilepath_string);
 
-  std::shared_ptr< Renderer::Material > material_ptr = std::make_shared< Renderer::Material >(material_assetID);
-  material_ptr->SetShader(shader_ptr, shaderFilepath_string);
-  material_ptr->SetDiffuse(texture_ptr, diffuseFilepath_string);
-
-  return material_ptr;
+  return AssetManager::GetMaterial(shader_ptr, shaderFilepath_string, diffuseFilepath_string,
+                                   texture_ptr);
+  ;
 }
