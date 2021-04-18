@@ -9,15 +9,16 @@ namespace EditorGUI {
     SceneHierarchyPanel() = default;
     SceneHierarchyPanel(std::shared_ptr< Scene > scene);
 
+    std::shared_ptr<ECS::Entity> GetSelectedEntity() { return m_SelectedEntity; }
     void SetScene(std::shared_ptr< Scene > scene);
     void OnImGuiRender();
 
   private:
-    void DrawEntity(ECS::EntityID entity);
-    void SetSelectedEntity(ECS::EntityID entity);
+    void DrawEntity(std::shared_ptr<ECS::Entity> entity);
+    void SetSelectedEntity(std::shared_ptr<ECS::Entity> entity);
 
   private:
     std::shared_ptr< Scene > m_Scene;
-    ECS::EntityID m_SelectedEntity;
+    std::shared_ptr<ECS::Entity> m_SelectedEntity;
   };
 }  // namespace EditorGUI

@@ -4,6 +4,7 @@
 #include <string>
 #include "EditorCameraArgs.h"
 #include "ImGui/Panels/SceneHierarchyPanel.h"
+#include "ImGui/Panels/InspectorPanel.h"
 
 template< typename T >
 using ptr_t = std::shared_ptr< T >;
@@ -52,4 +53,5 @@ private:
 
   /*Panels*/
   EditorGUI::SceneHierarchyPanel m_SceneHierarchyPanel;
+  EditorGUI::InspectorPanel m_InspectorPanel;
 };

@@ -51,6 +51,9 @@ void EditorLayer::OnAttach() {
   sg->AddEntity(m_Entity1->GetID());
   sg->AddEntity(m_Entity2->GetID());
   sg->AddEntity(m_Pepe->GetID());
+  
+
+
   /*SceneHierarchyPanel Test*/
   m_SceneHierarchyPanel.SetScene(m_Scene);
   auto ent1 = ECS::EntityManager::GetInstance().CreateEntity();
@@ -67,6 +70,8 @@ void EditorLayer::OnAttach() {
   sg->AddEntity(ent3->GetID(), ent1->GetID());
   sg->AddEntity(ent4->GetID(), ent1->GetID());
   /*------------------------*/
+  
+  
   // m_Scene.SceneGraph()->AddEntity(m_Entity2->GetID(), m_Entity1->GetID());
 
   auto box1 = m_Entity1->AddComponent< Components::BoxCollider >();
@@ -126,6 +131,7 @@ void EditorLayer::OnEvent(Event& event) {
 
 void EditorLayer::OnImGuiRender() {
   m_SceneHierarchyPanel.OnImGuiRender();
+  m_InspectorPanel.OnImGuiRender(m_SceneHierarchyPanel.GetSelectedEntity());
 }
 
 bool EditorLayer::OnMouseScroll(MouseScrolledEvent& e) {
