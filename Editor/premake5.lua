@@ -34,7 +34,7 @@ project "Editor"
         "%{IncludeDir.better_enums}/include",
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.rttr}/src",
-
+        "%{IncludeDir.json}/single_include",
     }
 
     links
