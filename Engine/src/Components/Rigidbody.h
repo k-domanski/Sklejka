@@ -5,7 +5,7 @@ namespace Engine::Components
 {
   class Rigidbody : public Engine::ECS::Component {
   public:
-    Rigidbody(): Component() {
+    Rigidbody(): Component("Rigidbody") {
       _velocity   = glm::vec3(0.0f);
       _useGravity = true;
     }
