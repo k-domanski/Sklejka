@@ -1,5 +1,6 @@
-#include "RenderTarget.h"
 #include "pch.h"
+#include "RenderTarget.h"
+#include <GL/Context.h>
 
 namespace Engine::GL {
   RenderTarget::RenderTarget(GLuint width, GLuint height) noexcept
@@ -32,6 +33,13 @@ namespace Engine::GL {
     // Can be set once per state change
     SetDrawBuffers();
   }
+  auto RenderTarget::GetColorAttachment(GLuint index) noexcept
+      -> std::shared_ptr< IFramebufferAttachment > {
+    if (_colorAttachments.count(index) == 0) {
+      return nullptr;
+    }
+    return _colorAttachments[index];
+  }
   auto RenderTarget::AttachColor(
       GLuint index, const std::shared_ptr< IFramebufferAttachment >& attachment) noexcept -> void {
     if (index >= Context::GetMaxColorAttachments()) {
@@ -39,24 +47,27 @@ namespace Engine::GL {
                Context::GetMaxColorAttachments());
       return;
     }
-    _framebuffer.Bind(_target);
+    auto current_framebuffer = BindSwap(_target);
     if (attachment == nullptr && _colorAttachments.count(index) != 0) {
       _colorAttachments[index]->DetachFromFramebuffer(_target, GL_COLOR_ATTACHMENT0 + index);
       _colorAttachments.erase(index);
+      Context::BindFramebuffer(_target, current_framebuffer);
       return;
     }
     if (_colorAttachments.count(index) != 0 && _colorAttachments[index] == attachment) {
+      Context::BindFramebuffer(_target, current_framebuffer);
       return;
     }
     attachment->AttachToFramebuffer(_target, GL_COLOR_ATTACHMENT0 + index);
     _colorAttachments[index] = attachment;
+    Context::BindFramebuffer(_target, current_framebuffer);
   }
   auto RenderTarget::AttachDepth(
       const std::shared_ptr< IFramebufferAttachment >& attachment) noexcept -> void {
     if (_depthAttachment == attachment) {
       return;
     }
-    _framebuffer.Bind(_target);
+    auto current_framebuffer = BindSwap(_target);
     // Detach combined if attached
     if (attachment == nullptr) {
       _depthAttachment->DetachFromFramebuffer(_target, GL_DEPTH_ATTACHMENT);
@@ -68,13 +79,14 @@ namespace Engine::GL {
       attachment->AttachToFramebuffer(_target, GL_DEPTH_ATTACHMENT);
     }
     _depthAttachment = attachment;
+    Context::BindFramebuffer(_target, current_framebuffer);
   }
   auto RenderTarget::AttachStencil(
       const std::shared_ptr< IFramebufferAttachment >& attachment) noexcept -> void {
     if (_stencilAttachment == attachment) {
       return;
     }
-    _framebuffer.Bind(_target);
+    auto current_framebuffer = BindSwap(_target);
     // Detach combined if attached
     if (attachment == nullptr) {
       _stencilAttachment->DetachFromFramebuffer(_target, GL_STENCIL_ATTACHMENT);
@@ -86,13 +98,14 @@ namespace Engine::GL {
       attachment->AttachToFramebuffer(_target, GL_STENCIL_ATTACHMENT);
     }
     _stencilAttachment = attachment;
+    Context::BindFramebuffer(_target, current_framebuffer);
   }
   auto RenderTarget::AttachDepthStencil(
       const std::shared_ptr< IFramebufferAttachment >& attachment) noexcept -> void {
     if (_depthStencilAttachment == attachment) {
       return;
     }
-    _framebuffer.Bind(_target);
+    auto current_framebuffer = BindSwap(_target);
     // Detach combined if attached
     if (attachment == nullptr) {
       _depthStencilAttachment->DetachFromFramebuffer(_target, GL_DEPTH_STENCIL_ATTACHMENT);
@@ -108,6 +121,7 @@ namespace Engine::GL {
       attachment->AttachToFramebuffer(_target, GL_DEPTH_STENCIL_ATTACHMENT);
     }
     _depthStencilAttachment = attachment;
+    Context::BindFramebuffer(_target, current_framebuffer);
   }
   auto RenderTarget::SetDrawBuffers() noexcept -> void {
     std::vector< GLenum > buffers;

@@ -7,6 +7,9 @@
 #include "Renderer/Vertex.h"
 
 namespace Engine::Renderer {
+  Model::Model(const std::shared_ptr< Mesh >& mesh) noexcept {
+    meshes.push_back(mesh);
+  }
   Model::Model(std::string_view path) {
     loadModel(path);
   }
@@ -62,16 +65,16 @@ namespace Engine::Renderer {
       vec.y         = mesh->mNormals[i].y;
       vec.z         = mesh->mNormals[i].z;
       vertex.normal = vec;
-      
+
       uv.x      = mesh->mTextureCoords[0][i].x;
       uv.y      = mesh->mTextureCoords[0][i].y;
       vertex.uv = uv;
 
       if (mesh->mTextureCoords[0]) {
         glm::vec2 vec;
-        vec.x            = mesh->mTextureCoords[0][i].x;
-        vec.y            = mesh->mTextureCoords[0][i].y;
-        vertex.uv        = vec;
+        vec.x     = mesh->mTextureCoords[0][i].x;
+        vec.y     = mesh->mTextureCoords[0][i].y;
+        vertex.uv = vec;
       } else {
         vertex.uv = glm::vec2(0.0f, 0.0f);
       }

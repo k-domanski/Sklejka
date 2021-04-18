@@ -17,7 +17,11 @@ namespace Engine::GL {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    /* Depth Testing */
     glEnable(GL_DEPTH_TEST);
+
+    /* Face Culling */
+    glEnable(GL_CULL_FACE);
 
     /* Textures */
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &_maxTextureUnits);

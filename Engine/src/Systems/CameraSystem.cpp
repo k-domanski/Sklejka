@@ -2,13 +2,20 @@
 #include "CameraSystem.h"
 #include <ECS/EntityManager.h>
 #include <App/Log.h>
+#include <App/Window.h>
 
 namespace Engine::Systems {
   using ECS::EntityManager;
-  CameraSystem::CameraSystem()
-      : _cameraUniformSlot(1u), _mainCamera(nullptr) {
+  CameraSystem::CameraSystem(): _cameraUniformSlot(1u), _mainCamera(nullptr) {
+    using namespace GL;
     AddSignature< Camera >();
     AddSignature< Transform >();
+
+    /*auto size      = Window::Get().GetScreenSize();
+    _renderTexture = std::make_shared< RenderTarget >(size.x, size.y);
+    _renderTexture->AttachColor(0, std::make_shared< TextureAttachment >(
+                                       size.x, size.y, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE));
+    _renderTexture->AttachDepthStencil(std::make_shared< Renderbuffer >(size.x, size.y));*/
   }
   auto CameraSystem::Update(float deltaTime) -> void {
     // Update Cameras

@@ -16,7 +16,7 @@ namespace Engine::GL {
     Texture2D(Texture2D&& other) noexcept;
     auto operator=(Texture2D&& other) noexcept -> Texture2D&;
     ~Texture2D();
-    auto Bind(GLuint index) noexcept -> void;
+    auto Bind(GLuint slot) noexcept -> void;
 
   private:
     auto Create(GLint width, GLint height, const GLvoid* data) -> void;

@@ -6,8 +6,13 @@
 #include <Renderer/Vertex.h>
 
 namespace Engine::Renderer {
+  BETTER_ENUM(__MeshPrimitive, uint8_t, Plane);
+  typedef __MeshPrimitive MeshPrimitive;
+
   class Mesh {
   private:
+    static inline std::unordered_map< MeshPrimitive::_integral, std::shared_ptr< Mesh > >
+        _primitiveMeshes;
     GL::VertexArray _vertexArray;
     GL::VertexBuffer _vertexBuffer;
     GL::IndiceBuffer _indiceBuffer;
@@ -29,5 +34,10 @@ namespace Engine::Renderer {
 
   private:
     auto SendDataToBuffers() noexcept -> void;
+    static auto CreatePrimitive(MeshPrimitive primitive) noexcept -> std::shared_ptr< Mesh >;
+    static auto CreatePlane() noexcept -> std::shared_ptr< Mesh >;
+
+  public:
+    static auto GetPrimitive(MeshPrimitive primitive) noexcept -> std::shared_ptr< Mesh >;
   };
 }  // namespace Engine::Renderer
