@@ -2,6 +2,8 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "../../Engine/Serializer.h"
+
 using namespace Engine;
 EditorLayer::EditorLayer(const std::string& name): Layer(name) {
 }
@@ -38,6 +40,12 @@ void EditorLayer::OnAttach() {
   m_Pepe     = ECS::EntityManager::GetInstance().CreateEntity();
   m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
                                          "./textures/pepo_sad.png", texture);
+
+  Engine::Serializer* serializer = new Serializer();
+
+  //serializer->SaveMaterial(m_Material, "./material.json");
+  serializer->LoadMaterial("./material.json");
+
   m_Entity1->AddComponent< Transform >();
   m_Entity1->AddComponent< Components::MeshRenderer >(m_ConeMesh, m_Material);
   m_Entity2->AddComponent< Transform >();
