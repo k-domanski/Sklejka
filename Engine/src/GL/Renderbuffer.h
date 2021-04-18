@@ -1,8 +1,9 @@
 #pragma once
 #include <pch.h>
+#include <GL/IFramebufferAttachment.h>
 
 namespace Engine::GL {
-  class Renderbuffer {
+  class Renderbuffer : public IFramebufferAttachment {
   private:
     GLuint _handle;
     glm::ivec2 _dimensions;
@@ -15,7 +16,9 @@ namespace Engine::GL {
     Renderbuffer(Renderbuffer&& other) noexcept;
     auto operator=(Renderbuffer&& other) noexcept -> Renderbuffer&;
     auto IsValid() const noexcept -> bool;
-    auto AttachToFramebuffer(GLenum attachment) -> void;
+    auto AttachToFramebuffer(GLenum target, GLenum attachment) noexcept -> void override;
+    auto DetachFromFramebuffer(GLenum target, GLenum attachment) noexcept -> void override;
+    auto Type() const noexcept -> AttachmentType override;
 
   private:
     auto Release() noexcept -> void;

@@ -28,8 +28,14 @@ namespace Engine::GL {
   auto Renderbuffer::IsValid() const noexcept -> bool {
     return _handle != 0;
   }
-  auto Renderbuffer::AttachToFramebuffer(GLenum attachment) -> void {
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, _handle);
+  auto Renderbuffer::AttachToFramebuffer(GLenum target, GLenum attachment) noexcept -> void {
+    glFramebufferRenderbuffer(target, attachment, GL_RENDERBUFFER, _handle);
+  }
+  auto Renderbuffer::DetachFromFramebuffer(GLenum target, GLenum attachment) noexcept -> void {
+    glFramebufferRenderbuffer(target, attachment, GL_RENDERBUFFER, 0);
+  }
+  auto Renderbuffer::Type() const noexcept -> AttachmentType {
+    return AttachmentType::Renderbuffer;
   }
   auto Renderbuffer::Release() noexcept -> void {
     if (IsValid()) {

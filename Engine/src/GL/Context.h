@@ -11,7 +11,9 @@ namespace Engine::GL {
     static inline GLint _maxTextureUnits{1};
     static inline std::vector< GLuint > _boundTexture;
     static inline std::vector< GLenum > _textureTarget;
+    /* Framebuffers */
     static inline std::unordered_map< GLenum, GLuint > _boundFramebuffers;
+    static inline GLint _maxColorAttachments{8};
 
   public:
     static auto Initialize() noexcept -> void;
@@ -36,6 +38,7 @@ namespace Engine::GL {
     static auto BindTexture(GLenum target, GLuint handle, GLuint slot) noexcept -> void;
     static auto BindTexture(GLenum target, GLuint handle) noexcept -> void;
     /* Frame Buffers */
+    static auto GetMaxColorAttachments() noexcept -> GLint;
     static auto BindFramebuffer(GLenum target, GLuint handle) noexcept -> void;
     static auto IsFramebufferBound(GLenum target, GLuint handle) noexcept -> bool;
     static auto GetBoundFramebuffer(GLenum target) -> GLuint;

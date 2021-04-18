@@ -23,6 +23,9 @@ namespace Engine::GL {
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &_maxTextureUnits);
     _boundTexture.resize(_maxTextureUnits, 0u);
     _textureTarget.resize(_maxTextureUnits, NULL);
+
+    /* Framebuffers */
+    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &_maxColorAttachments);
   }
   auto Context::VertexBuffer() noexcept -> GLenum {
     return VertexBuffer::GetCurrentHandle();
@@ -114,6 +117,9 @@ namespace Engine::GL {
       return;
     _textureTarget[_activeTexture] = target;
     glBindTexture(target, handle);
+  }
+  auto Context::GetMaxColorAttachments() noexcept -> GLint {
+    return _maxColorAttachments;
   }
   auto Context::BindFramebuffer(GLenum target, GLuint handle) noexcept -> void {
     if (IsFramebufferBound(target, handle)) {
