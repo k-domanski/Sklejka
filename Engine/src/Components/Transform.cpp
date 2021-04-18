@@ -3,7 +3,7 @@
 
 namespace Engine {
   Transform::Transform()
-      : _position(0.0f), _rotation(1.0f, 0.0f, 0.0f, 0.0f), _scale(1.0f),
+      : Component("Transform"), _position(0.0f), _rotation(1.0f, 0.0f, 0.0f, 0.0f), _scale(1.0f),
         _modelMatrix(glm::mat4(1.0f)) {
     flags.Set(TransformFlag::Dirty);
   }
@@ -44,17 +44,17 @@ namespace Engine {
   auto Transform::Right() const noexcept -> glm::vec3 {
     // TODO: if dirty -> update
     return glm::normalize(static_cast< glm::mat3 >(_modelMatrix) * glm::vec3{1.0f, 0.0f, 0.0f});
-    //return _rotation * glm::vec3{1.0f, 0.0f, 0.0f};
+    // return _rotation * glm::vec3{1.0f, 0.0f, 0.0f};
   }
   auto Transform::Up() const noexcept -> glm::vec3 {
     // TODO: if dirty -> update
     return glm::normalize(static_cast< glm::mat3 >(_modelMatrix) * glm::vec3{0.0f, 1.0f, 0.0f});
-    //return _rotation * glm::vec3{0.0f, 1.0f, 0.0f};
+    // return _rotation * glm::vec3{0.0f, 1.0f, 0.0f};
   }
   auto Transform::Forward() const noexcept -> glm::vec3 {
     // TODO: if dirty -> update
     return glm::normalize(static_cast< glm::mat3 >(_modelMatrix) * glm::vec3{0.0f, 0.0f, 1.0f});
-    //return _rotation * glm::vec3{0.0f, 0.0f, 1.0f};
+    // return _rotation * glm::vec3{0.0f, 0.0f, 1.0f};
   }
   auto Transform::Rotate(float radians, const glm::vec3& axis) noexcept -> glm::quat {
     flags.Set(TransformFlag::Dirty | TransformFlag::NewData);
