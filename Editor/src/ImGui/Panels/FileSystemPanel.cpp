@@ -1,6 +1,7 @@
 #include "FileSystemPanel.h"
 #include <ImGui/imgui.h>
 #include <queue>
+#include <EditorLayer.h>
 
 namespace fs = std::filesystem;
 
@@ -31,6 +32,9 @@ namespace EditorGUI {
   }
   auto FileSystemPanel::SetScene(const std::shared_ptr< Engine::Scene >& scene) -> void {
     _scene = scene;
+  }
+  auto FileSystemPanel::SetEditorLayer(EditorLayer* layer) -> void {
+    _editorLayer = layer;
   }
   auto FileSystemPanel::OnImGuiRender() -> void {
     ImGui::Begin("File System");
@@ -119,6 +123,14 @@ namespace EditorGUI {
     const auto horizontal_item_count =
         static_cast< int >(folder_view_width / (icon_size.x + ImGui::GetStyle().ItemSpacing.x));
     ImGui::Text("File: %s", _selectedFile.string().c_str());
+    auto ext = _selectedFile.extension().string();
+    std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+    if (ext == ".fbx" || ext == ".obj") {
+      ImGui::SameLine();
+      if (ImGui::Button("Add Model")) {
+        _editorLayer->AddObjectOnScene(_selectedFile.string());
+      }
+    }
 
     // Sort entries
     std::priority_queue< EntryPair > entry_queue;
