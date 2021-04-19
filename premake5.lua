@@ -22,6 +22,8 @@ IncludeDir["better_enums"] = "%{wks.location}/Engine/vendor/better-enums"
 IncludeDir["irrKlang"] = "%{wks.location}/Engine/vendor/irrKlang"
 IncludeDir["rttr"] = "%{wks.location}/Engine/vendor/rttr"
 IncludeDir["freetype"] = "%{wks.location}/Engine/vendor/freetype"
+IncludeDir["json"] = "%{wks.location}/Engine/vendor/json"
+
 
 group "Dependencies"
     include "Engine/vendor/GLFW"

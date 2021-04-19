@@ -4,10 +4,9 @@
 namespace Engine::Components {
   class BoxCollider : public ECS::Component {
   public:
-    BoxCollider(): Component() {
+    BoxCollider(): Component("Box Collider") {
     }
     ~BoxCollider() override = default;
-
     auto GetSize() -> glm::vec3;
     auto SetSize(glm::vec3 size) -> void;
     auto IsTrigger() -> bool;

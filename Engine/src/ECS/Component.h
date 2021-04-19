@@ -10,12 +10,16 @@ namespace Engine::ECS {
 
   private:
     EntityID _entityID;
+    std::string _name;
 
   public:
-    Component()          = default;
+    Component(const std::string& name) noexcept: _name(name){};
     virtual ~Component() = default;
     auto GetEntityID() const -> EntityID {
       return _entityID;
+    }
+    auto Name() const noexcept -> std::string {
+      return _name;
     }
   };
 }  // namespace Engine::ECS

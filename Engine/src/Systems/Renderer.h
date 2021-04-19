@@ -4,14 +4,12 @@
 #include "ECS/System.h"
 #include "Renderer/Material.h"
 #include "Renderer/Mesh.h"
+#include <GL/RenderTarget.h>
 
 namespace Engine::Systems {
-  class Renderer : public Engine::ECS::System {
+  class Renderer : public ECS::System {
   public:
-    Renderer(): System() {
-      AddSignature< Components::MeshRenderer >();
-      AddSignature< Transform >();
-    }
+    Renderer();
     ~Renderer() override = default;
     void Update(float deltaTime) override;
     auto AddEntity(ECS::EntityID id) -> void override;
@@ -20,6 +18,10 @@ namespace Engine::Systems {
     std::map< std::shared_ptr< Engine::Renderer::Material >, std::vector< ECS::EntityID > >
         _sortedEntities;
     std::set< ECS::EntityID > _entitiesToSort;
+    std::shared_ptr< Engine::GL::RenderTarget > _renderTarget;
+    std::shared_ptr< Engine::GL::TextureAttachment > _screenTexture;
+    std::shared_ptr< Engine::Renderer::Mesh > _quad;
+    std::shared_ptr< Engine::GL::Shader > _quadShader;
 
     auto SortByMaterial() -> void;
   };

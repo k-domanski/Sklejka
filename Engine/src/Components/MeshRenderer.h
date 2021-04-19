@@ -7,11 +7,11 @@ namespace Engine::Components {
   class MeshRenderer : public ECS::Component {
   public:
     //MeshRenderer() = default;
-    MeshRenderer(): Component(), _dirty(true) {
+    MeshRenderer(): Component("Mesh Renderer"), _dirty(true) {
     }
     MeshRenderer(std::shared_ptr< Renderer::Mesh > mesh,
                  std::shared_ptr< Renderer::Material > material)
-        : Component(), _mesh(mesh), _material(material), _dirty(true) {
+        : Component("Mesh Renderer"), _mesh(mesh), _material(material), _dirty(true) {
     }
     ~MeshRenderer() override = default;
 

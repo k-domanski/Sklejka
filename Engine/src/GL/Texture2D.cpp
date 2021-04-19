@@ -42,8 +42,8 @@ namespace Engine::GL {
 
     Context::BindTexture(origTarget, origBoundTex);
   }
-  auto Texture2D::Bind(GLuint index) noexcept -> void {
-    Context::BindTexture(GL_TEXTURE_2D, _handle, index);
+  auto Texture2D::Bind(GLuint slot) noexcept -> void {
+    Context::BindTexture(GL_TEXTURE_2D, _handle, slot);
   }
   auto Texture2D::Release() noexcept -> void {
     if (_handle != 0)
