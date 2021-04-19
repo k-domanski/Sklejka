@@ -21,3 +21,4 @@
 #include "Events/MouseEvent.h"
 #include "App/Input.h"
 #include "Utility/Serializer.h"
+#include "Components/MeshRenderer.h"

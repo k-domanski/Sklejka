@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include <filesystem>
 
+class EditorLayer;
 namespace EditorGUI {
   class FileSystemPanel {
   private:
@@ -10,15 +11,20 @@ namespace EditorGUI {
     std::filesystem::path _currentPath;
     std::filesystem::path _selectedFile;
     std::filesystem::path _selectedDirectory;
+
+    EditorLayer* _editorLayer;
+
     /* Resources */
     std::shared_ptr< Engine::GL::Texture2D > m_fileIcon;
     std::shared_ptr< Engine::GL::Texture2D > m_folderIcon;
     std::shared_ptr< Engine::GL::Texture2D > m_backArrowIcon;
+
     bool _openFolder = false;
 
   public:
     FileSystemPanel();
     auto SetScene(const std::shared_ptr< Engine::Scene >& scene) -> void;
+    auto SetEditorLayer(EditorLayer* layer) -> void;
     auto OnImGuiRender() -> void;
 
   private:

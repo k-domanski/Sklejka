@@ -1,6 +1,7 @@
 #include "EditorLayer.h"
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <filesystem>
 
 using namespace Engine;
 EditorLayer::EditorLayer(const std::string& name): Layer(name) {
@@ -59,6 +60,7 @@ void EditorLayer::OnAttach() {
   /*SceneHierarchyPanel Test*/
   m_SceneHierarchyPanel.SetScene(m_Scene);
   m_FileSystemPanel.SetScene(m_Scene);
+  m_FileSystemPanel.SetEditorLayer(this);
   /*auto ent1 = ECS::EntityManager::GetInstance().CreateEntity();
   auto ent2 = ECS::EntityManager::GetInstance().CreateEntity();
   auto ent3 = ECS::EntityManager::GetInstance().CreateEntity();
@@ -192,4 +194,18 @@ auto EditorLayer::UpdateEditorCamera() -> void {
 
     editorCameraArgs.m2LastPos = cursorPos;
   }
+}
+
+auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> void {
+  auto model = AssetManager::GetModel(path);
+  if (model->getRootMesh() == nullptr)
+    return;
+  using namespace Engine::ECS;
+  using namespace Engine::Components;
+  auto entity = EntityManager::GetInstance().CreateEntity();
+  entity->Name(std::filesystem::path(path).filename().stem().string());
+  entity->AddComponent< Transform >();
+  entity->AddComponent< MeshRenderer >(model->getRootMesh(), nullptr);
+
+  m_Scene->SceneGraph()->AddChild(parent, entity->GetID());
 }

@@ -21,6 +21,8 @@ public:
   virtual void OnEvent(Engine::Event& event) override;
   virtual void OnImGuiRender() override;
 
+  auto AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent = 0) -> void;
+
 private:
   bool OnMouseScroll(Engine::MouseScrolledEvent& e);
   bool OnMouseButtonPress(Engine::MouseButtonPressedEvent& e);
@@ -51,9 +53,6 @@ private:
   ptr_t< Engine::ECS::Entity > m_Entity2;
   std::shared_ptr< Engine::ECS::Entity > m_Pepe;
   std::shared_ptr< Engine::Transform > m_PepeTransform;
-
-
-
 
   /*Panels*/
   EditorGUI::SceneHierarchyPanel m_SceneHierarchyPanel;
