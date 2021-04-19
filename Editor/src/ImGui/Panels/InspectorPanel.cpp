@@ -47,6 +47,7 @@ namespace EditorGUI {
     }
   }
 
+  static bool activeCamera;
   /*Transform only to start with*/
   void InspectorPanel::DrawComponents(std::shared_ptr< ECS::Entity > entity) {
     DrawComponent< Transform >("Transform", entity, [](auto component) {
@@ -62,6 +63,42 @@ namespace EditorGUI {
       glm::vec3 scale = component->Scale();
       DrawVec3("Scale", scale, 1.0f);
       component->Scale(scale);
+    });
+
+    DrawComponent< Camera >("Camera", entity, [](auto component) {
+      /*Przelaczanie flagi MainCamera*/
+      if (component->flags.Get(CameraFlag::MainCamera))
+        activeCamera = true;
+      DrawBool("Main Camera", activeCamera);
+      if (!activeCamera)
+        component->flags.Clear(CameraFlag::MainCamera);
+      else
+        component->flags.Set(CameraFlag::MainCamera);
+
+      // APP_DEBUG("{}", component->flags.GetState());
+      /*FOV*/
+      float fov = component->Fov();
+      DrawFloat("FOV", fov);
+      component->Fov(fov);
+      /*Aspect*/
+      float aspect = component->Aspect();
+      DrawFloat("Aspect", aspect);
+      component->Aspect(aspect);
+      /*Near plane*/
+      float nearPlane = component->NearPlane();
+      DrawFloat("Near plane", nearPlane);
+      component->NearPlane(nearPlane);
+      /*Far plane*/
+      float farPlane = component->FarPlane();
+      DrawFloat("Far plane", farPlane);
+      component->FarPlane(farPlane);
+    });
+
+    DrawComponent< Components::MeshRenderer >("Mesh Renderer", entity, [](auto component) {
+      /*
+          mesh
+          material
+      */
     });
   }
 
@@ -79,7 +116,7 @@ namespace EditorGUI {
     ImGui::NextColumn();
 
     ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0, 0});
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{2, 2});
 
     float lineHeight  = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
     ImVec2 buttonSize = {lineHeight + 3.0f, lineHeight};
@@ -129,6 +166,46 @@ namespace EditorGUI {
 
     ImGui::Columns(1);
 
+    ImGui::PopID();
+  }
+
+  static void DrawFloat(const std::string& name, float& value, float sliderSpeed = 0.01f) {
+    float columnWidth = 100.0f;
+    ImGuiIO& io       = ImGui::GetIO();
+
+    ImGui::PushID(name.c_str());
+
+    ImGui::Columns(2);
+    ImGui::SetColumnWidth(0, columnWidth);
+    ImGui::Text(name.c_str());
+    ImGui::NextColumn();
+
+    ImGui::PushMultiItemsWidths(1, ImGui::CalcItemWidth());
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{2, 2});
+
+    ImGui::DragFloat("##X", &value, sliderSpeed, 0.0f, 0.0f, "%.2f");
+    ImGui::PopItemWidth();
+    ImGui::PopStyleVar();
+    ImGui::Columns(1);
+    ImGui::PopID();
+  }
+  static void DrawBool(const std::string& name, bool& value) {
+    float columnWidth = 100.0f;
+    ImGuiIO& io       = ImGui::GetIO();
+
+    ImGui::PushID(name.c_str());
+    ImGui::Columns(2);
+    ImGui::SetColumnWidth(0, columnWidth);
+    ImGui::Text(name.c_str());
+    ImGui::NextColumn();
+
+    ImGui::PushMultiItemsWidths(1, ImGui::CalcItemWidth());
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{2, 2});
+    ImGui::Checkbox("", &value);
+
+    ImGui::PopItemWidth();
+    ImGui::PopStyleVar();
+    ImGui::Columns(1);
     ImGui::PopID();
   }
 }  // namespace EditorGUI

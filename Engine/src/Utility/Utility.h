@@ -20,7 +20,7 @@ namespace Engine::Utility {
     auto GetAll(const value_t flag) const noexcept -> bool {
       return ((_state & flag) ^ flag) == value_t(0);
     }
-    auto GetAny(const value_t flat) const noexcept -> bool {
+    auto GetAny(const value_t flag) const noexcept -> bool {
       return _state & flag != value_t(0);
     }
     auto ClearAll() noexcept -> void {
