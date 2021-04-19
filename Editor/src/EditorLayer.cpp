@@ -12,11 +12,11 @@ void EditorLayer::OnAttach() {
   m_Shader       = AssetManager::GetShader("./shaders/default.glsl");
   assert(("Failed to acquire shader", m_Shader != nullptr));
   m_ConeMesh = coneModel->getRootMesh();
-  // m_PepeModel       = AssetManager::GetModel("./models/squirrel.fbx");
-  m_PepeModel       = AssetManager::GetModel("./models/silly_dancing.fbx");
+   m_PepeModel       = AssetManager::GetModel("./models/squirrel.fbx");
+  //m_PepeModel       = AssetManager::GetModel("./models/silly_dancing.fbx");
   auto tex_shader   = AssetManager::GetShader("./shaders/texture_shader.glsl");
-  auto pepe_texture = AssetManager::GetTexture2D("./textures/Stormtrooper_D.png");
-  // auto pepe_texture = AssetManager::GetTexture2D("./textures/Untilted.png");
+  //auto pepe_texture = AssetManager::GetTexture2D("./textures/Stormtrooper_D.png");
+   auto pepe_texture = AssetManager::GetTexture2D("./textures/Untilted.png");
   m_PepeMaterial = AssetManager::GetMaterial(tex_shader, "pepe_sh", "pepe_tex", pepe_texture);
 
   auto aspect        = Engine::Window::Get().GetAspectRatio();
@@ -56,19 +56,19 @@ void EditorLayer::OnAttach() {
 
   /*SceneHierarchyPanel Test*/
   m_SceneHierarchyPanel.SetScene(m_Scene);
-  auto ent1 = ECS::EntityManager::GetInstance().CreateEntity();
-  auto ent2 = ECS::EntityManager::GetInstance().CreateEntity();
-  auto ent3 = ECS::EntityManager::GetInstance().CreateEntity();
-  auto ent4 = ECS::EntityManager::GetInstance().CreateEntity();
-  ent1->AddComponent< Transform >();
-  ent2->AddComponent< Transform >();
-  ent3->AddComponent< Transform >();
-  ent4->AddComponent< Transform >();
-
-  sg->AddEntity(ent1->GetID());
-  sg->AddEntity(ent2->GetID(), ent1->GetID());
-  sg->AddEntity(ent3->GetID(), ent1->GetID());
-  sg->AddEntity(ent4->GetID(), ent1->GetID());
+  //auto ent1 = ECS::EntityManager::GetInstance().CreateEntity();
+  //auto ent2 = ECS::EntityManager::GetInstance().CreateEntity();
+  //auto ent3 = ECS::EntityManager::GetInstance().CreateEntity();
+  //auto ent4 = ECS::EntityManager::GetInstance().CreateEntity();
+  //ent1->AddComponent< Transform >();
+  //ent2->AddComponent< Transform >();
+  //ent3->AddComponent< Transform >();
+  //ent4->AddComponent< Transform >();
+  //
+  //sg->AddEntity(ent1->GetID());
+  //sg->AddEntity(ent2->GetID(), ent1->GetID());
+  //sg->AddEntity(ent3->GetID(), ent1->GetID());
+  //sg->AddEntity(ent4->GetID(), ent1->GetID());
   /*------------------------*/
   
   

@@ -52,7 +52,7 @@ void Engine::Systems::Physics::Update(float deltaTime) {
             && (firstMin.y <= secMax.y && firstMax.y >= secMin.y)
             && (firstMin.z <= secMax.z && firstMax.z >= secMin.z)) {
           _collisions[entity].push_back(entitySec);
-          std::cout << "Colliding" << std::endl;
+          //std::cout << "Colliding" << std::endl;
         }
       }
     }
@@ -116,9 +116,9 @@ void Engine::Systems::Physics::Update(float deltaTime) {
       if (separation.length() < 0.0001f)
           continue;
 
-      std::cout << "before: " << transform->Position().x << std::endl;
+      //std::cout << "before: " << transform->Position().x << std::endl;
       transform->Position(firstPos + separation);
-      std::cout << "after: " << transform->Position().x << std::endl;
+      //std::cout << "after: " << transform->Position().x << std::endl;
     }
   }
 
