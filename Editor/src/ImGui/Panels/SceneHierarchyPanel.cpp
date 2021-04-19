@@ -20,7 +20,7 @@ namespace EditorGUI {
 
   void SceneHierarchyPanel::DrawEntity(std::shared_ptr<ECS::Entity> entity) {
     ECS::EntityID id = entity->GetID();
-    std::string tag          = std::to_string(id);
+    std::string tag          = entity->Name();
     ImGuiTreeNodeFlags flags = ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0)
                                | ImGuiTreeNodeFlags_OpenOnArrow;
 

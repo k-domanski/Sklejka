@@ -8,6 +8,8 @@ namespace Engine::ECS {
 
   public:
     Entity()  = default;
+    /*TODO: Entity(const std::string& name);
+      lub overload CreateEntity w EntityManager*/
     ~Entity() = default;
 
     [[nodiscard]] auto GetID() const -> EntityID;

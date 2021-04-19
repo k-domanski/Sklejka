@@ -54,8 +54,18 @@ namespace EditorGUI {
   static bool rbGravity;
   static bool rbKinematic;
   /*-------------------------------*/
-  /*Transform only to start with*/
   void InspectorPanel::DrawComponents(std::shared_ptr< ECS::Entity > entity) {
+      /*Name Input Field*/
+      auto tag = entity->Name();
+
+      char buffer[256];
+      memset(buffer, 0, sizeof(buffer));
+      std::strncpy(buffer, tag.c_str(), sizeof(buffer));
+      if (ImGui::InputText("##Name", buffer, sizeof(buffer)))
+      {
+          entity->Name(std::string(buffer));
+      }
+
     DrawComponent< Transform >("Transform", entity, [](auto component) {
       /*Position*/
       glm::vec3 pos = component->Position();
