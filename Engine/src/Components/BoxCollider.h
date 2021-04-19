@@ -13,7 +13,7 @@ namespace Engine::Components {
     auto SetTrigger(bool trigger) -> void;
 
   private:
-    glm::vec3 _size;
-    bool _trigger;
+    glm::vec3 _size{0.0f, 0.0f, 0.0f};
+    bool _trigger = false;
   };
 }  // namespace Engine::Components

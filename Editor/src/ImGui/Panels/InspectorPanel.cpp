@@ -34,8 +34,11 @@ namespace EditorGUI {
         ImGui::OpenPopup("ComponentSettings");
       }
 
+      bool removeComponent = false;
       if (ImGui::BeginPopup("ComponentSettings")) {
-        if (ImGui::MenuItem("test")) {}
+        if (ImGui::MenuItem("Remove Component")) {
+          removeComponent = true;
+        }
         ImGui::EndPopup();
       }
       /*-----------------------------------------------------------*/
@@ -43,6 +46,11 @@ namespace EditorGUI {
       if (open) {
         function(component);
         ImGui::TreePop();
+      }
+
+      if (removeComponent) {
+        /*TODO:: Entity->RemoveComponent<>();*/
+        APP_DEBUG("Removed {}", component->Name());
       }
     }
   }
@@ -55,17 +63,71 @@ namespace EditorGUI {
   static bool rbKinematic;
   /*-------------------------------*/
   void InspectorPanel::DrawComponents(std::shared_ptr< ECS::Entity > entity) {
-      /*Name Input Field*/
-      auto tag = entity->Name();
+    /*Name Input Field*/
+    auto tag = entity->Name();
 
-      char buffer[256];
-      memset(buffer, 0, sizeof(buffer));
-      std::strncpy(buffer, tag.c_str(), sizeof(buffer));
-      if (ImGui::InputText("##Name", buffer, sizeof(buffer)))
-      {
-          entity->Name(std::string(buffer));
+    char buffer[256];
+    memset(buffer, 0, sizeof(buffer));
+    std::strncpy(buffer, tag.c_str(), sizeof(buffer));
+    if (ImGui::InputText("##Name", buffer, sizeof(buffer))) {
+      entity->Name(std::string(buffer));
+    }
+
+    ImGui::SameLine();
+    ImGui::PushItemWidth(-1);
+
+    if (ImGui::Button("Add Component")) {
+      ImGui::OpenPopup("Add Component");
+    }
+
+    if (ImGui::BeginPopup("Add Component")) {
+      if (ImGui::MenuItem("Mesh Renderer")) {
+        if (entity->GetComponent< Components::MeshRenderer >() == nullptr) {
+          entity->AddComponent< Components::MeshRenderer >();
+        } else {
+          APP_WARN("{} entity already has Mesh Renderer component!", entity->Name());
+        }
+        ImGui::CloseCurrentPopup();
       }
 
+      if (ImGui::MenuItem("Camera")) {
+        if (entity->GetComponent< Camera >() == nullptr) {
+          /*Temporary TODO: default constructor?*/
+          entity->AddComponent< Camera >(45.0f, 1.78, 0.001f, 1000.0f);
+        } else {
+          APP_WARN("{} entity already has Camera component!", entity->Name());
+        }
+        ImGui::CloseCurrentPopup();
+      }
+
+      if (ImGui::MenuItem("Rigidbody")) {
+        if (entity->GetComponent< Components::Rigidbody >() == nullptr) {
+          entity->AddComponent< Components::Rigidbody >();
+        } else {
+          APP_WARN("{} entity already has Rigidbody component!", entity->Name());
+        }
+        ImGui::CloseCurrentPopup();
+      }
+
+      if (ImGui::MenuItem("Box Collider")) {
+        if (entity->GetComponent< Components::BoxCollider >() == nullptr) {
+          entity->AddComponent< Components::BoxCollider >();
+        } else {
+          APP_WARN("{} entity already has Box Collider component!", entity->Name());
+        }
+        ImGui::CloseCurrentPopup();
+      }
+
+      if (ImGui::MenuItem("Sphere Collider")) {
+        if (entity->GetComponent< Components::SphereCollider >() == nullptr) {
+          entity->AddComponent< Components::SphereCollider >();
+        } else {
+          APP_WARN("{} entity already has Sphere Collider component!", entity->Name());
+        }
+        ImGui::CloseCurrentPopup();
+      }
+      ImGui::EndPopup();
+    }
     DrawComponent< Transform >("Transform", entity, [](auto component) {
       /*Position*/
       glm::vec3 pos = component->Position();
