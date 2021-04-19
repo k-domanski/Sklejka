@@ -58,6 +58,7 @@ void EditorLayer::OnAttach() {
 
   /*SceneHierarchyPanel Test*/
   m_SceneHierarchyPanel.SetScene(m_Scene);
+  m_FileSystemPanel.SetScene(m_Scene);
   /*auto ent1 = ECS::EntityManager::GetInstance().CreateEntity();
   auto ent2 = ECS::EntityManager::GetInstance().CreateEntity();
   auto ent3 = ECS::EntityManager::GetInstance().CreateEntity();
@@ -131,6 +132,7 @@ void EditorLayer::OnEvent(Event& event) {
 void EditorLayer::OnImGuiRender() {
   m_SceneHierarchyPanel.OnImGuiRender();
   m_InspectorPanel.OnImGuiRender(m_SceneHierarchyPanel.GetSelectedEntity());
+  m_FileSystemPanel.OnImGuiRender();
 }
 
 bool EditorLayer::OnMouseScroll(MouseScrolledEvent& e) {
