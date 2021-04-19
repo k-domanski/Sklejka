@@ -17,7 +17,7 @@ void EditorLayer::OnAttach() {
   //auto tex_shader   = AssetManager::GetShader("./shaders/texture_shader.glsl");
   auto pepe_texture = AssetManager::GetTexture2D("./textures/Stormtrooper_D.png");
   //auto pepe_texture = AssetManager::GetTexture2D("./textures/Untilted.png");
-  m_PepeMaterial = AssetManager::GetMaterial(m_Shader, "pepe_sh", "pepe_tex", pepe_texture);
+  m_PepeMaterial = AssetManager::GetMaterial(m_Shader, "pepe_tex", pepe_texture);
 
   auto aspect        = Engine::Window::Get().GetAspectRatio();
   auto camera_entity = Engine::ECS::EntityManager::GetInstance().CreateEntity();

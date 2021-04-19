@@ -57,7 +57,6 @@ std::shared_ptr< Engine::Renderer::Material > Engine::Serializer::LoadMaterial(s
         assetID_string =
             json_line.substr(colon_pos + 3, last_quote_mark_pos - colon_pos - 3);
 
-        std::cout << "\nassetID value is " + assetID_string;
       }
 
       if (std::regex_match(json_line, shader_filepath_regex)) {
@@ -66,7 +65,6 @@ std::shared_ptr< Engine::Renderer::Material > Engine::Serializer::LoadMaterial(s
         shaderFilepath_string =
             json_line.substr(colon_pos + 3, last_quote_mark_pos - colon_pos - 3);
 
-        std::cout << "\nshaderFilepath value is " + assetID_string;
       }
 
       if (std::regex_match(json_line, diffuse_filepath_regex)) {
@@ -75,7 +73,6 @@ std::shared_ptr< Engine::Renderer::Material > Engine::Serializer::LoadMaterial(s
         diffuseFilepath_string =
             json_line.substr(colon_pos + 3, last_quote_mark_pos - colon_pos - 3);
 
-        std::cout << "\ndiffuseFilepath value is " + assetID_string;
       }
     }
   }
@@ -86,7 +83,7 @@ std::shared_ptr< Engine::Renderer::Material > Engine::Serializer::LoadMaterial(s
   std::shared_ptr< GL::Shader > shader_ptr = AssetManager::GetShader(shaderFilepath_string);
   std::shared_ptr< GL::Texture2D > texture_ptr = AssetManager::GetTexture2D(diffuseFilepath_string);
 
-  return AssetManager::GetMaterial(shader_ptr, shaderFilepath_string, diffuseFilepath_string,
+  return AssetManager::GetMaterial(shader_ptr, diffuseFilepath_string,
                                    texture_ptr);
   ;
 }

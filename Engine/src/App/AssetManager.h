@@ -26,7 +26,6 @@ namespace Engine {
     static auto GetModel(Renderer::ModelPrimitive primitive) -> std::shared_ptr< Renderer::Model >;
     static auto GetTexture2D(const std::string_view& file) -> std::shared_ptr< GL::Texture2D >;
     static auto GetMaterial(std::shared_ptr< GL::Shader > shared_ptr,
-                            const std::string& shader_filepath,
                             const std::string& texture2d_filepath,
                             std::shared_ptr< GL::Texture2D > texture_2d)
         -> std::shared_ptr< Renderer::Material >;
