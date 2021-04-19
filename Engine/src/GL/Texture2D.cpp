@@ -45,6 +45,17 @@ namespace Engine::GL {
   auto Texture2D::Bind(GLuint slot) noexcept -> void {
     Context::BindTexture(GL_TEXTURE_2D, _handle, slot);
   }
+
+  auto Texture2D::FilePath() const noexcept -> std::string_view
+  {
+    return _filePath;
+  }
+
+  auto Texture2D::FilePath(const std::string_view& filePath) -> std::string_view
+  {
+    return _filePath = filePath;
+  }
+
   auto Texture2D::Release() noexcept -> void {
     if (_handle != 0)
       glDeleteTextures(1, &_handle);

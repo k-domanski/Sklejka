@@ -1,6 +1,8 @@
 #pragma once
 #include <pch.h>
 #include <GL/GLCore.h>
+#include <nlohmann/json.hpp>
+
 
 namespace Engine::Renderer {
   class Material {
@@ -14,6 +16,7 @@ namespace Engine::Renderer {
 
   public:
     Material(std::size_t assetID);
+    Material(nlohmann::json json);
     auto SetShader(const std::shared_ptr< GL::Shader >& shader,
                    const std::string& filePath) noexcept -> void;
     auto SetMainTexture(const std::shared_ptr< GL::Texture2D >& mainTexture,
@@ -24,6 +27,7 @@ namespace Engine::Renderer {
     std::string GetShaderFilepath();
     std::string GetDiffuseFilepath();
     std::size_t GetAssetID();
+    std::string ToJson();
     auto Use() noexcept -> void;
   };
 }  // namespace Engine::Renderer

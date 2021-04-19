@@ -8,6 +8,7 @@ namespace Engine::GL {
     GLint _minFilter;
     GLint _magFilter;
     GLint _wrapMode;
+    std::string_view _filePath;
 
   public:
     Texture2D(GLint width, GLint height, const GLvoid* data) noexcept;
@@ -17,6 +18,8 @@ namespace Engine::GL {
     auto operator=(Texture2D&& other) noexcept -> Texture2D&;
     ~Texture2D();
     auto Bind(GLuint slot) noexcept -> void;
+    auto FilePath() const noexcept -> std::string_view;
+    auto FilePath(const std::string_view& filePath) -> std::string_view;
 
   private:
     auto Create(GLint width, GLint height, const GLvoid* data) -> void;
