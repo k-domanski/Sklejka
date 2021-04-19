@@ -17,7 +17,7 @@ void EditorLayer::OnAttach() {
   // auto tex_shader   = AssetManager::GetShader("./shaders/texture_shader.glsl");
   auto pepe_texture = AssetManager::GetTexture2D("./textures/Stormtrooper_D.png");
   // auto pepe_texture = AssetManager::GetTexture2D("./textures/Untilted.png");
-  m_PepeMaterial = AssetManager::GetMaterial(m_Shader, "pepe_tex", pepe_texture);
+  m_PepeMaterial = AssetManager::GetMaterial(m_Shader, pepe_texture);
 
   auto aspect        = Engine::Window::Get().GetAspectRatio();
   auto camera_entity = Engine::ECS::EntityManager::GetInstance().CreateEntity();
@@ -38,6 +38,8 @@ void EditorLayer::OnAttach() {
   m_Entity2  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Pepe     = ECS::EntityManager::GetInstance().CreateEntity();
   m_Material = serializer->LoadMaterial("./material.json");
+
+  std::cout << m_Material->ToJson();
   // m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
   //                                       "./textures/pepo_sad.png", texture);
 
@@ -56,6 +58,7 @@ void EditorLayer::OnAttach() {
 
   /*SceneHierarchyPanel Test*/
   m_SceneHierarchyPanel.SetScene(m_Scene);
+  m_FileSystemPanel.SetScene(m_Scene);
   /*auto ent1 = ECS::EntityManager::GetInstance().CreateEntity();
   auto ent2 = ECS::EntityManager::GetInstance().CreateEntity();
   auto ent3 = ECS::EntityManager::GetInstance().CreateEntity();
@@ -129,6 +132,7 @@ void EditorLayer::OnEvent(Event& event) {
 void EditorLayer::OnImGuiRender() {
   m_SceneHierarchyPanel.OnImGuiRender();
   m_InspectorPanel.OnImGuiRender(m_SceneHierarchyPanel.GetSelectedEntity());
+  m_FileSystemPanel.OnImGuiRender();
 }
 
 bool EditorLayer::OnMouseScroll(MouseScrolledEvent& e) {

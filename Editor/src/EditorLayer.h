@@ -5,6 +5,7 @@
 #include "EditorCameraArgs.h"
 #include "ImGui/Panels/SceneHierarchyPanel.h"
 #include "ImGui/Panels/InspectorPanel.h"
+#include "ImGui/Panels/FileSystemPanel.h"
 
 template< typename T >
 using ptr_t = std::shared_ptr< T >;
@@ -51,7 +52,11 @@ private:
   std::shared_ptr< Engine::ECS::Entity > m_Pepe;
   std::shared_ptr< Engine::Transform > m_PepeTransform;
 
+
+
+
   /*Panels*/
   EditorGUI::SceneHierarchyPanel m_SceneHierarchyPanel;
   EditorGUI::InspectorPanel m_InspectorPanel;
+  EditorGUI::FileSystemPanel m_FileSystemPanel;
 };

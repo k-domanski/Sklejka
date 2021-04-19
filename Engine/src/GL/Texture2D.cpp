@@ -5,7 +5,8 @@
 using Engine::GL::Context;
 namespace Engine::GL {
   Texture2D::Texture2D(GLint width, GLint height, const GLvoid* data) noexcept
-      : _minFilter(GL_LINEAR_MIPMAP_LINEAR), _magFilter(GL_LINEAR), _wrapMode(GL_REPEAT) {
+      : _minFilter(GL_LINEAR_MIPMAP_LINEAR), _magFilter(GL_LINEAR), _wrapMode(GL_REPEAT),
+        _size(width, height) {
     Create(width, height, data);
   }
   Texture2D::Texture2D(Texture2D&& other) noexcept
@@ -42,8 +43,22 @@ namespace Engine::GL {
 
     Context::BindTexture(origTarget, origBoundTex);
   }
+  auto Texture2D::GetHandle() const noexcept -> GLuint {
+    return _handle;
+  }
   auto Texture2D::Bind(GLuint slot) noexcept -> void {
     Context::BindTexture(GL_TEXTURE_2D, _handle, slot);
+  }
+
+  auto Texture2D::FilePath() const noexcept -> std::string_view {
+    return _filePath;
+  }
+
+  auto Texture2D::FilePath(const std::string_view& filePath) -> std::string_view {
+    return _filePath = filePath;
+  }
+  auto Texture2D::GetSize() const noexcept -> glm::ivec2 {
+    return _size;
   }
   auto Texture2D::Release() noexcept -> void {
     if (_handle != 0)

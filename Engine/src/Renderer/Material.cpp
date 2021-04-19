@@ -1,10 +1,15 @@
 #include "pch.h"
 #include "Material.h"
 
+
+#include "App/AssetManager.h"
+#include "nlohmann/json.hpp"
+
 namespace Engine::Renderer {
   Material::Material(std::size_t assetID)
       : _assetID(assetID), _shader(nullptr), _mainTexture(nullptr) {
   }
+
   auto Material::SetShader(const std::shared_ptr< GL::Shader >& shader,
                            const std::string& filePath) noexcept -> void {
     _shader     = shader;
@@ -41,6 +46,15 @@ namespace Engine::Renderer {
 
   std::size_t Material::GetAssetID() {
     return _assetID;
+  }
+
+  std::string Material::ToJson()
+  {
+    nlohmann::json json = nlohmann::json{{"assetID", std::to_string(_assetID)},
+                                         {"shaderFilepath", _shaderFile},
+                                         {"diffuseFilepath", _diffuseFile}};
+
+    return json.dump(4);
   }
 
   auto Material::Use() noexcept -> void {

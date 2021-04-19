@@ -12,6 +12,7 @@ namespace Engine::Components {
     auto SetRadius(float radius) -> void;
     auto IsTrigger() -> bool;
     auto SetTrigger(bool trigger) -> void;
+    std::string SaveToJson(std::string filePath) override;
   private:
     float _radius;
     bool _trigger;

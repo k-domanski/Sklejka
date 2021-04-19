@@ -1,6 +1,7 @@
 #include "SceneHierarchyPanel.h"
 #include <imgui/imgui.h>
 
+using namespace Engine;
 namespace EditorGUI {
   SceneHierarchyPanel::SceneHierarchyPanel(std::shared_ptr< Scene > scene): m_Scene(scene) {
   }
@@ -18,24 +19,27 @@ namespace EditorGUI {
     ImGui::End();
   }
 
-  void SceneHierarchyPanel::DrawEntity(std::shared_ptr<ECS::Entity> entity) {
-    ECS::EntityID id = entity->GetID();
-    std::string tag          = entity->Name();
+  void SceneHierarchyPanel::DrawEntity(std::shared_ptr< ECS::Entity > entity) {
+    auto id              = entity->GetID();
+    auto tag             = entity->Name();
+    const auto& children = m_Scene->SceneGraph()->GetChildren(id);
+
     ImGuiTreeNodeFlags flags = ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0)
+                               | ((children.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0)
                                | ImGuiTreeNodeFlags_OpenOnArrow;
 
     bool open = ImGui::TreeNodeEx((void*)entity->GetID(), flags, tag.c_str());
+    if (ImGui::IsItemClicked()) {
+      m_SelectedEntity = entity;
+    }
     if (open) {
-      auto children = m_Scene->SceneGraph()->GetChildren(id);
       for (auto& child : children) {
         DrawEntity(ECS::EntityManager::GetInstance().GetEntity(child));
       }
       ImGui::TreePop();
     }
-    if (ImGui::IsItemClicked())
-        m_SelectedEntity = entity;
   }
-  void SceneHierarchyPanel::SetSelectedEntity(std::shared_ptr<ECS::Entity> entity) {
+  void SceneHierarchyPanel::SetSelectedEntity(std::shared_ptr< ECS::Entity > entity) {
     m_SelectedEntity = entity;
   }
 }  // namespace EditorGUI

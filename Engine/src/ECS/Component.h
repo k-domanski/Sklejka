@@ -15,6 +15,9 @@ namespace Engine::ECS {
   public:
     Component(const std::string& name) noexcept: _name(name){};
     virtual ~Component() = default;
+    virtual std::string SaveToJson(std::string filePath) {
+      return "";
+    }
     auto GetEntityID() const -> EntityID {
       return _entityID;
     }

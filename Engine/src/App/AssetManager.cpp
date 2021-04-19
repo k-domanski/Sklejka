@@ -57,6 +57,7 @@ namespace Engine {
       int x, y, n;
       auto pixel_data = stbi_load(file.data(), &x, &y, &n, 4);
       auto texture    = std::make_shared< GL::Texture2D >(x, y, pixel_data);
+      texture->FilePath(file);
       stbi_image_free(pixel_data);
       _loadedTextures2D[file] = texture;
       return texture;
@@ -64,9 +65,14 @@ namespace Engine {
     return _loadedTextures2D[file];
   }
 
+  auto AssetManager::GetMaterial(std::shared_ptr<GL::Shader> shared_ptr,
+      std::shared_ptr<GL::Texture2D> texture_2d) -> std::shared_ptr<Renderer::Material>
+  {
+    return AssetManager::GetMaterial(shared_ptr, texture_2d, generateID());
+  }
+
   auto AssetManager::GetMaterial(std::shared_ptr< GL::Shader > shared_ptr,
-                                 const std::string& texture2d_filepath,
-                                 std::shared_ptr< GL::Texture2D > texture_2d)
+                                 std::shared_ptr< GL::Texture2D > texture_2d, std::size_t assetID)
       -> std::shared_ptr< Renderer::Material > {
     for (auto [key, loaded_material] : _loadedMaterials) {
       if (loaded_material->GetShader() == shared_ptr
@@ -76,10 +82,10 @@ namespace Engine {
     }
 
     std::shared_ptr< Renderer::Material > newMaterial =
-        std::make_shared< Renderer::Material >(generateID());
+        std::make_shared< Renderer::Material >(assetID);
 
     newMaterial->SetShader(shared_ptr, std::string(shared_ptr->FilePath()));
-    newMaterial->SetMainTexture(texture_2d, texture2d_filepath);
+    newMaterial->SetMainTexture(texture_2d, std::string(texture_2d->FilePath()));
     _loadedMaterials[newMaterial->GetAssetID()] = newMaterial;
     return newMaterial;
   }
