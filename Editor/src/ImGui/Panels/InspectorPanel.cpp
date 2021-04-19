@@ -47,7 +47,13 @@ namespace EditorGUI {
     }
   }
 
+  /*-------Checkbox bools----------*/
   static bool activeCamera;
+  static bool boxTrigger;
+  static bool sphereTrigger;
+  static bool rbGravity;
+  static bool rbKinematic;
+  /*-------------------------------*/
   /*Transform only to start with*/
   void InspectorPanel::DrawComponents(std::shared_ptr< ECS::Entity > entity) {
     DrawComponent< Transform >("Transform", entity, [](auto component) {
@@ -99,6 +105,44 @@ namespace EditorGUI {
           mesh
           material
       */
+    });
+
+    DrawComponent< Components::Rigidbody >("Rigidbody", entity, [](auto component) {
+      glm::vec3 velocity = component->GetVelocity();
+      DrawVec3("Velocity", velocity);
+      component->SetVelocity(velocity);
+
+      if (component->UseGravity())
+        rbGravity = true;
+      DrawBool("Use Gravity", rbGravity);
+      component->SetGravity(rbGravity);
+
+      if (component->IsKinematic())
+        rbKinematic = true;
+      DrawBool("Is Kinematic", rbKinematic);
+      component->SetKinematic(rbKinematic);
+    });
+
+    DrawComponent< Components::BoxCollider >("Box Collider", entity, [](auto component) {
+      glm::vec3 size = component->GetSize();
+      DrawVec3("Size", size);
+      component->SetSize(size);
+
+      if (component->IsTrigger())
+        boxTrigger = true;
+      DrawBool("Is Trigger", boxTrigger);
+      component->SetTrigger(boxTrigger);
+    });
+
+    DrawComponent< Components::SphereCollider >("Sphere Collider", entity, [](auto component) {
+      float radius = component->GetRadius();
+      DrawFloat("Radius", radius);
+      component->SetRadius(radius);
+
+      if (component->IsTrigger())
+        boxTrigger = true;
+      DrawBool("Is Trigger", boxTrigger);
+      component->SetTrigger(boxTrigger);
     });
   }
 
