@@ -57,15 +57,20 @@ auto Engine::Systems::Physics::CheckCollision(std::shared_ptr< Components::Colli
 auto Engine::Systems::Physics::CreateSphereShape(std::shared_ptr< Components::Collider > c,
                                                  std::shared_ptr< Transform > t)
     -> Utility::GJK::Shape {
-  auto pos = t->WorldPosition() + c->Center;
-  return Utility::GJK::Shape(true, c->Size.x, pos);
+  auto center4 = t->GetWorldMatrix() * glm::vec4(c->Center, 1.0f);
+
+  auto center = make_vec3(center4);
+
+  auto radius = c->Size * t->WorlScale();
+
+  return Utility::GJK::Shape(true, radius.x, center);
 }
 
 auto Engine::Systems::Physics::CreateBoxShape(std::shared_ptr< Components::Collider > c,
                                               std::shared_ptr< Transform > t)
     -> Utility::GJK::Shape {
   // Test this if works
-  auto center4 = glm::vec4(c->Center, 1.0f) * t->GetWorldMatrix();
+  auto center4 = t->GetWorldMatrix() * glm::vec4(c->Center, 1.0f);
 
   auto center = make_vec3(center4);
 
@@ -75,14 +80,14 @@ auto Engine::Systems::Physics::CreateBoxShape(std::shared_ptr< Components::Colli
   float ySize = c->Size.y / 2.0f;
   float zSize = c->Size.z / 2.0f;
 
-  vertices.push_back(glm::make_vec3(glm::vec4(-xSize, -ySize, -zSize, 1.0f) * t->GetWorldMatrix()));
-  vertices.push_back(glm::make_vec3(glm::vec4(-xSize, ySize, -zSize, 1.0f) * t->GetWorldMatrix()));
-  vertices.push_back(glm::make_vec3(glm::vec4(-xSize, ySize, zSize, 1.0f) * t->GetWorldMatrix()));
-  vertices.push_back(glm::make_vec3(glm::vec4(-xSize, -ySize, zSize, 1.0f) * t->GetWorldMatrix()));
-  vertices.push_back(glm::make_vec3(glm::vec4(xSize, -ySize, -zSize, 1.0f) * t->GetWorldMatrix()));
-  vertices.push_back(glm::make_vec3(glm::vec4(xSize, ySize, -zSize, 1.0f) * t->GetWorldMatrix()));
-  vertices.push_back(glm::make_vec3(glm::vec4(xSize, ySize, zSize, 1.0f) * t->GetWorldMatrix()));
-  vertices.push_back(glm::make_vec3(glm::vec4(xSize, -ySize, zSize, 1.0f) * t->GetWorldMatrix()));
+  vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(-xSize, -ySize, -zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(-xSize, ySize, -zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(-xSize, ySize, zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(-xSize, -ySize, zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(xSize, -ySize, -zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(xSize, ySize, -zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(xSize, ySize, zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(xSize, -ySize, zSize, 1.0f)));
 
   return Utility::GJK::Shape(vertices, center);
 }

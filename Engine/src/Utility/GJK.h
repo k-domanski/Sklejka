@@ -4,6 +4,8 @@ namespace Engine::Utility::GJK {
   public:
     Shape(std::vector< glm::vec3 > vertices, glm::vec3 center)
         : _vertices(vertices), _center(center) {
+      _sphere = false;
+      _radius = 0.0f;
     }
     Shape(bool sphere, float radius, glm::vec3 center)
         : _sphere(sphere), _radius(radius), _center(center) {

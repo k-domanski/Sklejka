@@ -11,10 +11,10 @@ std::vector< glm::vec3 > Engine::Utility::GJK::Shape::vertices() const {
 
 glm::vec3 Engine::Utility::GJK::Shape::FindFurthestPoint(glm::vec3 direction) const {
   if (_sphere) {
-    return _radius * normalize(direction);
+    return _center + (_radius * normalize(direction));
   }
 
-  glm::vec3 maxPoint;
+  glm::vec3 maxPoint = _vertices[0];
   float maxDistance = -FLT_MAX;
 
   for (glm::vec3 vertex : _vertices) {
@@ -76,7 +76,10 @@ auto Engine::Utility::GJK::Intersects(Shape s1, Shape s2) -> bool {
 }
 
 auto Engine::Utility::GJK::TripleCrossProduct(glm::vec3 a, glm::vec3 b, glm::vec3 c) -> glm::vec3 {
-  return glm::cross(glm::cross(a, b), c);
+  auto first = glm::cross(a, b);
+  auto second = glm::cross(first, c);
+  return second;
+  //return glm::cross(glm::cross(a, b), c);
 }
 
 auto Engine::Utility::GJK::Support(Shape s1, Shape s2, glm::vec3 dir) -> glm::vec3 {

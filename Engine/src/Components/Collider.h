@@ -23,9 +23,9 @@ namespace Engine::Components {
     __declspec(property(get = get_type, put = set_type)) ColliderType Type;
 
     Collider(const glm::vec3 size, bool trigger, bool static_, ColliderType type)
-        : Component(), _size(size), _trigger(trigger), _static(static_), _type(type) {
+        : Component("Collider"), _size(size), _trigger(trigger), _static(static_), _type(type) {
     }
-    Collider(): Component() {
+    Collider(): Component("Collider") {
     }
     ~Collider() override = default;
 
