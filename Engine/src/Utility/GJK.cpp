@@ -53,7 +53,9 @@ unsigned Engine::Utility::GJK::Simplex::size() const {
 
 auto Engine::Utility::GJK::Intersects(Shape s1, Shape s2) -> bool {
   // Get initial support point in any direction
-  glm::vec3 support = Support(s1, s2, glm::vec3(1.0f, 0.0f, 0.0f));
+  glm::vec3 startDirection(1.0f);
+  startDirection    = normalize(startDirection);
+  glm::vec3 support = Support(s1, s2, startDirection);
   // Simplex is an array of points, max count is 4
   Simplex points;
   points.push_front(support);
@@ -65,6 +67,8 @@ auto Engine::Utility::GJK::Intersects(Shape s1, Shape s2) -> bool {
     support = Support(s1, s2, direction);
 
     if (glm::dot(support, direction) <= 0) {
+      if (direction == glm::vec3(0.0f))
+          return true;
       return false;  // no collision
     }
 
