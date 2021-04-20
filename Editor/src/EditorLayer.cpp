@@ -38,7 +38,7 @@ void EditorLayer::OnAttach() {
   m_Entity1  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Entity2  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Pepe     = ECS::EntityManager::GetInstance().CreateEntity();
-  m_Material = serializer->LoadMaterial("./material.json");
+  m_Material = AssetManager::GetMaterial("./material.json");
 
   std::cout << m_Material->ToJson();
   // m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",

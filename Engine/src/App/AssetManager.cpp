@@ -89,4 +89,22 @@ namespace Engine {
     _loadedMaterials[newMaterial->GetAssetID()] = newMaterial;
     return newMaterial;
   }
+
+  auto AssetManager::GetMaterial(std::string file) -> std::shared_ptr<Renderer::Material>
+  {
+    std::ifstream ifstream(file);
+    nlohmann::json json;
+    ifstream >> json;
+
+    std::string assetID_string = json["assetID"];
+    std::stringstream ss(assetID_string);
+    size_t material_assetID;
+    ss >> material_assetID;
+
+    std::shared_ptr< GL::Shader > shader_ptr = GetShader(json["shaderFilepath"]);
+    std::shared_ptr< GL::Texture2D > texture_ptr =
+        GetTexture2D(json["diffuseFilepath"]);
+
+    return GetMaterial(shader_ptr, texture_ptr, material_assetID);
+  }
 }  // namespace Engine

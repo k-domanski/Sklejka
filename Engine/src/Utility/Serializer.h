@@ -7,6 +7,5 @@ namespace Engine {
     Serializer()          = default;
     virtual ~Serializer() = default;
     void SaveMaterial(std::shared_ptr< Renderer::Material > material, std::string filePath);
-    std::shared_ptr< Renderer::Material > LoadMaterial(std::string filePath);
   };
 }  

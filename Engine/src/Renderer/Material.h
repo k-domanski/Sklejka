@@ -16,7 +16,6 @@ namespace Engine::Renderer {
 
   public:
     Material(std::size_t assetID);
-    Material(nlohmann::json json);
     auto SetShader(const std::shared_ptr< GL::Shader >& shader,
                    const std::string& filePath) noexcept -> void;
     auto SetMainTexture(const std::shared_ptr< GL::Texture2D >& mainTexture,

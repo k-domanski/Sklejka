@@ -32,5 +32,7 @@ namespace Engine {
                             std::shared_ptr< GL::Texture2D > texture_2d,
                             std::size_t assetID)
         -> std::shared_ptr< Renderer::Material >;
+    static auto GetMaterial(std::string file)
+        -> std::shared_ptr< Renderer::Material >;
   };
 }  // namespace Engine
