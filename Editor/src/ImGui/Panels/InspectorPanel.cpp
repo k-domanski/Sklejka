@@ -57,10 +57,11 @@ namespace EditorGUI {
 
   /*-------Checkbox bools----------*/
   static bool activeCamera;
-  static bool boxTrigger;
-  static bool sphereTrigger;
-  static bool rbGravity;
-  static bool rbKinematic;
+  // static bool boxTrigger;
+  // static bool sphereTrigger;
+  // static bool rbGravity;
+  // static bool rbKinematic;
+  // static bool sphere;
   /*-------------------------------*/
   void InspectorPanel::DrawComponents(std::shared_ptr< ECS::Entity > entity) {
     /*Name Input Field*/
@@ -109,23 +110,23 @@ namespace EditorGUI {
         ImGui::CloseCurrentPopup();
       }
 
-      if (ImGui::MenuItem("Box Collider")) {
-        if (entity->GetComponent< Components::BoxCollider >() == nullptr) {
-          entity->AddComponent< Components::BoxCollider >();
+      if (ImGui::MenuItem("Collider")) {
+        if (entity->GetComponent< Components::Collider >() == nullptr) {
+          entity->AddComponent< Components::Collider >();
         } else {
-          APP_WARN("{} entity already has Box Collider component!", entity->Name());
+          APP_WARN("{} entity already has Collider component!", entity->Name());
         }
         ImGui::CloseCurrentPopup();
       }
 
-      if (ImGui::MenuItem("Sphere Collider")) {
-        if (entity->GetComponent< Components::SphereCollider >() == nullptr) {
-          entity->AddComponent< Components::SphereCollider >();
+      /*if (ImGui::MenuItem("Sphere Collider")) {
+        if (entity->GetComponent< Components::Collider >() == nullptr) {
+          entity->AddComponent< Components::Collider >();
         } else {
           APP_WARN("{} entity already has Sphere Collider component!", entity->Name());
         }
         ImGui::CloseCurrentPopup();
-      }
+      }*/
       ImGui::EndPopup();
     }
     DrawComponent< Transform >("Transform", entity, [](auto component) {
@@ -184,38 +185,58 @@ namespace EditorGUI {
       DrawVec3("Velocity", velocity);
       component->SetVelocity(velocity);
 
-      if (component->UseGravity())
-        rbGravity = true;
+      bool rbKinematic = component->IsKinematic();
+      bool rbGravity = component->UseGravity();
+
+      //if (component->UseGravity())
+        //rbGravity = true;
       DrawBool("Use Gravity", rbGravity);
       component->SetGravity(rbGravity);
 
-      if (component->IsKinematic())
-        rbKinematic = true;
+      //if (component->IsKinematic())
+        //rbKinematic = true;
       DrawBool("Is Kinematic", rbKinematic);
       component->SetKinematic(rbKinematic);
     });
 
-    DrawComponent< Components::BoxCollider >("Box Collider", entity, [](auto component) {
-      glm::vec3 size = component->GetSize();
+    DrawComponent< Components::Collider >("Collider", entity, [](auto component) {
+      bool boxTrigger;
+      bool sphere;
+      glm::vec3 size = component->Size;
       DrawVec3("Size", size);
-      component->SetSize(size);
+      component->Size  = size;
+      glm::vec3 center = component->Center;
+      DrawVec3("Center", center);
+      component->Center = center;
 
-      if (component->IsTrigger())
-        boxTrigger = true;
+      if (component->Type == Components::ColliderType::Sphere)
+        sphere = true;
+      else
+        sphere = false;
+
+      // if (component->IsTrigger)
+      boxTrigger = component->IsTrigger;
+
+      DrawBool("Is sphere", sphere);
+      if (sphere)
+        component->Type = Engine::Components::ColliderType::Sphere;
+      else
+        component->Type = Engine::Components::ColliderType::Box;
+
       DrawBool("Is Trigger", boxTrigger);
-      component->SetTrigger(boxTrigger);
+      component->IsTrigger = boxTrigger;
     });
 
-    DrawComponent< Components::SphereCollider >("Sphere Collider", entity, [](auto component) {
-      float radius = component->GetRadius();
+    /*DrawComponent< Components::Collider >("Sphere Collider", entity, [](auto component) {
+      float radius = component->Size.x;
       DrawFloat("Radius", radius);
-      component->SetRadius(radius);
+      component->Size = glm::vec3(radius);
 
-      if (component->IsTrigger())
+      if (component->IsTrigger)
         boxTrigger = true;
       DrawBool("Is Trigger", boxTrigger);
-      component->SetTrigger(boxTrigger);
-    });
+      component->IsTrigger = boxTrigger;
+    });*/
   }
 
   static void DrawVec3(const std::string& name, glm::vec3& value, float resetValue = 0.0f) {

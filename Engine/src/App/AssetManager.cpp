@@ -5,12 +5,17 @@
 #include <random>
 #include <Utility/Utility.h>
 #include <App/Log.h>
+#include <filesystem>
 
 namespace Engine {
   auto AssetManager::generateID() {
     std::random_device dv;
     std::mt19937_64 mt(dv());
     return static_cast< size_t >(mt());
+  }
+
+  auto AssetManager::GetWoringDir() -> std::string {
+    return std::filesystem::current_path().string();
   }
 
   auto AssetManager::GetShader(const std::string_view& file) -> std::shared_ptr< GL::Shader > {
@@ -94,20 +99,17 @@ namespace Engine {
     return newMaterial;
   }
 
-  auto AssetManager::GetMaterial(std::string file) -> std::shared_ptr<Renderer::Material>
-  {
-    std::ifstream ifstream(file);
-    nlohmann::json json;
-    ifstream >> json;
+  auto AssetManager::GetMaterial(std::string file) -> std::shared_ptr< Renderer::Material > {
+    auto content        = Utility::ReadTextFile(file);
+    nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
 
     std::string assetID_string = json["assetID"];
     std::stringstream ss(assetID_string);
     size_t material_assetID;
     ss >> material_assetID;
 
-    std::shared_ptr< GL::Shader > shader_ptr = GetShader(json["shaderFilepath"]);
-    std::shared_ptr< GL::Texture2D > texture_ptr =
-        GetTexture2D(json["diffuseFilepath"]);
+    std::shared_ptr< GL::Shader > shader_ptr     = GetShader(json["shaderFilepath"]);
+    std::shared_ptr< GL::Texture2D > texture_ptr = GetTexture2D(json["diffuseFilepath"]);
 
     return GetMaterial(shader_ptr, texture_ptr, material_assetID);
   }

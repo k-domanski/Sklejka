@@ -7,9 +7,10 @@ using namespace Engine;
 EditorLayer::EditorLayer(const std::string& name): Layer(name) {
 }
 void EditorLayer::OnAttach() {
+  LOG_TRACE("Working directory: {}", AssetManager::GetWoringDir());
   /*Assets*/
   auto texture   = AssetManager::GetTexture2D("./textures/pepo_sad.png");
-  auto coneModel = AssetManager::GetModel("./models/smolCone.fbx");
+  auto coneModel = AssetManager::GetModel("./models/cube.fbx");
   m_Shader       = AssetManager::GetShader("./shaders/default.glsl");
   assert(("Failed to acquire shader", m_Shader != nullptr));
   m_ConeMesh = coneModel->getRootMesh();
@@ -38,6 +39,7 @@ void EditorLayer::OnAttach() {
   m_Entity1  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Entity2  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Pepe     = ECS::EntityManager::GetInstance().CreateEntity();
+  //LOG_TRACE("Past");
   m_Material = AssetManager::GetMaterial("./material.json");
 
   std::cout << m_Material->ToJson();
@@ -76,19 +78,21 @@ void EditorLayer::OnAttach() {
   sg->AddEntity(ent4->GetID(), ent1->GetID());*/
   /*------------------------*/
 
-  auto box1 = m_Entity1->AddComponent< Components::BoxCollider >();
+  auto box1 = m_Entity1->AddComponent< Components::Collider >();
   auto rb1  = m_Entity1->AddComponent< Components::Rigidbody >();
-  auto box2 = m_Entity2->AddComponent< Components::BoxCollider >();
+  auto box2 = m_Entity2->AddComponent< Components::Collider >();
   auto rb2  = m_Entity2->AddComponent< Components::Rigidbody >();
 
-  box1->SetSize(glm::vec3(0.2f));
-  box1->SetTrigger(false);
+  box1->Size = glm::vec3(1.0f);
+  box1->IsTrigger = false;
+  box1->Center    = glm::vec3(0.0f);
   rb1->SetGravity(false);
-  rb1->SetKinematic(false);
-  box2->SetSize(glm::vec3(0.2f));
-  box2->SetTrigger(false);
+  rb1->SetKinematic(true);
+  box2->Size = glm::vec3(1.0f);
+  box2->IsTrigger = false;
+  box2->Center    = glm::vec3(0.0f);
   rb2->SetGravity(false);
-  rb2->SetKinematic(false);
+  rb2->SetKinematic(true);
 
   auto tr1 = m_Entity1->GetComponent< Transform >();
   auto tr2 = m_Entity2->GetComponent< Transform >();
@@ -108,12 +112,12 @@ void EditorLayer::OnUpdate(double deltaTime) {
   UpdateEditorCamera();
   /* -------------------------- */
   m_Time += deltaTime / 2.0f;
-  auto tr1 = m_Entity1->GetComponent< Transform >();
+  //auto tr1 = m_Entity1->GetComponent< Transform >();
   // tr1->Rotate(deltaTime * 0.3, {0.0f, 1.0f, 0.0f});
   // m_PepeTransform->Rotate(deltaTime * 0.1, {0.0f, 1.0f, 0.0f});
   // auto pos = tr1->Position();
-  tr1->Position(glm::vec3(sin(m_Time) * m_it, 0.0f, 0.0f));
-  m_it += deltaTime / 20.0f;
+  //tr1->Position(glm::vec3(sin(m_Time) * m_it, 0.0f, 0.0f));
+  //m_it += deltaTime / 20.0f;
   // std::cout << "sin time: " << sin(m_Time)*m_it << std::endl;
 
   m_Scene->Update(deltaTime);

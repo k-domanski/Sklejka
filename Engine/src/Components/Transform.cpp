@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Transform.h"
 
+#include "glm/gtx/matrix_decompose.hpp"
+
 namespace Engine {
   Transform::Transform()
       : Component("Transform"), _position(0.0f), _rotation(1.0f, 0.0f, 0.0f, 0.0f), _scale(1.0f),
@@ -59,5 +61,21 @@ namespace Engine {
   auto Transform::Rotate(float radians, const glm::vec3& axis) noexcept -> glm::quat {
     flags.Set(TransformFlag::Dirty | TransformFlag::NewData);
     return _rotation = glm::rotate(glm::quat{1.0f, 0.0f, 0.0f, 0.0f}, radians, axis) * _rotation;
+  }
+
+  auto Transform::WorldPosition() const noexcept -> glm::vec3 {
+    return glm::vec3(_modelMatrix[3]);
+  }
+
+  auto Transform::WorlScale() const noexcept -> glm::vec3
+  {
+    glm::vec3 scale;
+    glm::quat rotation;
+    glm::vec3 translation;
+    glm::vec3 skew;
+    glm::vec4 perspective;
+    glm::decompose(_modelMatrix, scale, rotation, translation, skew, perspective);
+
+    return scale;
   }
 }  // namespace Engine
