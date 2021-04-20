@@ -41,8 +41,6 @@ void EditorLayer::OnAttach() {
   m_Pepe     = ECS::EntityManager::GetInstance().CreateEntity();
   //LOG_TRACE("Past");
   m_Material = AssetManager::GetMaterial("./material.json");
-
-  std::cout << m_Material->ToJson();
   // m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
   //                                       "./textures/pepo_sad.png", texture);
 
@@ -104,6 +102,8 @@ void EditorLayer::OnAttach() {
   m_PepeTransform->Position({0.0f, 1.0f, 0.0f});
   m_PepeTransform->Scale({0.2f, 0.2f, 0.2f});
   // m_Scene.SceneGraph()->AddEntity(m_PepeTransform->GetEntityID(), tr2->GetEntityID());
+  tr1->SaveToJson("./tr1.json");
+  tr2->SaveToJson("./tr2.json");
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {

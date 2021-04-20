@@ -39,5 +39,6 @@ namespace Engine {
     auto Rotate(float radians, const glm::vec3& axis) noexcept -> glm::quat;
     auto WorldPosition() const noexcept -> glm::vec3;
     auto WorlScale() const noexcept -> glm::vec3;
+    std::string SaveToJson(std::string filePath) override;
   };
 }  // namespace Engine
