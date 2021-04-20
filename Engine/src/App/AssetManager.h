@@ -21,6 +21,7 @@ namespace Engine {
     static auto generateID();
 
   public:
+    static auto GetWoringDir() -> std::string;
     static auto GetShader(const std::string_view& file) -> std::shared_ptr< GL::Shader >;
     static auto GetModel(const std::string_view& file) -> std::shared_ptr< Renderer::Model >;
     static auto GetModel(Renderer::ModelPrimitive primitive) -> std::shared_ptr< Renderer::Model >;
@@ -29,8 +30,8 @@ namespace Engine {
                             std::shared_ptr< GL::Texture2D > texture_2d)
         -> std::shared_ptr< Renderer::Material >;
     static auto GetMaterial(std::shared_ptr< GL::Shader > shared_ptr,
-                            std::shared_ptr< GL::Texture2D > texture_2d,
-                            std::size_t assetID)
+                            std::shared_ptr< GL::Texture2D > texture_2d, std::size_t assetID)
         -> std::shared_ptr< Renderer::Material >;
+    static auto GetMaterial(std::string file) -> std::shared_ptr< Renderer::Material >;
   };
 }  // namespace Engine
