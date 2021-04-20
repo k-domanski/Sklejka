@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Material.h"
 
-
 #include "App/AssetManager.h"
 #include "nlohmann/json.hpp"
 
@@ -10,15 +9,12 @@ namespace Engine::Renderer {
       : _assetID(assetID), _shader(nullptr), _mainTexture(nullptr) {
   }
 
-  auto Material::SetShader(const std::shared_ptr< GL::Shader >& shader,
-                           const std::string& filePath) noexcept -> void {
-    _shader     = shader;
-    _shaderFile = filePath;
+  auto Material::SetShader(const std::shared_ptr< GL::Shader >& shader) noexcept -> void {
+    _shader = shader;
   }
-  auto Material::SetMainTexture(const std::shared_ptr< GL::Texture2D >& mainTexture,
-                                const std::string& filePath) noexcept -> void {
+  auto Material::SetMainTexture(const std::shared_ptr< GL::Texture2D >& mainTexture) noexcept
+      -> void {
     _mainTexture = mainTexture;
-    _diffuseFile = filePath;
   }
 
   auto Material::SetTransform(glm::mat4 m) -> void {
@@ -34,13 +30,11 @@ namespace Engine::Renderer {
     return _mainTexture;
   }
 
-  std::string Material::GetShaderFilepath()
-  {
+  std::string Material::GetShaderFilepath() {
     return _shaderFile;
   }
 
-  std::string Material::GetDiffuseFilepath()
-  {
+  std::string Material::GetDiffuseFilepath() {
     return _diffuseFile;
   }
 
@@ -48,15 +42,20 @@ namespace Engine::Renderer {
     return _assetID;
   }
 
-  std::string Material::ToJson()
-  {
-    nlohmann::json json = nlohmann::json{{"assetID", std::to_string(_assetID)},
-                                         {"shaderFilepath", _shaderFile},
-                                         {"diffuseFilepath", _diffuseFile}};
+  std::string Material::ToJson() {
+    nlohmann::json json = nlohmann::json{
+        {"assetID", std::to_string(_assetID)},
+        {"shaderFilepath", (_shader != nullptr ? _shader->FilePath() : "")},
+        {"diffuseFilepath", (_mainTexture != nullptr ? _mainTexture->FilePath() : "")}};
 
     return json.dump(4);
   }
-
+  auto Material::FilePath() const noexcept -> std::string {
+    return _filePath;
+  }
+  auto Material::FilePath(const std::string& filePath) noexcept -> std::string {
+    return _filePath = filePath;
+  }
   auto Material::Use() noexcept -> void {
     if (_mainTexture != nullptr) {
       _mainTexture->Bind(0);

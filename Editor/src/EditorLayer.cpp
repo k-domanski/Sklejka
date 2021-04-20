@@ -19,7 +19,10 @@ void EditorLayer::OnAttach() {
   // auto tex_shader   = AssetManager::GetShader("./shaders/texture_shader.glsl");
   auto pepe_texture = AssetManager::GetTexture2D("./textures/Stormtrooper_D.png");
   // auto pepe_texture = AssetManager::GetTexture2D("./textures/Untilted.png");
-  m_PepeMaterial = AssetManager::GetMaterial(m_Shader, pepe_texture);
+  m_PepeMaterial = AssetManager::CreateMaterial();
+
+  m_PepeMaterial->SetShader(m_Shader);
+  m_PepeMaterial->SetMainTexture(pepe_texture);
 
   auto aspect        = Engine::Window::Get().GetAspectRatio();
   auto camera_entity = Engine::ECS::EntityManager::GetInstance().CreateEntity();
@@ -36,13 +39,11 @@ void EditorLayer::OnAttach() {
 
   Engine::Serializer* serializer = new Serializer();
   /*ECS Scene*/
-  m_Entity1  = ECS::EntityManager::GetInstance().CreateEntity();
-  m_Entity2  = ECS::EntityManager::GetInstance().CreateEntity();
-  m_Pepe     = ECS::EntityManager::GetInstance().CreateEntity();
-  //LOG_TRACE("Past");
+  m_Entity1 = ECS::EntityManager::GetInstance().CreateEntity();
+  m_Entity2 = ECS::EntityManager::GetInstance().CreateEntity();
+  m_Pepe    = ECS::EntityManager::GetInstance().CreateEntity();
+  // LOG_TRACE("Past");
   m_Material = AssetManager::GetMaterial("./material.json");
-
-  std::cout << m_Material->ToJson();
   // m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
   //                                       "./textures/pepo_sad.png", texture);
 
@@ -83,12 +84,12 @@ void EditorLayer::OnAttach() {
   auto box2 = m_Entity2->AddComponent< Components::Collider >();
   auto rb2  = m_Entity2->AddComponent< Components::Rigidbody >();
 
-  box1->Size = glm::vec3(1.0f);
+  box1->Size      = glm::vec3(1.0f);
   box1->IsTrigger = false;
   box1->Center    = glm::vec3(0.0f);
   rb1->SetGravity(false);
   rb1->SetKinematic(true);
-  box2->Size = glm::vec3(1.0f);
+  box2->Size      = glm::vec3(1.0f);
   box2->IsTrigger = false;
   box2->Center    = glm::vec3(0.0f);
   rb2->SetGravity(false);
@@ -97,10 +98,12 @@ void EditorLayer::OnAttach() {
   auto tr1 = m_Entity1->GetComponent< Transform >();
   auto tr2 = m_Entity2->GetComponent< Transform >();
 
-  tr1->Position({0.0f, 0.0f, 0.0f});
-  tr1->Scale({0.2f, 0.2f, 0.2f});
-  tr2->Scale({0.2f, 0.2f, 0.2f});
-  tr2->Position({-1.0f, 0.0f, 0.0f});
+  //tr1->Position({0.0f, 0.0f, 0.0f});
+  //tr1->Scale({0.2f, 0.2f, 0.2f});
+  //tr2->Scale({0.2f, 0.2f, 0.2f});
+  //tr2->Position({-1.0f, 0.0f, 0.0f});
+  tr1->LoadFromJson("./tr1.json");
+  tr2->LoadFromJson("./tr2.json");
   m_PepeTransform->Position({0.0f, 1.0f, 0.0f});
   m_PepeTransform->Scale({0.2f, 0.2f, 0.2f});
   // m_Scene.SceneGraph()->AddEntity(m_PepeTransform->GetEntityID(), tr2->GetEntityID());
@@ -112,12 +115,12 @@ void EditorLayer::OnUpdate(double deltaTime) {
   UpdateEditorCamera();
   /* -------------------------- */
   m_Time += deltaTime / 2.0f;
-  //auto tr1 = m_Entity1->GetComponent< Transform >();
+  // auto tr1 = m_Entity1->GetComponent< Transform >();
   // tr1->Rotate(deltaTime * 0.3, {0.0f, 1.0f, 0.0f});
   // m_PepeTransform->Rotate(deltaTime * 0.1, {0.0f, 1.0f, 0.0f});
   // auto pos = tr1->Position();
-  //tr1->Position(glm::vec3(sin(m_Time) * m_it, 0.0f, 0.0f));
-  //m_it += deltaTime / 20.0f;
+  // tr1->Position(glm::vec3(sin(m_Time) * m_it, 0.0f, 0.0f));
+  // m_it += deltaTime / 20.0f;
   // std::cout << "sin time: " << sin(m_Time)*m_it << std::endl;
 
   m_Scene->Update(deltaTime);
@@ -130,6 +133,7 @@ void EditorLayer::OnDetach() {
 
 void EditorLayer::OnEvent(Event& event) {
   EventDispatcher dispatcher(event);
+  dispatcher.Dispatch< WindowResizeEvent >(BIND_EVENT_FN(EditorLayer::OnWindowResize));
   dispatcher.Dispatch< MouseScrolledEvent >(BIND_EVENT_FN(EditorLayer::OnMouseScroll));
   dispatcher.Dispatch< MouseButtonPressedEvent >(BIND_EVENT_FN(EditorLayer::OnMouseButtonPress));
   dispatcher.Dispatch< MouseButtonReleasedEvent >(BIND_EVENT_FN(EditorLayer::OnMouseButtonRelease));
@@ -139,6 +143,15 @@ void EditorLayer::OnImGuiRender() {
   m_SceneHierarchyPanel.OnImGuiRender();
   m_InspectorPanel.OnImGuiRender(m_SceneHierarchyPanel.GetSelectedEntity());
   m_FileSystemPanel.OnImGuiRender();
+  m_MaterialPanel.OnImGuiRender();
+}
+
+bool EditorLayer::OnWindowResize(Engine::WindowResizeEvent& e) {
+  glm::vec2 size = {(float)e.GetWidth(), (float)e.GetHeight()};
+  m_Scene->OnWindowResize(size);
+  editorCameraArgs.screenSize = size;
+  m_EditorCamera.camera->Aspect(Window::Get().GetAspectRatio());
+  return true;
 }
 
 bool EditorLayer::OnMouseScroll(MouseScrolledEvent& e) {
@@ -209,9 +222,9 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
   auto entity = EntityManager::GetInstance().CreateEntity();
   entity->Name(std::filesystem::path(path).filename().stem().string());
   entity->AddComponent< Transform >();
-  auto shader = AssetManager::GetShader("./shaders/default.glsl");
-  auto mat    = AssetManager::GetMaterial(shader, nullptr);
-  entity->AddComponent< MeshRenderer >(model->getRootMesh(), mat);
+  /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
+  auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
+  entity->AddComponent< MeshRenderer >(model->getRootMesh(), nullptr);
 
   m_Scene->SceneGraph()->AddChild(parent, entity->GetID());
 }

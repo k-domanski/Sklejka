@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Transform.h"
 
+#include <nlohmann/json.hpp>
+
+
 #include "glm/gtx/matrix_decompose.hpp"
 
 namespace Engine {
@@ -67,8 +70,7 @@ namespace Engine {
     return glm::vec3(_modelMatrix[3]);
   }
 
-  auto Transform::WorlScale() const noexcept -> glm::vec3
-  {
+  auto Transform::WorlScale() const noexcept -> glm::vec3 {
     glm::vec3 scale;
     glm::quat rotation;
     glm::vec3 translation;
@@ -77,5 +79,36 @@ namespace Engine {
     glm::decompose(_modelMatrix, scale, rotation, translation, skew, perspective);
 
     return scale;
+  }
+
+  std::string Transform::SaveToJson(std::string filePath) {
+    nlohmann::json json = nlohmann::json{
+        {"componentType", "transform"},
+        {"localPosition", {{"x", _position.x}, {"y", _position.y}, {"z", _position.z}}},
+        {"localRotation",
+         {{"w", _rotation.w}, {"x", _rotation.x}, {"y", _rotation.y}, {"z", _rotation.z}}},
+        {"localScale", {{"x", _scale.x}, {"y", _scale.y}, {"z", _scale.z}}}};
+
+    std::ofstream ofstream;
+    ofstream.open(filePath);
+    ofstream << json.dump(4);
+    ofstream.close();
+
+    return json.dump(4);
+  }
+
+  auto Transform::LoadFromJson(std::string filePath) -> void
+  {
+    auto content        = Utility::ReadTextFile(filePath);
+    nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
+
+    Position(glm::vec3(json["localPosition"]["x"], json["localPosition"]["y"],
+                          json["localPosition"]["z"]));
+
+    Rotation(glm::quat(json["localRotation"]["w"], json["localRotation"]["x"],
+                       json["localRotation"]["y"], json["localRotation"]["z"]));
+
+    Scale(glm::vec3(json["localScale"]["x"], json["localScale"]["y"],
+                       json["localScale"]["z"]));
   }
 }  // namespace Engine

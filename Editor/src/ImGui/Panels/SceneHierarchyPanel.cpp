@@ -12,15 +12,13 @@ namespace EditorGUI {
 
   void SceneHierarchyPanel::OnImGuiRender() {
     ImGui::Begin("Scene Hierarchy");
-    auto entities = m_Scene->SceneGraph()->GetChildren(m_Scene->SceneGraph()->GetRootID());
-    for (auto& entity : entities) {
-      DrawEntity(ECS::EntityManager::GetInstance().GetEntity(entity));
-    }
+    DrawEntity(ECS::EntityManager::GetInstance().GetEntity(0));
     ImGui::End();
   }
 
   void SceneHierarchyPanel::DrawEntity(std::shared_ptr< ECS::Entity > entity) {
-    auto id              = entity->GetID();
+    auto id = entity->GetID();
+    // auto tag             = std::to_string(entity->GetID());
     auto tag             = entity->Name();
     const auto& children = m_Scene->SceneGraph()->GetChildren(id);
 
@@ -31,6 +29,18 @@ namespace EditorGUI {
     bool open = ImGui::TreeNodeEx((void*)entity->GetID(), flags, tag.c_str());
     if (ImGui::IsItemClicked()) {
       m_SelectedEntity = entity;
+    }
+    if (ImGui::BeginDragDropSource()) {
+      ImGui::SetDragDropPayload("Scene_Hierarchy", &id, sizeof(ECS::EntityID));
+      ImGui::EndDragDropSource();
+    }
+    if (ImGui::BeginDragDropTarget()) {
+      if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Scene_Hierarchy")) {
+        IM_ASSERT(payload->DataSize == sizeof(ECS::EntityID));
+        ECS::EntityID payload_n = *(const ECS::EntityID*)payload->Data;
+        m_Scene->SceneGraph()->SetParent(payload_n, id);
+      }
+      ImGui::EndDragDropTarget();
     }
     if (open) {
       for (auto& child : children) {

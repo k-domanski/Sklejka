@@ -11,15 +11,15 @@ namespace Engine::Systems {
     using namespace GL;
     AddSignature< Components::MeshRenderer >();
     AddSignature< Transform >();
-
-    auto size      = Window::Get().GetScreenSize();
+    // OnWindowResize(Window::Get().GetScreenSize());
+    auto size     = Window::Get().GetScreenSize();
     _renderTarget = std::make_shared< RenderTarget >(size.x, size.y);
     _screenTexture =
         std::make_shared< TextureAttachment >(size.x, size.y, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
     _renderTarget->AttachColor(0, _screenTexture);
     _renderTarget->AttachDepthStencil(std::make_shared< Renderbuffer >(size.x, size.y));
 
-    _quad = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
+    _quad       = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
     _quadShader = AssetManager::GetShader("./shaders/screen_quad.glsl");
     assert(("Screen shader not loaded", _quadShader != nullptr));
   }
@@ -48,7 +48,6 @@ namespace Engine::Systems {
         glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
       }
     }
-
     // Post process
     GL::Context::BindFramebuffer(GL_FRAMEBUFFER, 0);
     GL::Context::ClearBuffers(GL::BufferBit::Color);
@@ -62,6 +61,16 @@ namespace Engine::Systems {
 
   auto Renderer::AddEntity(ECS::EntityID id) -> void {
     System::AddEntity(id);
+  }
+
+  auto Renderer::OnWindowResize(glm::vec2 windowSize) -> void {
+    using namespace GL;
+    auto size     = windowSize;
+    _renderTarget = std::make_shared< RenderTarget >(size.x, size.y);
+    _screenTexture =
+        std::make_shared< TextureAttachment >(size.x, size.y, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
+    _renderTarget->AttachColor(0, _screenTexture);
+    _renderTarget->AttachDepthStencil(std::make_shared< Renderbuffer >(size.x, size.y));
   }
 
   auto Renderer::SortByMaterial() -> void {

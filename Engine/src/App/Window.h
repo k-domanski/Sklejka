@@ -39,6 +39,10 @@ namespace Engine {
     GLFWwindow* GetNativeWindow() const {
       return m_Window;
     }
+    auto SetScreenSize(glm::vec2 screenSize) -> void {
+        m_Data.Width = screenSize.x;
+        m_Data.Height = screenSize.y;
+    }
     auto GetScreenSize() const -> glm::vec2 {
       return {GetWidth(), GetHeight()};
     }

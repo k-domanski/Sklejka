@@ -18,6 +18,7 @@ namespace Engine::ECS {
     virtual std::string SaveToJson(std::string filePath) {
       return "";
     }
+    virtual auto LoadFromJson(std::string filePath) -> void { }
     auto GetEntityID() const -> EntityID {
       return _entityID;
     }

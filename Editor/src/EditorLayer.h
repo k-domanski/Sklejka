@@ -6,6 +6,7 @@
 #include "ImGui/Panels/SceneHierarchyPanel.h"
 #include "ImGui/Panels/InspectorPanel.h"
 #include "ImGui/Panels/FileSystemPanel.h"
+#include "ImGui/Panels/MaterialPanel.h"
 
 template< typename T >
 using ptr_t = std::shared_ptr< T >;
@@ -24,6 +25,7 @@ public:
   auto AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent = 0) -> void;
 
 private:
+  bool OnWindowResize(Engine::WindowResizeEvent& e);
   bool OnMouseScroll(Engine::MouseScrolledEvent& e);
   bool OnMouseButtonPress(Engine::MouseButtonPressedEvent& e);
   bool OnMouseButtonRelease(Engine::MouseButtonReleasedEvent& e);
@@ -58,4 +60,5 @@ private:
   EditorGUI::SceneHierarchyPanel m_SceneHierarchyPanel;
   EditorGUI::InspectorPanel m_InspectorPanel;
   EditorGUI::FileSystemPanel m_FileSystemPanel;
+  EditorGUI::MaterialPanel m_MaterialPanel;
 };
