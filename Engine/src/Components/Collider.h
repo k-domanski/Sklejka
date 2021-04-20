@@ -32,6 +32,7 @@ namespace Engine::Components {
     Collider(): Component("Collider") {
     }
     ~Collider() override = default;
+    std::string SaveToJson(std::string filePath) override;
 
   private:
     glm::vec3 _size;

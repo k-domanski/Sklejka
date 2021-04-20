@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Collider.h"
 
+#include <nlohmann/json.hpp>
+
 Engine::Utility::GJK::Simplex Engine::Components::Collider::get_simplex() const {
   return _simplex;
 }
@@ -47,4 +49,23 @@ Engine::Components::ColliderType Engine::Components::Collider::get_type() const 
 
 void Engine::Components::Collider::set_type(ColliderType type) {
   _type = type;
+}
+
+std::string Engine::Components::Collider::SaveToJson(std::string filePath)
+{
+  nlohmann::json json = nlohmann::json{
+      {"componentType", "collider"},
+      {"colliderType", _type},
+      {"trigger", _trigger},
+      {"static", _static},
+      {"center", {{"x", _center.x}, {"y", _center.y}, {"z", _center.z}}},
+      {"size", {{"x", _size.x}, {"y", _size.y}, {"z", _size.z}}}
+  };
+
+  std::ofstream ofstream;
+  ofstream.open(filePath);
+  ofstream << json.dump(4);
+  ofstream.close();
+
+  return json.dump(4);
 }
