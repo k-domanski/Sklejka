@@ -65,9 +65,9 @@ namespace Engine {
     return _loadedTextures2D[file];
   }
 
-  auto AssetManager::GetMaterial(std::shared_ptr<GL::Shader> shared_ptr,
-      std::shared_ptr<GL::Texture2D> texture_2d) -> std::shared_ptr<Renderer::Material>
-  {
+  auto AssetManager::GetMaterial(std::shared_ptr< GL::Shader > shared_ptr,
+                                 std::shared_ptr< GL::Texture2D > texture_2d)
+      -> std::shared_ptr< Renderer::Material > {
     return AssetManager::GetMaterial(shared_ptr, texture_2d, generateID());
   }
 
@@ -84,8 +84,12 @@ namespace Engine {
     std::shared_ptr< Renderer::Material > newMaterial =
         std::make_shared< Renderer::Material >(assetID);
 
-    newMaterial->SetShader(shared_ptr, std::string(shared_ptr->FilePath()));
-    newMaterial->SetMainTexture(texture_2d, std::string(texture_2d->FilePath()));
+    if (shared_ptr != nullptr) {
+      newMaterial->SetShader(shared_ptr, std::string(shared_ptr->FilePath()));
+    }
+    if (texture_2d != nullptr) {
+      newMaterial->SetMainTexture(texture_2d, std::string(texture_2d->FilePath()));
+    }
     _loadedMaterials[newMaterial->GetAssetID()] = newMaterial;
     return newMaterial;
   }

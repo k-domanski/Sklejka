@@ -205,7 +205,9 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
   auto entity = EntityManager::GetInstance().CreateEntity();
   entity->Name(std::filesystem::path(path).filename().stem().string());
   entity->AddComponent< Transform >();
-  entity->AddComponent< MeshRenderer >(model->getRootMesh(), nullptr);
+  auto shader = AssetManager::GetShader("./shaders/default.glsl");
+  auto mat    = AssetManager::GetMaterial(shader, nullptr);
+  entity->AddComponent< MeshRenderer >(model->getRootMesh(), mat);
 
   m_Scene->SceneGraph()->AddChild(parent, entity->GetID());
 }
