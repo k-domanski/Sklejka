@@ -7,7 +7,7 @@
 namespace Engine {
   Application::Application() {
     m_Window = std::unique_ptr< Window >(Window::Create(WindowProperties(1600, 900)));
-    //m_Window = std::unique_ptr< Window >(Window::Create());
+    // m_Window = std::unique_ptr< Window >(Window::Create());
     m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
     m_ImGuiLayer = new ImGuiLayer();
@@ -65,6 +65,8 @@ namespace Engine {
     return true;
   }
   bool Application::OnWindowResize(WindowResizeEvent& e) {
+    m_Window->SetScreenSize({e.GetWidth(), e.GetHeight()});
+    glViewport(0, 0, e.GetWidth(), e.GetHeight());
     return false;
   }
 }  // namespace Engine

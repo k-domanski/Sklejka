@@ -24,6 +24,7 @@ public:
   auto AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent = 0) -> void;
 
 private:
+    bool OnWindowResize(Engine::WindowResizeEvent& e);
   bool OnMouseScroll(Engine::MouseScrolledEvent& e);
   bool OnMouseButtonPress(Engine::MouseButtonPressedEvent& e);
   bool OnMouseButtonRelease(Engine::MouseButtonReleasedEvent& e);

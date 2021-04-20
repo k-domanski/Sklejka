@@ -19,5 +19,6 @@ namespace Engine {
     auto Update(float deltaTime) -> void;
     auto Draw() -> void;
     auto SceneGraph() -> std::shared_ptr< Systems::SceneGraph >;
+    auto OnWindowResize(glm::vec2 windowSize) ->void { _renderSystem->OnWindowResize(windowSize); }
   };
 }  // namespace Engine

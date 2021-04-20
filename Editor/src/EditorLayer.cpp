@@ -126,6 +126,7 @@ void EditorLayer::OnDetach() {
 
 void EditorLayer::OnEvent(Event& event) {
   EventDispatcher dispatcher(event);
+  dispatcher.Dispatch< WindowResizeEvent >(BIND_EVENT_FN(EditorLayer::OnWindowResize));
   dispatcher.Dispatch< MouseScrolledEvent >(BIND_EVENT_FN(EditorLayer::OnMouseScroll));
   dispatcher.Dispatch< MouseButtonPressedEvent >(BIND_EVENT_FN(EditorLayer::OnMouseButtonPress));
   dispatcher.Dispatch< MouseButtonReleasedEvent >(BIND_EVENT_FN(EditorLayer::OnMouseButtonRelease));
@@ -135,6 +136,14 @@ void EditorLayer::OnImGuiRender() {
   m_SceneHierarchyPanel.OnImGuiRender();
   m_InspectorPanel.OnImGuiRender(m_SceneHierarchyPanel.GetSelectedEntity());
   m_FileSystemPanel.OnImGuiRender();
+}
+
+bool EditorLayer::OnWindowResize(Engine::WindowResizeEvent& e) {
+  glm::vec2 size = {(float)e.GetWidth(), (float)e.GetHeight()};
+  m_Scene->OnWindowResize(size);
+  editorCameraArgs.screenSize = size;
+  m_EditorCamera.camera->Aspect(Window::Get().GetAspectRatio());
+  return true;
 }
 
 bool EditorLayer::OnMouseScroll(MouseScrolledEvent& e) {

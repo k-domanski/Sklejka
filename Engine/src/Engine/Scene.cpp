@@ -5,9 +5,9 @@
 namespace Engine {
   Scene::Scene() {
     using ECS::EntityManager;
-    _sceneGraph   = EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();
-    _renderSystem = EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
-    _cameraSystem = EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
+    _sceneGraph    = EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();
+    _renderSystem  = EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
+    _cameraSystem  = EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
     _physicsSystem = EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
   }
   auto Scene::Update(float deltaTime) -> void {
