@@ -95,15 +95,15 @@ void EditorLayer::OnAttach() {
   auto tr1 = m_Entity1->GetComponent< Transform >();
   auto tr2 = m_Entity2->GetComponent< Transform >();
 
-  tr1->Position({0.0f, 0.0f, 0.0f});
-  tr1->Scale({0.2f, 0.2f, 0.2f});
-  tr2->Scale({0.2f, 0.2f, 0.2f});
-  tr2->Position({-1.0f, 0.0f, 0.0f});
+  //tr1->Position({0.0f, 0.0f, 0.0f});
+  //tr1->Scale({0.2f, 0.2f, 0.2f});
+  //tr2->Scale({0.2f, 0.2f, 0.2f});
+  //tr2->Position({-1.0f, 0.0f, 0.0f});
+  tr1->LoadFromJson("./tr1.json");
+  tr2->LoadFromJson("./tr2.json");
   m_PepeTransform->Position({0.0f, 1.0f, 0.0f});
   m_PepeTransform->Scale({0.2f, 0.2f, 0.2f});
   // m_Scene.SceneGraph()->AddEntity(m_PepeTransform->GetEntityID(), tr2->GetEntityID());
-  tr1->SaveToJson("./tr1.json");
-  tr2->SaveToJson("./tr2.json");
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {

@@ -40,5 +40,6 @@ namespace Engine {
     auto WorldPosition() const noexcept -> glm::vec3;
     auto WorlScale() const noexcept -> glm::vec3;
     std::string SaveToJson(std::string filePath) override;
+    auto LoadFromJson(std::string filePath) -> void override;
   };
 }  // namespace Engine
