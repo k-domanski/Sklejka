@@ -3,7 +3,7 @@
 
 namespace Engine {
   Transform::Transform()
-      : _position(0.0f), _rotation(1.0f, 0.0f, 0.0f, 0.0f), _scale(1.0f),
+      : Component("Transform"), _position(0.0f), _rotation(1.0f, 0.0f, 0.0f, 0.0f), _scale(1.0f),
         _modelMatrix(glm::mat4(1.0f)) {
     flags.Set(TransformFlag::Dirty);
   }

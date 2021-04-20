@@ -12,7 +12,7 @@ namespace Engine::Systems {
   }
   auto SceneGraph::Update(float deltaTime) -> void {
     // Check if any transform is dirty and update it's branch
-    for(auto& entity_id : _entities) {
+    for (auto& entity_id : _entities) {
       auto& transform = EntityManager::GetInstance().GetComponent< Transform >(entity_id);
       if (transform->flags.Get(TransformFlag::Dirty)) {
         auto& parent_tr =
@@ -22,7 +22,7 @@ namespace Engine::Systems {
     }
 
     /* O L D */
-    //for (auto& kv : _parentChildMap) {
+    // for (auto& kv : _parentChildMap) {
     //  /*if (kv.first == _rootID)
     //    continue;*/
     //  auto& transform = EntityManager::GetInstance().GetComponent< Transform >(kv.first);
@@ -60,6 +60,12 @@ namespace Engine::Systems {
   auto SceneGraph::AddEntity(ECS::EntityID id, ECS::EntityID parent) -> void {
     ECS::System::AddEntity(id);
     SetParent(id, parent);
+  }
+  auto SceneGraph::GetRootID() -> ECS::EntityID& {
+    return _rootID;
+  }
+  auto SceneGraph::GetChildren(ECS::EntityID id) -> std::vector< ECS::EntityID >& {
+    return _parentChildMap[id];
   }
   auto SceneGraph::RecursiveUpdateParentAndChildren(std::shared_ptr< Transform >& transform,
                                                     std::shared_ptr< Transform > parent) -> void {

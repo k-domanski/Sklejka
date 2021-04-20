@@ -17,12 +17,19 @@ namespace Engine::GL {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    /* Depth Testing */
     glEnable(GL_DEPTH_TEST);
+
+    /* Face Culling */
+    glEnable(GL_CULL_FACE);
 
     /* Textures */
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &_maxTextureUnits);
     _boundTexture.resize(_maxTextureUnits, 0u);
     _textureTarget.resize(_maxTextureUnits, NULL);
+
+    /* Framebuffers */
+    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &_maxColorAttachments);
   }
   auto Context::VertexBuffer() noexcept -> GLenum {
     return VertexBuffer::GetCurrentHandle();
@@ -114,6 +121,30 @@ namespace Engine::GL {
       return;
     _textureTarget[_activeTexture] = target;
     glBindTexture(target, handle);
+  }
+  auto Context::GetMaxColorAttachments() noexcept -> GLint {
+    return _maxColorAttachments;
+  }
+  auto Context::BindFramebuffer(GLenum target, GLuint handle) noexcept -> void {
+    if (IsFramebufferBound(target, handle)) {
+      return;
+    }
+    _boundFramebuffers[target] = handle;
+    glBindFramebuffer(target, handle);
+  }
+  auto Context::IsFramebufferBound(GLenum target, GLuint handle) noexcept -> bool {
+    if (_boundFramebuffers.count(target) != 0) {
+      if (_boundFramebuffers[target] == handle) {
+        return true;
+      }
+    }
+    return false;
+  }
+  auto Context::GetBoundFramebuffer(GLenum target) -> GLuint {
+    if (_boundFramebuffers.count(target) == 0) {
+      return 0;
+    }
+    return _boundFramebuffers[target];
   }
   auto Context::ClearBuffers() noexcept -> void {
     glClear(_clearBitMask);

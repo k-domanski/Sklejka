@@ -22,6 +22,7 @@ project "Editor"
     includedirs
     {
         "%{wks.location}/Engine/src",
+        "%{wks.location}/Editor/src",
         "%{IncludeDir.irrKlang}/include",
         "%{wks.location}/Engine/vendor/spdlog/include",
         "%{wks.location}/Engine/vendor",
@@ -34,7 +35,7 @@ project "Editor"
         "%{IncludeDir.better_enums}/include",
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.rttr}/src",
-
+        "%{IncludeDir.json}/single_include",
     }
 
     links

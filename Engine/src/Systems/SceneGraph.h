@@ -20,6 +20,10 @@ namespace Engine::Systems {
     auto AddEntity(ECS::EntityID id) -> void override;
     auto AddEntity(ECS::EntityID id, ECS::EntityID parent) -> void;
 
+    /*Editor Gui*/
+    auto GetRootID() -> ECS::EntityID&;
+    auto GetChildren(ECS::EntityID id) -> std::vector< ECS::EntityID >&;
+
   private:
     auto RecursiveUpdateParentAndChildren(std::shared_ptr< Transform >& transform,
                                           std::shared_ptr< Transform > parent) -> void;

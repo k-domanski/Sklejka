@@ -6,7 +6,8 @@
 
 namespace Engine {
   Application::Application() {
-    m_Window = std::unique_ptr< Window >(Window::Create());
+    m_Window = std::unique_ptr< Window >(Window::Create(WindowProperties(1600, 900)));
+    //m_Window = std::unique_ptr< Window >(Window::Create());
     m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
     m_ImGuiLayer = new ImGuiLayer();
@@ -28,12 +29,12 @@ namespace Engine {
         layer->OnUpdate(timer.DeltaTime());
 
       /*Na razie tutaj update systemow*/
-      //ECS::EntityManager::GetInstance().Update();
-      
+      // ECS::EntityManager::GetInstance().Update();
+
       /*ImGui Render*/
       m_ImGuiLayer->Begin();
       for (Layer* layer : m_LayerStack)
-          layer->OnImGuiRender();
+        layer->OnImGuiRender();
       m_ImGuiLayer->End();
 
       m_Window->OnUpdate();
@@ -43,10 +44,9 @@ namespace Engine {
     layer->OnAttach();
     m_LayerStack.AddLayer(layer);
   }
-  void Application::AddOverlay(Layer* layer)
-  {
-      layer->OnAttach();
-      m_LayerStack.AddOverlay(layer);
+  void Application::AddOverlay(Layer* layer) {
+    layer->OnAttach();
+    m_LayerStack.AddOverlay(layer);
   }
   void Application::OnEvent(Event& event) {
     EventDispatcher dispatcher(event);

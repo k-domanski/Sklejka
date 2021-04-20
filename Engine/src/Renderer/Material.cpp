@@ -1,17 +1,23 @@
 #include "pch.h"
 #include "Material.h"
 
+
+#include "App/AssetManager.h"
+#include "nlohmann/json.hpp"
+
 namespace Engine::Renderer {
-  Material::Material(std::size_t assetID): _assetID(assetID), _shader(nullptr), _diffuse(nullptr) {
+  Material::Material(std::size_t assetID)
+      : _assetID(assetID), _shader(nullptr), _mainTexture(nullptr) {
   }
+
   auto Material::SetShader(const std::shared_ptr< GL::Shader >& shader,
                            const std::string& filePath) noexcept -> void {
     _shader     = shader;
     _shaderFile = filePath;
   }
-  auto Material::SetDiffuse(const std::shared_ptr< GL::Texture2D >& diffuse,
-                            const std::string& filePath) noexcept -> void {
-    _diffuse     = diffuse;
+  auto Material::SetMainTexture(const std::shared_ptr< GL::Texture2D >& mainTexture,
+                                const std::string& filePath) noexcept -> void {
+    _mainTexture = mainTexture;
     _diffuseFile = filePath;
   }
 
@@ -25,7 +31,7 @@ namespace Engine::Renderer {
   }
 
   std::shared_ptr< GL::Texture2D > Material::GetDiffuse() {
-    return _diffuse;
+    return _mainTexture;
   }
 
   std::string Material::GetShaderFilepath()
@@ -42,9 +48,18 @@ namespace Engine::Renderer {
     return _assetID;
   }
 
+  std::string Material::ToJson()
+  {
+    nlohmann::json json = nlohmann::json{{"assetID", std::to_string(_assetID)},
+                                         {"shaderFilepath", _shaderFile},
+                                         {"diffuseFilepath", _diffuseFile}};
+
+    return json.dump(4);
+  }
+
   auto Material::Use() noexcept -> void {
-    if (_diffuse != nullptr) {
-      _diffuse->Bind(0);
+    if (_mainTexture != nullptr) {
+      _mainTexture->Bind(0);
     }
     if (_shader != nullptr) {
       _shader->Use();

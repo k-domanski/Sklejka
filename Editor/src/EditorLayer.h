@@ -3,6 +3,9 @@
 #include <Components/Transform.h>
 #include <string>
 #include "EditorCameraArgs.h"
+#include "ImGui/Panels/SceneHierarchyPanel.h"
+#include "ImGui/Panels/InspectorPanel.h"
+#include "ImGui/Panels/FileSystemPanel.h"
 
 template< typename T >
 using ptr_t = std::shared_ptr< T >;
@@ -16,6 +19,9 @@ public:
   virtual void OnUpdate(double deltaTime) override;
   virtual void OnDetach() override;
   virtual void OnEvent(Engine::Event& event) override;
+  virtual void OnImGuiRender() override;
+
+  auto AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent = 0) -> void;
 
 private:
   bool OnMouseScroll(Engine::MouseScrolledEvent& e);
@@ -26,7 +32,7 @@ private:
 private:
   /*Temporary*/
   float m_Time = 0;
-  float m_it = 0;
+  float m_it   = 0;
 
   ptr_t< Engine::GL::Shader > m_Shader;
   ptr_t< Engine::Renderer::Mesh > m_ConeMesh;
@@ -42,9 +48,14 @@ private:
   EditorCameraArgs editorCameraArgs;
 
   /*ECS*/
-  Engine::Scene m_Scene;
+  ptr_t< Engine::Scene > m_Scene = std::make_shared< Scene >();
   ptr_t< Engine::ECS::Entity > m_Entity1;
   ptr_t< Engine::ECS::Entity > m_Entity2;
   std::shared_ptr< Engine::ECS::Entity > m_Pepe;
   std::shared_ptr< Engine::Transform > m_PepeTransform;
+
+  /*Panels*/
+  EditorGUI::SceneHierarchyPanel m_SceneHierarchyPanel;
+  EditorGUI::InspectorPanel m_InspectorPanel;
+  EditorGUI::FileSystemPanel m_FileSystemPanel;
 };

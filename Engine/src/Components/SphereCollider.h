@@ -4,7 +4,7 @@
 namespace Engine::Components {
   class SphereCollider : public ECS::Component {
   public:
-    SphereCollider(): Component(), _radius(1.0f), _trigger(false) {
+    SphereCollider(): Component("Sphere Collider"), _radius(1.0f), _trigger(false) {
     }
     ~SphereCollider() override = default;
 
@@ -12,7 +12,7 @@ namespace Engine::Components {
     auto SetRadius(float radius) -> void;
     auto IsTrigger() -> bool;
     auto SetTrigger(bool trigger) -> void;
-
+    std::string SaveToJson(std::string filePath) override;
   private:
     float _radius;
     bool _trigger;

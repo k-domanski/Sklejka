@@ -3,7 +3,8 @@
 
 namespace Engine {
   Camera::Camera(float fov, float aspect, float nearPlane, float farPlane)
-      : _fov(fov), _aspect(aspect), _nearPlane(nearPlane), _farPlane(farPlane) {
+      : Component("Camera"), _fov(fov), _aspect(aspect), _nearPlane(nearPlane),
+        _farPlane(farPlane) {
     flags.Set(CameraFlag::Dirty | CameraFlag::NewData);
   }
 

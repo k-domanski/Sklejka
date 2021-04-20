@@ -7,9 +7,9 @@ namespace Engine::ECS {
     friend class EntityManager;
 
   public:
-    Entity(): _entityID(0), _signature(std::make_shared< EntitySignature >()) {
-    }
-
+    Entity()  = default;
+    /*TODO: Entity(const std::string& name);
+      lub overload CreateEntity w EntityManager*/
     ~Entity() = default;
 
     [[nodiscard]] auto GetID() const -> EntityID;
@@ -26,8 +26,16 @@ namespace Engine::ECS {
       return EntityManager::GetInstance().GetComponent< T >(_entityID);
     }
 
+    auto Name() const noexcept -> std::string {
+      return _name;
+    }
+    auto Name(const std::string& name) -> std::string {
+      return _name = name;
+    }
+
   private:
-    EntityID _entityID;
-    std::shared_ptr< EntitySignature > _signature;
+    EntityID _entityID{0};
+    std::string _name{"Entity"};
+    std::shared_ptr< EntitySignature > _signature{std::make_shared< EntitySignature >()};
   };
 }  // namespace Engine::ECS

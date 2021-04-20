@@ -43,7 +43,9 @@ project "Engine"
         "%{IncludeDir.better_enums}/include",
         "%{IncludeDir.irrKlang}/include",
         "%{IncludeDir.rttr}/src",
-        "%{IncludeDir.freetype}/include"
+        "%{IncludeDir.freetype}/include",
+        --"%{IncludeDir.json}/include",
+        "%{IncludeDir.json}/single_include"
     }
     libdirs
     {
