@@ -7,6 +7,7 @@ using namespace Engine;
 EditorLayer::EditorLayer(const std::string& name): Layer(name) {
 }
 void EditorLayer::OnAttach() {
+  LOG_TRACE("Working directory: {}", AssetManager::GetWoringDir());
   /*Assets*/
   auto texture   = AssetManager::GetTexture2D("./textures/pepo_sad.png");
   auto coneModel = AssetManager::GetModel("./models/cube.fbx");
@@ -38,7 +39,8 @@ void EditorLayer::OnAttach() {
   m_Entity1  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Entity2  = ECS::EntityManager::GetInstance().CreateEntity();
   m_Pepe     = ECS::EntityManager::GetInstance().CreateEntity();
-  m_Material = serializer->LoadMaterial("./material.json");
+  //LOG_TRACE("Past");
+  m_Material = AssetManager::GetMaterial("./material.json");
 
   std::cout << m_Material->ToJson();
   // m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
