@@ -1,6 +1,14 @@
 #include "pch.h"
 #include "Collider.h"
 
+Engine::Utility::GJK::Simplex Engine::Components::Collider::get_simplex() const {
+  return _simplex;
+}
+
+void Engine::Components::Collider::set_simplex(const Utility::GJK::Simplex& simplex) {
+  _simplex = simplex;
+}
+
 glm::vec3 Engine::Components::Collider::get_center() const {
   return _center;
 }

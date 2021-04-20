@@ -16,6 +16,11 @@ void Engine::Systems::Physics::Update(float deltaTime) {
 
     if (!rigidbody->IsKinematic())
       continue;
+
+    auto pos = transform->Position();
+    pos += rigidbody->GetVelocity() * deltaTime;
+    transform->Position(pos);
+
     for (auto entity : _entities) {
       if (entity == entityId)
         continue;
@@ -27,13 +32,15 @@ void Engine::Systems::Physics::Update(float deltaTime) {
       auto transform2 = ECS::EntityManager::GetInstance().GetComponent< Transform >(entity);
 
       if (CheckCollision(collider, transform, collider2, transform2)) {
-        std::cout << "Colliding" << std::endl;
-        _collisions[entityId].push_back(entity);
+        // std::cout << "Colliding" << std::endl;
+        //_collisions[entityId].push_back(entity);
+        ResolveCollisions(collider, transform, !rigidbody->IsKinematic(), collider2, transform2,
+                          !rigidbody2->IsKinematic());
       }
     }
   }
 
-  _collisions.clear();
+  //_collisions.clear();
 }
 
 auto Engine::Systems::Physics::CheckCollision(std::shared_ptr< Components::Collider > c1,
@@ -51,7 +58,12 @@ auto Engine::Systems::Physics::CheckCollision(std::shared_ptr< Components::Colli
   else
     s2 = CreateBoxShape(c2, t2);
 
-  return Intersects(s1, s2);
+  auto result = Intersects(s1, s2);
+
+  c1->Simplex = result.second;
+  // c2->Simplex = result.second;
+
+  return result.first;
 }
 
 auto Engine::Systems::Physics::CreateSphereShape(std::shared_ptr< Components::Collider > c,
@@ -90,4 +102,34 @@ auto Engine::Systems::Physics::CreateBoxShape(std::shared_ptr< Components::Colli
   vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(xSize, -ySize, zSize, 1.0f)));
 
   return Utility::GJK::Shape(vertices, center);
+}
+
+auto Engine::Systems::Physics::ResolveCollisions(std::shared_ptr< Components::Collider > c1,
+                                                 std::shared_ptr< Transform > t1, bool static1,
+                                                 std::shared_ptr< Components::Collider > c2,
+                                                 std::shared_ptr< Transform > t2, bool static2)
+    -> void {
+  Utility::GJK::Shape s1, s2;
+  if (c1->Type == Components::Sphere)
+    s1 = CreateSphereShape(c1, t1);
+  else
+    s1 = CreateBoxShape(c1, t1);
+
+  if (c2->Type == Components::Sphere)
+    s2 = CreateSphereShape(c2, t2);
+  else
+    s2 = CreateBoxShape(c2, t2);
+
+  auto collisionPoint = EPA(c1->Simplex, s1, s2);
+
+  auto separate = collisionPoint.Normal * collisionPoint.PenetrationDepth / 2.0f;
+  if (!static1) {
+    auto pos = t1->Position() - separate;
+    t1->Position(pos);
+  }
+
+  if (!static2) {
+    auto pos = t2->Position() + separate;
+    t2->Position(pos);
+  }
 }

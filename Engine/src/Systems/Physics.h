@@ -33,6 +33,10 @@ namespace Engine::Systems {
                            std::shared_ptr< Transform > t) -> Utility::GJK::Shape;
     auto CreateBoxShape(std::shared_ptr< Components::Collider > c, std::shared_ptr< Transform > t)
         -> Utility::GJK::Shape;
+    auto ResolveCollisions(std::shared_ptr< Components::Collider > c1,
+                           std::shared_ptr< Transform > t1,
+                           bool static1, std::shared_ptr< Components::Collider > c2,
+                           std::shared_ptr< Transform > t2, bool static2) -> void;
   };
 
 }  // namespace Engine::Systems
