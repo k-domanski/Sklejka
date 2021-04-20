@@ -19,7 +19,10 @@ void EditorLayer::OnAttach() {
   // auto tex_shader   = AssetManager::GetShader("./shaders/texture_shader.glsl");
   auto pepe_texture = AssetManager::GetTexture2D("./textures/Stormtrooper_D.png");
   // auto pepe_texture = AssetManager::GetTexture2D("./textures/Untilted.png");
-  m_PepeMaterial = AssetManager::GetMaterial(m_Shader, pepe_texture);
+  m_PepeMaterial = AssetManager::CreateMaterial();
+
+  m_PepeMaterial->SetShader(m_Shader);
+  m_PepeMaterial->SetMainTexture(pepe_texture);
 
   auto aspect        = Engine::Window::Get().GetAspectRatio();
   auto camera_entity = Engine::ECS::EntityManager::GetInstance().CreateEntity();
@@ -36,10 +39,10 @@ void EditorLayer::OnAttach() {
 
   Engine::Serializer* serializer = new Serializer();
   /*ECS Scene*/
-  m_Entity1  = ECS::EntityManager::GetInstance().CreateEntity();
-  m_Entity2  = ECS::EntityManager::GetInstance().CreateEntity();
-  m_Pepe     = ECS::EntityManager::GetInstance().CreateEntity();
-  //LOG_TRACE("Past");
+  m_Entity1 = ECS::EntityManager::GetInstance().CreateEntity();
+  m_Entity2 = ECS::EntityManager::GetInstance().CreateEntity();
+  m_Pepe    = ECS::EntityManager::GetInstance().CreateEntity();
+  // LOG_TRACE("Past");
   m_Material = AssetManager::GetMaterial("./material.json");
   // m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
   //                                       "./textures/pepo_sad.png", texture);
@@ -81,12 +84,12 @@ void EditorLayer::OnAttach() {
   auto box2 = m_Entity2->AddComponent< Components::Collider >();
   auto rb2  = m_Entity2->AddComponent< Components::Rigidbody >();
 
-  box1->Size = glm::vec3(1.0f);
+  box1->Size      = glm::vec3(1.0f);
   box1->IsTrigger = false;
   box1->Center    = glm::vec3(0.0f);
   rb1->SetGravity(false);
   rb1->SetKinematic(true);
-  box2->Size = glm::vec3(1.0f);
+  box2->Size      = glm::vec3(1.0f);
   box2->IsTrigger = false;
   box2->Center    = glm::vec3(0.0f);
   rb2->SetGravity(false);
@@ -112,12 +115,12 @@ void EditorLayer::OnUpdate(double deltaTime) {
   UpdateEditorCamera();
   /* -------------------------- */
   m_Time += deltaTime / 2.0f;
-  //auto tr1 = m_Entity1->GetComponent< Transform >();
+  // auto tr1 = m_Entity1->GetComponent< Transform >();
   // tr1->Rotate(deltaTime * 0.3, {0.0f, 1.0f, 0.0f});
   // m_PepeTransform->Rotate(deltaTime * 0.1, {0.0f, 1.0f, 0.0f});
   // auto pos = tr1->Position();
-  //tr1->Position(glm::vec3(sin(m_Time) * m_it, 0.0f, 0.0f));
-  //m_it += deltaTime / 20.0f;
+  // tr1->Position(glm::vec3(sin(m_Time) * m_it, 0.0f, 0.0f));
+  // m_it += deltaTime / 20.0f;
   // std::cout << "sin time: " << sin(m_Time)*m_it << std::endl;
 
   m_Scene->Update(deltaTime);
@@ -140,6 +143,7 @@ void EditorLayer::OnImGuiRender() {
   m_SceneHierarchyPanel.OnImGuiRender();
   m_InspectorPanel.OnImGuiRender(m_SceneHierarchyPanel.GetSelectedEntity());
   m_FileSystemPanel.OnImGuiRender();
+  m_MaterialPanel.OnImGuiRender();
 }
 
 bool EditorLayer::OnWindowResize(Engine::WindowResizeEvent& e) {
@@ -218,9 +222,9 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
   auto entity = EntityManager::GetInstance().CreateEntity();
   entity->Name(std::filesystem::path(path).filename().stem().string());
   entity->AddComponent< Transform >();
-  auto shader = AssetManager::GetShader("./shaders/default.glsl");
-  auto mat    = AssetManager::GetMaterial(shader, nullptr);
-  entity->AddComponent< MeshRenderer >(model->getRootMesh(), mat);
+  /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
+  auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
+  entity->AddComponent< MeshRenderer >(model->getRootMesh(), nullptr);
 
   m_Scene->SceneGraph()->AddChild(parent, entity->GetID());
 }

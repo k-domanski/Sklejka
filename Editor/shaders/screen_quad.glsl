@@ -29,6 +29,6 @@ fs_in;
 
 void main() {
   // frag_color = vec4(vec3(1.0f) - texture(u_mainTexture, fs_in.uv).rgb, 1.0f);
-  frag_color = vec4(texture(u_mainTexture, fs_in.uv * 2.0f).rgb * remap(fs_in.v_pos), 1.0f);
+  frag_color = vec4(texture(u_mainTexture, fs_in.uv).rgb * remap(fs_in.v_pos), 1.0f);
 }
 #endshader

@@ -50,11 +50,11 @@ namespace Engine::GL {
     Context::BindTexture(GL_TEXTURE_2D, _handle, slot);
   }
 
-  auto Texture2D::FilePath() const noexcept -> std::string_view {
+  auto Texture2D::FilePath() const noexcept -> std::string {
     return _filePath;
   }
 
-  auto Texture2D::FilePath(const std::string_view& filePath) -> std::string_view {
+  auto Texture2D::FilePath(const std::string& filePath) -> std::string {
     return _filePath = filePath;
   }
   auto Texture2D::GetSize() const noexcept -> glm::ivec2 {

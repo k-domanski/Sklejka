@@ -8,7 +8,7 @@
 #include <filesystem>
 
 namespace Engine {
-  auto AssetManager::generateID() {
+  auto AssetManager::GenerateAssetID() {
     std::random_device dv;
     std::mt19937_64 mt(dv());
     return static_cast< size_t >(mt());
@@ -18,7 +18,7 @@ namespace Engine {
     return std::filesystem::current_path().string();
   }
 
-  auto AssetManager::GetShader(const std::string_view& file) -> std::shared_ptr< GL::Shader > {
+  auto AssetManager::GetShader(const std::string& file) -> std::shared_ptr< GL::Shader > {
     if (_loadedShaders.count(file) == 0) {
       auto shaderSource = Utility::ReadTextFile(file);
       auto parseResult  = Utility::ParseShaderSource(shaderSource, std::string(file));
@@ -40,7 +40,7 @@ namespace Engine {
     }
     return _loadedShaders[file];
   }
-  auto AssetManager::GetModel(const std::string_view& file) -> std::shared_ptr< Renderer::Model > {
+  auto AssetManager::GetModel(const std::string& file) -> std::shared_ptr< Renderer::Model > {
     if (_loadedModels.count(file) == 0) {
       auto model          = std::make_shared< Renderer::Model >(file);
       _loadedModels[file] = model;
@@ -56,8 +56,7 @@ namespace Engine {
     }
     return _primitiveModels[primitive];
   }
-  auto AssetManager::GetTexture2D(const std::string_view& file)
-      -> std::shared_ptr< GL::Texture2D > {
+  auto AssetManager::GetTexture2D(const std::string& file) -> std::shared_ptr< GL::Texture2D > {
     if (_loadedTextures2D.count(file) == 0) {
       int x, y, n;
       auto pixel_data = stbi_load(file.data(), &x, &y, &n, 4);
@@ -69,48 +68,49 @@ namespace Engine {
     }
     return _loadedTextures2D[file];
   }
-
-  auto AssetManager::GetMaterial(std::shared_ptr< GL::Shader > shared_ptr,
-                                 std::shared_ptr< GL::Texture2D > texture_2d)
-      -> std::shared_ptr< Renderer::Material > {
-    return AssetManager::GetMaterial(shared_ptr, texture_2d, generateID());
+  auto AssetManager::CreateMaterial() -> std::shared_ptr< Renderer::Material > {
+    auto assetID              = GenerateAssetID();
+    auto material             = std::make_shared< Renderer::Material >(assetID);
+    _loadedMaterials[assetID] = material;
+    return material;
   }
-
-  auto AssetManager::GetMaterial(std::shared_ptr< GL::Shader > shared_ptr,
-                                 std::shared_ptr< GL::Texture2D > texture_2d, std::size_t assetID)
+  auto AssetManager::CreateMaterial(const std::string& filePath)
       -> std::shared_ptr< Renderer::Material > {
-    for (auto [key, loaded_material] : _loadedMaterials) {
-      if (loaded_material->GetShader() == shared_ptr
-          && loaded_material->GetDiffuse() == texture_2d) {
-        return loaded_material;
-      }
-    }
-
-    std::shared_ptr< Renderer::Material > newMaterial =
-        std::make_shared< Renderer::Material >(assetID);
-
-    if (shared_ptr != nullptr) {
-      newMaterial->SetShader(shared_ptr, std::string(shared_ptr->FilePath()));
-    }
-    if (texture_2d != nullptr) {
-      newMaterial->SetMainTexture(texture_2d, std::string(texture_2d->FilePath()));
-    }
-    _loadedMaterials[newMaterial->GetAssetID()] = newMaterial;
-    return newMaterial;
+    auto assetID              = GenerateAssetID();
+    auto material             = std::make_shared< Renderer::Material >(assetID);
+    _loadedMaterials[assetID] = material;
+    material->FilePath(filePath);
+    return material;
   }
+  auto AssetManager::GetMaterial(const std::string& file) -> std::shared_ptr< Renderer::Material > {
+    /* Check if material from this file is already loaded */
+    auto it = std::find_if(_loadedMaterials.begin(), _loadedMaterials.end(),
+                           [file](const auto& kv) { return kv.second->FilePath() == file; });
+    /* If not loaded, load and return */
+    if (it == _loadedMaterials.end()) {
+      auto content        = Utility::ReadTextFile(file);
+      nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
 
-  auto AssetManager::GetMaterial(std::string file) -> std::shared_ptr< Renderer::Material > {
-    auto content        = Utility::ReadTextFile(file);
-    nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
+      std::string assetID_string = json["assetID"];
+      std::stringstream ss(assetID_string);
+      size_t assetID;
+      ss >> assetID;
 
-    std::string assetID_string = json["assetID"];
-    std::stringstream ss(assetID_string);
-    size_t material_assetID;
-    ss >> material_assetID;
-
-    std::shared_ptr< GL::Shader > shader_ptr     = GetShader(json["shaderFilepath"]);
-    std::shared_ptr< GL::Texture2D > texture_ptr = GetTexture2D(json["diffuseFilepath"]);
-
-    return GetMaterial(shader_ptr, texture_ptr, material_assetID);
+      std::shared_ptr< GL::Shader > shader_ptr     = GetShader(json["shaderFilepath"]);
+      std::shared_ptr< GL::Texture2D > texture_ptr = GetTexture2D(json["diffuseFilepath"]);
+      auto material = std::make_shared< Renderer::Material >(assetID);
+      material->SetShader(shader_ptr);
+      material->SetMainTexture(texture_ptr);
+      _loadedMaterials[assetID] = material;
+      return material;
+    }
+    return it->second;
+  }
+  auto AssetManager::GetMaterial(std::size_t assetID) -> std::shared_ptr< Renderer::Material > {
+    if (_loadedMaterials.count(assetID) == 0) {
+      LOG_WARN("No material with id {} loaded", assetID);
+      return nullptr;
+    }
+    return _loadedMaterials[assetID];
   }
 }  // namespace Engine
