@@ -37,5 +37,6 @@ namespace Engine {
     auto Up() const noexcept -> glm::vec3;
     auto Forward() const noexcept -> glm::vec3;
     auto Rotate(float radians, const glm::vec3& axis) noexcept -> glm::quat;
+    auto WorldPosition() const noexcept -> glm::vec3;
   };
 }  // namespace Engine
