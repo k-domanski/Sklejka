@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Rigidbody.h"
 
+
+#include "../../../Editor/src/ImGui/Panels/FileSystemPanel.h"
 #include "nlohmann/json.hpp"
 
 auto Engine::Components::Rigidbody::GetVelocity() -> glm::vec3 {
@@ -50,6 +52,16 @@ std::string Engine::Components::Rigidbody::SaveToJson(std::string filePath)
   ofstream.close();
 
   return SaveToJson();
+}
+
+auto Engine::Components::Rigidbody::LoadFromJson(std::string filePath) -> void
+{
+  auto content        = Utility::ReadTextFile(filePath);
+  nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
+
+  _velocity = glm::vec3(json["velocity"]["x"], json["velocity"]["y"], json["velocity"]["z"]);
+  _useGravity = json["useGravity"];
+  _kinematic  = json["kinematic"];
 }
 
 

@@ -100,6 +100,19 @@ namespace Engine::ECS {
       SceneManager::GetCurrentScene()->_entities.erase(it);
   }
 
+  auto EntityManager::GetAllComponents(EntityID id) -> std::vector< std::shared_ptr< Component > > {
+    std::vector< std::shared_ptr< Component > > res;
+    auto entity = GetEntity(id);
+    for (auto signature : *entity->_signature) {
+      auto list = SceneManager::GetCurrentScene()->_componentLists[signature];
+      //Hack: need to get every component somehow for serialization
+      auto riskyList = std::static_pointer_cast< ComponentList< Component > >(list);
+      res.push_back(riskyList->GetComponent(id));
+    }
+
+    return res;
+  }
+
   auto EntityManager::Update(float deltaTime) -> void {
     for (auto [id, system] : SceneManager::GetCurrentScene()->_registeredSystems) {
       system->Update(deltaTime);
