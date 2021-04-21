@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "ComponentList.h"
 #include "System.h"
+#include "Engine/SceneManager.h"
 
 namespace Engine::ECS {
   class EntityManager {
@@ -23,7 +24,8 @@ namespace Engine::ECS {
       if (_componentLists.count(compTypeID) == 0) {
         AddComponentList< T >();
       }
-      return std::static_pointer_cast< ComponentList< T > >(_componentLists[compTypeID]);
+      return std::static_pointer_cast< ComponentList< T > >(
+          SceneManager::GetCurrentScene()->_componentLists[compTypeID]);
       // return static_cast< ComponentList< T > >(*_componentLists[compTypeID]);
     }
 
@@ -75,13 +77,14 @@ namespace Engine::ECS {
     template< class T >
     auto RegisterSystem() -> std::shared_ptr< T > {
       auto systemID = GetSystemTypeID< T >();
-      if (_registeredSystems.count(systemID) == 0) {
+      if (SceneManager::GetCurrentScene()->_registeredSystems.count(systemID) == 0) {
         /*auto system                  = std::make_shared< T >();
         _registeredSystems[systemID] = std::move(system);*/
-        _registeredSystems[systemID] = std::make_shared< T >();
+        SceneManager::GetCurrentScene()->_registeredSystems[systemID] = std::make_shared< T >();
         UpdateSystem(systemID);
       }
-      return std::static_pointer_cast< T >(_registeredSystems[systemID]);
+      return std::static_pointer_cast< T >(
+          SceneManager::GetCurrentScene()->_registeredSystems[systemID]);
     }
 
     auto UpdateSystem(SystemTypeID systemID) -> void;
@@ -103,14 +106,15 @@ namespace Engine::ECS {
 
   private:
     EntityManager() = default;
-    std::vector< std::shared_ptr< Entity > > _entities;
+    /*std::vector< std::shared_ptr< Entity > > _entities;
     std::map< ComponentTypeID, std::shared_ptr< IComponentList > > _componentLists;
-    std::map< SystemTypeID, std::shared_ptr< System > > _registeredSystems;
+    std::map< SystemTypeID, std::shared_ptr< System > > _registeredSystems;*/
 
     template< typename T >
     auto AddComponentList() -> void {
       auto compTypeID             = GetComponentTypeID< T >();
-      _componentLists[compTypeID] = std::make_shared< ComponentList< T > >();
+      SceneManager::GetCurrentScene()->_componentLists[compTypeID] =
+          std::make_shared< ComponentList< T > >();
     }
   };
 }  // namespace Engine::ECS

@@ -37,10 +37,10 @@ namespace Engine::Systems {
       for (auto entityID : vec) {
         auto meshRenderer =
             ECS::EntityManager ::GetInstance().GetComponent< Components::MeshRenderer >(entityID);
-        auto mesh      = meshRenderer->GetMesh();
+        auto mesh      = meshRenderer->GetModel()->getRootMesh();
         auto transform = ECS::EntityManager ::GetInstance().GetComponent< Transform >(entityID);
         mesh->Use();
-        // TODO: change for world matrix
+        
         material->GetShader()->SetMatrix("u_model_matrix", transform->GetWorldMatrix());
         // HACK: Assume for now that under slot 1 is camera uniform buffer
         // TODO: Get the actual slot number from somewhere, somehow :)

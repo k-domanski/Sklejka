@@ -10,6 +10,18 @@ namespace Engine {
     _cameraSystem  = EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
     _physicsSystem = EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
   }
+
+  auto Scene::GetID() -> size_t {
+    return _id;
+  }
+
+  auto Scene::OpenScene() -> void {
+    _sceneGraph    = ECS::EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();
+    _renderSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
+    _cameraSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
+    _physicsSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
+  }
+
   auto Scene::Update(float deltaTime) -> void {
     // Update other systems before
     _sceneGraph->Update(deltaTime);

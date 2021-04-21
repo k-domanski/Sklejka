@@ -1,7 +1,8 @@
 #pragma once
 #include "ECS/Component.h"
 #include "Renderer/Material.h"
-#include "Renderer/Mesh.h"
+//#include "Renderer/Mesh.h"
+#include "Renderer/Model.h"
 
 namespace Engine::Components {
   class MeshRenderer : public ECS::Component {
@@ -9,21 +10,21 @@ namespace Engine::Components {
     //MeshRenderer() = default;
     MeshRenderer(): Component("Mesh Renderer"), _dirty(true) {
     }
-    MeshRenderer(std::shared_ptr< Renderer::Mesh > mesh,
+    MeshRenderer(std::shared_ptr< Renderer::Model > model,
                  std::shared_ptr< Renderer::Material > material)
-        : Component("Mesh Renderer"), _mesh(mesh), _material(material), _dirty(true) {
+        : Component("Mesh Renderer"), _model(model), _material(material), _dirty(true) {
     }
     ~MeshRenderer() override = default;
 
-    auto GetMesh() -> std::shared_ptr< Renderer::Mesh >;
-    auto SetMesh(std::shared_ptr< Renderer::Mesh > mesh) -> void;
+    auto GetModel() -> std::shared_ptr< Renderer::Model >;
+    auto SetModel(std::shared_ptr< Renderer::Model > mesh) -> void;
     auto GetMaterial() -> std::shared_ptr< Renderer::Material >;
     auto SetMaterial(std::shared_ptr< Renderer::Material > material) -> void;
     auto IsDirty() -> bool;
     auto SetDirty(bool dirty) -> void;
 
   private:
-    std::shared_ptr< Renderer::Mesh > _mesh;
+    std::shared_ptr< Renderer::Model > _model;
     std::shared_ptr< Renderer::Material > _material;
     bool _dirty;
   };
