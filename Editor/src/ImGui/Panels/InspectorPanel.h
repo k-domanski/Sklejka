@@ -13,7 +13,6 @@ namespace Editor {
   public:
     InspectorPanel() = default;
 
-    void OnImGuiRenderOld(std::shared_ptr< ECS::Entity > entity);
     void OnImGuiRender();
     auto AttachEntity(const std::shared_ptr< ECS::Entity >& entity) -> void;
     auto ReattachEntity() -> void;
@@ -22,6 +21,5 @@ namespace Editor {
     auto PopulateComponentViews() -> void;
     auto WrapViewInTreeNode(const std::shared_ptr< IComponentView >& view) -> void;
     auto ShowComponentsDropdown() -> void;
-    // void DrawComponents(std::shared_ptr< ECS::Entity > entity);
   };
 }  // namespace Editor

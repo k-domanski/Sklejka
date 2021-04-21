@@ -21,4 +21,5 @@
 #include "Events/MouseEvent.h"
 #include "App/Input.h"
 #include "Utility/Serializer.h"
+#include "Utility/FileDialog.h"
 #include "Components/MeshRenderer.h"

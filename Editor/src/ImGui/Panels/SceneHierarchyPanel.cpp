@@ -36,7 +36,11 @@ namespace Editor {
   }
 
   void SceneHierarchyPanel::DrawEntity(std::shared_ptr< ECS::Entity > entity) {
-    auto id = entity->GetID();
+    auto camera = entity->GetComponent< Camera >();
+    if (camera != nullptr && camera->flags.GetAll(CameraFlag::EditorCamera) != 0)
+      return;
+
+    auto id              = entity->GetID();
     auto tag             = entity->Name();
     const auto& children = m_Scene->SceneGraph()->GetChildren(id);
 
@@ -44,7 +48,7 @@ namespace Editor {
                                | ((children.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0)
                                | ((id == 0) ? ImGuiTreeNodeFlags_DefaultOpen : 0)
                                | ImGuiTreeNodeFlags_OpenOnArrow;
-    
+
     bool open = ImGui::TreeNodeEx((void*)entity->GetID(), flags, tag.c_str());
     if (ImGui::IsItemClicked()) {
       SetSelectedEntity(entity);
