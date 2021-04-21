@@ -32,7 +32,7 @@ void EditorLayer::OnAttach() {
   m_Scene->SceneGraph()->AddChild(0, camera_entity->GetID());
 
   /*Camera*/
-  // m_EditorCamera.camera->flags.Set(Engine::CameraFlag::MainCamera);
+  m_EditorCamera.camera->flags.Set(Engine::CameraFlag::MainCamera);
   m_EditorCamera.camera->flags.Set(Engine::CameraFlag::EditorCamera);
   editorCameraArgs.screenSize = Window::Get().GetScreenSize();
   m_EditorCamera.transform->Position({0.0f, 0.0f, 2.0f});
