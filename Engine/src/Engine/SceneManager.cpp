@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "SceneManager.h"
+#include "Scene.h"
 /// <summary>
 /// For Entity Manager usage to add entities when loading scene;
 /// </summary>
 /// <returns></returns>
-std::shared_ptr< Engine::Scene > Engine::SceneManager::GetCurrentScene() {
+auto Engine::SceneManager::GetCurrentScene() -> std::shared_ptr< Scene > {
   return _currentScene;
 }
 /// <summary>
@@ -12,21 +13,22 @@ std::shared_ptr< Engine::Scene > Engine::SceneManager::GetCurrentScene() {
 /// when not
 /// </summary>
 /// <returns></returns>
-std::shared_ptr< Engine::Scene > Engine::SceneManager::GetDisplayScene() {
+auto Engine::SceneManager::GetDisplayScene() -> std::shared_ptr< Scene > {
   if (_openingScene)
     return _loadingScene;
   return _currentScene;
 }
 
-void Engine::SceneManager::LoadScene(const std::string& file) {
+auto Engine::SceneManager::LoadScene(const std::string& file) -> void {
 }
 
-void Engine::SceneManager::SaveScene(size_t id) {
+auto Engine::SceneManager::SaveScene(size_t id) -> void {
 }
 
-void Engine::SceneManager::OpenScene(size_t id) {
-  if (_currentScene->GetID() == id)
-    return;
+auto Engine::SceneManager::OpenScene(size_t id) -> void {
+  if (_currentScene != nullptr)
+    if (_currentScene->GetID() == id)
+      return;
   _openingScene = true;
 
   // lets say loading scene may take some time here
@@ -36,6 +38,6 @@ void Engine::SceneManager::OpenScene(size_t id) {
   _openingScene = false;
 }
 
-void Engine::SceneManager::AddScene(std::shared_ptr< Scene > scene) {
+auto Engine::SceneManager::AddScene(std::shared_ptr< Scene > scene) -> void {
   _loadedScenes[scene->GetID()] = scene;
 }

@@ -1,23 +1,21 @@
 #pragma once
-#include "Scene.h"
+//#include <pch.h>
+//#include "Scene.h"
 
 namespace Engine {
   class SceneManager {
   public:
-    SceneManager()  = default;
-    ~SceneManager() = default;
-
-    static std::shared_ptr< Scene > GetCurrentScene();
-    static std::shared_ptr< Scene > GetDisplayScene();
-    static void LoadScene(const std::string& file);
-    static void SaveScene(size_t id);
-    static void OpenScene(size_t id);
-    static void AddScene(std::shared_ptr< Scene > scene);
+    static auto GetCurrentScene() -> std::shared_ptr< class Scene >;
+    static auto GetDisplayScene() -> std::shared_ptr< Scene >;
+    static auto LoadScene(const std::string& file) -> void;
+    static auto SaveScene(size_t id) -> void;
+    static auto OpenScene(size_t id) -> void;
+    static auto AddScene(std::shared_ptr< Scene > scene) -> void;
 
   private:
     static inline std::unordered_map< size_t, std::shared_ptr< Scene > > _loadedScenes;
     static inline std::shared_ptr< Scene > _currentScene;
     static inline std::shared_ptr< Scene > _loadingScene;
-    static inline bool _openingScene{false};
+    static inline bool _openingScene;
   };
 }  // namespace Engine

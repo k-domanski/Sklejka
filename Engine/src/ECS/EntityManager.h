@@ -1,9 +1,13 @@
 #pragma once
 
-#include "Entity.h"
+#include "ECS.h"
+//#include "Entity.h"
 #include "ComponentList.h"
-#include "System.h"
+//#include "System.h"
 #include "Engine/SceneManager.h"
+#include "Engine/Scene.h"
+
+
 
 namespace Engine::ECS {
   class EntityManager {
@@ -21,7 +25,7 @@ namespace Engine::ECS {
     template< typename T >
     auto GetComponentList() -> std::shared_ptr< ComponentList< T > > {
       auto compTypeID = GetComponentTypeID< T >();
-      if (_componentLists.count(compTypeID) == 0) {
+      if (SceneManager::GetCurrentScene()->_componentLists.count(compTypeID) == 0) {
         AddComponentList< T >();
       }
       return std::static_pointer_cast< ComponentList< T > >(
@@ -77,7 +81,7 @@ namespace Engine::ECS {
     template< class T >
     auto RegisterSystem() -> std::shared_ptr< T > {
       auto systemID = GetSystemTypeID< T >();
-      if (SceneManager::GetCurrentScene()->_registeredSystems.count(systemID) == 0) {
+      if (Engine::SceneManager::GetCurrentScene()->_registeredSystems.count(systemID) == 0) {
         /*auto system                  = std::make_shared< T >();
         _registeredSystems[systemID] = std::move(system);*/
         SceneManager::GetCurrentScene()->_registeredSystems[systemID] = std::make_shared< T >();

@@ -3,7 +3,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <filesystem>
 
-//#include "Engine/SceneManager.h"
+#include "Engine/SceneManager.h"
+#include "Systems/SceneGraph.h"
 
 using namespace Engine;
 EditorLayer::EditorLayer(const std::string& name): Layer(name) {
@@ -53,11 +54,11 @@ void EditorLayer::OnAttach() {
   //                                       "./textures/pepo_sad.png", texture);
 
   m_Entity1->AddComponent< Transform >();
-  m_Entity1->AddComponent< Components::MeshRenderer >(m_ConeMesh, m_Material);
+  m_Entity1->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
   m_Entity2->AddComponent< Transform >();
-  m_Entity2->AddComponent< Components::MeshRenderer >(m_ConeMesh, m_Material);
+  m_Entity2->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
   m_PepeTransform = m_Pepe->AddComponent< Transform >();
-  m_Pepe->AddComponent< Components::MeshRenderer >(m_PepeModel->getRootMesh(), m_PepeMaterial);
+  m_Pepe->AddComponent< Components::MeshRenderer >(m_PepeModel, m_PepeMaterial);
   auto sg = SceneManager::GetDisplayScene()->SceneGraph();
   sg->AddChild(0, m_Pepe->GetID());
   sg->AddChild(0, m_Entity1->GetID());
@@ -241,7 +242,7 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
   entity->AddComponent< Transform >();
   /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
   auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
-  entity->AddComponent< MeshRenderer >(model->getRootMesh(), nullptr);
+  entity->AddComponent< MeshRenderer >(model, nullptr);
 
   SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, entity->GetID());
 }

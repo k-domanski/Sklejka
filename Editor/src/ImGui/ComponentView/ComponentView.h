@@ -2,6 +2,8 @@
 #include "IComponentView.h"
 #include <Engine.h>
 #include "AttributeView.h"
+#include "Components/Collider.h"
+#include "Components/Rigidbody.h"
 
 namespace Editor {
   /* Base Class*/

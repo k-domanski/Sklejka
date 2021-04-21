@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "EntityManager.h"
 #include <random>
+//#include "ECS.h"
+//#include "Engine/SceneManager.h"
 
 namespace Engine::ECS {
   auto EntityManager::UpdateSystem(SystemTypeID systemID) -> void {

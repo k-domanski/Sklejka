@@ -53,7 +53,8 @@ private:
   EditorCameraArgs editorCameraArgs;
 
   /*ECS*/
-  ptr_t< Engine::Scene > m_Scene = nullptr;//scene manager test
+  ptr_t< Engine::Scene > m_Scene;
+  // = nullptr;  // scene manager test
   //std::make_shared< Scene >(); 
   ptr_t< Engine::ECS::Entity > m_Entity1;
   ptr_t< Engine::ECS::Entity > m_Entity2;

@@ -1,5 +1,6 @@
 #include "SceneHierarchyPanel.h"
 #include <imgui/imgui.h>
+#include <Systems/SceneGraph.h>
 
 using namespace Engine;
 namespace Editor {
