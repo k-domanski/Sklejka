@@ -11,7 +11,7 @@ namespace Engine::Renderer {
     _filepath = "";
     meshes.push_back(mesh);
   }
-  Model::Model(std::string_view path): _filepath(path) {
+  Model::Model(std::string_view path) {
     loadModel(path);
   }
 
