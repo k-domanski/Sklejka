@@ -23,6 +23,7 @@ namespace Engine::Components {
     auto IsDirty() -> bool;
     auto SetDirty(bool dirty) -> void;
     std::string SaveToJson(std::string filePath) override;
+    std::string SaveToJson() override;
     auto LoadFromJson(std::string filePath) -> void override;
 
   private:

@@ -49,13 +49,13 @@ void EditorLayer::OnAttach() {
   m_Entity2 = ECS::EntityManager::GetInstance().CreateEntity();
   m_Pepe    = ECS::EntityManager::GetInstance().CreateEntity();
   // LOG_TRACE("Past");
-  m_Material = AssetManager::GetMaterial("./material.json");
+  m_Material = AssetManager::GetMaterial("./scenes/material.json");
   // m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
   //                                       "./textures/pepo_sad.png", texture);
 
   m_Entity1->AddComponent< Transform >();
   m_Entity1->AddComponent< Components::MeshRenderer >();
-  m_Entity1->GetComponent< Components::MeshRenderer >()->LoadFromJson("./meshRenderer1.json");
+  m_Entity1->GetComponent< Components::MeshRenderer >()->LoadFromJson("./scenes/meshRenderer1.json");
   m_Entity2->AddComponent< Transform >();
   m_Entity2->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
   m_PepeTransform = m_Pepe->AddComponent< Transform >();
@@ -78,10 +78,10 @@ void EditorLayer::OnAttach() {
   auto box2 = m_Entity2->AddComponent< Components::Collider >();
   auto rb2  = m_Entity2->AddComponent< Components::Rigidbody >();
 
-  //m_Entity1->GetComponent< Components::MeshRenderer >()->SaveToJson("./meshRenderer1.json");
+  //m_Entity1->GetComponent< Components::MeshRenderer >()->SaveToJson("./scenes/meshRenderer1.json");
 
-  box1->LoadFromJson("./box1.json");
-  box2->LoadFromJson("./box2.json");
+  box1->LoadFromJson("./scenes/box1.json");
+  box2->LoadFromJson("./scenes/box2.json");
 
   /*box1->Size      = glm::vec3(1.0f);
   box1->IsTrigger = false;
@@ -94,14 +94,14 @@ void EditorLayer::OnAttach() {
   rb2->SetGravity(false);
   rb2->SetKinematic(true);
 
-  box1->SaveToJson("./box1.json");
-  box2->SaveToJson("./box2.json");*/
+  box1->SaveToJson("./scenes/box1.json");
+  box2->SaveToJson("./scenes/box2.json");*/
 
   auto tr1 = m_Entity1->GetComponent< Transform >();
   auto tr2 = m_Entity2->GetComponent< Transform >();
 
-  tr1->LoadFromJson("./tr1.json");
-  tr2->LoadFromJson("./tr2.json");
+  tr1->LoadFromJson("./scenes/tr1.json");
+  tr2->LoadFromJson("./scenes/tr2.json");
   m_PepeTransform->Position({0.0f, 1.0f, 0.0f});
   m_PepeTransform->Scale({0.2f, 0.2f, 0.2f});
 }

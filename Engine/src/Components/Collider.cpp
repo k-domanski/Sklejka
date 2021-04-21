@@ -67,6 +67,17 @@ auto Engine::Components::Collider::LoadFromJson(std::string filePath) -> void
 
 std::string Engine::Components::Collider::SaveToJson(std::string filePath)
 {
+
+  std::ofstream ofstream;
+  ofstream.open(filePath);
+  ofstream << SaveToJson();
+  ofstream.close();
+
+  return SaveToJson();
+}
+
+std::string Engine::Components::Collider::SaveToJson()
+{
   nlohmann::json json = nlohmann::json{
       {"componentType", "collider"},
       {"colliderType", _type._to_string()},
@@ -75,11 +86,6 @@ std::string Engine::Components::Collider::SaveToJson(std::string filePath)
       {"center", {{"x", _center.x}, {"y", _center.y}, {"z", _center.z}}},
       {"size", {{"x", _size.x}, {"y", _size.y}, {"z", _size.z}}}
   };
-
-  std::ofstream ofstream;
-  ofstream.open(filePath);
-  ofstream << json.dump(4);
-  ofstream.close();
 
   return json.dump(4);
 }

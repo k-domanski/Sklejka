@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Rigidbody.h"
 
+#include "nlohmann/json.hpp"
+
 auto Engine::Components::Rigidbody::GetVelocity() -> glm::vec3 {
   return _velocity;
 }
@@ -26,3 +28,28 @@ auto Engine::Components::Rigidbody::SetKinematic(bool kinematic) -> void
 {
   _kinematic = kinematic;
 }
+
+std::string Engine::Components::Rigidbody::SaveToJson()
+{
+  using namespace nlohmann;
+  json json = nlohmann::json{
+      {"componentType", "rigidbody"},
+      {"velocity", {{"x", _velocity.x}, {"y", _velocity.y}, {"z", _velocity.z}}},
+      {"useGravity", _useGravity},
+      {"kinematic", _kinematic},
+  };
+
+  return json.dump(4);
+}
+
+std::string Engine::Components::Rigidbody::SaveToJson(std::string filePath)
+{
+  std::ofstream ofstream;
+  ofstream.open(filePath);
+  ofstream << SaveToJson();
+  ofstream.close();
+
+  return SaveToJson();
+}
+
+
