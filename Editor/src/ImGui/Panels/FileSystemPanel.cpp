@@ -119,15 +119,22 @@ namespace Editor {
     const auto folder_icon_id = reinterpret_cast< ImTextureID >(m_folderIcon->GetHandle());
     const auto file_icon_id   = reinterpret_cast< ImTextureID >(m_fileIcon->GetHandle());
     const auto arrow_icon_id  = reinterpret_cast< ImTextureID >(m_backArrowIcon->GetHandle());
+    const auto btn_width      = 100;
+    const auto spacing        = ImGui::GetStyle().ItemSpacing.x;
+    const auto text_length    = ImGui::GetWindowContentRegionWidth() - btn_width - spacing;
 
     const auto horizontal_item_count =
         static_cast< int >(folder_view_width / (icon_size.x + ImGui::GetStyle().ItemSpacing.x));
-    ImGui::Text("File: %s", _selectedFile.string().c_str());
+    const auto wrap_pos = ImGui::GetCursorPos().x + std::max(300.0f, text_length);
+    ;
+    ImGui::PushTextWrapPos(wrap_pos);
+    ImGui::TextWrapped("File: %s", _selectedFile.string().c_str());
+    ImGui::PopTextWrapPos();
     auto ext = _selectedFile.extension().string();
     std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
     if (ext == ".fbx" || ext == ".obj") {
-      ImGui::SameLine();
-      if (ImGui::Button("Add Model")) {
+      ImGui::SameLine(text_length);
+      if (ImGui::Button("Add Model", {btn_width, 0})) {
         _editorLayer->AddObjectOnScene(_selectedFile.string());
       }
     }
@@ -198,4 +205,4 @@ namespace Editor {
       entry_queue.pop();
     }
   }
-}  // namespace EditorGUI
+}  // namespace Editor
