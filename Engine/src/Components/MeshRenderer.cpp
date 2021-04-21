@@ -32,15 +32,20 @@ namespace Engine::Components {
 
   std::string MeshRenderer::SaveToJson(std::string filePath)
   {
+    std::ofstream ofstream;
+    ofstream.open(filePath);
+    ofstream << SaveToJson();
+    ofstream.close();
+
+    return SaveToJson();
+  }
+
+  std::string MeshRenderer::SaveToJson()
+  {
     using namespace nlohmann;
     json json = nlohmann::json{{"componentType", "meshRenderer"},
       {"model", _model->GetFilepath()},
         {"material", std::to_string(_material->GetAssetID())}};
-
-    std::ofstream ofstream;
-    ofstream.open(filePath);
-    ofstream << json.dump(4);
-    ofstream.close();
 
     return json.dump(4);
   }

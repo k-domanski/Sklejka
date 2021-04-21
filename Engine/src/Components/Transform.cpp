@@ -82,17 +82,22 @@ namespace Engine {
   }
 
   std::string Transform::SaveToJson(std::string filePath) {
+    std::ofstream ofstream;
+    ofstream.open(filePath);
+    ofstream << SaveToJson();
+    ofstream.close();
+
+    return SaveToJson();
+  }
+
+  std::string Transform::SaveToJson()
+  {
     nlohmann::json json = nlohmann::json{
         {"componentType", "transform"},
         {"localPosition", {{"x", _position.x}, {"y", _position.y}, {"z", _position.z}}},
         {"localRotation",
          {{"w", _rotation.w}, {"x", _rotation.x}, {"y", _rotation.y}, {"z", _rotation.z}}},
         {"localScale", {{"x", _scale.x}, {"y", _scale.y}, {"z", _scale.z}}}};
-
-    std::ofstream ofstream;
-    ofstream.open(filePath);
-    ofstream << json.dump(4);
-    ofstream.close();
 
     return json.dump(4);
   }
