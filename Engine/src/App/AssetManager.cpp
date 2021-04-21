@@ -113,12 +113,15 @@ namespace Engine {
       std::stringstream ss(assetID_string);
       size_t assetID;
       ss >> assetID;
-
       std::shared_ptr< GL::Shader > shader_ptr     = GetShader(json["shaderFilepath"]);
       std::shared_ptr< GL::Texture2D > texture_ptr = GetTexture2D(json["diffuseFilepath"]);
       auto material = std::make_shared< Renderer::Material >(assetID);
       material->SetShader(shader_ptr);
       material->SetMainTexture(texture_ptr);
+      if (json.count("mainColor") > 0) {
+        auto vec = json["mainColor"].get< std::vector< float > >();
+        material->MainColor({vec[0], vec[1], vec[2], vec[3]});
+      }
       _loadedMaterials[assetID] = material;
       material->FilePath(file);
       return material;

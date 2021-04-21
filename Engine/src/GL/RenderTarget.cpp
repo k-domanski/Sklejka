@@ -4,7 +4,7 @@
 
 namespace Engine::GL {
   RenderTarget::RenderTarget(GLuint width, GLuint height) noexcept
-      : _dimensions(width, height), _target(GL_FRAMEBUFFER), _depthAttachment(nullptr),
+      : _dimensions(width, height), _target(+FramebufferTarget::ReadWrite), _depthAttachment(nullptr),
         _stencilAttachment(nullptr), _depthStencilAttachment(nullptr) {
   }
   RenderTarget::RenderTarget(RenderTarget&& other) noexcept
@@ -27,7 +27,7 @@ namespace Engine::GL {
     _target                 = other._target;
     return *this;
   }
-  auto RenderTarget::Bind(GLenum target) noexcept -> void {
+  auto RenderTarget::Bind(FramebufferTarget target) noexcept -> void {
     _target = target;
     _framebuffer.Bind(target);
     // Can be set once per state change

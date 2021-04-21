@@ -1,7 +1,8 @@
 #pragma once
 #include <pch.h>
-#include <ECS/System.h>
-#include <ECS/ECS.h>
+//#include <ECS/System.h>
+//#include <ECS/ECS.h>
+#include "ECS/EntityManager.h"
 #include <Components/Transform.h>
 
 namespace Engine::Systems {

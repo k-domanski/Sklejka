@@ -16,27 +16,31 @@ namespace Engine::Renderer {
       -> void {
     _mainTexture = mainTexture;
   }
-
-  auto Material::SetTransform(glm::mat4 m) -> void {
-    _shader->Use();
-    _shader->SetMatrix("u_model_matrix", m);
-  }
-
   std::shared_ptr< GL::Shader > Material::GetShader() {
     return _shader;
   }
-
   std::shared_ptr< GL::Texture2D > Material::GetMainTexture() {
     return _mainTexture;
+  }
+  auto Material::MainColor() const noexcept -> glm::vec4 {
+    return _mainColor;
+  }
+  auto Material::MainColor(const glm::vec4& color) noexcept -> glm::vec4 {
+    return _mainColor = color;
+  }
+  auto Material::MainColorPtr() -> float* {
+    return &_mainColor[0];
   }
   std::size_t Material::GetAssetID() {
     return _assetID;
   }
   std::string Material::ToJson() {
+    using namespace nlohmann;
     nlohmann::json json = nlohmann::json{
         {"assetID", std::to_string(_assetID)},
         {"shaderFilepath", (_shader != nullptr ? _shader->FilePath() : "")},
-        {"diffuseFilepath", (_mainTexture != nullptr ? _mainTexture->FilePath() : "")}};
+        {"diffuseFilepath", (_mainTexture != nullptr ? _mainTexture->FilePath() : "")},
+        {"mainColor", json::array({_mainColor.r, _mainColor.g, _mainColor.b, _mainColor.a})}};
 
     return json.dump(4);
   }
@@ -51,8 +55,13 @@ namespace Engine::Renderer {
       _mainTexture->Bind(0);
     }
     if (_shader != nullptr) {
-      _shader->Use();
-      _shader->SetValue("u_mainTexture", 0);
+      SetShaderData();
     }
+  }
+  auto Material::SetShaderData() noexcept -> void {
+    _shader->Use();
+    _shader->SetValue("u_MainTexture", 0);
+    // TODO: Use uniform buffer if we have a lot of data
+    _shader->SetVector("u_MainColor", _mainColor);
   }
 }  // namespace Engine::Renderer

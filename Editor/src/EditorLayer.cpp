@@ -3,8 +3,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <filesystem>
 
+#include "Engine/SceneManager.h"
+#include "Systems/SceneGraph.h"
+
 using namespace Engine;
 EditorLayer::EditorLayer(const std::string& name): Layer(name) {
+  // Scene manager test
+  SceneManager::AddScene(std::make_shared< Scene >(1));
+  SceneManager::OpenScene(1);
 }
 void EditorLayer::OnAttach() {
   LOG_TRACE("Working directory: {}", AssetManager::GetWoringDir());
@@ -29,7 +35,7 @@ void EditorLayer::OnAttach() {
   m_EditorCamera.camera =
       camera_entity->AddComponent< Engine::Camera >(45.0f, aspect, 0.001f, 1000.0f);
   m_EditorCamera.transform = camera_entity->AddComponent< Engine::Transform >();
-  m_Scene->SceneGraph()->AddChild(0, camera_entity->GetID());
+  SceneManager::GetDisplayScene()->SceneGraph()->AddChild(0, camera_entity->GetID());
 
   /*Camera*/
   m_EditorCamera.camera->flags.Set(Engine::CameraFlag::MainCamera);
@@ -48,21 +54,21 @@ void EditorLayer::OnAttach() {
   //                                       "./textures/pepo_sad.png", texture);
 
   m_Entity1->AddComponent< Transform >();
-  m_Entity1->AddComponent< Components::MeshRenderer >(m_ConeMesh, m_Material);
+  m_Entity1->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
   m_Entity2->AddComponent< Transform >();
-  m_Entity2->AddComponent< Components::MeshRenderer >(m_ConeMesh, m_Material);
+  m_Entity2->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
   m_PepeTransform = m_Pepe->AddComponent< Transform >();
-  m_Pepe->AddComponent< Components::MeshRenderer >(m_PepeModel->getRootMesh(), m_PepeMaterial);
-  auto sg = m_Scene->SceneGraph();
+  m_Pepe->AddComponent< Components::MeshRenderer >(m_PepeModel, m_PepeMaterial);
+  auto sg = SceneManager::GetDisplayScene()->SceneGraph();
   sg->AddChild(0, m_Pepe->GetID());
   sg->AddChild(0, m_Entity1->GetID());
   sg->AddChild(0, m_Entity2->GetID());
 
   /*Editor Panels*/
-  m_SceneHierarchyPanel.SetScene(m_Scene);
+  m_SceneHierarchyPanel.SetScene(SceneManager::GetDisplayScene());
   m_SceneHierarchyPanel.SetSelectionCallback(
       [this](auto& entity) { m_InspectorPanel.AttachEntity(entity); });
-  m_FileSystemPanel.SetScene(m_Scene);
+  m_FileSystemPanel.SetScene(SceneManager::GetDisplayScene());
   m_FileSystemPanel.SetEditorLayer(this);
   /*------------------------*/
 
@@ -108,9 +114,9 @@ void EditorLayer::OnUpdate(double deltaTime) {
   // m_it += deltaTime / 20.0f;
   // std::cout << "sin time: " << sin(m_Time)*m_it << std::endl;
 
-  m_Scene->Update(deltaTime);
+  SceneManager::GetCurrentScene()->Update(deltaTime);
   /*Update systemów w aplikacji?*/
-  m_Scene->Draw();
+  SceneManager::GetCurrentScene()->Draw();
 }
 
 void EditorLayer::OnDetach() {
@@ -134,7 +140,7 @@ void EditorLayer::OnImGuiRender() {
 
 bool EditorLayer::OnWindowResize(Engine::WindowResizeEvent& e) {
   glm::vec2 size = {(float)e.GetWidth(), (float)e.GetHeight()};
-  m_Scene->OnWindowResize(size);
+  SceneManager::GetDisplayScene()->OnWindowResize(size);
   editorCameraArgs.screenSize = size;
   m_EditorCamera.camera->Aspect(Window::Get().GetAspectRatio());
   return true;
@@ -236,7 +242,7 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
   entity->AddComponent< Transform >();
   /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
   auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
-  entity->AddComponent< MeshRenderer >(model->getRootMesh(), nullptr);
+  entity->AddComponent< MeshRenderer >(model, nullptr);
 
-  m_Scene->SceneGraph()->AddChild(parent, entity->GetID());
+  SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, entity->GetID());
 }

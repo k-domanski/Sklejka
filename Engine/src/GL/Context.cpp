@@ -18,10 +18,13 @@ namespace Engine::GL {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     /* Depth Testing */
-    glEnable(GL_DEPTH_TEST);
+    DepthTest(true);
 
     /* Face Culling */
-    glEnable(GL_CULL_FACE);
+    FaceCulling(true);
+
+    /* View Port */
+    glGetIntegerv(GL_VIEWPORT, &_viewport[0]);
 
     /* Textures */
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &_maxTextureUnits);
@@ -125,14 +128,14 @@ namespace Engine::GL {
   auto Context::GetMaxColorAttachments() noexcept -> GLint {
     return _maxColorAttachments;
   }
-  auto Context::BindFramebuffer(GLenum target, GLuint handle) noexcept -> void {
+  auto Context::BindFramebuffer(FramebufferTarget target, GLuint handle) noexcept -> void {
     if (IsFramebufferBound(target, handle)) {
       return;
     }
     _boundFramebuffers[target] = handle;
     glBindFramebuffer(target, handle);
   }
-  auto Context::IsFramebufferBound(GLenum target, GLuint handle) noexcept -> bool {
+  auto Context::IsFramebufferBound(FramebufferTarget target, GLuint handle) noexcept -> bool {
     if (_boundFramebuffers.count(target) != 0) {
       if (_boundFramebuffers[target] == handle) {
         return true;
@@ -140,7 +143,7 @@ namespace Engine::GL {
     }
     return false;
   }
-  auto Context::GetBoundFramebuffer(GLenum target) -> GLuint {
+  auto Context::GetBoundFramebuffer(FramebufferTarget target) -> GLuint {
     if (_boundFramebuffers.count(target) == 0) {
       return 0;
     }
@@ -151,5 +154,34 @@ namespace Engine::GL {
   }
   auto Context::ClearBuffers(GLbitfield mask) noexcept -> void {
     glClear(mask);
+  }
+  auto Context::DepthTest(bool enable) noexcept -> void {
+    if (_depthTestEnabled == enable) {
+      return;
+    }
+    if (enable) {
+      glEnable(GL_DEPTH_TEST);
+    } else {
+      glDisable(GL_DEPTH_TEST);
+    }
+    _depthTestEnabled = enable;
+  }
+  auto Context::FaceCulling(bool enable) noexcept -> void {
+    if (_faceCullingEnabled == enable) {
+      return;
+    }
+    if (enable) {
+      glEnable(GL_CULL_FACE);
+    } else {
+      glDisable(GL_CULL_FACE);
+    }
+    _faceCullingEnabled = enable;
+  }
+  auto Context::Viewport(int x, int y, unsigned width, unsigned height) noexcept -> void {
+    if (_viewport == glm::ivec4{x, y, width, height}) {
+      return;
+    }
+    glViewport(x, y, width, height);
+    _viewport = {x, y, width, height};
   }
 }  // namespace Engine::GL

@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "EntityManager.h"
 #include <random>
+//#include "ECS.h"
+//#include "Engine/SceneManager.h"
 
 namespace Engine::ECS {
   auto EntityManager::UpdateSystem(SystemTypeID systemID) -> void {
-    for (const auto entity : _entities) {
+    for (const auto entity : SceneManager::GetCurrentScene()->_entities) {
       if (BelongsToSystem(systemID, entity->GetID()))
         continue;
       int signatureCorrect  = 0;
@@ -18,15 +20,16 @@ namespace Engine::ECS {
       if (signatureCorrect == _registeredSystems[systemID]->_signatures.size()) {
         AddToSystem(systemID, entity->GetID());
       }*/
-      auto& s = _registeredSystems[systemID]->_signatures;
-      if (_registeredSystems[systemID]->SignatureMatch(*entitySignatures)) {
+      auto& s = SceneManager::GetCurrentScene()->_registeredSystems[systemID]->_signatures;
+      if (SceneManager::GetCurrentScene()->_registeredSystems[systemID]->SignatureMatch(
+              *entitySignatures)) {
         AddToSystem(systemID, entity->GetID());
       }
     }
   }
 
   auto EntityManager::UpdateEntity(std::shared_ptr< Entity > entity) -> void {
-    for (auto [systemID, system] : _registeredSystems) {
+    for (auto [systemID, system] : SceneManager::GetCurrentScene()->_registeredSystems) {
       int correctSignatures        = 0;
       const auto& entitySignatures = entity->GetSignature();
       for (auto signature : *entitySignatures) {
@@ -41,19 +44,19 @@ namespace Engine::ECS {
   }
 
   auto EntityManager::BelongsToSystem(SystemTypeID systemID, EntityID entityID) -> bool {
-    return _registeredSystems[systemID]->_entities.find(entityID)
-           != _registeredSystems[systemID]->_entities.end();
+    return SceneManager::GetCurrentScene()->_registeredSystems[systemID]->_entities.find(entityID)
+           != SceneManager::GetCurrentScene()->_registeredSystems[systemID]->_entities.end();
   }
 
   auto EntityManager::AddToSystem(SystemTypeID systemID, EntityID entityID) -> void {
     // if (BelongsToSystem(systemID, entityID))
     // return;
     //_registeredSystems[systemID]->_entities.insert(entityID);
-    _registeredSystems[systemID]->AddEntity(entityID);
+    SceneManager::GetCurrentScene()->_registeredSystems[systemID]->AddEntity(entityID);
   }
 
   auto EntityManager::RemoveFromSystem(SystemTypeID systemID, EntityID entityID) -> void {
-    _registeredSystems[systemID]->RemoveEntity(entityID);
+    SceneManager::GetCurrentScene()->_registeredSystems[systemID]->RemoveEntity(entityID);
   }
 
   auto EntityManager::CreateEntity() -> std::shared_ptr< Entity > {
@@ -61,50 +64,52 @@ namespace Engine::ECS {
     std::mt19937_64 mt(dv());
     std::shared_ptr< Entity > entity = std::make_shared< Entity >();
     entity->_entityID                = static_cast< EntityID >(mt());
-    _entities.push_back(entity);
+    SceneManager::GetCurrentScene()->_entities.push_back(entity);
     return entity;
     // return entity;
   }
   auto EntityManager::CreateEntity(EntityID id) -> std::shared_ptr< Entity > {
     std::shared_ptr< Entity > entity = std::make_shared< Entity >();
     entity->_entityID                = id;
-    _entities.push_back(entity);
+    SceneManager::GetCurrentScene()->_entities.push_back(entity);
     return entity;
     // return entity;
   }
   auto EntityManager::GetEntity(EntityID id) -> std::shared_ptr< Entity > {
-    const auto it = std::find_if(_entities.begin(), _entities.end(),
+    const auto it = std::find_if(SceneManager::GetCurrentScene()->_entities.begin(),
+                                 SceneManager::GetCurrentScene()->_entities.end(),
                                  [id](auto ent) { return ent->_entityID == id; });
-    assert(it != _entities.end());
+    assert(it != SceneManager::GetCurrentScene()->_entities.end());
 
     return *it;
   }
 
   auto EntityManager::RemoveEntity(EntityID id) -> void {
-    for (auto& system : _registeredSystems) {
+    for (auto& system : SceneManager::GetCurrentScene()->_registeredSystems) {
       RemoveFromSystem(system.first, id);
     }
     auto entity = GetEntity(id);
     for (auto signature : *entity->_signature) {
-      _componentLists[signature]->Remove(id);
+      SceneManager::GetCurrentScene()->_componentLists[signature]->Remove(id);
     }
     entity->_signature->clear();
 
-    auto it = std::find(_entities.begin(), _entities.end(), entity);
-    if (it != _entities.end())
-      _entities.erase(it);
+    auto it = std::find(SceneManager::GetCurrentScene()->_entities.begin(),
+                        SceneManager::GetCurrentScene()->_entities.end(), entity);
+    if (it != SceneManager::GetCurrentScene()->_entities.end())
+      SceneManager::GetCurrentScene()->_entities.erase(it);
   }
 
   auto EntityManager::Update(float deltaTime) -> void {
-    for (auto [id, system] : _registeredSystems) {
+    for (auto [id, system] : SceneManager::GetCurrentScene()->_registeredSystems) {
       system->Update(deltaTime);
     }
   }
 
   auto EntityManager::Clear() -> void {
-    _entities.clear();
-    _componentLists.clear();
-    _registeredSystems.clear();
+    SceneManager::GetCurrentScene()->_entities.clear();
+    SceneManager::GetCurrentScene()->_componentLists.clear();
+    SceneManager::GetCurrentScene()->_registeredSystems.clear();
   }
 
   /* auto EntityManager::Draw() -> void {

@@ -57,6 +57,10 @@ namespace Engine::Systems {
     if (_mainCamera->flags.Get(CameraFlag::NewData)) {
       _cameraUniformBuffer.SetData(_mainCamera->UniformData());
     }
+    // Move to constructor?
     _cameraUniformBuffer.BindToSlot(_cameraUniformSlot);
+  }
+  auto CameraSystem::MainCamera() const noexcept -> std::shared_ptr< Camera > {
+    return _mainCamera;
   }
 }  // namespace Engine::Systems

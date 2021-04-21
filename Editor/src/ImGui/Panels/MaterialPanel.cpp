@@ -96,8 +96,12 @@ namespace Editor {
     ImGui::EndChild();
 
     ImGui::Separator();
+
+    ImGui::BeginGroup();
     ShaderSelection();
     TextureSelection();
+    ColorSelection();
+    ImGui::EndGroup();
   }
   auto MaterialPanel::MaterialSelection() -> void {
     const auto has_material = _selectedMaterial != nullptr;
@@ -161,6 +165,11 @@ namespace Editor {
       ImGui::EndCombo();
     }
   }
+  auto MaterialPanel::ColorSelection() -> void {
+    if (ImGui::CollapsingHeader("Main Color##h")) {
+      ImGui::ColorPicker4("Main Color##p", _selectedMaterial->MainColorPtr());
+    }
+  }
   auto MaterialPanel::SaveMaterial(const std::shared_ptr< Renderer::Material >& material) -> void {
     if (Serializer::SaveMaterial(material)) {
       ClearDirty();
@@ -211,4 +220,4 @@ namespace Editor {
   auto MaterialPanel::ClearDirty() -> void {
     _isDirty = false;
   }
-}  // namespace EditorGUI
+}  // namespace Editor

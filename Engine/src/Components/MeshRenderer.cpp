@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "MeshRenderer.h"
 namespace Engine::Components {
-  auto MeshRenderer::GetMesh() -> std::shared_ptr< Renderer::Mesh > {
-    return _mesh;
+  auto MeshRenderer::GetModel() -> std::shared_ptr< Renderer::Model > {
+    return _model;
   }
 
-  auto MeshRenderer::SetMesh(std::shared_ptr< Renderer::Mesh > mesh) -> void {
-    _mesh  = mesh;
+  auto MeshRenderer::SetModel(std::shared_ptr< Renderer::Model > model) -> void {
+    _model  = model;
     _dirty = true;
   }
 

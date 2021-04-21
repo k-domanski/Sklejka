@@ -9,7 +9,7 @@ namespace Engine::GL {
   private:
     glm::ivec2 _dimensions;
     Framebuffer _framebuffer;
-    GLenum _target = GL_FRAMEBUFFER;
+    FramebufferTarget _target{+FramebufferTarget::ReadWrite};
     std::map< GLuint, std::shared_ptr< IFramebufferAttachment > > _colorAttachments;
     std::shared_ptr< IFramebufferAttachment > _depthAttachment;
     std::shared_ptr< IFramebufferAttachment > _stencilAttachment;
@@ -21,7 +21,7 @@ namespace Engine::GL {
     auto operator=(const RenderTarget&) -> RenderTarget& = delete;
     RenderTarget(RenderTarget&& other) noexcept;
     auto operator=(RenderTarget&& other) noexcept -> RenderTarget&;
-    auto Bind(GLenum target) noexcept -> void;
+    auto Bind(FramebufferTarget target) noexcept -> void;
     auto GetColorAttachment(GLuint index) noexcept -> std::shared_ptr< IFramebufferAttachment >;
     auto AttachColor(GLuint index,
                      const std::shared_ptr< IFramebufferAttachment >& attachment) noexcept -> void;
