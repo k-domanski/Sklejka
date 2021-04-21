@@ -10,7 +10,7 @@
 namespace Engine::Systems {
   class CameraSystem : public ECS::System {
   private:
-    uint32_t _cameraUniformSlot;
+    uint32_t _cameraUniformSlot{1u};
     std::shared_ptr< Camera > _mainCamera;
     GL::CameraUniformBuffer _cameraUniformBuffer;
     /*std::shared_ptr< GL::RenderTarget > _renderTexture;
@@ -19,5 +19,6 @@ namespace Engine::Systems {
   public:
     CameraSystem();
     auto Update(float deltaTime) -> void override;
+    auto MainCamera() const noexcept -> std::shared_ptr< Camera >;
   };
 }  // namespace Engine::Systems

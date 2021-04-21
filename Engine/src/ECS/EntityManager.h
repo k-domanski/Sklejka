@@ -57,15 +57,14 @@ namespace Engine::ECS {
       // return nullptr;
     }
 
-    template<class T>
-    auto RemoveComponent(EntityID entityID) -> void
-    {
+    template< class T >
+    auto RemoveComponent(EntityID entityID) -> void {
       auto compTypeID = GetComponentTypeID< T >();
 
       auto entity = GetEntity(entityID);
       auto it     = entity->_signature->find(compTypeID);
       if (it == entity->_signature->end())
-          return;
+        return;
       entity->_signature->erase(it);
 
       auto list = GetComponentList< T >();
@@ -82,6 +81,14 @@ namespace Engine::ECS {
         UpdateSystem(systemID);
       }
       return std::static_pointer_cast< T >(_registeredSystems[systemID]);
+    }
+    template< typename T >
+    auto GetSystem() -> std::shared_ptr< T > {
+      auto id = GetSystemTypeID< T >();
+      if (_registeredSystems.count(id) == 0) {
+        return nullptr;
+      }
+      return std::static_pointer_cast< T >(_registeredSystems[id]);
     }
 
     auto UpdateSystem(SystemTypeID systemID) -> void;

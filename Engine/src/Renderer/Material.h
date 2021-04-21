@@ -10,7 +10,7 @@ namespace Engine::Renderer {
     std::string _filePath;
     std::shared_ptr< GL::Shader > _shader;
     std::shared_ptr< GL::Texture2D > _mainTexture;
-    // TODO: std::vector<EntityID> _assignedEntities
+    glm::vec4 _mainColor{1.0f, 1.0f, 1.0f, 1.0f};
 
   public:
     Material(std::size_t assetID);
@@ -24,5 +24,6 @@ namespace Engine::Renderer {
     auto FilePath() const noexcept -> std::string;
     auto FilePath(const std::string& filePath) noexcept -> std::string;
     auto Use() noexcept -> void;
+    auto SetShaderData() noexcept -> void;
   };
 }  // namespace Engine::Renderer
