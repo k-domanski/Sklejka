@@ -2,76 +2,154 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 
-namespace EditorGUI {
-  void InspectorPanel::OnImGuiRender(std::shared_ptr< ECS::Entity > entity) {
-    ImGui::Begin("Inspector");
+namespace Editor {
+  void InspectorPanel::OnImGuiRenderOld(std::shared_ptr< ECS::Entity > entity) {
+    /*ImGui::Begin("Inspector");
     if (entity)
       DrawComponents(entity);
+    ImGui::End();*/
+  }
+
+  void InspectorPanel::OnImGuiRender() {
+    ImGui::Begin("Inspector");
+    if (_entity != nullptr) {
+      ShowComponentsDropdown();
+      for (auto& view : _componentViews) {
+        WrapViewInTreeNode(view);
+      }
+    }
     ImGui::End();
   }
 
-  template< class T, typename UIFunction >
-  static void DrawComponent(const std::string& name, std::shared_ptr< ECS::Entity > entity,
-                            UIFunction function) {
+  auto InspectorPanel::AttachEntity(const std::shared_ptr< ECS::Entity >& entity) -> void {
+    _entity = entity;
+    PopulateComponentViews();
+    for (auto& view : _componentViews) {
+      view->AttachEntity(entity);
+    }
+  }
+
+  auto InspectorPanel::ReattachEntity() -> void {
+    PopulateComponentViews();
+    for (auto& view : _componentViews) {
+      view->AttachEntity(_entity);
+    }
+  }
+
+  // template< class T, typename UIFunction >
+  // static void DrawComponent(const std::string& name, std::shared_ptr< ECS::Entity > entity,
+  //                          UIFunction function) {
+  //  const ImGuiTreeNodeFlags treeNodeFlags =
+  //      ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed
+  //      | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap
+  //      | ImGuiTreeNodeFlags_FramePadding;
+
+  //  if (entity->GetComponent< T >() != nullptr) {
+  //    auto& component               = entity->GetComponent< T >();
+  //    ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
+
+  //    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{10, 10});
+  //    float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+  //    ImGui::Separator();
+  //    bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
+  //    ImGui::PopStyleVar();
+  //    ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
+
+  //    /* TODO: Remove component in pop up menu, some other settings*/
+  //    if (ImGui::Button("+", ImVec2{lineHeight, lineHeight})) {
+  //      ImGui::OpenPopup("ComponentSettings");
+  //    }
+
+  //    bool removeComponent = false;
+  //    if (ImGui::BeginPopup("ComponentSettings")) {
+  //      if (ImGui::MenuItem("Remove Component")) {
+  //        removeComponent = true;
+  //      }
+  //      ImGui::EndPopup();
+  //    }
+  //    /*-----------------------------------------------------------*/
+
+  //    if (open) {
+  //      function(component);
+  //      ImGui::TreePop();
+  //    }
+
+  //    if (removeComponent) {
+  //      /*TODO:: Entity->RemoveComponent<>();*/
+  //      APP_DEBUG("Removed {}", component->Name());
+  //    }
+  //  }
+  //}
+
+  auto InspectorPanel::PopulateComponentViews() -> void {
+    _componentViews.clear();
+    if (_entity->HasComponent< Engine::Transform >()) {
+      _componentViews.push_back(std::make_shared< TransformView >());
+    }
+    if (_entity->HasComponent< Engine::Camera >()) {
+      _componentViews.push_back(std::make_shared< CameraView >());
+    }
+    if (_entity->HasComponent< Engine::Components::MeshRenderer >()) {
+      _componentViews.push_back(std::make_shared< MeshRendererView >());
+    }
+    if (_entity->HasComponent< Engine::Components::Rigidbody >()) {
+      _componentViews.push_back(std::make_shared< RigidbodyView >());
+    }
+    if (_entity->HasComponent< Engine::Components::Collider >()) {
+      _componentViews.push_back(std::make_shared< ColliderView >());
+    }
+  }
+
+  auto InspectorPanel::WrapViewInTreeNode(const std::shared_ptr< IComponentView >& view) -> void {
     const ImGuiTreeNodeFlags treeNodeFlags =
         ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed
         | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap
         | ImGuiTreeNodeFlags_FramePadding;
 
-    if (entity->GetComponent< T >() != nullptr) {
-      auto& component               = entity->GetComponent< T >();
-      ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
+    ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
 
-      ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{10, 10});
-      float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-      ImGui::Separator();
-      bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
-      ImGui::PopStyleVar();
-      ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{10, 10});
+    float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+    ImGui::Separator();
+    auto id = std::hash< std::string >{}(view->Component()->Name());
+    bool open =
+        ImGui::TreeNodeEx((const void*)id, treeNodeFlags, view->Component()->Name().c_str());
+    ImGui::PopStyleVar();
+    ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
 
-      /* TODO: Remove component in pop up menu, some other settings*/
-      if (ImGui::Button("+", ImVec2{lineHeight, lineHeight})) {
-        ImGui::OpenPopup("ComponentSettings");
+    /* TODO: Remove component in pop up menu, some other settings*/
+    if (ImGui::Button("+", ImVec2{lineHeight, lineHeight})) {
+      ImGui::OpenPopup("ComponentSettings");
+    }
+
+    bool removeComponent = false;
+    if (ImGui::BeginPopup("ComponentSettings")) {
+      if (ImGui::MenuItem("Remove Component")) {
+        removeComponent = true;
       }
+      ImGui::EndPopup();
+    }
+    /*-----------------------------------------------------------*/
 
-      bool removeComponent = false;
-      if (ImGui::BeginPopup("ComponentSettings")) {
-        if (ImGui::MenuItem("Remove Component")) {
-          removeComponent = true;
-        }
-        ImGui::EndPopup();
-      }
-      /*-----------------------------------------------------------*/
+    if (open) {
+      view->OnDraw();
+      ImGui::TreePop();
+    }
 
-      if (open) {
-        function(component);
-        ImGui::TreePop();
-      }
-
-      if (removeComponent) {
-        /*TODO:: Entity->RemoveComponent<>();*/
-        APP_DEBUG("Removed {}", component->Name());
-      }
+    if (removeComponent) {
+      /*TODO:: Entity->RemoveComponent<>();*/
+      LOG_DEBUG("Removed {}", view->Component()->Name());
     }
   }
 
-  /*-------Checkbox bools----------*/
-  static bool activeCamera;
-  // static bool boxTrigger;
-  // static bool sphereTrigger;
-  // static bool rbGravity;
-  // static bool rbKinematic;
-  // static bool sphere;
-  /*-------------------------------*/
-  void InspectorPanel::DrawComponents(std::shared_ptr< ECS::Entity > entity) {
-    /*Name Input Field*/
-    auto tag = entity->Name();
+  auto InspectorPanel::ShowComponentsDropdown() -> void {
+    auto tag = _entity->Name();
 
     char buffer[256];
     memset(buffer, 0, sizeof(buffer));
     std::strncpy(buffer, tag.c_str(), sizeof(buffer));
     if (ImGui::InputText("##Name", buffer, sizeof(buffer))) {
-      entity->Name(std::string(buffer));
+      _entity->Name(std::string(buffer));
     }
 
     ImGui::SameLine();
@@ -83,38 +161,42 @@ namespace EditorGUI {
 
     if (ImGui::BeginPopup("Add Component")) {
       if (ImGui::MenuItem("Mesh Renderer")) {
-        if (entity->GetComponent< Components::MeshRenderer >() == nullptr) {
-          entity->AddComponent< Components::MeshRenderer >();
+        if (_entity->GetComponent< Components::MeshRenderer >() == nullptr) {
+          _entity->AddComponent< Components::MeshRenderer >();
+          ReattachEntity();
         } else {
-          APP_WARN("{} entity already has Mesh Renderer component!", entity->Name());
+          APP_WARN("{} entity already has Mesh Renderer component!", _entity->Name());
         }
         ImGui::CloseCurrentPopup();
       }
 
       if (ImGui::MenuItem("Camera")) {
-        if (entity->GetComponent< Camera >() == nullptr) {
+        if (_entity->GetComponent< Camera >() == nullptr) {
           /*Temporary TODO: default constructor?*/
-          entity->AddComponent< Camera >(45.0f, 1.78, 0.001f, 1000.0f);
+          _entity->AddComponent< Camera >(45.0f, 1.78, 0.001f, 1000.0f);
+          ReattachEntity();
         } else {
-          APP_WARN("{} entity already has Camera component!", entity->Name());
+          APP_WARN("{} entity already has Camera component!", _entity->Name());
         }
         ImGui::CloseCurrentPopup();
       }
 
       if (ImGui::MenuItem("Rigidbody")) {
-        if (entity->GetComponent< Components::Rigidbody >() == nullptr) {
-          entity->AddComponent< Components::Rigidbody >();
+        if (_entity->GetComponent< Components::Rigidbody >() == nullptr) {
+          _entity->AddComponent< Components::Rigidbody >();
+          ReattachEntity();
         } else {
-          APP_WARN("{} entity already has Rigidbody component!", entity->Name());
+          APP_WARN("{} entity already has Rigidbody component!", _entity->Name());
         }
         ImGui::CloseCurrentPopup();
       }
 
       if (ImGui::MenuItem("Collider")) {
-        if (entity->GetComponent< Components::Collider >() == nullptr) {
-          entity->AddComponent< Components::Collider >();
+        if (_entity->GetComponent< Components::Collider >() == nullptr) {
+          _entity->AddComponent< Components::Collider >();
+          ReattachEntity();
         } else {
-          APP_WARN("{} entity already has Collider component!", entity->Name());
+          APP_WARN("{} entity already has Collider component!", _entity->Name());
         }
         ImGui::CloseCurrentPopup();
       }
@@ -122,6 +204,7 @@ namespace EditorGUI {
       /*if (ImGui::MenuItem("Sphere Collider")) {
         if (entity->GetComponent< Components::Collider >() == nullptr) {
           entity->AddComponent< Components::Collider >();
+          ReattachEntity();
         } else {
           APP_WARN("{} entity already has Sphere Collider component!", entity->Name());
         }
@@ -129,117 +212,193 @@ namespace EditorGUI {
       }*/
       ImGui::EndPopup();
     }
-    DrawComponent< Transform >("Transform", entity, [](auto component) {
-      /*Position*/
-      glm::vec3 pos = component->Position();
-      DrawVec3("Translation", pos);
-      component->Position(pos);
-      /*Rotation*/
-      glm::vec3 rotation = glm::degrees(component->Euler());
-      DrawVec3("Rotation", rotation);
-      component->Rotation(component->Euler(glm::radians(rotation)));
-      /*Scale*/
-      glm::vec3 scale = component->Scale();
-      DrawVec3("Scale", scale, 1.0f);
-      component->Scale(scale);
-    });
-
-    DrawComponent< Camera >("Camera", entity, [](auto component) {
-      /*Przelaczanie flagi MainCamera*/
-      if (component->flags.Get(CameraFlag::MainCamera))
-        activeCamera = true;
-      DrawBool("Main Camera", activeCamera);
-      if (!activeCamera)
-        component->flags.Clear(CameraFlag::MainCamera);
-      else
-        component->flags.Set(CameraFlag::MainCamera);
-
-      // APP_DEBUG("{}", component->flags.GetState());
-      /*FOV*/
-      float fov = component->Fov();
-      DrawFloat("FOV", fov);
-      component->Fov(fov);
-      /*Aspect*/
-      float aspect = component->Aspect();
-      DrawFloat("Aspect", aspect);
-      component->Aspect(aspect);
-      /*Near plane*/
-      float nearPlane = component->NearPlane();
-      DrawFloat("Near plane", nearPlane);
-      component->NearPlane(nearPlane);
-      /*Far plane*/
-      float farPlane = component->FarPlane();
-      DrawFloat("Far plane", farPlane);
-      component->FarPlane(farPlane);
-    });
-
-    DrawComponent< Components::MeshRenderer >("Mesh Renderer", entity, [](auto component) {
-      /*
-          mesh
-          material
-      */
-    });
-
-    DrawComponent< Components::Rigidbody >("Rigidbody", entity, [](auto component) {
-      glm::vec3 velocity = component->GetVelocity();
-      DrawVec3("Velocity", velocity);
-      component->SetVelocity(velocity);
-
-      bool rbKinematic = component->IsKinematic();
-      bool rbGravity = component->UseGravity();
-
-      //if (component->UseGravity())
-        //rbGravity = true;
-      DrawBool("Use Gravity", rbGravity);
-      component->SetGravity(rbGravity);
-
-      //if (component->IsKinematic())
-        //rbKinematic = true;
-      DrawBool("Is Kinematic", rbKinematic);
-      component->SetKinematic(rbKinematic);
-    });
-
-    DrawComponent< Components::Collider >("Collider", entity, [](auto component) {
-      bool boxTrigger;
-      bool sphere;
-      glm::vec3 size = component->Size;
-      DrawVec3("Size", size);
-      component->Size  = size;
-      glm::vec3 center = component->Center;
-      DrawVec3("Center", center);
-      component->Center = center;
-
-      if (component->Type == Components::ColliderType::Sphere)
-        sphere = true;
-      else
-        sphere = false;
-
-      // if (component->IsTrigger)
-      boxTrigger = component->IsTrigger;
-
-      DrawBool("Is sphere", sphere);
-      if (sphere)
-        component->Type = Engine::Components::ColliderType::Sphere;
-      else
-        component->Type = Engine::Components::ColliderType::Box;
-
-      DrawBool("Is Trigger", boxTrigger);
-      component->IsTrigger = boxTrigger;
-    });
-
-    /*DrawComponent< Components::Collider >("Sphere Collider", entity, [](auto component) {
-      float radius = component->Size.x;
-      DrawFloat("Radius", radius);
-      component->Size = glm::vec3(radius);
-
-      if (component->IsTrigger)
-        boxTrigger = true;
-      DrawBool("Is Trigger", boxTrigger);
-      component->IsTrigger = boxTrigger;
-    });*/
   }
 
-  static void DrawVec3(const std::string& name, glm::vec3& value, float resetValue = 0.0f) {
+  /*-------Checkbox bools----------*/
+  // static bool activeCamera;
+  // static bool boxTrigger;
+  // static bool sphereTrigger;
+  // static bool rbGravity;
+  // static bool rbKinematic;
+  // static bool sphere;
+  /*-------------------------------*/
+  // void InspectorPanel::DrawComponents(std::shared_ptr< ECS::Entity > entity) {
+  //  /*Name Input Field*/
+  //  auto tag = entity->Name();
+
+  //  char buffer[256];
+  //  memset(buffer, 0, sizeof(buffer));
+  //  std::strncpy(buffer, tag.c_str(), sizeof(buffer));
+  //  if (ImGui::InputText("##Name", buffer, sizeof(buffer))) {
+  //    entity->Name(std::string(buffer));
+  //  }
+
+  //  ImGui::SameLine();
+  //  ImGui::PushItemWidth(-1);
+
+  //  if (ImGui::Button("Add Component")) {
+  //    ImGui::OpenPopup("Add Component");
+  //  }
+
+  //  if (ImGui::BeginPopup("Add Component")) {
+  //    if (ImGui::MenuItem("Mesh Renderer")) {
+  //      if (entity->GetComponent< Components::MeshRenderer >() == nullptr) {
+  //        entity->AddComponent< Components::MeshRenderer >();
+  //      } else {
+  //        APP_WARN("{} entity already has Mesh Renderer component!", entity->Name());
+  //      }
+  //      ImGui::CloseCurrentPopup();
+  //    }
+
+  //    if (ImGui::MenuItem("Camera")) {
+  //      if (entity->GetComponent< Camera >() == nullptr) {
+  //        /*Temporary TODO: default constructor?*/
+  //        entity->AddComponent< Camera >(45.0f, 1.78, 0.001f, 1000.0f);
+  //      } else {
+  //        APP_WARN("{} entity already has Camera component!", entity->Name());
+  //      }
+  //      ImGui::CloseCurrentPopup();
+  //    }
+
+  //    if (ImGui::MenuItem("Rigidbody")) {
+  //      if (entity->GetComponent< Components::Rigidbody >() == nullptr) {
+  //        entity->AddComponent< Components::Rigidbody >();
+  //      } else {
+  //        APP_WARN("{} entity already has Rigidbody component!", entity->Name());
+  //      }
+  //      ImGui::CloseCurrentPopup();
+  //    }
+
+  //    if (ImGui::MenuItem("Collider")) {
+  //      if (entity->GetComponent< Components::Collider >() == nullptr) {
+  //        entity->AddComponent< Components::Collider >();
+  //      } else {
+  //        APP_WARN("{} entity already has Collider component!", entity->Name());
+  //      }
+  //      ImGui::CloseCurrentPopup();
+  //    }
+
+  //    /*if (ImGui::MenuItem("Sphere Collider")) {
+  //      if (entity->GetComponent< Components::Collider >() == nullptr) {
+  //        entity->AddComponent< Components::Collider >();
+  //      } else {
+  //        APP_WARN("{} entity already has Sphere Collider component!", entity->Name());
+  //      }
+  //      ImGui::CloseCurrentPopup();
+  //    }*/
+  //    ImGui::EndPopup();
+  //  }
+  //  DrawComponent< Transform >("Transform", entity, [](auto component) {
+  //    /*Position*/
+  //    glm::vec3 pos = component->Position();
+  //    DrawVec3("Translation", pos);
+  //    component->Position(pos);
+  //    /*Rotation*/
+  //    glm::vec3 rotation = glm::degrees(component->Euler());
+  //    DrawVec3("Rotation", rotation);
+  //    component->Rotation(component->Euler(glm::radians(rotation)));
+  //    /*Scale*/
+  //    glm::vec3 scale = component->Scale();
+  //    DrawVec3("Scale", scale, 1.0f);
+  //    component->Scale(scale);
+  //  });
+
+  //  DrawComponent< Camera >("Camera", entity, [](auto component) {
+  //    /*Przelaczanie flagi MainCamera*/
+  //    if (component->flags.Get(CameraFlag::MainCamera))
+  //      activeCamera = true;
+  //    DrawBool("Main Camera", activeCamera);
+  //    if (!activeCamera)
+  //      component->flags.Clear(CameraFlag::MainCamera);
+  //    else
+  //      component->flags.Set(CameraFlag::MainCamera);
+
+  //    // APP_DEBUG("{}", component->flags.GetState());
+  //    /*FOV*/
+  //    float fov = component->Fov();
+  //    DrawFloat("FOV", fov);
+  //    component->Fov(fov);
+  //    /*Aspect*/
+  //    float aspect = component->Aspect();
+  //    DrawFloat("Aspect", aspect);
+  //    component->Aspect(aspect);
+  //    /*Near plane*/
+  //    float nearPlane = component->NearPlane();
+  //    DrawFloat("Near plane", nearPlane);
+  //    component->NearPlane(nearPlane);
+  //    /*Far plane*/
+  //    float farPlane = component->FarPlane();
+  //    DrawFloat("Far plane", farPlane);
+  //    component->FarPlane(farPlane);
+  //  });
+
+  //  DrawComponent< Components::MeshRenderer >("Mesh Renderer", entity, [](auto component) {
+  //    /*
+  //        mesh
+  //        material
+  //    */
+  //  });
+
+  //  DrawComponent< Components::Rigidbody >("Rigidbody", entity, [](auto component) {
+  //    glm::vec3 velocity = component->GetVelocity();
+  //    DrawVec3("Velocity", velocity);
+  //    component->SetVelocity(velocity);
+
+  //    bool rbKinematic = component->IsKinematic();
+  //    bool rbGravity   = component->UseGravity();
+
+  //    // if (component->UseGravity())
+  //    // rbGravity = true;
+  //    DrawBool("Use Gravity", rbGravity);
+  //    component->SetGravity(rbGravity);
+
+  //    // if (component->IsKinematic())
+  //    // rbKinematic = true;
+  //    DrawBool("Is Kinematic", rbKinematic);
+  //    component->SetKinematic(rbKinematic);
+  //  });
+
+  //  DrawComponent< Components::Collider >("Collider", entity, [](auto component) {
+  //    bool boxTrigger;
+  //    bool sphere;
+  //    glm::vec3 size = component->Size;
+  //    DrawVec3("Size", size);
+  //    component->Size  = size;
+  //    glm::vec3 center = component->Center;
+  //    DrawVec3("Center", center);
+  //    component->Center = center;
+
+  //    if (component->Type == Components::ColliderType::Sphere)
+  //      sphere = true;
+  //    else
+  //      sphere = false;
+
+  //    // if (component->IsTrigger)
+  //    boxTrigger = component->IsTrigger;
+
+  //    DrawBool("Is sphere", sphere);
+  //    if (sphere)
+  //      component->Type = Engine::Components::ColliderType::Sphere;
+  //    else
+  //      component->Type = Engine::Components::ColliderType::Box;
+
+  //    DrawBool("Is Trigger", boxTrigger);
+  //    component->IsTrigger = boxTrigger;
+  //  });
+
+  //  /*DrawComponent< Components::Collider >("Sphere Collider", entity, [](auto component) {
+  //    float radius = component->Size.x;
+  //    DrawFloat("Radius", radius);
+  //    component->Size = glm::vec3(radius);
+
+  //    if (component->IsTrigger)
+  //      boxTrigger = true;
+  //    DrawBool("Is Trigger", boxTrigger);
+  //    component->IsTrigger = boxTrigger;
+  //  });*/
+  //}
+
+  /*static void DrawVec3(const std::string& name, glm::vec3& value, float resetValue = 0.0f) {
     float columnWidth = 100.0f;
     ImGuiIO& io       = ImGui::GetIO();
 
@@ -344,5 +503,5 @@ namespace EditorGUI {
     ImGui::PopStyleVar();
     ImGui::Columns(1);
     ImGui::PopID();
-  }
-}  // namespace EditorGUI
+  }*/
+}  // namespace Editor

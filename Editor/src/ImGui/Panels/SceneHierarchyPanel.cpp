@@ -2,7 +2,10 @@
 #include <imgui/imgui.h>
 
 using namespace Engine;
-namespace EditorGUI {
+namespace Editor {
+  SceneHierarchyPanel::SceneHierarchyPanel() {
+    _selectedCallback = [](const std::shared_ptr< Engine::ECS::Entity >& entity) {};
+  }
   SceneHierarchyPanel::SceneHierarchyPanel(std::shared_ptr< Scene > scene): m_Scene(scene) {
   }
 
@@ -28,7 +31,7 @@ namespace EditorGUI {
 
     bool open = ImGui::TreeNodeEx((void*)entity->GetID(), flags, tag.c_str());
     if (ImGui::IsItemClicked()) {
-      m_SelectedEntity = entity;
+      SetSelectedEntity(entity);
     }
     if (ImGui::BeginDragDropSource()) {
       ImGui::SetDragDropPayload("Scene_Hierarchy", &id, sizeof(ECS::EntityID));
@@ -49,7 +52,4 @@ namespace EditorGUI {
       ImGui::TreePop();
     }
   }
-  void SceneHierarchyPanel::SetSelectedEntity(std::shared_ptr< ECS::Entity > entity) {
-    m_SelectedEntity = entity;
-  }
-}  // namespace EditorGUI
+}  // namespace Editor

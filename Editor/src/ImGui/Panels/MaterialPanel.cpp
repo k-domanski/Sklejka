@@ -5,7 +5,7 @@
 using namespace Engine;
 namespace fs = std::filesystem;
 
-namespace EditorGUI {
+namespace Editor {
   MaterialPanel::MaterialPanel(): _editorLayer(nullptr) {
     _rootFolder      = fs::current_path();
     _materialsFolder = fs::current_path().string() + "\\materials\\";

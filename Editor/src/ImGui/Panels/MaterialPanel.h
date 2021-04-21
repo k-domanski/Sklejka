@@ -4,7 +4,7 @@
 
 class EditorLayer;
 
-namespace EditorGUI {
+namespace Editor {
   class MaterialPanel {
   private:
     EditorLayer* _editorLayer;

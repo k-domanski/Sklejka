@@ -7,7 +7,7 @@ namespace Engine::ECS {
     friend class EntityManager;
 
   public:
-    Entity()  = default;
+    Entity() = default;
     /*TODO: Entity(const std::string& name);
       lub overload CreateEntity w EntityManager*/
     ~Entity() = default;
@@ -24,6 +24,12 @@ namespace Engine::ECS {
     template< class T >
     std::shared_ptr< T > GetComponent() {
       return EntityManager::GetInstance().GetComponent< T >(_entityID);
+    }
+
+    template< typename T >
+    auto HasComponent() -> bool {
+      auto it = _signature->find(GetComponentTypeID< T >());
+      return it != _signature->end();
     }
 
     auto Name() const noexcept -> std::string {

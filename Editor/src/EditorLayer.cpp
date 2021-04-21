@@ -46,7 +46,6 @@ void EditorLayer::OnAttach() {
   // m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
   //                                       "./textures/pepo_sad.png", texture);
 
-
   m_Entity1->AddComponent< Transform >();
   m_Entity1->AddComponent< Components::MeshRenderer >(m_ConeMesh, m_Material);
   m_Entity2->AddComponent< Transform >();
@@ -60,6 +59,8 @@ void EditorLayer::OnAttach() {
 
   /*SceneHierarchyPanel Test*/
   m_SceneHierarchyPanel.SetScene(m_Scene);
+  m_SceneHierarchyPanel.SetSelectionCallback(
+      [this](auto& entity) { m_InspectorPanel.AttachEntity(entity); });
   m_FileSystemPanel.SetScene(m_Scene);
   m_FileSystemPanel.SetEditorLayer(this);
   /*auto ent1 = ECS::EntityManager::GetInstance().CreateEntity();
@@ -99,10 +100,10 @@ void EditorLayer::OnAttach() {
   auto tr1 = m_Entity1->GetComponent< Transform >();
   auto tr2 = m_Entity2->GetComponent< Transform >();
 
-  //tr1->Position({0.0f, 0.0f, 0.0f});
-  //tr1->Scale({0.2f, 0.2f, 0.2f});
-  //tr2->Scale({0.2f, 0.2f, 0.2f});
-  //tr2->Position({-1.0f, 0.0f, 0.0f});
+  // tr1->Position({0.0f, 0.0f, 0.0f});
+  // tr1->Scale({0.2f, 0.2f, 0.2f});
+  // tr2->Scale({0.2f, 0.2f, 0.2f});
+  // tr2->Position({-1.0f, 0.0f, 0.0f});
   tr1->LoadFromJson("./tr1.json");
   tr2->LoadFromJson("./tr2.json");
   m_PepeTransform->Position({0.0f, 1.0f, 0.0f});
@@ -142,7 +143,7 @@ void EditorLayer::OnEvent(Event& event) {
 
 void EditorLayer::OnImGuiRender() {
   m_SceneHierarchyPanel.OnImGuiRender();
-  m_InspectorPanel.OnImGuiRender(m_SceneHierarchyPanel.GetSelectedEntity());
+  m_InspectorPanel.OnImGuiRender();
   m_FileSystemPanel.OnImGuiRender();
   m_MaterialPanel.OnImGuiRender();
 }
