@@ -24,10 +24,13 @@ namespace Editor {
 
   private:
     auto CreateMaterialButton() -> void;
-    auto DrawMaterialView() -> void;
     auto MaterialSelection() -> void;
+    auto DrawMaterialView() -> void;
+
     auto ShaderSelection() -> void;
     auto TextureSelection() -> void;
+    auto ColorSelection() -> void;
+
     auto SaveMaterial(const std::shared_ptr< Engine::Renderer::Material >& material) -> void;
     auto LoadMaterial(const std::string& file) -> void;
     // Not Working
@@ -36,4 +39,4 @@ namespace Editor {
     auto SetDirty() -> void;
     auto ClearDirty() -> void;
   };
-}  // namespace EditorGUI
+}  // namespace Editor
