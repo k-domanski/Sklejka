@@ -3,6 +3,8 @@
 
 #include <nlohmann/json.hpp>
 
+#include "../../../Editor/src/ImGui/Panels/FileSystemPanel.h"
+
 Engine::Utility::GJK::Simplex Engine::Components::Collider::get_simplex() const {
   return _simplex;
 }
@@ -49,6 +51,18 @@ Engine::Components::ColliderType Engine::Components::Collider::get_type() const 
 
 void Engine::Components::Collider::set_type(ColliderType type) {
   _type = type;
+}
+
+auto Engine::Components::Collider::LoadFromJson(std::string filePath) -> void
+{
+  auto content        = Utility::ReadTextFile(filePath);
+  nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
+
+  _type = json["colliderType"] == "Sphere" ? Type.Sphere : Type.Box;
+  _trigger = json["trigger"];
+  _static  = json["static"];
+  _center  = glm::vec3(json["center"]["x"], json["center"]["y"], json["center"]["z"]);
+  _size    = glm::vec3(json["size"]["x"], json["size"]["y"], json["size"]["z"]);
 }
 
 std::string Engine::Components::Collider::SaveToJson(std::string filePath)

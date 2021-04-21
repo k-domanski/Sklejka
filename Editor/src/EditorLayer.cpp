@@ -79,7 +79,10 @@ void EditorLayer::OnAttach() {
 
   m_Entity1->GetComponent< Components::MeshRenderer >()->SaveToJson("./meshRenderer1.json");
 
-  box1->Size      = glm::vec3(1.0f);
+  box1->LoadFromJson("./box1.json");
+  box2->LoadFromJson("./box2.json");
+
+  /*box1->Size      = glm::vec3(1.0f);
   box1->IsTrigger = false;
   box1->Center    = glm::vec3(0.0f);
   rb1->SetGravity(false);
@@ -91,7 +94,7 @@ void EditorLayer::OnAttach() {
   rb2->SetKinematic(true);
 
   box1->SaveToJson("./box1.json");
-  box2->SaveToJson("./box2.json");
+  box2->SaveToJson("./box2.json");*/
 
   auto tr1 = m_Entity1->GetComponent< Transform >();
   auto tr2 = m_Entity2->GetComponent< Transform >();
