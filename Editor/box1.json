@@ -4,7 +4,7 @@
         "y": 0.0,
         "z": 0.0
     },
-    "colliderType": -842150451,
+    "colliderType": "ColliderType",
     "componentType": "collider",
     "size": {
         "x": 1.0,

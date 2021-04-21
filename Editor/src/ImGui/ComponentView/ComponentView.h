@@ -120,7 +120,7 @@ namespace Editor {
       DrawVec3("Center", center);
       _component->Center = center;
 
-      if (_component->Type == Engine::Components::ColliderType::Sphere)
+      if (_component->Type == +Engine::Components::ColliderType::Sphere)
         sphere = true;
       else
         sphere = false;
@@ -130,9 +130,9 @@ namespace Editor {
 
       DrawBool("Is sphere", sphere);
       if (sphere)
-        _component->Type = Engine::Components::ColliderType::Sphere;
+        _component->Type = +Engine::Components::ColliderType::Sphere;
       else
-        _component->Type = Engine::Components::ColliderType::Box;
+        _component->Type = +Engine::Components::ColliderType::Box;
 
       DrawBool("Is Trigger", boxTrigger);
       _component->IsTrigger = boxTrigger;

@@ -144,13 +144,15 @@ namespace Editor {
 
   auto InspectorPanel::ShowComponentsDropdown() -> void {
     auto tag = _entity->Name();
-
     char buffer[256];
     memset(buffer, 0, sizeof(buffer));
     std::strncpy(buffer, tag.c_str(), sizeof(buffer));
     if (ImGui::InputText("##Name", buffer, sizeof(buffer))) {
       _entity->Name(std::string(buffer));
     }
+    /*No components for root*/
+    if (_entity->GetID() == 0)
+      return;
 
     ImGui::SameLine();
     ImGui::PushItemWidth(-1);
