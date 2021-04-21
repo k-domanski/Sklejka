@@ -81,8 +81,48 @@ namespace Editor {
   };
   /* Mesh Renderer */
   class MeshRendererView : public ComponentView< Engine::Components::MeshRenderer > {
+  private:
+      std::string name;
   public:
     auto OnDraw() -> void override {
+        std::string model = "Model";
+        bool hasMaterial = _component->GetMaterial() != nullptr;
+        name = hasMaterial ? _component->GetMaterial()->FilePath() : "<NONE>";
+        ImGui::PushID(model.c_str());
+
+        ImGui::Columns(2);
+        ImGui::SetColumnWidth(0, 100);
+        ImGui::Text(model.c_str());
+        ImGui::NextColumn();
+        //ImGui::Text("Kolumna druga");
+        ImGui::Columns(1);
+        //ImGui::PopItemWidth();
+        ImGui::PopID();
+        if (ImGui::BeginChild("File", ImVec2{ 0,/*ImGui::CalcItemWidth()*/0 }))
+        {
+            ImGui::Text(name.c_str());
+        }
+        ImGui::EndChild();
+        if (ImGui::BeginDragDropTarget()) {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
+                auto payload_str = std::string(static_cast<char*>(payload->Data));
+                auto material = Engine::AssetManager::CreateMaterial(payload_str);
+                _component->SetMaterial(material);
+            }
+            ImGui::EndDragDropTarget();
+        }
+        ImGui::Separator();
+
+        std::string mat = "Material";
+        ImGui::PushID(mat.c_str());
+
+        ImGui::Columns(2);
+        ImGui::SetColumnWidth(0, 100);
+        ImGui::Text(mat.c_str());
+        ImGui::NextColumn();
+
+        ImGui::Columns(1);
+        ImGui::PopID();
     }
   };
   /* Rigidbody */
@@ -96,13 +136,9 @@ namespace Editor {
       bool rbKinematic = _component->IsKinematic();
       bool rbGravity   = _component->UseGravity();
 
-      // if (_component->UseGravity())
-      // rbGravity = true;
       DrawBool("Use Gravity", rbGravity);
       _component->SetGravity(rbGravity);
 
-      // if (_component->IsKinematic())
-      // rbKinematic = true;
       DrawBool("Is Kinematic", rbKinematic);
       _component->SetKinematic(rbKinematic);
     }
@@ -125,7 +161,6 @@ namespace Editor {
       else
         sphere = false;
 
-      // if (_component->IsTrigger)
       boxTrigger = _component->IsTrigger;
 
       DrawBool("Is sphere", sphere);
