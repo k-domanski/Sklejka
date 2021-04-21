@@ -17,7 +17,9 @@ namespace Engine::Components
     auto SetGravity(bool gravity) -> void;
     auto IsKinematic() -> bool;
     auto SetKinematic(bool kinematic) -> void;
-
+    std::string SaveToJson() override;
+    std::string SaveToJson(std::string filePath) override;
+    auto LoadFromJson(std::string filePath) -> void override;
   private:
     glm::vec3 _velocity;
     bool _useGravity;
