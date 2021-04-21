@@ -30,6 +30,9 @@ private:
   bool OnMouseButtonPress(Engine::MouseButtonPressedEvent& e);
   bool OnMouseButtonRelease(Engine::MouseButtonReleasedEvent& e);
   auto UpdateEditorCamera() -> void;
+  auto DrawMenuBar() -> void;
+  auto SaveScene() -> void;
+  auto LoadScene() -> void;
 
 private:
   /*Temporary*/

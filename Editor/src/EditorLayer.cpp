@@ -125,9 +125,10 @@ void EditorLayer::OnEvent(Event& event) {
 }
 
 void EditorLayer::OnImGuiRender() {
+  DrawMenuBar();
+  m_FileSystemPanel.OnImGuiRender();
   m_SceneHierarchyPanel.OnImGuiRender();
   m_InspectorPanel.OnImGuiRender();
-  m_FileSystemPanel.OnImGuiRender();
   m_MaterialPanel.OnImGuiRender();
 }
 
@@ -196,6 +197,32 @@ auto EditorLayer::UpdateEditorCamera() -> void {
 
     editorCameraArgs.m2LastPos = cursorPos;
   }
+}
+
+auto EditorLayer::DrawMenuBar() -> void {
+  if (ImGui::BeginMainMenuBar()) {
+    if (ImGui::BeginMenu("File")) {
+      if (ImGui::MenuItem("Open...")) {
+        LoadScene();
+      }
+      if (ImGui::MenuItem("Save As...")) {
+        SaveScene();
+      }
+      ImGui::EndMenu();
+    }
+
+    ImGui::EndMainMenuBar();
+  }
+}
+
+auto EditorLayer::SaveScene() -> void {
+  std::optional< std::string > filepath = FileDialog::SaveFile("Scene (*.scene)\0*.scene\0");
+  if (filepath) {}
+}
+
+auto EditorLayer::LoadScene() -> void {
+  std::optional< std::string > filepath = FileDialog::OpenFile("Scene (*.scene)\0*.scene\0");
+  if (filepath) {}
 }
 
 auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> void {
