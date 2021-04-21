@@ -26,6 +26,13 @@ namespace Engine::ECS {
   {
     if (_entities.find(id) != _entities.end())
       return;
+
     _entities.insert(id);
+  }
+
+  auto System::RemoveEntity(EntityID id) -> void
+  {
+    if (_entities.find(id) != _entities.end())
+      _entities.erase(id);
   }
 }  // namespace ECS

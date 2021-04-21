@@ -35,6 +35,8 @@ namespace Engine::ECS {
       }
       if (correctSignatures == system->_signatures.size())
         AddToSystem(systemID, entity->GetID());
+      else
+        RemoveFromSystem(systemID, entity->GetID());
     }
   }
 
@@ -48,6 +50,10 @@ namespace Engine::ECS {
     // return;
     //_registeredSystems[systemID]->_entities.insert(entityID);
     _registeredSystems[systemID]->AddEntity(entityID);
+  }
+
+  auto EntityManager::RemoveFromSystem(SystemTypeID systemID, EntityID entityID) -> void {
+    _registeredSystems[systemID]->RemoveEntity(entityID);
   }
 
   auto EntityManager::CreateEntity() -> std::shared_ptr< Entity > {
@@ -72,6 +78,21 @@ namespace Engine::ECS {
     assert(it != _entities.end());
 
     return *it;
+  }
+
+  auto EntityManager::RemoveEntity(EntityID id) -> void {
+    for (auto& system : _registeredSystems) {
+      RemoveFromSystem(system.first, id);
+    }
+    auto entity = GetEntity(id);
+    for (auto signature : *entity->_signature) {
+      _componentLists[signature]->Remove(id);
+    }
+    entity->_signature->clear();
+
+    auto it = std::find(_entities.begin(), _entities.end(), entity);
+    if (it != _entities.end())
+      _entities.erase(it);
   }
 
   auto EntityManager::Update(float deltaTime) -> void {

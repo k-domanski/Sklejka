@@ -35,6 +35,7 @@ namespace Engine::ECS {
     auto SignatureMatch(const EntitySignature& entitySignature) -> bool;
 
     virtual auto AddEntity(EntityID id) -> void;
+    virtual auto RemoveEntity(EntityID id) -> void;
 
     virtual void Update(float deltaTime) = 0;
 

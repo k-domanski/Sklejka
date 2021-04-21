@@ -57,6 +57,21 @@ namespace Engine::ECS {
       // return nullptr;
     }
 
+    template<class T>
+    auto RemoveComponent(EntityID entityID) -> void
+    {
+      auto compTypeID = GetComponentTypeID< T >();
+
+      auto entity = GetEntity(entityID);
+      auto it     = entity->_signature->find(compTypeID);
+      if (it == entity->_signature->end())
+          return;
+      entity->_signature->erase(it);
+
+      auto list = GetComponentList< T >();
+      list->Remove(entityID);
+    }
+
     template< class T >
     auto RegisterSystem() -> std::shared_ptr< T > {
       auto systemID = GetSystemTypeID< T >();
@@ -75,10 +90,12 @@ namespace Engine::ECS {
     auto BelongsToSystem(SystemTypeID systemID, EntityID entityID) -> bool;
 
     auto AddToSystem(SystemTypeID systemID, EntityID entityID) -> void;
+    auto RemoveFromSystem(SystemTypeID systemID, EntityID entityID) -> void;
 
     auto CreateEntity() -> std::shared_ptr< Entity >;
     auto CreateEntity(EntityID id) -> std::shared_ptr< Entity >;
     auto GetEntity(EntityID) -> std::shared_ptr< Entity >;
+    auto RemoveEntity(EntityID id) -> void;
     auto Update(float deltaTime) -> void;
     auto Clear() -> void;
 
