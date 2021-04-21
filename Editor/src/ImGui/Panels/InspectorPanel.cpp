@@ -58,13 +58,15 @@ namespace EditorGUI {
   void InspectorPanel::DrawComponents(std::shared_ptr< ECS::Entity > entity) {
     /*Name Input Field*/
     auto tag = entity->Name();
-
     char buffer[256];
     memset(buffer, 0, sizeof(buffer));
     std::strncpy(buffer, tag.c_str(), sizeof(buffer));
     if (ImGui::InputText("##Name", buffer, sizeof(buffer))) {
       entity->Name(std::string(buffer));
     }
+    /*No components for root*/
+    if (entity->GetID() == 0)
+      return;
 
     ImGui::SameLine();
     ImGui::PushItemWidth(-1);
@@ -167,7 +169,7 @@ namespace EditorGUI {
       component->SetVelocity(velocity);
 
       bool rbKinematic = component->IsKinematic();
-      bool rbGravity = component->UseGravity();
+      bool rbGravity   = component->UseGravity();
 
       DrawBool("Use Gravity", rbGravity);
       component->SetGravity(rbGravity);
