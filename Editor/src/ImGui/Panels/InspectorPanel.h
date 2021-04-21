@@ -1,16 +1,27 @@
 #pragma once
 #include "Engine.h"
+#include <ImGui/ComponentView/ComponentView.h>
 
 using namespace Engine;
 
-namespace EditorGUI {
+namespace Editor {
   class InspectorPanel {
+  private:
+    std::shared_ptr< ECS::Entity > _entity;
+    std::vector< std::shared_ptr< IComponentView > > _componentViews;
+
   public:
     InspectorPanel() = default;
 
-    void OnImGuiRender(std::shared_ptr< ECS::Entity > entity);
+    void OnImGuiRenderOld(std::shared_ptr< ECS::Entity > entity);
+    void OnImGuiRender();
+    auto AttachEntity(const std::shared_ptr< ECS::Entity >& entity) -> void;
+    auto ReattachEntity() -> void;
 
   private:
-    void DrawComponents(std::shared_ptr< ECS::Entity > entity);
+    auto PopulateComponentViews() -> void;
+    auto WrapViewInTreeNode(const std::shared_ptr< IComponentView >& view) -> void;
+    auto ShowComponentsDropdown() -> void;
+    // void DrawComponents(std::shared_ptr< ECS::Entity > entity);
   };
-}  // namespace EditorGUI
+}  // namespace Editor

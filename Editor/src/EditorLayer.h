@@ -57,8 +57,8 @@ private:
   std::shared_ptr< Engine::Transform > m_PepeTransform;
 
   /*Panels*/
-  EditorGUI::SceneHierarchyPanel m_SceneHierarchyPanel;
-  EditorGUI::InspectorPanel m_InspectorPanel;
-  EditorGUI::FileSystemPanel m_FileSystemPanel;
-  EditorGUI::MaterialPanel m_MaterialPanel;
+  Editor::SceneHierarchyPanel m_SceneHierarchyPanel;
+  Editor::InspectorPanel m_InspectorPanel;
+  Editor::FileSystemPanel m_FileSystemPanel;
+  Editor::MaterialPanel m_MaterialPanel;
 };

@@ -46,7 +46,6 @@ void EditorLayer::OnAttach() {
   // m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
   //                                       "./textures/pepo_sad.png", texture);
 
-
   m_Entity1->AddComponent< Transform >();
   m_Entity1->AddComponent< Components::MeshRenderer >(m_ConeMesh, m_Material);
   m_Entity2->AddComponent< Transform >();
@@ -60,6 +59,8 @@ void EditorLayer::OnAttach() {
 
   /*Editor Panels*/
   m_SceneHierarchyPanel.SetScene(m_Scene);
+  m_SceneHierarchyPanel.SetSelectionCallback(
+      [this](auto& entity) { m_InspectorPanel.AttachEntity(entity); });
   m_FileSystemPanel.SetScene(m_Scene);
   m_FileSystemPanel.SetEditorLayer(this);
   /*------------------------*/
@@ -124,7 +125,7 @@ void EditorLayer::OnEvent(Event& event) {
 
 void EditorLayer::OnImGuiRender() {
   m_SceneHierarchyPanel.OnImGuiRender();
-  m_InspectorPanel.OnImGuiRender(m_SceneHierarchyPanel.GetSelectedEntity());
+  m_InspectorPanel.OnImGuiRender();
   m_FileSystemPanel.OnImGuiRender();
   m_MaterialPanel.OnImGuiRender();
 }

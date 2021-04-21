@@ -31,6 +31,12 @@ namespace Engine::ECS {
       return EntityManager::GetInstance().GetComponent< T >(_entityID);
     }
 
+    template< typename T >
+    auto HasComponent() -> bool {
+      auto it = _signature->find(GetComponentTypeID< T >());
+      return it != _signature->end();
+    }
+
     auto Name() const noexcept -> std::string {
       return _name;
     }

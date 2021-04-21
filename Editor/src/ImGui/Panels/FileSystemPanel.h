@@ -3,7 +3,7 @@
 #include <filesystem>
 
 class EditorLayer;
-namespace EditorGUI {
+namespace Editor {
   class FileSystemPanel {
   private:
     std::shared_ptr< Engine::Scene > _scene = nullptr;

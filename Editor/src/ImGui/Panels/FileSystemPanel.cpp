@@ -20,7 +20,7 @@ auto operator<(const EntryPair& lhs, const EntryPair& rhs) -> bool {
 }
 
 using namespace Engine;
-namespace EditorGUI {
+namespace Editor {
   FileSystemPanel::FileSystemPanel() {
     _rootPath          = fs::current_path();
     _currentPath       = _rootPath;

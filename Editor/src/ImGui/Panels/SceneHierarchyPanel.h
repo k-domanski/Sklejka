@@ -1,18 +1,25 @@
 #pragma once
 #include "Engine.h"
 
-namespace EditorGUI {
+namespace Editor {
   class SceneHierarchyPanel {
   public:
-    SceneHierarchyPanel() = default;
+    SceneHierarchyPanel();
     SceneHierarchyPanel(std::shared_ptr< Engine::Scene > scene);
 
     std::shared_ptr< Engine::ECS::Entity > GetSelectedEntity() {
       return m_SelectedEntity;
     }
+    void SetSelectedEntity(const std::shared_ptr< Engine::ECS::Entity >& entity) {
+      m_SelectedEntity = entity;
+      _selectedCallback(entity);
+    }
+    void SetSelectionCallback(
+        const std::function< void(const std::shared_ptr< Engine::ECS::Entity >) >& callback) {
+      _selectedCallback = callback;
+    }
     void SetScene(std::shared_ptr< Engine::Scene > scene);
     void OnImGuiRender();
-    void SetSelectedEntity(std::shared_ptr< Engine::ECS::Entity > entity);
 
   private:
     void DrawEntity(std::shared_ptr< Engine::ECS::Entity > entity);
@@ -20,5 +27,6 @@ namespace EditorGUI {
   private:
     std::shared_ptr< Engine::Scene > m_Scene;
     std::shared_ptr< Engine::ECS::Entity > m_SelectedEntity;
+    std::function< void(const std::shared_ptr< Engine::ECS::Entity >) > _selectedCallback;
   };
-}  // namespace EditorGUI
+}  // namespace Editor
