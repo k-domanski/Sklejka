@@ -29,7 +29,7 @@ void EditorLayer::OnAttach() {
   m_EditorCamera.camera =
       camera_entity->AddComponent< Engine::Camera >(45.0f, aspect, 0.001f, 1000.0f);
   m_EditorCamera.transform = camera_entity->AddComponent< Engine::Transform >();
-  m_Scene->SceneGraph()->AddEntity(camera_entity->GetID());
+  m_Scene->SceneGraph()->AddChild(0, camera_entity->GetID());
 
   /*Camera*/
   m_EditorCamera.camera->flags.Set(Engine::CameraFlag::MainCamera);
@@ -54,27 +54,14 @@ void EditorLayer::OnAttach() {
   m_PepeTransform = m_Pepe->AddComponent< Transform >();
   m_Pepe->AddComponent< Components::MeshRenderer >(m_PepeModel->getRootMesh(), m_PepeMaterial);
   auto sg = m_Scene->SceneGraph();
-  auto id = m_Entity1->GetID();
-  sg->AddEntity(id);
-  // m_Scene.SceneGraph()->AddEntity(m_Entity2->GetID(), m_Entity1->GetID());
+  sg->AddChild(0, m_Pepe->GetID());
+  sg->AddChild(0, m_Entity1->GetID());
+  sg->AddChild(0, m_Entity2->GetID());
 
-  /*SceneHierarchyPanel Test*/
+  /*Editor Panels*/
   m_SceneHierarchyPanel.SetScene(m_Scene);
   m_FileSystemPanel.SetScene(m_Scene);
   m_FileSystemPanel.SetEditorLayer(this);
-  /*auto ent1 = ECS::EntityManager::GetInstance().CreateEntity();
-  auto ent2 = ECS::EntityManager::GetInstance().CreateEntity();
-  auto ent3 = ECS::EntityManager::GetInstance().CreateEntity();
-  auto ent4 = ECS::EntityManager::GetInstance().CreateEntity();
-  ent1->AddComponent< Transform >();
-  ent2->AddComponent< Transform >();
-  ent3->AddComponent< Transform >();
-  ent4->AddComponent< Transform >();
-
-  sg->AddEntity(ent1->GetID());
-  sg->AddEntity(ent2->GetID(), ent1->GetID());
-  sg->AddEntity(ent3->GetID(), ent1->GetID());
-  sg->AddEntity(ent4->GetID(), ent1->GetID());*/
   /*------------------------*/
 
   auto box1 = m_Entity1->AddComponent< Components::Collider >();
@@ -99,15 +86,10 @@ void EditorLayer::OnAttach() {
   auto tr1 = m_Entity1->GetComponent< Transform >();
   auto tr2 = m_Entity2->GetComponent< Transform >();
 
-  //tr1->Position({0.0f, 0.0f, 0.0f});
-  //tr1->Scale({0.2f, 0.2f, 0.2f});
-  //tr2->Scale({0.2f, 0.2f, 0.2f});
-  //tr2->Position({-1.0f, 0.0f, 0.0f});
   tr1->LoadFromJson("./tr1.json");
   tr2->LoadFromJson("./tr2.json");
   m_PepeTransform->Position({0.0f, 1.0f, 0.0f});
   m_PepeTransform->Scale({0.2f, 0.2f, 0.2f});
-  // m_Scene.SceneGraph()->AddEntity(m_PepeTransform->GetEntityID(), tr2->GetEntityID());
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {

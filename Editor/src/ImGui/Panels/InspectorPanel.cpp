@@ -5,7 +5,7 @@
 namespace EditorGUI {
   void InspectorPanel::OnImGuiRender(std::shared_ptr< ECS::Entity > entity) {
     ImGui::Begin("Inspector");
-    if (entity)
+    if (entity != nullptr)
       DrawComponents(entity);
     ImGui::End();
   }
@@ -55,24 +55,18 @@ namespace EditorGUI {
     }
   }
 
-  /*-------Checkbox bools----------*/
-  static bool activeCamera;
-  // static bool boxTrigger;
-  // static bool sphereTrigger;
-  // static bool rbGravity;
-  // static bool rbKinematic;
-  // static bool sphere;
-  /*-------------------------------*/
   void InspectorPanel::DrawComponents(std::shared_ptr< ECS::Entity > entity) {
     /*Name Input Field*/
     auto tag = entity->Name();
-
     char buffer[256];
     memset(buffer, 0, sizeof(buffer));
     std::strncpy(buffer, tag.c_str(), sizeof(buffer));
     if (ImGui::InputText("##Name", buffer, sizeof(buffer))) {
       entity->Name(std::string(buffer));
     }
+    /*No components for root*/
+    if (entity->GetID() == 0)
+      return;
 
     ImGui::SameLine();
     ImGui::PushItemWidth(-1);
@@ -118,17 +112,9 @@ namespace EditorGUI {
         }
         ImGui::CloseCurrentPopup();
       }
-
-      /*if (ImGui::MenuItem("Sphere Collider")) {
-        if (entity->GetComponent< Components::Collider >() == nullptr) {
-          entity->AddComponent< Components::Collider >();
-        } else {
-          APP_WARN("{} entity already has Sphere Collider component!", entity->Name());
-        }
-        ImGui::CloseCurrentPopup();
-      }*/
       ImGui::EndPopup();
     }
+
     DrawComponent< Transform >("Transform", entity, [](auto component) {
       /*Position*/
       glm::vec3 pos = component->Position();
@@ -146,15 +132,12 @@ namespace EditorGUI {
 
     DrawComponent< Camera >("Camera", entity, [](auto component) {
       /*Przelaczanie flagi MainCamera*/
-      if (component->flags.Get(CameraFlag::MainCamera))
-        activeCamera = true;
-      DrawBool("Main Camera", activeCamera);
-      if (!activeCamera)
+      bool mainCamera = component->flags.Get(CameraFlag::MainCamera);
+      DrawBool("Main Camera", mainCamera);
+      if (!mainCamera)
         component->flags.Clear(CameraFlag::MainCamera);
       else
         component->flags.Set(CameraFlag::MainCamera);
-
-      // APP_DEBUG("{}", component->flags.GetState());
       /*FOV*/
       float fov = component->Fov();
       DrawFloat("FOV", fov);
@@ -186,15 +169,11 @@ namespace EditorGUI {
       component->SetVelocity(velocity);
 
       bool rbKinematic = component->IsKinematic();
-      bool rbGravity = component->UseGravity();
+      bool rbGravity   = component->UseGravity();
 
-      //if (component->UseGravity())
-        //rbGravity = true;
       DrawBool("Use Gravity", rbGravity);
       component->SetGravity(rbGravity);
 
-      //if (component->IsKinematic())
-        //rbKinematic = true;
       DrawBool("Is Kinematic", rbKinematic);
       component->SetKinematic(rbKinematic);
     });
@@ -214,7 +193,6 @@ namespace EditorGUI {
       else
         sphere = false;
 
-      // if (component->IsTrigger)
       boxTrigger = component->IsTrigger;
 
       DrawBool("Is sphere", sphere);
@@ -226,17 +204,6 @@ namespace EditorGUI {
       DrawBool("Is Trigger", boxTrigger);
       component->IsTrigger = boxTrigger;
     });
-
-    /*DrawComponent< Components::Collider >("Sphere Collider", entity, [](auto component) {
-      float radius = component->Size.x;
-      DrawFloat("Radius", radius);
-      component->Size = glm::vec3(radius);
-
-      if (component->IsTrigger)
-        boxTrigger = true;
-      DrawBool("Is Trigger", boxTrigger);
-      component->IsTrigger = boxTrigger;
-    });*/
   }
 
   static void DrawVec3(const std::string& name, glm::vec3& value, float resetValue = 0.0f) {
