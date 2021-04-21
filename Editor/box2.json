@@ -4,7 +4,7 @@
         "y": 0.0,
         "z": 0.0
     },
-    "colliderType": "ColliderType",
+    "colliderType": "Box",
     "componentType": "collider",
     "size": {
         "x": 1.0,
