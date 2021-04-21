@@ -104,6 +104,8 @@ void EditorLayer::OnAttach() {
   tr2->LoadFromJson("./scenes/tr2.json");
   m_PepeTransform->Position({0.0f, 1.0f, 0.0f});
   m_PepeTransform->Scale({0.2f, 0.2f, 0.2f});
+
+  m_Entity1->SaveToJson("./scenes/m_Entity1.entity");
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {

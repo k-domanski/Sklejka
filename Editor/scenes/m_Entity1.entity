@@ -1,0 +1,58 @@
+{
+    "entityID": "10654611006156044335",
+    "entityName": "Entity"
+}
+42091169692137SUPERJSONSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.20000000298023224,
+        "y": 0.20000000298023224,
+        "z": 0.20000000298023224
+    }
+}
+42091169692137SUPERJSONSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "5490853074275793646",
+    "model": "./models/cube.fbx"
+}
+42091169692137SUPERJSONSEPARATOR42091169692137
+{
+    "center": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "colliderType": "Box",
+    "componentType": "collider",
+    "size": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "static": true,
+    "trigger": false
+}
+42091169692137SUPERJSONSEPARATOR42091169692137
+{
+    "componentType": "rigidbody",
+    "kinematic": true,
+    "useGravity": true,
+    "velocity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}

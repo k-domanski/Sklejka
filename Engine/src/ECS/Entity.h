@@ -46,6 +46,9 @@ namespace Engine::ECS {
       return _name = name;
     }
 
+    std::string SaveToJson();
+    std::string SaveToJson(std::string filepath);
+
   private:
     EntityID _entityID{0};
     std::string _name{"Entity"};
