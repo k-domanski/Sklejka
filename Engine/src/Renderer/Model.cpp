@@ -10,7 +10,7 @@ namespace Engine::Renderer {
   Model::Model(const std::shared_ptr< Mesh >& mesh) noexcept {
     meshes.push_back(mesh);
   }
-  Model::Model(std::string_view path) {
+  Model::Model(std::string_view path): _filePath(path) {
     loadModel(path);
   }
 

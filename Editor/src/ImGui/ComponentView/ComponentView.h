@@ -4,6 +4,7 @@
 #include "AttributeView.h"
 #include "Components/Collider.h"
 #include "Components/Rigidbody.h"
+#include <filesystem>
 
 namespace Editor {
   /* Base Class*/
@@ -84,47 +85,72 @@ namespace Editor {
   /* Mesh Renderer */
   class MeshRendererView : public ComponentView< Engine::Components::MeshRenderer > {
   private:
-      std::string name;
+    std::string modelPath;
+    std::string materialPath;
+
   public:
     auto OnDraw() -> void override {
-        std::string model = "Model";
-        bool hasMaterial = _component->GetMaterial() != nullptr;
-        name = hasMaterial ? _component->GetMaterial()->FilePath() : "<NONE>";
-        ImGui::PushID(model.c_str());
+      bool hasModel    = _component->GetModel() != nullptr;
+      bool hasMaterial = _component->GetMaterial() != nullptr;
+      modelPath =
+          hasModel ? std::filesystem::path(_component->GetModel()->FilePath()).filename().string()
+                   : "<None>";
+      materialPath =
+          hasMaterial
+              ? std::filesystem::path(_component->GetMaterial()->FilePath()).filename().string()
+              : "<None>";
+      ImGui::PushID("Model");
 
-        ImGui::Columns(2);
-        ImGui::SetColumnWidth(0, 100);
-        ImGui::Text(model.c_str());
-        ImGui::NextColumn();
-        //ImGui::Text("Kolumna druga");
-        ImGui::Columns(1);
-        //ImGui::PopItemWidth();
-        ImGui::PopID();
-        if (ImGui::BeginChild("File", ImVec2{ 0,/*ImGui::CalcItemWidth()*/0 }))
-        {
-            ImGui::Text(name.c_str());
+      ImGui::Columns(2);
+      ImGui::SetColumnWidth(0, 100);
+      ImGui::Text("Model");
+      ImGui::NextColumn();
+      ImGui::Text(modelPath.c_str());
+      ImGui::Columns(1);
+
+      if (ImGui::BeginChild("model", ImVec2{0, 25})) {}
+      ImGui::EndChild();
+      if (ImGui::BeginDragDropTarget()) {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
+          auto payload_str = std::string(static_cast< char* >(payload->Data));
+          auto filePath    = std::filesystem::path(payload_str);
+          auto model       = Engine::AssetManager::GetModel(payload_str);
+          _component->SetModel(model);
         }
-        ImGui::EndChild();
-        if (ImGui::BeginDragDropTarget()) {
-            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
-                auto payload_str = std::string(static_cast<char*>(payload->Data));
-                auto material = Engine::AssetManager::CreateMaterial(payload_str);
-                _component->SetMaterial(material);
-            }
-            ImGui::EndDragDropTarget();
+        ImGui::EndDragDropTarget();
+      }
+      ImGui::PopID();
+      ImGui::Separator();
+
+      std::string mat = "Material";
+      ImGui::PushID(mat.c_str());
+
+      ImGui::Columns(2);
+      ImGui::SetColumnWidth(0, 100);
+      ImGui::Text(mat.c_str());
+      ImGui::NextColumn();
+      ImGui::Text(materialPath.c_str());
+
+      ImGui::Columns(1);
+
+      if (ImGui::BeginChild("material", ImVec2{0, 25})) {
+        ImGui::Text("Drag model first.");
+      }
+      ImGui::EndChild();
+      if (ImGui::BeginDragDropTarget()) {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
+          auto payload_str = std::string(static_cast< char* >(payload->Data));
+          auto filePath    = std::filesystem::path(payload_str);
+          auto material    = Engine::AssetManager::GetMaterial(payload_str);
+          if (hasModel) {
+            _component->SetMaterial(material);
+          } else {
+            CORE_ERROR("Set model first!");
+          }
         }
-        ImGui::Separator();
-
-        std::string mat = "Material";
-        ImGui::PushID(mat.c_str());
-
-        ImGui::Columns(2);
-        ImGui::SetColumnWidth(0, 100);
-        ImGui::Text(mat.c_str());
-        ImGui::NextColumn();
-
-        ImGui::Columns(1);
-        ImGui::PopID();
+        ImGui::EndDragDropTarget();
+      }
+      ImGui::PopID();
     }
   };
   /* Rigidbody */

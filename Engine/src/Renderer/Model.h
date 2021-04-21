@@ -15,8 +15,15 @@ namespace Engine::Renderer {
     virtual ~Model() = default;
 
     std::shared_ptr< Mesh > getRootMesh();
+    auto FilePath() const noexcept -> std::string {
+      return _filePath;
+    }
+    auto FilePath(const std::string& filePath) noexcept -> std::string {
+      return _filePath = filePath;
+    }
 
   private:
+    std::string _filePath;
     std::vector< std::shared_ptr< Mesh > > meshes;
     void loadModel(std::string_view path);
     void processNode(aiNode* node, const aiScene* scene, std::shared_ptr< Mesh > parent = nullptr);
