@@ -112,6 +112,7 @@ namespace Engine::ECS {
     auto CreateEntity(EntityID id) -> std::shared_ptr< Entity >;
     auto GetEntity(EntityID) -> std::shared_ptr< Entity >;
     auto RemoveEntity(EntityID id) -> void;
+    auto GetAllComponents(EntityID id) -> std::vector< std::shared_ptr< Component > >;
     auto Update(float deltaTime) -> void;
     auto Clear() -> void;
 
