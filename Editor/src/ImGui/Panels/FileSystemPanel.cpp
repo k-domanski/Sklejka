@@ -170,8 +170,18 @@ namespace EditorGUI {
           _openFolder        = true;
 
         } else {
-          // Select file ??
+          // Select file
           _selectedFile = path;
+        }
+      }
+      if (!is_directory) {
+        _dragAndDropPath               = path;
+        const ImGuiDragDropFlags flags = ImGuiDragDropFlags_None;
+        if (ImGui::BeginDragDropSource(flags)) {
+          ImGui::SetDragDropPayload("FILE", _dragAndDropPath.string().c_str(),
+                                    _dragAndDropPath.string().size() + 1);
+          ImGui::Text("%s", _dragAndDropPath.filename().string().c_str());
+          ImGui::EndDragDropSource();
         }
       }
       ImGui::PopID();

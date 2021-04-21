@@ -7,6 +7,8 @@
 #include <App/Log.h>
 #include <filesystem>
 
+namespace fs = std::filesystem;
+
 namespace Engine {
   auto AssetManager::GenerateAssetID() {
     std::random_device dv;
@@ -20,6 +22,10 @@ namespace Engine {
 
   auto AssetManager::GetShader(const std::string& file) -> std::shared_ptr< GL::Shader > {
     if (_loadedShaders.count(file) == 0) {
+      if (!fs::exists(file)) {
+        LOG_ERROR("File does not exist: {}", file);
+        return nullptr;
+      }
       auto shaderSource = Utility::ReadTextFile(file);
       auto parseResult  = Utility::ParseShaderSource(shaderSource, std::string(file));
       if (!parseResult.success) {
@@ -42,6 +48,10 @@ namespace Engine {
   }
   auto AssetManager::GetModel(const std::string& file) -> std::shared_ptr< Renderer::Model > {
     if (_loadedModels.count(file) == 0) {
+      if (!fs::exists(file)) {
+        LOG_ERROR("File does not exist: {}", file);
+        return nullptr;
+      }
       auto model          = std::make_shared< Renderer::Model >(file);
       _loadedModels[file] = model;
       return model;
@@ -58,6 +68,10 @@ namespace Engine {
   }
   auto AssetManager::GetTexture2D(const std::string& file) -> std::shared_ptr< GL::Texture2D > {
     if (_loadedTextures2D.count(file) == 0) {
+      if (!fs::exists(file)) {
+        LOG_ERROR("File does not exist: {}", file);
+        return nullptr;
+      }
       int x, y, n;
       auto pixel_data = stbi_load(file.data(), &x, &y, &n, 4);
       auto texture    = std::make_shared< GL::Texture2D >(x, y, pixel_data);
@@ -88,6 +102,10 @@ namespace Engine {
                            [file](const auto& kv) { return kv.second->FilePath() == file; });
     /* If not loaded, load and return */
     if (it == _loadedMaterials.end()) {
+      if (!fs::exists(file)) {
+        LOG_ERROR("File does not exist: {}", file);
+        return nullptr;
+      }
       auto content        = Utility::ReadTextFile(file);
       nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
 
@@ -102,6 +120,7 @@ namespace Engine {
       material->SetShader(shader_ptr);
       material->SetMainTexture(texture_ptr);
       _loadedMaterials[assetID] = material;
+      material->FilePath(file);
       return material;
     }
     return it->second;

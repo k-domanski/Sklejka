@@ -3,6 +3,9 @@
 #include <Utility/Helpers.h>
 #include <GL/GLEnum.h>
 #include <App/Log.h>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 auto RecursiveIncludeProcess(std::string& content, const std::string& parent_dir,
                              std::vector< std::string >& included_files) -> void {
@@ -68,7 +71,8 @@ auto Engine::Utility::ParseShaderSource(std::string source, const std::string& f
   // Search for #version
   using namespace Helpers;
   const std::string_view default_version("#version 430");
-  const std::string parentDirectory = GetParentFolderPath(source);
+  //const std::string parentDirectory = GetParentFolderPath(file_path);
+  const std::string parentDirectory = fs::path(file_path).parent_path().string() + "/";
   ShaderParseResult result;
   result.success = false;
 
@@ -162,8 +166,8 @@ auto Engine::Utility::ParseShaderSource(std::string source, const std::string& f
     auto content    = source.substr(begin_pos, end_pos - begin_pos + 1);
 
     // Parse #include in extracted content
-    auto parent_dir = GetParentFolderPath(file_path);
-    content         = ProcessIncludeDirective(content, parent_dir);
+    //auto parent_dir = GetParentFolderPath(file_path);
+    content         = ProcessIncludeDirective(content, parentDirectory);
 
     // Inject version
     content.insert(0, version);

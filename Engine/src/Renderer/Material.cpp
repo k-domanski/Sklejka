@@ -26,22 +26,12 @@ namespace Engine::Renderer {
     return _shader;
   }
 
-  std::shared_ptr< GL::Texture2D > Material::GetDiffuse() {
+  std::shared_ptr< GL::Texture2D > Material::GetMainTexture() {
     return _mainTexture;
   }
-
-  std::string Material::GetShaderFilepath() {
-    return _shaderFile;
-  }
-
-  std::string Material::GetDiffuseFilepath() {
-    return _diffuseFile;
-  }
-
   std::size_t Material::GetAssetID() {
     return _assetID;
   }
-
   std::string Material::ToJson() {
     nlohmann::json json = nlohmann::json{
         {"assetID", std::to_string(_assetID)},

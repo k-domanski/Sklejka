@@ -11,6 +11,7 @@ namespace EditorGUI {
     std::filesystem::path _currentPath;
     std::filesystem::path _selectedFile;
     std::filesystem::path _selectedDirectory;
+    std::filesystem::path _dragAndDropPath;
 
     EditorLayer* _editorLayer;
 
