@@ -1,10 +1,12 @@
 #pragma once
+#include <pch.h>
 #include "ECS/Component.h"
 #include "Utility/GJK.h"
 
 namespace Engine::Components {
-  enum ColliderType { Sphere, Box };
-
+  // enum ColliderType { Sphere, Box };
+  BETTER_ENUM(ColliderType, int, Sphere, Box);
+  // typedef __ColliderType ColliderType;
   class Collider : public ECS::Component {
   public:
     [[nodiscard]] Utility::GJK::Simplex get_simplex() const;
@@ -27,9 +29,12 @@ namespace Engine::Components {
     __declspec(property(get = get_type, put = set_type)) ColliderType Type;
 
     Collider(const glm::vec3 size, bool trigger, bool static_, ColliderType type)
-        : Component("Collider"), _size(size), _trigger(trigger), _static(static_), _type(type) {
+        : Component("Collider"), _size(size), _center(glm::vec3(0.0f)), _trigger(trigger),
+          _static(static_), _type(type) {
     }
-    Collider(): Component("Collider") {
+    Collider()
+        : Component("Collider"), _size(glm::vec3(1.0f)), _center(glm::vec3(0.0f)), _trigger(false),
+          _static(true), _type(ColliderType::Box) {
     }
     ~Collider() override = default;
     std::string SaveToJson(std::string filePath) override;

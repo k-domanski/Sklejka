@@ -55,7 +55,7 @@ std::string Engine::Components::Collider::SaveToJson(std::string filePath)
 {
   nlohmann::json json = nlohmann::json{
       {"componentType", "collider"},
-      {"colliderType", _type},
+      {"colliderType", _type._name()},
       {"trigger", _trigger},
       {"static", _static},
       {"center", {{"x", _center.x}, {"y", _center.y}, {"z", _center.z}}},

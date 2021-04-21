@@ -209,7 +209,7 @@ namespace EditorGUI {
       DrawVec3("Center", center);
       component->Center = center;
 
-      if (component->Type == Components::ColliderType::Sphere)
+      if (component->Type == +Components::ColliderType::Sphere)
         sphere = true;
       else
         sphere = false;

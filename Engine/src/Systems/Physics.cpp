@@ -48,12 +48,12 @@ auto Engine::Systems::Physics::CheckCollision(std::shared_ptr< Components::Colli
                                               std::shared_ptr< Components::Collider > c2,
                                               std::shared_ptr< Transform > t2) -> bool {
   Utility::GJK::Shape s1, s2;
-  if (c1->Type == Components::Sphere)
+  if (c1->Type == +Components::ColliderType::Sphere)
     s1 = CreateSphereShape(c1, t1);
   else
     s1 = CreateBoxShape(c1, t1);
 
-  if (c2->Type == Components::Sphere)
+  if (c2->Type == +Components::ColliderType::Sphere)
     s2 = CreateSphereShape(c2, t2);
   else
     s2 = CreateBoxShape(c2, t2);
@@ -110,12 +110,12 @@ auto Engine::Systems::Physics::ResolveCollisions(std::shared_ptr< Components::Co
                                                  std::shared_ptr< Transform > t2, bool static2)
     -> void {
   Utility::GJK::Shape s1, s2;
-  if (c1->Type == Components::Sphere)
+  if (c1->Type == +Components::ColliderType::Sphere)
     s1 = CreateSphereShape(c1, t1);
   else
     s1 = CreateBoxShape(c1, t1);
 
-  if (c2->Type == Components::Sphere)
+  if (c2->Type == +Components::ColliderType::Sphere)
     s2 = CreateSphereShape(c2, t2);
   else
     s2 = CreateBoxShape(c2, t2);
