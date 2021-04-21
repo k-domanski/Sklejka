@@ -8,6 +8,7 @@
 
 namespace Engine::Renderer {
   Model::Model(const std::shared_ptr< Mesh >& mesh) noexcept {
+    _filepath = "";
     meshes.push_back(mesh);
   }
   Model::Model(std::string_view path) {
@@ -16,6 +17,11 @@ namespace Engine::Renderer {
 
   std::shared_ptr< Mesh > Model::getRootMesh() {
     return meshes[0];
+  }
+
+  std::string Model::GetFilepath()
+  {
+    return _filepath;
   }
 
   void Model::loadModel(std::string_view path) {
@@ -28,6 +34,7 @@ namespace Engine::Renderer {
       return;
     }
 
+    _filepath = path;
     meshes.reserve(scene->mNumMeshes);
     processNode(scene->mRootNode, scene);
   }

@@ -77,6 +77,8 @@ void EditorLayer::OnAttach() {
   auto box2 = m_Entity2->AddComponent< Components::Collider >();
   auto rb2  = m_Entity2->AddComponent< Components::Rigidbody >();
 
+  m_Entity1->GetComponent< Components::MeshRenderer >()->SaveToJson("./meshRenderer1.json");
+
   box1->Size      = glm::vec3(1.0f);
   box1->IsTrigger = false;
   box1->Center    = glm::vec3(0.0f);

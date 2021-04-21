@@ -22,6 +22,7 @@ namespace Engine::Components {
     auto SetMaterial(std::shared_ptr< Renderer::Material > material) -> void;
     auto IsDirty() -> bool;
     auto SetDirty(bool dirty) -> void;
+    std::string SaveToJson(std::string filePath) override;
 
   private:
     std::shared_ptr< Renderer::Model > _model;
