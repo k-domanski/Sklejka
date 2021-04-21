@@ -7,6 +7,7 @@ namespace Engine::Systems {
   SceneGraph::SceneGraph() {
     AddSignature< Transform >();
     _rootEntity = EntityManager::GetInstance().CreateEntity(_rootID);
+    _rootEntity->Name("Scene");
     _rootEntity->AddComponent< Transform >();
     AddEntity(_rootEntity->GetID());
   }
@@ -53,14 +54,14 @@ namespace Engine::Systems {
   auto SceneGraph::AddChild(ECS::EntityID parent, ECS::EntityID child) -> void {
     SetParent(child, parent);
   }
-  auto SceneGraph::AddEntity(ECS::EntityID id) -> void {
-    ECS::System::AddEntity(id);
-    SetParent(id, _rootID);
-  }
-  auto SceneGraph::AddEntity(ECS::EntityID id, ECS::EntityID parent) -> void {
-    ECS::System::AddEntity(id);
-    SetParent(id, parent);
-  }
+  //auto SceneGraph::AddEntity(ECS::EntityID id) -> void {
+  //  ECS::System::AddEntity(id);
+  //  SetParent(id, _rootID);
+  //}
+  //auto SceneGraph::AddEntity(ECS::EntityID id, ECS::EntityID parent) -> void {
+  //  ECS::System::AddEntity(id);
+  //  SetParent(id, parent);
+  //}
   auto SceneGraph::GetRootID() -> ECS::EntityID& {
     return _rootID;
   }

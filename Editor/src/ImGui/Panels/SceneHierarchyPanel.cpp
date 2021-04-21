@@ -12,20 +12,36 @@ namespace EditorGUI {
 
   void SceneHierarchyPanel::OnImGuiRender() {
     ImGui::Begin("Scene Hierarchy");
+
+    if (ImGui::Button("+", ImVec2{25, 25})) {
+      ImGui::OpenPopup("Create");
+    }
+
     DrawEntity(ECS::EntityManager::GetInstance().GetEntity(0));
+
+    if (ImGui::BeginPopup("Create")) {
+      if (ImGui::MenuItem("Create Empty")) {
+        auto ent = ECS::EntityManager::GetInstance().CreateEntity();
+        ent->AddComponent< Transform >();
+        ent->Name("New Entity");
+        m_Scene->SceneGraph()->AddChild(0, ent->GetID());
+        ImGui::CloseCurrentPopup();
+      }
+      ImGui::EndPopup();
+    }
     ImGui::End();
   }
 
   void SceneHierarchyPanel::DrawEntity(std::shared_ptr< ECS::Entity > entity) {
     auto id = entity->GetID();
-    // auto tag             = std::to_string(entity->GetID());
     auto tag             = entity->Name();
     const auto& children = m_Scene->SceneGraph()->GetChildren(id);
 
     ImGuiTreeNodeFlags flags = ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0)
                                | ((children.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0)
+                               | ((id == 0) ? ImGuiTreeNodeFlags_DefaultOpen : 0)
                                | ImGuiTreeNodeFlags_OpenOnArrow;
-
+    
     bool open = ImGui::TreeNodeEx((void*)entity->GetID(), flags, tag.c_str());
     if (ImGui::IsItemClicked()) {
       m_SelectedEntity = entity;

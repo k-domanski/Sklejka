@@ -17,8 +17,8 @@ namespace Engine::Systems {
     auto Update(float deltaTime) -> void override;
     auto SetParent(ECS::EntityID child, ECS::EntityID parent) -> void;
     auto AddChild(ECS::EntityID parent, ECS::EntityID child) -> void;
-    auto AddEntity(ECS::EntityID id) -> void override;
-    auto AddEntity(ECS::EntityID id, ECS::EntityID parent) -> void;
+    //auto AddEntity(ECS::EntityID id) -> void override;
+    //auto AddEntity(ECS::EntityID id, ECS::EntityID parent) -> void;
 
     /*Editor Gui*/
     auto GetRootID() -> ECS::EntityID&;
