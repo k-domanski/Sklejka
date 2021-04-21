@@ -45,12 +45,24 @@ namespace Engine::Utility::GJK {
 
     unsigned size() const;
 
-    auto begin() const;
+    auto end() const {
+      return m_points.end() - (4 - m_size);
+    }
 
-    auto end() const;
+    auto begin() const {
+      return m_points.begin();
+    }
   };
 
-  auto Intersects(Shape s1, Shape s2) -> bool;
+  struct CollisionPoints {
+    glm::vec3 A;
+    glm::vec3 B;
+    glm::vec3 Normal;
+    float PenetrationDepth;
+    bool HasCollision;
+  };
+
+  auto Intersects(Shape s1, Shape s2) -> std::pair< bool, Simplex >;
   auto TripleCrossProduct(glm::vec3 a, glm::vec3 b, glm::vec3 c) -> glm::vec3;
   auto Support(Shape s1, Shape s2, glm::vec3 dir) -> glm::vec3;
   bool NextSimplex(Simplex& points, glm::vec3& direction);
@@ -62,4 +74,13 @@ namespace Engine::Utility::GJK {
   bool Triangle(Simplex& points, glm::vec3& direction);
 
   bool Tetrahedron(Simplex& points, glm::vec3& direction);
+
+  std::pair< std::vector< glm::vec4 >, size_t >
+      GetFaceNormals(const std::vector< glm::vec3 >& polytope, const std::vector< size_t >& faces);
+
+  void AddIfUniqueEdge(std::vector< std::pair< size_t, size_t > >& edges,
+                       const std::vector< size_t >& faces, size_t a, size_t b);
+
+  auto EPA(const Simplex& simplex, const Shape& colliderA, const Shape& colliderB)
+  -> CollisionPoints;
 }  // namespace Engine::Utility::GJK

@@ -1,11 +1,15 @@
 #pragma once
 #include "ECS/Component.h"
+#include "Utility/GJK.h"
 
 namespace Engine::Components {
   enum ColliderType { Sphere, Box };
 
   class Collider : public ECS::Component {
   public:
+    [[nodiscard]] Utility::GJK::Simplex get_simplex() const;
+    void set_simplex(const Utility::GJK::Simplex& simplex);
+    __declspec(property(get = get_simplex, put = set_simplex)) Utility::GJK::Simplex Simplex;
     [[nodiscard]] glm::vec3 get_center() const;
     void set_center(const glm::vec3& center);
     __declspec(property(get = get_center, put = set_center)) glm::vec3 Center;
@@ -28,6 +32,7 @@ namespace Engine::Components {
     Collider(): Component("Collider") {
     }
     ~Collider() override = default;
+    std::string SaveToJson(std::string filePath) override;
 
   private:
     glm::vec3 _size;
@@ -35,5 +40,6 @@ namespace Engine::Components {
     bool _trigger;
     bool _static;
     ColliderType _type;
+    Utility::GJK::Simplex _simplex;
   };
 }  // namespace Engine::Components
