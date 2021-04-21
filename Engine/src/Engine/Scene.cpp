@@ -8,22 +8,14 @@
 #include "ECS/EntityManager.h"
 
 namespace Engine {
-  Scene::Scene() {
-    using ECS::EntityManager;
-    _sceneGraph    = EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();
-    _renderSystem  = EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
-    _cameraSystem  = EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
-    _physicsSystem = EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
-  }
-
   auto Scene::GetID() -> size_t {
     return _id;
   }
 
   auto Scene::OpenScene() -> void {
     _sceneGraph    = ECS::EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();
-    _renderSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
     _cameraSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
+    _renderSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
     _physicsSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
   }
 

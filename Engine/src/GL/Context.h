@@ -1,11 +1,10 @@
 #pragma once
 #include <pch.h>
+#include <GL/GLEnum.h>
 
 namespace Engine::GL {
   class Context {
   private:
-    static inline glm::vec4 _clearColor{0.0f};
-    static inline GLbitfield _clearBitMask{0u};
     /* Textures */
     static inline GLuint _activeTexture{0};
     static inline GLint _maxTextureUnits{1};
@@ -14,6 +13,12 @@ namespace Engine::GL {
     /* Framebuffers */
     static inline std::unordered_map< GLenum, GLuint > _boundFramebuffers;
     static inline GLint _maxColorAttachments{8};
+    /* Other */
+    static inline glm::vec4 _clearColor{0.0f};
+    static inline GLbitfield _clearBitMask{0u};
+    static inline bool _depthTestEnabled = false;
+    static inline bool _faceCullingEnabled      = false;
+    static inline glm::ivec4 _viewport;
 
   public:
     static auto Initialize() noexcept -> void;
@@ -39,12 +44,15 @@ namespace Engine::GL {
     static auto BindTexture(GLenum target, GLuint handle) noexcept -> void;
     /* Frame Buffers */
     static auto GetMaxColorAttachments() noexcept -> GLint;
-    static auto BindFramebuffer(GLenum target, GLuint handle) noexcept -> void;
-    static auto IsFramebufferBound(GLenum target, GLuint handle) noexcept -> bool;
-    static auto GetBoundFramebuffer(GLenum target) -> GLuint;
+    static auto BindFramebuffer(FramebufferTarget target, GLuint handle) noexcept -> void;
+    static auto IsFramebufferBound(FramebufferTarget target, GLuint handle) noexcept -> bool;
+    static auto GetBoundFramebuffer(FramebufferTarget target) -> GLuint;
 
     /* Wrappers */
     static auto ClearBuffers() noexcept -> void;
     static auto ClearBuffers(GLbitfield mask) noexcept -> void;
+    static auto DepthTest(bool enable) noexcept -> void;
+    static auto FaceCulling(bool enable) noexcept -> void;
+    static auto Viewport(int x, int y, unsigned width, unsigned height) noexcept -> void;
   };
 }  // namespace Engine::GL

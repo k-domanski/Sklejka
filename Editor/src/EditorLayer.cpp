@@ -114,9 +114,9 @@ void EditorLayer::OnUpdate(double deltaTime) {
   // m_it += deltaTime / 20.0f;
   // std::cout << "sin time: " << sin(m_Time)*m_it << std::endl;
 
-  SceneManager::GetDisplayScene()->Update(deltaTime);
+  SceneManager::GetCurrentScene()->Update(deltaTime);
   /*Update systemów w aplikacji?*/
-  SceneManager::GetDisplayScene()->Draw();
+  SceneManager::GetCurrentScene()->Draw();
 }
 
 void EditorLayer::OnDetach() {

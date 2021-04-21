@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Renderer.h"
-
 #include "Components/MeshRenderer.h"
 #include "Components/Transform.h"
 #include "ECS/EntityManager.h"
 #include <App/Window.h>
 #include <App/AssetManager.h>
+
 namespace Engine::Systems {
+  using namespace GL;
   Renderer::Renderer() {
-    using namespace GL;
     AddSignature< Components::MeshRenderer >();
     AddSignature< Transform >();
     // OnWindowResize(Window::Get().GetScreenSize());
@@ -19,16 +19,21 @@ namespace Engine::Systems {
     _renderTarget->AttachColor(0, _screenTexture);
     _renderTarget->AttachDepthStencil(std::make_shared< Renderbuffer >(size.x, size.y));
 
-    _quad       = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
-    _quadShader = AssetManager::GetShader("./shaders/screen_quad.glsl");
-    assert(("Screen shader not loaded", _quadShader != nullptr));
+    _quad         = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
+    _quadShader   = AssetManager::GetShader("./shaders/screen_quad.glsl");
+    _cameraSystem = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
+    _transformUniformBuffer.BindToSlot(_transformUniformSlot);
   }
   void Renderer::Update(float deltaTime) {
+    const auto camera = _cameraSystem->MainCamera();
+    if (camera == nullptr) {
+      return;
+    }
     SortByMaterial();
     // Geometry
-    _renderTarget->Bind(GL_FRAMEBUFFER);
+    _renderTarget->Bind(FramebufferTarget::ReadWrite);
     GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth);
-    glEnable(GL_DEPTH_TEST);
+    GL::Context::DepthTest(true);
 
     for (auto [material, vec] : _sortedEntities) {
       if (material == nullptr)
@@ -38,20 +43,27 @@ namespace Engine::Systems {
         auto meshRenderer =
             ECS::EntityManager ::GetInstance().GetComponent< Components::MeshRenderer >(entityID);
         auto mesh      = meshRenderer->GetModel()->getRootMesh();
+        auto shader    = material->GetShader();
         auto transform = ECS::EntityManager ::GetInstance().GetComponent< Transform >(entityID);
         mesh->Use();
         
-        material->GetShader()->SetMatrix("u_model_matrix", transform->GetWorldMatrix());
+        _transformUniformData.model     = transform->GetWorldMatrix();
+        _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+        _transformUniformData.modelViewProjection =
+            camera->ProjectionMatrix() * _transformUniformData.modelView;
+
         // HACK: Assume for now that under slot 1 is camera uniform buffer
         // TODO: Get the actual slot number from somewhere, somehow :)
-        material->GetShader()->BindUniformBlock("u_Camera", 1);
+        _transformUniformBuffer.SetData(_transformUniformData);
+        shader->BindUniformBlock("u_Transform", 0);
+        shader->BindUniformBlock("u_Camera", 1);
         glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
       }
     }
     // Post process
-    GL::Context::BindFramebuffer(GL_FRAMEBUFFER, 0);
+    GL::Context::BindFramebuffer(FramebufferTarget::ReadWrite, 0);
     GL::Context::ClearBuffers(GL::BufferBit::Color);
-    glDisable(GL_DEPTH_TEST);
+    GL::Context::DepthTest(false);
     _quad->Use();
     _quadShader->Use();
     _quadShader->SetValue("u_mainTexture", 0);

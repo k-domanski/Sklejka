@@ -1,4 +1,0 @@
-layout(std140) uniform u_Camera {
-  mat4 view_matrix;
-  mat4 projection_matrix;
-};

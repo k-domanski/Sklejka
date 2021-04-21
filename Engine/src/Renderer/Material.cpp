@@ -51,8 +51,13 @@ namespace Engine::Renderer {
       _mainTexture->Bind(0);
     }
     if (_shader != nullptr) {
-      _shader->Use();
-      _shader->SetValue("u_mainTexture", 0);
+      SetShaderData();
     }
+  }
+  auto Material::SetShaderData() noexcept -> void {
+    _shader->Use();
+    _shader->SetValue("u_mainTexture", 0);
+    // TODO: Use uniform buffer if we have a lot of data
+    _shader->SetVector("u_mainColor", _mainColor);
   }
 }  // namespace Engine::Renderer

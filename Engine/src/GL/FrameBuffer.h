@@ -1,5 +1,6 @@
 #pragma once
 #include <pch.h>
+#include <GL/GLEnum.h>
 
 namespace Engine::GL {
   class Framebuffer {
@@ -14,8 +15,8 @@ namespace Engine::GL {
     Framebuffer(Framebuffer&& other) noexcept;
     auto operator=(Framebuffer&& other) noexcept -> Framebuffer&;
     auto GetHandle() const noexcept -> GLuint;
-    auto Bind(GLenum target) noexcept -> void;
-    auto IsBound(GLenum target) const noexcept -> bool;
+    auto Bind(FramebufferTarget target) noexcept -> void;
+    auto IsBound(FramebufferTarget target) const noexcept -> bool;
     auto IsValid() const noexcept -> bool;
 
   private:

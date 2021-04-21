@@ -4,23 +4,20 @@
 //#include <pch.h>
 
 namespace Engine {
-  namespace ECS
-  {
+  namespace ECS {
     class Entity;
     class IComponentList;
     class System;
-  }
+  }  // namespace ECS
 
-  namespace Systems
-  {
+  namespace Systems {
     class SceneGraph;
     class Renderer;
     class CameraSystem;
     class Physics;
-  }
+  }  // namespace Systems
 
-  namespace ECS
-  {
+  namespace ECS {
     class EntityManager;
   }
   class Scene {
@@ -37,7 +34,6 @@ namespace Engine {
     std::map< ECS::SystemTypeID, std::shared_ptr< ECS::System > > _registeredSystems;
 
   public:
-    Scene();
     Scene(size_t id): _id(id) {
       /*using ECS::EntityManager;
       _sceneGraph    = EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();

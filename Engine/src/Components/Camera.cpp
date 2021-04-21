@@ -50,7 +50,8 @@ namespace Engine {
 
   auto Camera::ViewMatrix(const glm::mat4& viewMatrix) noexcept -> glm::mat4 {
     flags.Set(CameraFlag::NewData);
-    return _matrices.view = viewMatrix;
+    _matrices.viewProjection = _matrices.projection * viewMatrix;
+    return _matrices.view    = viewMatrix;
   }
 
   auto Camera::ProjectionMatrix() const noexcept -> glm::mat4 {
@@ -59,6 +60,7 @@ namespace Engine {
 
   auto Camera::ProjectionMatrix(const glm::mat4& projectionMatrix) noexcept -> glm::mat4 {
     flags.Set(CameraFlag::NewData);
+    _matrices.viewProjection    = projectionMatrix * _matrices.view;
     return _matrices.projection = projectionMatrix;
   }
 

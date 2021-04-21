@@ -33,4 +33,8 @@ namespace Engine::GL {
   BETTER_ENUM(__BufferBit, GLbitfield, Color = GL_COLOR_BUFFER_BIT, Depth = GL_DEPTH_BUFFER_BIT,
               Stencil = GL_STENCIL_BUFFER_BIT);
   typedef __BufferBit BufferBit;
+
+  BETTER_ENUM(__FramebufferTarget, GLenum, ReadWrite = GL_FRAMEBUFFER, Read = GL_READ_FRAMEBUFFER,
+              Write = GL_DRAW_FRAMEBUFFER);
+  typedef __FramebufferTarget FramebufferTarget;
 }  // namespace Engine::GL

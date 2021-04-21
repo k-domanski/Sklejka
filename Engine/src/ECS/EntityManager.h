@@ -7,8 +7,6 @@
 #include "Engine/SceneManager.h"
 #include "Engine/Scene.h"
 
-
-
 namespace Engine::ECS {
   class EntityManager {
   public:
@@ -63,15 +61,14 @@ namespace Engine::ECS {
       // return nullptr;
     }
 
-    template<class T>
-    auto RemoveComponent(EntityID entityID) -> void
-    {
+    template< class T >
+    auto RemoveComponent(EntityID entityID) -> void {
       auto compTypeID = GetComponentTypeID< T >();
 
       auto entity = GetEntity(entityID);
       auto it     = entity->_signature->find(compTypeID);
       if (it == entity->_signature->end())
-          return;
+        return;
       entity->_signature->erase(it);
 
       auto list = GetComponentList< T >();
@@ -89,6 +86,18 @@ namespace Engine::ECS {
       }
       return std::static_pointer_cast< T >(
           SceneManager::GetCurrentScene()->_registeredSystems[systemID]);
+    }
+    template< typename T >
+    auto GetSystem() -> std::shared_ptr< T > {
+      auto scene = Engine::SceneManager::GetCurrentScene();
+      if (scene == nullptr) {
+        return nullptr;
+      }
+      auto id = GetSystemTypeID< T >();
+      if (scene->_registeredSystems.count(id) == 0) {
+        return nullptr;
+      }
+      return std::static_pointer_cast< T >(scene->_registeredSystems[id]);
     }
 
     auto UpdateSystem(SystemTypeID systemID) -> void;
@@ -116,7 +125,7 @@ namespace Engine::ECS {
 
     template< typename T >
     auto AddComponentList() -> void {
-      auto compTypeID             = GetComponentTypeID< T >();
+      auto compTypeID = GetComponentTypeID< T >();
       SceneManager::GetCurrentScene()->_componentLists[compTypeID] =
           std::make_shared< ComponentList< T > >();
     }

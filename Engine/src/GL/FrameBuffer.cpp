@@ -24,10 +24,10 @@ namespace Engine::GL {
   auto Framebuffer::GetHandle() const noexcept -> GLuint {
     return _handle;
   }
-  auto Framebuffer::Bind(GLenum target) noexcept -> void {
+  auto Framebuffer::Bind(FramebufferTarget target) noexcept -> void {
     Context::BindFramebuffer(target, _handle);
   }
-  auto Framebuffer::IsBound(GLenum target) const noexcept -> bool {
+  auto Framebuffer::IsBound(FramebufferTarget target) const noexcept -> bool {
     return Context::IsFramebufferBound(target, _handle);
   }
   auto Framebuffer::IsValid() const noexcept -> bool {

@@ -5,6 +5,8 @@
 #include "Renderer/Material.h"
 #include "Renderer/Mesh.h"
 #include <GL/RenderTarget.h>
+#include <GL/Buffer.h>
+#include <Systems/CameraSystem.h>
 
 namespace Engine::Systems {
   class Renderer : public ECS::System {
@@ -23,6 +25,12 @@ namespace Engine::Systems {
     std::shared_ptr< Engine::GL::TextureAttachment > _screenTexture;
     std::shared_ptr< Engine::Renderer::Mesh > _quad;
     std::shared_ptr< Engine::GL::Shader > _quadShader;
+
+    std::shared_ptr< CameraSystem > _cameraSystem;
+
+    uint32_t _transformUniformSlot{0u};
+    GL::TransformUniformData _transformUniformData;
+    GL::TransformUniformBuffer _transformUniformBuffer;
 
     auto SortByMaterial() -> void;
   };
