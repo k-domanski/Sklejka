@@ -31,6 +31,8 @@ namespace Engine::ECS {
       return EntityManager::GetInstance().GetComponent< T >(_entityID);
     }
 
+    auto GetAllComponents() -> std::vector< std::shared_ptr< class Component > >;
+
     template< typename T >
     auto HasComponent() -> bool {
       auto it = _signature->find(GetComponentTypeID< T >());
