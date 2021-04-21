@@ -54,7 +54,8 @@ void EditorLayer::OnAttach() {
   //                                       "./textures/pepo_sad.png", texture);
 
   m_Entity1->AddComponent< Transform >();
-  m_Entity1->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
+  m_Entity1->AddComponent< Components::MeshRenderer >();
+  m_Entity1->GetComponent< Components::MeshRenderer >()->LoadFromJson("./meshRenderer1.json");
   m_Entity2->AddComponent< Transform >();
   m_Entity2->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
   m_PepeTransform = m_Pepe->AddComponent< Transform >();
@@ -77,7 +78,7 @@ void EditorLayer::OnAttach() {
   auto box2 = m_Entity2->AddComponent< Components::Collider >();
   auto rb2  = m_Entity2->AddComponent< Components::Rigidbody >();
 
-  m_Entity1->GetComponent< Components::MeshRenderer >()->SaveToJson("./meshRenderer1.json");
+  //m_Entity1->GetComponent< Components::MeshRenderer >()->SaveToJson("./meshRenderer1.json");
 
   box1->LoadFromJson("./box1.json");
   box2->LoadFromJson("./box2.json");

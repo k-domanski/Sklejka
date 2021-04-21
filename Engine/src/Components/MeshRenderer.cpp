@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "MeshRenderer.h"
+
+#include "../../../Editor/src/ImGui/Panels/FileSystemPanel.h"
+
 namespace Engine::Components {
   auto MeshRenderer::GetModel() -> std::shared_ptr< Renderer::Model > {
     return _model;
@@ -40,5 +43,19 @@ namespace Engine::Components {
     ofstream.close();
 
     return json.dump(4);
+  }
+
+  auto MeshRenderer::LoadFromJson(std::string filePath) -> void
+  {
+    auto content        = Utility::ReadTextFile(filePath);
+    nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
+
+    std::string material_assetID_string = json["material"];
+    std::stringstream ss(material_assetID_string);
+    size_t material_assetID;
+    ss >> material_assetID;
+
+    _model = AssetManager::GetModel(json["model"]);
+    _material = AssetManager::GetMaterial(material_assetID);
   }
 }  // namespace Engine::Components
