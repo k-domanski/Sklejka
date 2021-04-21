@@ -28,6 +28,8 @@ namespace Engine::Components {
     void set_type(ColliderType type);
     __declspec(property(get = get_type, put = set_type)) ColliderType Type;
 
+    auto LoadFromJson(std::string filePath) -> void override;
+
     Collider(const glm::vec3 size, bool trigger, bool static_, ColliderType type)
         : Component("Collider"), _size(size), _center(glm::vec3(0.0f)), _trigger(trigger),
           _static(static_), _type(type) {
@@ -38,6 +40,7 @@ namespace Engine::Components {
     }
     ~Collider() override = default;
     std::string SaveToJson(std::string filePath) override;
+    std::string SaveToJson() override;
 
   private:
     glm::vec3 _size;

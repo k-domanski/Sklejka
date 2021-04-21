@@ -93,7 +93,7 @@ namespace Editor {
       bool hasModel    = _component->GetModel() != nullptr;
       bool hasMaterial = _component->GetMaterial() != nullptr;
       modelPath =
-          hasModel ? std::filesystem::path(_component->GetModel()->FilePath()).filename().string()
+          hasModel ? std::filesystem::path(_component->GetModel()->GetFilepath()).filename().string()
                    : "<None>";
       materialPath =
           hasMaterial

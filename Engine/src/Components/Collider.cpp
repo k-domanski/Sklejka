@@ -3,6 +3,8 @@
 
 #include <nlohmann/json.hpp>
 
+#include "../../../Editor/src/ImGui/Panels/FileSystemPanel.h"
+
 Engine::Utility::GJK::Simplex Engine::Components::Collider::get_simplex() const {
   return _simplex;
 }
@@ -51,21 +53,39 @@ void Engine::Components::Collider::set_type(ColliderType type) {
   _type = type;
 }
 
+auto Engine::Components::Collider::LoadFromJson(std::string filePath) -> void
+{
+  auto content        = Utility::ReadTextFile(filePath);
+  nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
+
+  _type = json["colliderType"] == "Sphere" ? Type.Sphere : Type.Box;
+  _trigger = json["trigger"];
+  _static  = json["static"];
+  _center  = glm::vec3(json["center"]["x"], json["center"]["y"], json["center"]["z"]);
+  _size    = glm::vec3(json["size"]["x"], json["size"]["y"], json["size"]["z"]);
+}
+
 std::string Engine::Components::Collider::SaveToJson(std::string filePath)
+{
+
+  std::ofstream ofstream;
+  ofstream.open(filePath);
+  ofstream << SaveToJson();
+  ofstream.close();
+
+  return SaveToJson();
+}
+
+std::string Engine::Components::Collider::SaveToJson()
 {
   nlohmann::json json = nlohmann::json{
       {"componentType", "collider"},
-      {"colliderType", _type._name()},
+      {"colliderType", _type._to_string()},
       {"trigger", _trigger},
       {"static", _static},
       {"center", {{"x", _center.x}, {"y", _center.y}, {"z", _center.z}}},
       {"size", {{"x", _size.x}, {"y", _size.y}, {"z", _size.z}}}
   };
-
-  std::ofstream ofstream;
-  ofstream.open(filePath);
-  ofstream << json.dump(4);
-  ofstream.close();
 
   return json.dump(4);
 }
