@@ -7,5 +7,5 @@
         0.0,
         1.0
     ],
-    "shaderFilepath": "D:\\Studia\\Semestr VI\\PBL\\Engine\\Sklejka\\Editor\\shaders\\color.glsl"
+    "shaderFilepath": "./shaders\\color.glsl"
 }

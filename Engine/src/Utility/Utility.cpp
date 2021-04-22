@@ -66,12 +66,23 @@ auto Engine::Utility::ReadTextFile(const std::string_view& fileName) -> std::str
   return content;
 }
 
+auto Engine::Utility::StripToRelativePath(const std::string& filePath) -> std::string {
+  auto relative_path = filePath;
+  auto working_dir   = fs::current_path().string();
+  auto pos           = relative_path.find(working_dir);
+  if (pos != std::string::npos) {
+    relative_path.erase(0, working_dir.size());
+    relative_path.insert(0, "./");
+  }
+  return relative_path;
+}
+
 auto Engine::Utility::ParseShaderSource(std::string source, const std::string& file_path)
     -> ShaderParseResult {
   // Search for #version
   using namespace Helpers;
   const std::string_view default_version("#version 430");
-  //const std::string parentDirectory = GetParentFolderPath(file_path);
+  // const std::string parentDirectory = GetParentFolderPath(file_path);
   const std::string parentDirectory = fs::path(file_path).parent_path().string() + "/";
   ShaderParseResult result;
   result.success = false;
@@ -166,8 +177,8 @@ auto Engine::Utility::ParseShaderSource(std::string source, const std::string& f
     auto content    = source.substr(begin_pos, end_pos - begin_pos + 1);
 
     // Parse #include in extracted content
-    //auto parent_dir = GetParentFolderPath(file_path);
-    content         = ProcessIncludeDirective(content, parentDirectory);
+    // auto parent_dir = GetParentFolderPath(file_path);
+    content = ProcessIncludeDirective(content, parentDirectory);
 
     // Inject version
     content.insert(0, version);

@@ -8,6 +8,7 @@
 #include <filesystem>
 
 namespace fs = std::filesystem;
+using namespace Engine::Utility;
 
 namespace Engine {
   auto AssetManager::GenerateAssetID() {
@@ -20,7 +21,8 @@ namespace Engine {
     return std::filesystem::current_path().string();
   }
 
-  auto AssetManager::GetShader(const std::string& file) -> std::shared_ptr< GL::Shader > {
+  auto AssetManager::GetShader(std::string file) -> std::shared_ptr< GL::Shader > {
+    file = StripToRelativePath(file);
     if (_loadedShaders.count(file) == 0) {
       if (!fs::exists(file)) {
         LOG_ERROR("File does not exist: {}", file);
@@ -46,7 +48,8 @@ namespace Engine {
     }
     return _loadedShaders[file];
   }
-  auto AssetManager::GetModel(const std::string& file) -> std::shared_ptr< Renderer::Model > {
+  auto AssetManager::GetModel(std::string file) -> std::shared_ptr< Renderer::Model > {
+    file = StripToRelativePath(file);
     if (_loadedModels.count(file) == 0) {
       if (!fs::exists(file)) {
         LOG_ERROR("File does not exist: {}", file);
@@ -66,7 +69,8 @@ namespace Engine {
     }
     return _primitiveModels[primitive];
   }
-  auto AssetManager::GetTexture2D(const std::string& file) -> std::shared_ptr< GL::Texture2D > {
+  auto AssetManager::GetTexture2D(std::string file) -> std::shared_ptr< GL::Texture2D > {
+    file = StripToRelativePath(file);
     if (_loadedTextures2D.count(file) == 0) {
       if (!fs::exists(file)) {
         LOG_ERROR("File does not exist: {}", file);
@@ -88,16 +92,17 @@ namespace Engine {
     _loadedMaterials[assetID] = material;
     return material;
   }
-  auto AssetManager::CreateMaterial(const std::string& filePath)
-      -> std::shared_ptr< Renderer::Material > {
+  auto AssetManager::CreateMaterial(std::string filePath) -> std::shared_ptr< Renderer::Material > {
+    filePath                  = StripToRelativePath(filePath);
     auto assetID              = GenerateAssetID();
     auto material             = std::make_shared< Renderer::Material >(assetID);
     _loadedMaterials[assetID] = material;
     material->FilePath(filePath);
     return material;
   }
-  auto AssetManager::GetMaterial(const std::string& file) -> std::shared_ptr< Renderer::Material > {
+  auto AssetManager::GetMaterial(std::string file) -> std::shared_ptr< Renderer::Material > {
     /* Check if material from this file is already loaded */
+    file    = StripToRelativePath(file);
     auto it = std::find_if(_loadedMaterials.begin(), _loadedMaterials.end(),
                            [file](const auto& kv) { return kv.second->FilePath() == file; });
     /* If not loaded, load and return */
