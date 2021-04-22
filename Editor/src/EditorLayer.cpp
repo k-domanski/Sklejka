@@ -260,7 +260,35 @@ auto EditorLayer::SaveScene() -> void {
 
 auto EditorLayer::LoadScene() -> void {
   std::optional< std::string > filepath = FileDialog::OpenFile("Scene (*.scene)\0*.scene\0");
-  if (filepath) {}
+  if (filepath)
+  {
+    auto sg           = SceneManager::GetDisplayScene()->SceneGraph();
+    auto entities_ids = sg->GetChildren(0);
+ 
+    for (auto id : entities_ids) {
+      sg->RemoveEntity(id);
+    }
+
+    auto content = Utility::ReadTextFile(filepath.value());
+    std::vector< std::string > separated_jsons;
+
+    std::string delimiter =
+        "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";  // TODO: Move to one place
+                                                                    // instead of declaring each time
+    size_t pos = 0;
+    std::string token;
+    while ((pos = content.find(delimiter)) != std::string::npos) {
+      token = content.substr(0, pos);
+      separated_jsons.push_back(token);
+      content.erase(0, pos + delimiter.length());
+    }
+
+    for (std::string separated_json : separated_jsons)
+    {
+      auto entity = ECS::EntityManager::GetInstance().CreateEntity();
+      entity->LoadFromJson(separated_json);
+    }
+  }
 }
 
 auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> void {

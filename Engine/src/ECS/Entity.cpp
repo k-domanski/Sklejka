@@ -57,7 +57,13 @@ namespace Engine::ECS {
 
   void Entity::LoadFromJson(std::string filepath)
   {
-    auto content        = Utility::ReadTextFile(filepath);
+    std::string content = "";
+    if (filepath[0] == '{' || filepath[0] == '\n'
+        || filepath[0] == ' ')  // HACK: Check if string is json
+      content = filepath;
+    else
+      content = Utility::ReadTextFile(filepath);
+
     std::vector< std::string > separated_jsons;
    
     std::string delimiter = "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137"; //TODO: Move to one place instead of declaring each time
@@ -80,6 +86,8 @@ namespace Engine::ECS {
 
     _entityID = entityID;
     _name     = entity_json["entityName"];
+
+    std::cout << "Loading entity with ID " << entityID_string << "\n";
 
     for (int i = 1; i < separated_jsons.size(); i++)
     {
