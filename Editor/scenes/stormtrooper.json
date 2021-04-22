@@ -1,0 +1,30 @@
+{
+    "entityID": "8039926653570612874",
+    "entityName": "Entity"
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.20000000298023224,
+        "y": 0.20000000298023224,
+        "z": 0.20000000298023224
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "7179936042447905736",
+    "model": "./models/silly_dancing.fbx"
+}

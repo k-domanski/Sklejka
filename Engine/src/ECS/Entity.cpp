@@ -76,6 +76,8 @@ namespace Engine::ECS {
       content.erase(0, pos + delimiter.length());
     }
 
+    separated_jsons.push_back(content);
+
     nlohmann::json entity_json =
         nlohmann::json::parse(separated_jsons[0].begin(), separated_jsons[0].end());
 

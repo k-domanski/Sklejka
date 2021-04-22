@@ -30,6 +30,8 @@ void EditorLayer::OnAttach() {
   m_PepeMaterial->SetShader(m_Shader);
   m_PepeMaterial->SetMainTexture(pepe_texture);
 
+
+
   auto aspect        = Engine::Window::Get().GetAspectRatio();
   auto camera_entity = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   m_EditorCamera.camera =
@@ -59,7 +61,8 @@ void EditorLayer::OnAttach() {
   m_Entity2->AddComponent< Transform >();
   m_Entity2->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
   m_PepeTransform = m_Pepe->AddComponent< Transform >();
-  m_Pepe->AddComponent< Components::MeshRenderer >(m_PepeModel, m_PepeMaterial);
+  m_Pepe->AddComponent< Components::MeshRenderer >(
+      m_PepeModel, AssetManager::GetMaterial("./scenes/pepeMat.json"));
   auto sg = SceneManager::GetDisplayScene()->SceneGraph();
   sg->AddChild(0, m_Pepe->GetID());
   sg->AddChild(0, m_Entity1->GetID());
@@ -243,12 +246,19 @@ auto EditorLayer::SaveScene() -> void {
     bool first = true;
     for (auto id : entities_ids)
     {
-      if (!first)
-        fileContent.append("\n" + separator + "\n");
-      else
-        first = false;
+      auto entity = ECS::EntityManager::GetInstance().GetEntity(id);
+      if (!entity->HasComponent< Camera >()) {
+        if (!first)
+          fileContent.append("\n" + separator + "\n");
+        else
+          first = false;
 
-      fileContent.append(ECS::EntityManager::GetInstance().GetEntity(id)->SaveToJson());
+        auto entity_json = entity->SaveToJson();
+
+        std::cout << "\nAdding to file content:\n\n" << entity_json;
+
+        fileContent.append(entity_json);
+      }
     }
 
     std::ofstream ofstream;
@@ -266,7 +276,8 @@ auto EditorLayer::LoadScene() -> void {
     auto entities_ids = sg->GetChildren(0);
  
     for (auto id : entities_ids) {
-      sg->RemoveEntity(id);
+      if (!ECS::EntityManager::GetInstance().GetEntity(id)->HasComponent<Camera>())
+        sg->RemoveEntity(id);
     }
 
     auto content = Utility::ReadTextFile(filepath.value());
@@ -283,10 +294,13 @@ auto EditorLayer::LoadScene() -> void {
       content.erase(0, pos + delimiter.length());
     }
 
+    separated_jsons.push_back(content);
+
     for (std::string separated_json : separated_jsons)
     {
       auto entity = ECS::EntityManager::GetInstance().CreateEntity();
       entity->LoadFromJson(separated_json);
+      sg->AddChild(0, entity->GetID());
     }
   }
 }
