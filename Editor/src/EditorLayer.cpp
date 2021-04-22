@@ -306,10 +306,10 @@ auto EditorLayer::LoadScene() -> void {
     for (std::string separated_json : separated_jsons) {
       auto entity = ECS::EntityManager::GetInstance().CreateEntity();
       entity->LoadFromJson(separated_json);
-      //if (entity->HasComponent<Camera>()) //HACK: only camera is editor camera
-      //{
-      //  m_EditorCamera.camera = entity->GetComponent< Camera >();
-      //}
+      if (entity->HasComponent<Camera>()) //HACK: only camera is editor camera
+      {
+        m_EditorCamera.camera = entity->GetComponent< Camera >();
+      }
       sg->AddChild(0, entity->GetID());
     }
   }

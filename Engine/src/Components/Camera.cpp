@@ -80,7 +80,8 @@ namespace Engine {
         {"fov", _fov},
         {"aspect", _aspect},
         {"nearPlane", _nearPlane},
-        {"farPlane", _farPlane}
+        {"farPlane", _farPlane},
+      {"flags", flags.GetState()}
     };
 
     return json.dump(4);
@@ -110,6 +111,7 @@ namespace Engine {
     Aspect(json["aspect"]);
     NearPlane(json["nearPlane"]);
     FarPlane(json["farPlane"]);
+    flags.Set(json["flags"]);
   }
 
   // auto Camera::GetViewMatrix() noexcept -> glm::mat4 {
