@@ -56,9 +56,10 @@ namespace Editor {
     if (camera != nullptr && camera->flags.GetAll(CameraFlag::EditorCamera) != 0)
       return;
 
-    auto id              = entity->GetID();
-    auto tag             = entity->Name();
-    const auto& children = m_Scene->SceneGraph()->GetChildren(id);
+    auto id                = entity->GetID();
+    auto tag               = entity->Name();
+    const auto& children   = m_Scene->SceneGraph()->GetChildren(id);
+    const auto panel_width = ImGui::GetWindowContentRegionWidth();
 
     ImGuiTreeNodeFlags flags = ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0)
                                | ((children.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0)
@@ -68,6 +69,12 @@ namespace Editor {
     bool open = ImGui::TreeNodeEx((void*)entity->GetID(), flags, tag.c_str());
     if (ImGui::IsItemClicked()) {
       SetSelectedEntity(entity);
+    }
+    if (ImGui::BeginPopupContextItem("item context menu")) {
+      if (ImGui::Selectable("Remove")) {
+        Engine::ECS::EntityManager::GetInstance().RemoveEntity(entity->GetID());
+      }
+      ImGui::EndPopup();
     }
     if (ImGui::BeginDragDropSource()) {
       ImGui::SetDragDropPayload("Scene_Hierarchy", &id, sizeof(ECS::EntityID));
