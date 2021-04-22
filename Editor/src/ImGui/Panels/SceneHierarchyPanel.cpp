@@ -5,6 +5,7 @@
 #include <filesystem>
 
 using namespace Engine;
+
 namespace Editor {
   SceneHierarchyPanel::SceneHierarchyPanel() {
     _selectedCallback = [](const std::shared_ptr< Engine::ECS::Entity >& entity) {};
@@ -52,6 +53,9 @@ namespace Editor {
   }
 
   void SceneHierarchyPanel::DrawEntity(std::shared_ptr< ECS::Entity > entity) {
+    if (entity == nullptr) {
+      return;
+    }
     auto camera = entity->GetComponent< Camera >();
     if (camera != nullptr && camera->flags.GetAll(CameraFlag::EditorCamera) != 0)
       return;
@@ -72,7 +76,8 @@ namespace Editor {
     }
     if (ImGui::BeginPopupContextItem("item context menu")) {
       if (ImGui::Selectable("Remove")) {
-        Engine::ECS::EntityManager::GetInstance().RemoveEntity(entity->GetID());
+        LOG_INFO("Removing {}", entity->Name());
+        RecursiveRemoveEntity(entity->GetID());
       }
       ImGui::EndPopup();
     }
@@ -95,4 +100,13 @@ namespace Editor {
       ImGui::TreePop();
     }
   }
+
+  auto SceneHierarchyPanel::RecursiveRemoveEntity(Engine::ECS::EntityID entityID) -> void {
+    const auto sg = m_Scene->SceneGraph();
+    for (auto& child : sg->GetChildren(entityID)) {
+      RecursiveRemoveEntity(child);
+    }
+    Engine::ECS::EntityManager::GetInstance().RemoveEntity(entityID);
+  }
+
 }  // namespace Editor

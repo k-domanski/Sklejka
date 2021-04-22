@@ -9,10 +9,10 @@
 void Engine::Systems::Physics::Update(float deltaTime) {
   for (auto entityId : _entities) {
     auto collider =
-        ECS::EntityManager::GetInstance().GetComponent< Components::Collider >(entityId);
+        ECS::EntityManager::GetComponent< Components::Collider >(entityId);
     auto rigidbody =
-        ECS::EntityManager::GetInstance().GetComponent< Components::Rigidbody >(entityId);
-    auto transform = ECS::EntityManager::GetInstance().GetComponent< Transform >(entityId);
+        ECS::EntityManager::GetComponent< Components::Rigidbody >(entityId);
+    auto transform = ECS::EntityManager::GetComponent< Transform >(entityId);
 
     if (!rigidbody->IsKinematic())
       continue;
@@ -26,10 +26,10 @@ void Engine::Systems::Physics::Update(float deltaTime) {
         continue;
 
       auto collider2 =
-          ECS::EntityManager::GetInstance().GetComponent< Components::Collider >(entity);
+          ECS::EntityManager::GetComponent< Components::Collider >(entity);
       auto rigidbody2 =
-          ECS::EntityManager::GetInstance().GetComponent< Components::Rigidbody >(entity);
-      auto transform2 = ECS::EntityManager::GetInstance().GetComponent< Transform >(entity);
+          ECS::EntityManager::GetComponent< Components::Rigidbody >(entity);
+      auto transform2 = ECS::EntityManager::GetComponent< Transform >(entity);
 
       if (CheckCollision(collider, transform, collider2, transform2)) {
         // std::cout << "Colliding" << std::endl;

@@ -44,8 +44,9 @@ namespace Engine::ECS {
   }
 
   auto EntityManager::BelongsToSystem(SystemTypeID systemID, EntityID entityID) -> bool {
-    return SceneManager::GetCurrentScene()->_registeredSystems[systemID]->_entities.find(entityID)
-           != SceneManager::GetCurrentScene()->_registeredSystems[systemID]->_entities.end();
+    const auto& entities = SceneManager::GetCurrentScene()->_registeredSystems[systemID]->_entities;
+    auto it              = std::find(entities.begin(), entities.end(), entityID);
+    return it != entities.end();
   }
 
   auto EntityManager::AddToSystem(SystemTypeID systemID, EntityID entityID) -> void {
@@ -79,8 +80,10 @@ namespace Engine::ECS {
     const auto it = std::find_if(SceneManager::GetCurrentScene()->_entities.begin(),
                                  SceneManager::GetCurrentScene()->_entities.end(),
                                  [id](auto ent) { return ent->_entityID == id; });
-    assert(it != SceneManager::GetCurrentScene()->_entities.end());
 
+    if (it == SceneManager::GetCurrentScene()->_entities.end()) {
+      return nullptr;
+    }
     return *it;
   }
 
@@ -105,7 +108,7 @@ namespace Engine::ECS {
     auto entity = GetEntity(id);
     for (auto signature : *entity->_signature) {
       auto list = SceneManager::GetCurrentScene()->_componentLists[signature];
-      //Hack: need to get every component somehow for serialization
+      // Hack: need to get every component somehow for serialization
       auto riskyList = std::static_pointer_cast< ComponentList< Component > >(list);
       res.push_back(riskyList->GetComponent(id));
     }

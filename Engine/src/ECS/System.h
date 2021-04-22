@@ -46,7 +46,7 @@ namespace Engine::ECS {
     SystemSignature _signatures;
 
   protected:
-    std::set< EntityID > _entities;
+    std::vector< EntityID > _entities;
   };
 
 }  // namespace Engine::ECS

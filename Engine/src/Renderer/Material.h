@@ -8,6 +8,7 @@ namespace Engine::Renderer {
   private:
     std::size_t _assetID;
     std::string _filePath;
+    uint32_t _queue{1000};
     std::shared_ptr< GL::Shader > _shader;
     std::shared_ptr< GL::Texture2D > _mainTexture;
     glm::vec4 _mainColor{1.0f, 1.0f, 1.0f, 1.0f};
@@ -22,6 +23,8 @@ namespace Engine::Renderer {
     auto MainColor() const noexcept -> glm::vec4;
     auto MainColor(const glm::vec4& color) noexcept -> glm::vec4;
     auto MainColorPtr() -> float*;
+    auto Queue() const noexcept -> uint32_t;
+    auto Queue(uint32_t queue) noexcept -> uint32_t;
 
     std::size_t GetAssetID();
     std::string ToJson();

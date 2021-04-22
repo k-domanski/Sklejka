@@ -20,8 +20,8 @@ namespace Engine::Systems {
   auto CameraSystem::Update(float deltaTime) -> void {
     // Update Cameras
     for (auto entityID : _entities) {
-      auto transform = EntityManager::GetInstance().GetComponent< Transform >(entityID);
-      auto camera    = EntityManager::GetInstance().GetComponent< Camera >(entityID);
+      auto transform = EntityManager::GetComponent< Transform >(entityID);
+      auto camera    = EntityManager::GetComponent< Camera >(entityID);
 
       if (transform->flags.GetAll(TransformFlag::Dirty | TransformFlag::NewData)) {
         // This is transform with changed data but is not updated - error
@@ -42,7 +42,7 @@ namespace Engine::Systems {
     // Find main camera
     if (_mainCamera == nullptr) {
       for (auto entityID : _entities) {
-        auto camera = EntityManager::GetInstance().GetComponent< Camera >(entityID);
+        auto camera = EntityManager::GetComponent< Camera >(entityID);
         if (camera->flags.Get(CameraFlag::MainCamera)) {
           if (_mainCamera == nullptr) {
             _mainCamera = camera;

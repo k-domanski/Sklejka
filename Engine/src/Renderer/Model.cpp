@@ -15,7 +15,7 @@ namespace Engine::Renderer {
     loadModel(path);
   }
 
-  std::shared_ptr< Mesh > Model::getRootMesh() {
+  std::shared_ptr< Mesh > Model::GetRootMesh() {
     return meshes[0];
   }
 

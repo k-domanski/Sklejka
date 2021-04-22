@@ -27,6 +27,7 @@ namespace Engine::Systems {
     std::shared_ptr< Engine::GL::Shader > _quadShader;
 
     std::shared_ptr< CameraSystem > _cameraSystem;
+    std::shared_ptr< Engine::Renderer::Material > _debugMaterial;
 
     uint32_t _transformUniformSlot{0u};
     GL::TransformUniformData _transformUniformData;

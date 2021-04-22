@@ -113,15 +113,23 @@ namespace Editor {
         for (auto& entry : std::filesystem::recursive_directory_iterator(_modelsFolder)) {
           const auto path     = entry.path();
           const auto filename = path.filename().string();
-          const auto ext      = path.extension();
-          if (ext != ".fbx")
+          auto ext            = path.extension().string();
+          std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+          if (!(ext == ".fbx" || ext == ".obj")) {
             continue;
+          }
           if (ImGui::Selectable(filename.c_str())) {
             auto model = Engine::AssetManager::GetModel(path.string());
             _component->SetModel(model);
           }
         }
         ImGui::EndCombo();
+      }
+      if (ImGui::BeginPopupContextItem("component context menu")) {
+        if (ImGui::Selectable("Clear")) {
+          _component->SetModel(nullptr);
+        }
+        ImGui::EndPopup();
       }
       if (ImGui::BeginDragDropTarget()) {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
@@ -154,6 +162,12 @@ namespace Editor {
         }
         ImGui::EndCombo();
       }
+      if (ImGui::BeginPopupContextItem("component context menu")) {
+        if (ImGui::Selectable("Clear")) {
+          _component->SetMaterial(nullptr);
+        }
+        ImGui::EndPopup();
+      }
       if (ImGui::BeginDragDropTarget()) {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
           auto payload_str = std::string(static_cast< char* >(payload->Data));
@@ -167,8 +181,10 @@ namespace Editor {
     void LoadModel(std::string& payload_str) {
       auto filePath = std::filesystem::path(payload_str);
       auto ext      = filePath.extension().string();
-      if (ext != ".fbx")
+      std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+      if (!(ext == ".fbx" || ext == ".obj")) {
         return;
+      }
 
       auto model = Engine::AssetManager::GetModel(payload_str);
       _component->SetModel(model);

@@ -14,10 +14,9 @@ namespace Engine::Systems {
   auto SceneGraph::Update(float deltaTime) -> void {
     // Check if any transform is dirty and update it's branch
     for (auto& entity_id : _entities) {
-      auto& transform = EntityManager::GetInstance().GetComponent< Transform >(entity_id);
+      auto& transform = EntityManager::GetComponent< Transform >(entity_id);
       if (transform->flags.Get(TransformFlag::Dirty)) {
-        auto& parent_tr =
-            EntityManager::GetInstance().GetComponent< Transform >(_childParentMap[entity_id]);
+        auto& parent_tr = EntityManager::GetComponent< Transform >(_childParentMap[entity_id]);
         RecursiveUpdateParentAndChildren(transform, parent_tr);
       }
     }
@@ -54,11 +53,11 @@ namespace Engine::Systems {
   auto SceneGraph::AddChild(ECS::EntityID parent, ECS::EntityID child) -> void {
     SetParent(child, parent);
   }
-  //auto SceneGraph::AddEntity(ECS::EntityID id) -> void {
+  // auto SceneGraph::AddEntity(ECS::EntityID id) -> void {
   //  ECS::System::AddEntity(id);
   //  SetParent(id, _rootID);
   //}
-  //auto SceneGraph::AddEntity(ECS::EntityID id, ECS::EntityID parent) -> void {
+  // auto SceneGraph::AddEntity(ECS::EntityID id, ECS::EntityID parent) -> void {
   //  ECS::System::AddEntity(id);
   //  SetParent(id, parent);
   //}
@@ -79,7 +78,7 @@ namespace Engine::Systems {
     if (_parentChildMap.count(transform->GetEntityID()) == 0)
       return;
     for (auto& childID : _parentChildMap[transform->GetEntityID()]) {
-      auto& child_tr = ECS::EntityManager::GetInstance().GetComponent< Transform >(childID);
+      auto& child_tr = ECS::EntityManager::GetComponent< Transform >(childID);
       RecursiveUpdateParentAndChildren(child_tr, transform);
     }
   }
