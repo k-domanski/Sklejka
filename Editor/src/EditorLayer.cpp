@@ -54,9 +54,9 @@ void EditorLayer::OnAttach() {
   //                                       "./textures/pepo_sad.png", texture);
 
   m_Entity1->AddComponent< Transform >();
-  m_Entity1->AddComponent< Components::MeshRenderer >();
-  m_Entity1->GetComponent< Components::MeshRenderer >()->LoadFromJson(
-      "./scenes/meshRenderer1.json");
+  /*m_Entity1->AddComponent< Components::MeshRenderer >();*/
+  m_Entity1->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
+
   m_Entity2->AddComponent< Transform >();
   m_Entity2->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
   m_PepeTransform = m_Pepe->AddComponent< Transform >();
@@ -238,26 +238,29 @@ auto EditorLayer::SaveScene() -> void {
   if (filepath) {
     std::string separator = "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";
 
-    auto sg           = SceneManager::GetDisplayScene()->SceneGraph();
+    auto sg           = SceneManager::GetCurrentScene()->SceneGraph();
     auto entities_ids = sg->GetChildren(0);
     std::shared_ptr< ECS::Entity > entity;
+
+    //TODO: Serialize sceneID
+
     std::string fileContent = "";
 
     bool first = true;
     for (auto id : entities_ids) {
       auto entity = ECS::EntityManager::GetInstance().GetEntity(id);
-      if (!entity->HasComponent< Camera >()) {
-        if (!first)
-          fileContent.append("\n" + separator + "\n");
-        else
-          first = false;
 
-        auto entity_json = entity->SaveToJson();
+      if (!first)
+        fileContent.append("\n" + separator + "\n");
+      else
+        first = false;
 
-        std::cout << "\nAdding to file content:\n\n" << entity_json;
+      auto entity_json = entity->SaveToJson();
 
-        fileContent.append(entity_json);
-      }
+      std::cout << "\nAdding to file content:\n\n" << entity_json;
+
+      fileContent.append(entity_json);
+      
     }
 
     std::ofstream ofstream;
@@ -270,14 +273,19 @@ auto EditorLayer::SaveScene() -> void {
 auto EditorLayer::LoadScene() -> void {
   std::optional< std::string > filepath = FileDialog::OpenFile("Scene (*.scene)\0*.scene\0");
   if (filepath) {
+    SceneManager::AddScene(std::make_shared< Scene >(2137));
+    SceneManager::OpenScene(2137);
+    m_SceneHierarchyPanel.SetScene(SceneManager::GetCurrentScene());
+
+
     auto current_scene = SceneManager::GetCurrentScene();
     auto sg            = current_scene->SceneGraph();
     auto entities_ids  = sg->GetChildren(0);
 
-    for (auto id : entities_ids) {
-      if (!ECS::EntityManager::GetInstance().GetEntity(id)->HasComponent< Camera >())
-        sg->RemoveEntity(id);
-    }
+    //for (auto id : entities_ids) {
+    //  if (!ECS::EntityManager::GetInstance().GetEntity(id)->HasComponent< Camera >())
+    //    ECS::EntityManager::GetInstance().RemoveEntity(id);
+    //}
 
     auto content = Utility::ReadTextFile(filepath.value());
     std::vector< std::string > separated_jsons;
@@ -298,6 +306,10 @@ auto EditorLayer::LoadScene() -> void {
     for (std::string separated_json : separated_jsons) {
       auto entity = ECS::EntityManager::GetInstance().CreateEntity();
       entity->LoadFromJson(separated_json);
+      //if (entity->HasComponent<Camera>()) //HACK: only camera is editor camera
+      //{
+      //  m_EditorCamera.camera = entity->GetComponent< Camera >();
+      //}
       sg->AddChild(0, entity->GetID());
     }
   }

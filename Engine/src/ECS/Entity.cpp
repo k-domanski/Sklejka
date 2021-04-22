@@ -105,6 +105,8 @@ namespace Engine::ECS {
         AddComponent< Components::MeshRenderer >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "rigidbody")
         AddComponent< Components::Rigidbody >()->LoadFromJson(separated_jsons[i]);
+      else if (component_type == "camera")
+        AddComponent< Camera >()->LoadFromJson(separated_jsons[i]);
 
     }
   }
