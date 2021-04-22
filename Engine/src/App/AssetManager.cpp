@@ -10,6 +10,14 @@
 namespace fs = std::filesystem;
 using namespace Engine::Utility;
 
+auto FileExists(const std::string& path) -> bool {
+  if (!fs::exists(path)) {
+    LOG_WARN("File does not exist: {}", path);
+    return false;
+  }
+  return true;
+}
+
 namespace Engine {
   auto AssetManager::GenerateAssetID() {
     std::random_device dv;
@@ -24,8 +32,7 @@ namespace Engine {
   auto AssetManager::GetShader(std::string file) -> std::shared_ptr< GL::Shader > {
     file = StripToRelativePath(file);
     if (_loadedShaders.count(file) == 0) {
-      if (!fs::exists(file)) {
-        LOG_ERROR("File does not exist: {}", file);
+      if (!FileExists(file)) {
         return nullptr;
       }
       auto shaderSource = Utility::ReadTextFile(file);
@@ -51,8 +58,7 @@ namespace Engine {
   auto AssetManager::GetModel(std::string file) -> std::shared_ptr< Renderer::Model > {
     file = StripToRelativePath(file);
     if (_loadedModels.count(file) == 0) {
-      if (!fs::exists(file)) {
-        LOG_ERROR("File does not exist: {}", file);
+      if (!FileExists(file)) {
         return nullptr;
       }
       auto model          = std::make_shared< Renderer::Model >(file);
@@ -72,8 +78,7 @@ namespace Engine {
   auto AssetManager::GetTexture2D(std::string file) -> std::shared_ptr< GL::Texture2D > {
     file = StripToRelativePath(file);
     if (_loadedTextures2D.count(file) == 0) {
-      if (!fs::exists(file)) {
-        LOG_ERROR("File does not exist: {}", file);
+      if (!FileExists(file)) {
         return nullptr;
       }
       int x, y, n;
@@ -107,8 +112,7 @@ namespace Engine {
                            [file](const auto& kv) { return kv.second->FilePath() == file; });
     /* If not loaded, load and return */
     if (it == _loadedMaterials.end()) {
-      if (!fs::exists(file)) {
-        LOG_ERROR("File does not exist: {}", file);
+      if (!FileExists(file)) {
         return nullptr;
       }
       auto content        = Utility::ReadTextFile(file);
