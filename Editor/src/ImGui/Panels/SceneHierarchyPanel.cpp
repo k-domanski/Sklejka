@@ -2,6 +2,7 @@
 #include <imgui/imgui.h>
 #include <Systems/SceneGraph.h>
 #include <EditorLayer.h>
+#include <filesystem>
 
 using namespace Engine;
 namespace Editor {
@@ -28,7 +29,11 @@ namespace Editor {
       if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
         auto payload_str = std::string(static_cast< char* >(payload->Data));
         LOG_TRACE("Drag n Drop: {}", payload_str);
-        _editorLayer->AddObjectOnScene(payload_str);
+        auto ext = std::filesystem::path(payload_str).extension().string();
+        std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+        if (ext == ".fbx" || ext == ".obj") {
+          _editorLayer->AddObjectOnScene(payload_str);
+        }
       }
       ImGui::EndDragDropTarget();
     }
