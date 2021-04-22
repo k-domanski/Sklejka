@@ -1,5 +1,38 @@
 {
-    "entityID": "11166440934120314547",
+    "entityID": "6642056374935068707",
+    "entityName": "Entity"
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -7.503105163574219,
+        "y": -1.083528757095337,
+        "z": 14.181382179260254
+    },
+    "localRotation": {
+        "w": 0.398265540599823,
+        "x": -0.0081039909273386,
+        "y": 0.9170600175857544,
+        "z": 0.01804479770362377
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "aspect": 1.7777777910232544,
+    "componentType": "camera",
+    "farPlane": 1000.0,
+    "fov": 45.0,
+    "nearPlane": 0.0010000000474974513
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6173193878738277742",
     "entityName": "Entity"
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
@@ -30,7 +63,7 @@
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
-    "entityID": "5261344581459047681",
+    "entityID": "17189175428354862622",
     "entityName": "Entity"
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
@@ -89,7 +122,7 @@
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
-    "entityID": "16409462810349688631",
+    "entityID": "3862751057968800400",
     "entityName": "Entity"
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
@@ -148,8 +181,8 @@
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
-    "entityID": "11697585936057269974",
-    "entityName": "New Entity"
+    "entityID": "6508165596444387131",
+    "entityName": "djwielkihuj"
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
@@ -160,20 +193,20 @@
         "z": 0.0
     },
     "localRotation": {
-        "w": 1.0,
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
+        "w": 0.7294946312904358,
+        "x": -0.009548884816467762,
+        "y": -0.010186328552663326,
+        "z": -0.6838440895080566
     },
     "localScale": {
-        "x": 0.30000001192092896,
-        "y": 0.30000001192092896,
-        "z": 0.30000001192092896
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
     }
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./\\materials\\color.mat",
-    "model": "./\\models\\beton\\latajaca.fbx"
+    "material": "./\\materials\\squirrel.mat",
+    "model": "./\\models\\squirrel_final.fbx"
 }
