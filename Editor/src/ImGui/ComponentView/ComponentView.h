@@ -87,14 +87,18 @@ namespace Editor {
   private:
     std::string modelPath;
     std::string materialPath;
+    std::filesystem::path _materialsFolder =
+        std::filesystem::current_path().string() + "\\materials\\";
+    std::filesystem::path _modelsFolder = std::filesystem::current_path().string() + "\\models\\";
 
   public:
     auto OnDraw() -> void override {
       bool hasModel    = _component->GetModel() != nullptr;
       bool hasMaterial = _component->GetMaterial() != nullptr;
       modelPath =
-          hasModel ? std::filesystem::path(_component->GetModel()->GetFilepath()).filename().string()
-                   : "<None>";
+          hasModel
+              ? std::filesystem::path(_component->GetModel()->GetFilepath()).filename().string()
+              : "<None>";
       materialPath =
           hasMaterial
               ? std::filesystem::path(_component->GetMaterial()->FilePath()).filename().string()
@@ -105,52 +109,78 @@ namespace Editor {
       ImGui::SetColumnWidth(0, 100);
       ImGui::Text("Model");
       ImGui::NextColumn();
-      ImGui::Text(modelPath.c_str());
-      ImGui::Columns(1);
-
-      if (ImGui::BeginChild("model", ImVec2{0, 25})) {}
-      ImGui::EndChild();
+      if (ImGui::BeginCombo("", modelPath.c_str())) {
+        for (auto& entry : std::filesystem::recursive_directory_iterator(_modelsFolder)) {
+          const auto path     = entry.path();
+          const auto filename = path.filename().string();
+          const auto ext      = path.extension();
+          if (ext != ".fbx")
+            continue;
+          if (ImGui::Selectable(filename.c_str())) {
+            auto model = Engine::AssetManager::GetModel(path.string());
+            _component->SetModel(model);
+          }
+        }
+        ImGui::EndCombo();
+      }
       if (ImGui::BeginDragDropTarget()) {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
           auto payload_str = std::string(static_cast< char* >(payload->Data));
-          auto filePath    = std::filesystem::path(payload_str);
-          auto model       = Engine::AssetManager::GetModel(payload_str);
-          _component->SetModel(model);
+          LoadModel(payload_str);
         }
         ImGui::EndDragDropTarget();
       }
+      ImGui::Columns(1);
       ImGui::PopID();
       ImGui::Separator();
 
       std::string mat = "Material";
       ImGui::PushID(mat.c_str());
-
       ImGui::Columns(2);
       ImGui::SetColumnWidth(0, 100);
       ImGui::Text(mat.c_str());
       ImGui::NextColumn();
-      ImGui::Text(materialPath.c_str());
-
-      ImGui::Columns(1);
-
-      if (ImGui::BeginChild("material", ImVec2{0, 25})) {
-        ImGui::Text("Drag model first.");
+      if (ImGui::BeginCombo("", materialPath.c_str())) {
+        for (auto& entry : std::filesystem::recursive_directory_iterator(_materialsFolder)) {
+          const auto path     = entry.path();
+          const auto filename = path.filename().string();
+          const auto ext      = path.extension();
+          if (ext != ".mat")
+            continue;
+          if (ImGui::Selectable(filename.c_str())) {
+            auto material = Engine::AssetManager::GetMaterial(path.string());
+            _component->SetMaterial(material);
+          }
+        }
+        ImGui::EndCombo();
       }
-      ImGui::EndChild();
       if (ImGui::BeginDragDropTarget()) {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
           auto payload_str = std::string(static_cast< char* >(payload->Data));
-          auto filePath    = std::filesystem::path(payload_str);
-          auto material    = Engine::AssetManager::GetMaterial(payload_str);
-          if (hasModel) {
-            _component->SetMaterial(material);
-          } else {
-            CORE_ERROR("Set model first!");
-          }
+          LoadMaterial(payload_str);
         }
         ImGui::EndDragDropTarget();
       }
+      ImGui::Columns(1);
       ImGui::PopID();
+    }
+    void LoadModel(std::string& payload_str) {
+      auto filePath = std::filesystem::path(payload_str);
+      auto ext      = filePath.extension().string();
+      if (ext != ".fbx")
+        return;
+
+      auto model = Engine::AssetManager::GetModel(payload_str);
+      _component->SetModel(model);
+    }
+    void LoadMaterial(std::string& payload_str) {
+      auto filePath = std::filesystem::path(payload_str);
+      auto ext      = filePath.extension().string();
+      if (ext != ".mat")
+        return;
+      auto material = Engine::AssetManager::GetMaterial(payload_str);
+      _component->SetMaterial(material);
+      ;
     }
   };
   /* Rigidbody */
