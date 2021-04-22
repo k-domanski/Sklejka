@@ -4,3 +4,4 @@ vec3 remap(vec3 val) {
 
 uniform sampler2D u_MainTexture;
 uniform sampler2D u_NormalMap;
+uniform vec4 u_MainColor;

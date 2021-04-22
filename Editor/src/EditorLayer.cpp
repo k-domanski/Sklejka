@@ -30,8 +30,6 @@ void EditorLayer::OnAttach() {
   m_PepeMaterial->SetShader(m_Shader);
   m_PepeMaterial->SetMainTexture(pepe_texture);
 
-
-
   auto aspect        = Engine::Window::Get().GetAspectRatio();
   auto camera_entity = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   m_EditorCamera.camera =
@@ -57,7 +55,8 @@ void EditorLayer::OnAttach() {
 
   m_Entity1->AddComponent< Transform >();
   m_Entity1->AddComponent< Components::MeshRenderer >();
-  m_Entity1->GetComponent< Components::MeshRenderer >()->LoadFromJson("./scenes/meshRenderer1.json");
+  m_Entity1->GetComponent< Components::MeshRenderer >()->LoadFromJson(
+      "./scenes/meshRenderer1.json");
   m_Entity2->AddComponent< Transform >();
   m_Entity2->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
   m_PepeTransform = m_Pepe->AddComponent< Transform >();
@@ -81,7 +80,8 @@ void EditorLayer::OnAttach() {
   auto box2 = m_Entity2->AddComponent< Components::Collider >();
   auto rb2  = m_Entity2->AddComponent< Components::Rigidbody >();
 
-  //m_Entity1->GetComponent< Components::MeshRenderer >()->SaveToJson("./scenes/meshRenderer1.json");
+  // m_Entity1->GetComponent< Components::MeshRenderer
+  // >()->SaveToJson("./scenes/meshRenderer1.json");
 
   box1->LoadFromJson("./scenes/box1.json");
   box2->LoadFromJson("./scenes/box2.json");
@@ -108,7 +108,7 @@ void EditorLayer::OnAttach() {
   m_PepeTransform->Position({0.0f, 1.0f, 0.0f});
   m_PepeTransform->Scale({0.2f, 0.2f, 0.2f});
 
-  //m_Entity1->SaveToJson("./scenes/m_Entity1.entity");
+  // m_Entity1->SaveToJson("./scenes/m_Entity1.entity");
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {
@@ -234,8 +234,7 @@ auto EditorLayer::DrawMenuBar() -> void {
 
 auto EditorLayer::SaveScene() -> void {
   std::optional< std::string > filepath = FileDialog::SaveFile("Scene (*.scene)\0*.scene\0");
-  if (filepath)
-  {
+  if (filepath) {
     std::string separator = "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";
 
     auto sg           = SceneManager::GetDisplayScene()->SceneGraph();
@@ -244,8 +243,7 @@ auto EditorLayer::SaveScene() -> void {
     std::string fileContent = "";
 
     bool first = true;
-    for (auto id : entities_ids)
-    {
+    for (auto id : entities_ids) {
       auto entity = ECS::EntityManager::GetInstance().GetEntity(id);
       if (!entity->HasComponent< Camera >()) {
         if (!first)
@@ -270,14 +268,14 @@ auto EditorLayer::SaveScene() -> void {
 
 auto EditorLayer::LoadScene() -> void {
   std::optional< std::string > filepath = FileDialog::OpenFile("Scene (*.scene)\0*.scene\0");
-  if (filepath)
-  {
-    auto sg           = SceneManager::GetDisplayScene()->SceneGraph();
-    auto entities_ids = sg->GetChildren(0);
- 
+  if (filepath) {
+    auto current_scene = SceneManager::GetCurrentScene();
+    auto sg            = current_scene->SceneGraph();
+    auto entities_ids  = sg->GetChildren(0);
+
     for (auto id : entities_ids) {
-      if (!ECS::EntityManager::GetInstance().GetEntity(id)->HasComponent<Camera>())
-        sg->RemoveEntity(id);
+       if (!ECS::EntityManager::GetInstance().GetEntity(id)->HasComponent<Camera>())
+      sg->RemoveEntity(id);
     }
 
     auto content = Utility::ReadTextFile(filepath.value());
@@ -285,7 +283,7 @@ auto EditorLayer::LoadScene() -> void {
 
     std::string delimiter =
         "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";  // TODO: Move to one place
-                                                                    // instead of declaring each time
+                                                                 // instead of declaring each time
     size_t pos = 0;
     std::string token;
     while ((pos = content.find(delimiter)) != std::string::npos) {
@@ -296,8 +294,7 @@ auto EditorLayer::LoadScene() -> void {
 
     separated_jsons.push_back(content);
 
-    for (std::string separated_json : separated_jsons)
-    {
+    for (std::string separated_json : separated_jsons) {
       auto entity = ECS::EntityManager::GetInstance().CreateEntity();
       entity->LoadFromJson(separated_json);
       sg->AddChild(0, entity->GetID());
