@@ -19,7 +19,7 @@ void EditorLayer::OnAttach() {
   auto coneModel = AssetManager::GetModel("./models/cube.fbx");
   m_Shader       = AssetManager::GetShader("./shaders/default.glsl");
   assert(("Failed to acquire shader", m_Shader != nullptr));
-  m_ConeMesh = coneModel->getRootMesh();
+  m_ConeMesh = coneModel->GetRootMesh();
   // m_PepeModel       = AssetManager::GetModel("./models/squirrel.fbx");
   m_PepeModel = AssetManager::GetModel("./models/silly_dancing.fbx");
   // auto tex_shader   = AssetManager::GetShader("./shaders/texture_shader.glsl");
@@ -317,7 +317,7 @@ auto EditorLayer::LoadScene() -> void {
 
 auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> void {
   auto model = AssetManager::GetModel(path);
-  if (model->getRootMesh() == nullptr)
+  if (model->GetRootMesh() == nullptr)
     return;
   using namespace Engine::ECS;
   using namespace Engine::Components;

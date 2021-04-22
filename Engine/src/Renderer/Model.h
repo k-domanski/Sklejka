@@ -14,7 +14,7 @@ namespace Engine::Renderer {
     Model(std::string_view path);
     virtual ~Model() = default;
 
-    std::shared_ptr< Mesh > getRootMesh();
+    std::shared_ptr< Mesh > GetRootMesh();
     std::string GetFilepath();
 
   private:

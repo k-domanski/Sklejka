@@ -31,6 +31,12 @@ namespace Engine::Renderer {
   auto Material::MainColorPtr() -> float* {
     return &_mainColor[0];
   }
+  auto Material::Queue() const noexcept -> uint32_t {
+    return _queue;
+  }
+  auto Material::Queue(uint32_t queue) noexcept -> uint32_t {
+    return _queue = queue;
+  }
   std::size_t Material::GetAssetID() {
     return _assetID;
   }
