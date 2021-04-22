@@ -69,6 +69,7 @@ void EditorLayer::OnAttach() {
 
   /*Editor Panels*/
   m_SceneHierarchyPanel.SetScene(SceneManager::GetDisplayScene());
+  m_SceneHierarchyPanel.SetEditorLayer(this);
   m_SceneHierarchyPanel.SetSelectionCallback(
       [this](auto& entity) { m_InspectorPanel.AttachEntity(entity); });
   m_FileSystemPanel.SetScene(SceneManager::GetDisplayScene());
@@ -274,8 +275,8 @@ auto EditorLayer::LoadScene() -> void {
     auto entities_ids  = sg->GetChildren(0);
 
     for (auto id : entities_ids) {
-       if (!ECS::EntityManager::GetInstance().GetEntity(id)->HasComponent<Camera>())
-      sg->RemoveEntity(id);
+      if (!ECS::EntityManager::GetInstance().GetEntity(id)->HasComponent< Camera >())
+        sg->RemoveEntity(id);
     }
 
     auto content = Utility::ReadTextFile(filepath.value());
@@ -313,7 +314,8 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
   entity->AddComponent< Transform >();
   /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
   auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
-  entity->AddComponent< MeshRenderer >(model, nullptr);
+  auto mat = AssetManager::GetMaterial("./materials/default_color.mat");
+  entity->AddComponent< MeshRenderer >(model, mat);
 
   SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, entity->GetID());
 }

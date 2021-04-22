@@ -1,6 +1,7 @@
 #include "SceneHierarchyPanel.h"
 #include <imgui/imgui.h>
 #include <Systems/SceneGraph.h>
+#include <EditorLayer.h>
 
 using namespace Engine;
 namespace Editor {
@@ -20,8 +21,17 @@ namespace Editor {
     if (ImGui::Button("+", ImVec2{25, 25})) {
       ImGui::OpenPopup("Create");
     }
-
+    ImGui::BeginChild("Supa Tree");
     DrawEntity(ECS::EntityManager::GetInstance().GetEntity(0));
+    ImGui::EndChild();
+    if (ImGui::BeginDragDropTarget()) {
+      if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
+        auto payload_str = std::string(static_cast< char* >(payload->Data));
+        LOG_TRACE("Drag n Drop: {}", payload_str);
+        _editorLayer->AddObjectOnScene(payload_str);
+      }
+      ImGui::EndDragDropTarget();
+    }
 
     if (ImGui::BeginPopup("Create")) {
       if (ImGui::MenuItem("Create Empty")) {

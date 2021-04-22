@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine.h"
 
+class EditorLayer;
 namespace Editor {
   class SceneHierarchyPanel {
   public:
@@ -9,6 +10,9 @@ namespace Editor {
 
     std::shared_ptr< Engine::ECS::Entity > GetSelectedEntity() {
       return m_SelectedEntity;
+    }
+    auto SetEditorLayer(EditorLayer* layer) -> void {
+      _editorLayer = layer;
     }
     void SetSelectedEntity(const std::shared_ptr< Engine::ECS::Entity >& entity) {
       m_SelectedEntity = entity;
@@ -25,6 +29,7 @@ namespace Editor {
     void DrawEntity(std::shared_ptr< Engine::ECS::Entity > entity);
 
   private:
+    EditorLayer* _editorLayer;
     std::shared_ptr< Engine::Scene > m_Scene;
     std::shared_ptr< Engine::ECS::Entity > m_SelectedEntity;
     std::function< void(const std::shared_ptr< Engine::ECS::Entity >) > _selectedCallback;
