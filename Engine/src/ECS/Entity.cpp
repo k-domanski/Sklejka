@@ -25,7 +25,7 @@ namespace Engine::ECS {
 
   std::string Entity::SaveToJson()
   {
-    std::string separator = "42091169692137SUPERJSONSEPARATOR42091169692137";
+    std::string separator = "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137";
 
     std::vector< std::shared_ptr< Component > > components = GetAllComponents();
 
@@ -60,7 +60,7 @@ namespace Engine::ECS {
     auto content        = Utility::ReadTextFile(filepath);
     std::vector< std::string > separated_jsons;
    
-    std::string delimiter = "42091169692137SUPERJSONSEPARATOR42091169692137";
+    std::string delimiter = "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137"; //TODO: Move to one place instead of declaring each time
 
     size_t pos = 0;
     std::string token;

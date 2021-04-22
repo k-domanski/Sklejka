@@ -106,8 +106,6 @@ void EditorLayer::OnAttach() {
   m_PepeTransform->Scale({0.2f, 0.2f, 0.2f});
 
   //m_Entity1->SaveToJson("./scenes/m_Entity1.entity");
-  auto m_Entity3 = ECS::EntityManager::GetInstance().CreateEntity();
-  m_Entity3->LoadFromJson("./scenes/m_Entity1.entity");
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {
@@ -233,7 +231,31 @@ auto EditorLayer::DrawMenuBar() -> void {
 
 auto EditorLayer::SaveScene() -> void {
   std::optional< std::string > filepath = FileDialog::SaveFile("Scene (*.scene)\0*.scene\0");
-  if (filepath) {}
+  if (filepath)
+  {
+    std::string separator = "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";
+
+    auto sg           = SceneManager::GetDisplayScene()->SceneGraph();
+    auto entities_ids = sg->GetChildren(0);
+    std::shared_ptr< ECS::Entity > entity;
+    std::string fileContent = "";
+
+    bool first = true;
+    for (auto id : entities_ids)
+    {
+      if (!first)
+        fileContent.append("\n" + separator + "\n");
+      else
+        first = false;
+
+      fileContent.append(ECS::EntityManager::GetInstance().GetEntity(id)->SaveToJson());
+    }
+
+    std::ofstream ofstream;
+    ofstream.open(filepath.value());
+    ofstream << fileContent;
+    ofstream.close();
+  }
 }
 
 auto EditorLayer::LoadScene() -> void {
