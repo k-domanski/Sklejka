@@ -22,6 +22,7 @@ namespace Engine::ECS {
       return "";
     }
     virtual auto LoadFromJson(std::string filePath) -> void { }
+    //virtual auto LoadFromJsonString(std::string jsonString) -> void { }
     auto GetEntityID() const -> EntityID {
       return _entityID;
     }

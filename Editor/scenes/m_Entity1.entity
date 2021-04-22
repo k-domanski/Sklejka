@@ -1,5 +1,5 @@
 {
-    "entityID": "10654611006156044335",
+    "entityID": "17676807670271225652",
     "entityName": "Entity"
 }
 42091169692137SUPERJSONSEPARATOR42091169692137
@@ -7,7 +7,7 @@
     "componentType": "transform",
     "localPosition": {
         "x": 0.0,
-        "y": 0.0,
+        "y": 1.0,
         "z": 0.0
     },
     "localRotation": {

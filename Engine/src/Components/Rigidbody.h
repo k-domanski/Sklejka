@@ -20,6 +20,7 @@ namespace Engine::Components
     std::string SaveToJson() override;
     std::string SaveToJson(std::string filePath) override;
     auto LoadFromJson(std::string filePath) -> void override;
+    //auto LoadFromJsonString(std::string jsonString) -> void override;
   private:
     glm::vec3 _velocity;
     bool _useGravity;

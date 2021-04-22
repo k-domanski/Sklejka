@@ -52,8 +52,13 @@ namespace Engine::Components {
 
   auto MeshRenderer::LoadFromJson(std::string filePath) -> void
   {
-    auto content        = Utility::ReadTextFile(filePath);
-    nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
+    nlohmann::json json;
+    if (filePath[0] == '{' || filePath[0] == '\n')  // HACK: Check if string is json
+      json = nlohmann::json::parse(filePath.begin(), filePath.end());
+    else {
+      auto content = Utility::ReadTextFile(filePath);
+      json         = nlohmann::json::parse(content.begin(), content.end());
+    }
 
     std::string material_assetID_string = json["material"];
     std::stringstream ss(material_assetID_string);
@@ -63,4 +68,17 @@ namespace Engine::Components {
     _model = AssetManager::GetModel(json["model"]);
     _material = AssetManager::GetMaterial(material_assetID);
   }
+
+  //auto MeshRenderer::LoadFromJsonString(std::string jsonString) -> void
+  //{
+  //  nlohmann::json json = nlohmann::json::parse(json.begin(), json.end());
+
+  //  std::string material_assetID_string = json["material"];
+  //  std::stringstream ss(material_assetID_string);
+  //  size_t material_assetID;
+  //  ss >> material_assetID;
+
+  //  _model    = AssetManager::GetModel(json["model"]);
+  //  _material = AssetManager::GetMaterial(material_assetID);
+  //}
 }  // namespace Engine::Components

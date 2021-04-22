@@ -42,5 +42,6 @@ namespace Engine {
     std::string SaveToJson(std::string filePath) override;
     std::string SaveToJson() override;
     auto LoadFromJson(std::string filePath) -> void override;
+    //auto LoadFromJsonString(std::string jsonString) -> void override;
   };
 }  // namespace Engine

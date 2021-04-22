@@ -56,12 +56,26 @@ std::string Engine::Components::Rigidbody::SaveToJson(std::string filePath)
 
 auto Engine::Components::Rigidbody::LoadFromJson(std::string filePath) -> void
 {
-  auto content        = Utility::ReadTextFile(filePath);
-  nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
+  nlohmann::json json;
+  if (filePath[0] == '{' || filePath[0] == '\n')  // HACK: Check if string is json
+    json = nlohmann::json::parse(filePath.begin(), filePath.end());
+  else {
+    auto content = Utility::ReadTextFile(filePath);
+    json         = nlohmann::json::parse(content.begin(), content.end());
+  }
 
   _velocity = glm::vec3(json["velocity"]["x"], json["velocity"]["y"], json["velocity"]["z"]);
   _useGravity = json["useGravity"];
   _kinematic  = json["kinematic"];
 }
+
+//auto Engine::Components::Rigidbody::LoadFromJsonString(std::string jsonString) -> void
+//{
+//  nlohmann::json json = nlohmann::json::parse(jsonString.begin(), jsonString.end());
+//
+//  _velocity   = glm::vec3(json["velocity"]["x"], json["velocity"]["y"], json["velocity"]["z"]);
+//  _useGravity = json["useGravity"];
+//  _kinematic  = json["kinematic"];
+//}
 
 

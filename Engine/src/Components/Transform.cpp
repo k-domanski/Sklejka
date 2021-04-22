@@ -104,16 +104,36 @@ namespace Engine {
 
   auto Transform::LoadFromJson(std::string filePath) -> void
   {
-    auto content        = Utility::ReadTextFile(filePath);
-    nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
+    nlohmann::json json;
+    if (filePath[0] == '{' || filePath[0] == '\n')  // HACK: Check if string is json
+      json = nlohmann::json::parse(filePath.begin(), filePath.end());
+    else
+    {
+      auto content        = Utility::ReadTextFile(filePath);
+      json = nlohmann::json::parse(content.begin(), content.end());
+    }
 
+    
     Position(glm::vec3(json["localPosition"]["x"], json["localPosition"]["y"],
-                          json["localPosition"]["z"]));
+                       json["localPosition"]["z"]));
 
     Rotation(glm::quat(json["localRotation"]["w"], json["localRotation"]["x"],
                        json["localRotation"]["y"], json["localRotation"]["z"]));
 
-    Scale(glm::vec3(json["localScale"]["x"], json["localScale"]["y"],
-                       json["localScale"]["z"]));
+    Scale(glm::vec3(json["localScale"]["x"], json["localScale"]["y"], json["localScale"]["z"]));
+    
   }
+
+  //auto Transform::LoadFromJsonString(std::string jsonString) -> void
+  //{
+  //  nlohmann::json json = nlohmann::json::parse(jsonString.begin(), jsonString.end());
+
+  //  Position(glm::vec3(json["localPosition"]["x"], json["localPosition"]["y"],
+  //                     json["localPosition"]["z"]));
+
+  //  Rotation(glm::quat(json["localRotation"]["w"], json["localRotation"]["x"],
+  //                     json["localRotation"]["y"], json["localRotation"]["z"]));
+
+  //  Scale(glm::vec3(json["localScale"]["x"], json["localScale"]["y"], json["localScale"]["z"]));
+  //}
 }  // namespace Engine
