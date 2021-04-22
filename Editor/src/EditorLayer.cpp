@@ -5,6 +5,7 @@
 
 #include "Engine/SceneManager.h"
 #include "Systems/SceneGraph.h"
+//#include "GL/TextureAttachment.h"
 
 using namespace Engine;
 EditorLayer::EditorLayer(const std::string& name): Layer(name) {
@@ -142,24 +143,90 @@ void EditorLayer::OnEvent(Event& event) {
 }
 
 void EditorLayer::OnImGuiRender() {
-  DrawMenuBar();
+  // DrawMenuBar();
+  /*-------------------Dockspace-------------------------------*/
+  static bool dockSpaceOpen             = true;
+
+  bool fullscreen = true;
+
+  static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
+
+  ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+  if (fullscreen) {
+    ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos(viewport->Pos);
+    ImGui::SetNextWindowSize(viewport->Size);
+    ImGui::SetNextWindowViewport(viewport->ID);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse
+                    | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+    windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+  }
+  if (dockspaceFlags & ImGuiDockNodeFlags_PassthruCentralNode)
+    windowFlags |= ImGuiWindowFlags_NoBackground;
+
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+  ImGui::Begin("DockSpace Demo", &dockSpaceOpen, windowFlags);
+  ImGui::PopStyleVar();
+
+  if (fullscreen)
+    ImGui::PopStyleVar(2);
+
+  // DockSpace
+  ImGuiIO& io           = ImGui::GetIO();
+  ImGuiStyle& style     = ImGui::GetStyle();
+  float minWinSizeX     = style.WindowMinSize.x;
+  style.WindowMinSize.x = 370.0f;
+  if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
+    ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+    ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspaceFlags);
+  }
+
+  style.WindowMinSize.x = minWinSizeX;
+
+  /*----------------------------------------------------------*/
+
   m_FileSystemPanel.OnImGuiRender();
   m_SceneHierarchyPanel.OnImGuiRender();
   m_InspectorPanel.OnImGuiRender();
   m_MaterialPanel.OnImGuiRender();
+
+  /*-------------------Viewport-------------------------------*/
+
+  ImGui::Begin("Viewport");
+  auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+  auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+  auto viewportOffset    = ImGui::GetWindowPos();
+
+  ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+  m_ViewportSize           = {viewportPanelSize.x, viewportPanelSize.y};
+  auto test                = ECS::EntityManager::GetInstance()
+                  .RegisterSystem< Systems::Renderer >()
+                  ->GetTextureID()
+                  ->GetHandle();
+  ImGui::Image(reinterpret_cast< void* >(test), ImVec2{m_ViewportSize.x, m_ViewportSize.y},
+               ImVec2{0, 1}, ImVec2{1, 0});
+  //CORE_DEBUG("{0}, {1}", m_ViewportSize.x, m_ViewportSize.y);
+  ImGui::End();
+  ImGui::End();
+  /*------------------------------------------------------------*/
 }
 
 bool EditorLayer::OnWindowResize(Engine::WindowResizeEvent& e) {
+    /*Tu zmiana zeby renderer robil size vieportu*/
   glm::vec2 size = {(float)e.GetWidth(), (float)e.GetHeight()};
-  SceneManager::GetDisplayScene()->OnWindowResize(size);
-  editorCameraArgs.screenSize = size;
-  m_EditorCamera.camera->Aspect(Window::Get().GetAspectRatio());
+  SceneManager::GetDisplayScene()->OnWindowResize(m_ViewportSize);
+  editorCameraArgs.screenSize = m_ViewportSize;
+
+  float aspect = m_ViewportSize.x / m_ViewportSize.y;
+  m_EditorCamera.camera->Aspect(aspect);
   return true;
 }
 
 bool EditorLayer::OnMouseScroll(MouseScrolledEvent& e) {
   editorCameraArgs.scrollDelta = e.GetYOffset();
-  return true;
+  return false;
 }
 
 bool EditorLayer::OnMouseButtonPress(MouseButtonPressedEvent& e) {
@@ -172,7 +239,8 @@ bool EditorLayer::OnMouseButtonPress(MouseButtonPressedEvent& e) {
 }
 
 bool EditorLayer::OnMouseButtonRelease(MouseButtonReleasedEvent& e) {
-  return false;
+  return true;
+  ;
 }
 
 auto EditorLayer::UpdateEditorCamera() -> void {
@@ -274,8 +342,8 @@ auto EditorLayer::LoadScene() -> void {
     auto entities_ids  = sg->GetChildren(0);
 
     for (auto id : entities_ids) {
-       if (!ECS::EntityManager::GetInstance().GetEntity(id)->HasComponent<Camera>())
-      sg->RemoveEntity(id);
+      if (!ECS::EntityManager::GetInstance().GetEntity(id)->HasComponent< Camera >())
+        sg->RemoveEntity(id);
     }
 
     auto content = Utility::ReadTextFile(filepath.value());

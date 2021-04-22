@@ -16,6 +16,7 @@ namespace Engine::Systems {
     void Update(float deltaTime) override;
     auto AddEntity(ECS::EntityID id) -> void override;
     auto OnWindowResize(glm::vec2 windowSize) -> void;
+    std::shared_ptr< Engine::GL::TextureAttachment > GetTextureID()  { return _screenTexture; }
 
   private:
     std::map< std::shared_ptr< Engine::Renderer::Material >, std::vector< ECS::EntityID > >

@@ -47,5 +47,6 @@ namespace Engine {
     auto Draw() -> void;
     auto SceneGraph() -> std::shared_ptr< Systems::SceneGraph >;
     auto OnWindowResize(glm::vec2 windowSize) -> void;
+    std::shared_ptr< Systems::Renderer > GetRendererSystem()  { return _renderSystem; }
   };
 }  // namespace Engine

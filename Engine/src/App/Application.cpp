@@ -66,7 +66,8 @@ namespace Engine {
   }
   bool Application::OnWindowResize(WindowResizeEvent& e) {
     m_Window->SetScreenSize({e.GetWidth(), e.GetHeight()});
-    glViewport(0, 0, e.GetWidth(), e.GetHeight());
+    /*teraz w rendere->update()*/
+    //glViewport(0, 0, e.GetWidth(), e.GetHeight());
     return false;
   }
 }  // namespace Engine

@@ -66,4 +66,6 @@ private:
   Editor::InspectorPanel m_InspectorPanel;
   Editor::FileSystemPanel m_FileSystemPanel;
   Editor::MaterialPanel m_MaterialPanel;
+  /*Viewport*/
+  glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 };

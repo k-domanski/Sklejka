@@ -78,6 +78,7 @@ namespace Engine::Systems {
   auto Renderer::OnWindowResize(glm::vec2 windowSize) -> void {
     using namespace GL;
     auto size     = windowSize;
+    glViewport(0, 0, size.x, size.y);
     _renderTarget = std::make_shared< RenderTarget >(size.x, size.y);
     _screenTexture =
         std::make_shared< TextureAttachment >(size.x, size.y, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
