@@ -6,6 +6,8 @@
 #include <App/Window.h>
 #include <App/AssetManager.h>
 
+#include "Components/Collider.h"
+
 namespace Engine::Systems {
   using namespace GL;
   Renderer::Renderer() {
@@ -21,6 +23,10 @@ namespace Engine::Systems {
 
     _quad         = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
     _quadShader   = AssetManager::GetShader("./shaders/screen_quad.glsl");
+
+    _boxCollider = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeBox);
+    _boxColliderShader = AssetManager::GetShader("./shaders/color.glsl");
+
     _cameraSystem = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
     _transformUniformBuffer.BindToSlot(_transformUniformSlot);
 
@@ -76,6 +82,35 @@ namespace Engine::Systems {
       shader->BindUniformBlock("u_Transform", 0);
       shader->BindUniformBlock("u_Camera", 1);
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+
+      //collider
+      std::shared_ptr< Components::Collider > collider;
+      if ((collider = ECS::EntityManager::GetComponent< Components::Collider>(entityID)) != nullptr)
+      {
+        if (collider->Type == +Components::ColliderType::Box)
+        {
+          _boxColliderShader->Use();
+          _boxCollider->Use();
+
+          auto colModel = transform->GetWorldMatrix();
+          colModel      = glm::translate(colModel, collider->Center);
+          colModel      = glm::scale(colModel, collider->Size);
+
+          _transformUniformData.model     = colModel;
+          _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+          _transformUniformData.modelViewProjection =
+              camera->ProjectionMatrix() * _transformUniformData.modelView;
+
+          // HACK: Assume for now that under slot 1 is camera uniform buffer
+          // TODO: Get the actual slot number from somewhere, somehow :)
+          _transformUniformBuffer.SetData(_transformUniformData);
+          _boxColliderShader->BindUniformBlock("u_Transform", 0);
+          _boxColliderShader->BindUniformBlock("u_Camera", 1);
+          _boxColliderShader->SetVector("u_MainColor", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+          glDrawElements(_boxCollider->GetPrimitive(), _boxCollider->ElementCount(), GL_UNSIGNED_INT, NULL);
+        }
+      }
+
 
       // for (auto entityID : vec) {
       //  auto shader       = material->GetShader();

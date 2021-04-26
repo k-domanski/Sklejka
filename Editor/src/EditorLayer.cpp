@@ -309,7 +309,8 @@ auto EditorLayer::LoadScene() -> void {
       entity->LoadFromJson(separated_json);
       if (entity->HasComponent< Camera >())  // HACK: only camera is editor camera
       {
-        m_EditorCamera.camera = entity->GetComponent< Camera >();
+        m_EditorCamera.camera = entity->GetComponent< Camera >();            
+        m_EditorCamera.transform = entity->GetComponent< Transform >();
       }
       sg->AddChild(0, entity->GetID());
     }
