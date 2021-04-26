@@ -14,6 +14,12 @@ namespace Engine {
     void AddLayer(Layer* layer);
     void AddOverlay(Layer* layer);
     void OnEvent(Event& event);
+    ImGuiLayer* GetImGuiLayer() {
+      return m_ImGuiLayer;
+    }
+    static Application& Get() {
+      return *s_Instance;
+    }
 
   private:
     bool OnWindowClose(WindowCloseEvent& e);
@@ -25,6 +31,7 @@ namespace Engine {
     ImGuiLayer* m_ImGuiLayer;
     LayerStack m_LayerStack;
     Timer timer;
+    static Application* s_Instance;
   };
 
   Application* CreateApplication();

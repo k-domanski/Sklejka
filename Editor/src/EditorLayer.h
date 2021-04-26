@@ -33,6 +33,7 @@ private:
   auto DrawMenuBar() -> void;
   auto SaveScene() -> void;
   auto LoadScene() -> void;
+  auto ViewportResize(glm::vec2 viewportSize) -> void;
 
 private:
   /*Temporary*/
@@ -66,6 +67,10 @@ private:
   Editor::InspectorPanel m_InspectorPanel;
   Editor::FileSystemPanel m_FileSystemPanel;
   Editor::MaterialPanel m_MaterialPanel;
+  
   /*Viewport*/
+  /*This sets docking with viewport (false = old)*/
+  bool m_Dockspace = true;
+  bool m_ViewportFocused = false, m_ViewportHovered = false;
   glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 };

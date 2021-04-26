@@ -5,7 +5,6 @@
 
 #include "Engine/SceneManager.h"
 #include "Systems/SceneGraph.h"
-//#include "GL/TextureAttachment.h"
 
 using namespace Engine;
 EditorLayer::EditorLayer(const std::string& name): Layer(name) {
@@ -143,85 +142,103 @@ void EditorLayer::OnEvent(Event& event) {
 }
 
 void EditorLayer::OnImGuiRender() {
-  // DrawMenuBar();
   /*-------------------Dockspace-------------------------------*/
-  static bool dockSpaceOpen             = true;
+  if (m_Dockspace) {
+    bool fullscreen = true;
 
-  bool fullscreen = true;
+    static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
 
-  static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
+    ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+    if (fullscreen) {
+      ImGuiViewport* viewport = ImGui::GetMainViewport();
+      ImGui::SetNextWindowPos(viewport->Pos);
+      ImGui::SetNextWindowSize(viewport->Size);
+      ImGui::SetNextWindowViewport(viewport->ID);
+      ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+      ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+      windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse
+                     | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+      windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+    }
+    if (dockspaceFlags & ImGuiDockNodeFlags_PassthruCentralNode) {
+      windowFlags |= ImGuiWindowFlags_NoBackground;
+    }
 
-  ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-  if (fullscreen) {
-    ImGuiViewport* viewport = ImGui::GetMainViewport();
-    ImGui::SetNextWindowPos(viewport->Pos);
-    ImGui::SetNextWindowSize(viewport->Size);
-    ImGui::SetNextWindowViewport(viewport->ID);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-    windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse
-                    | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-    windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+    ImGui::Begin("DockSpace Demo", &m_Dockspace, windowFlags);
+    ImGui::PopStyleVar();
+
+    if (fullscreen)
+      ImGui::PopStyleVar(2);
+
+    if (ImGui::BeginMenuBar()) {
+      DrawMenuBar();
+      ImGui::EndMenuBar();
+    }
+    ImGuiIO& io           = ImGui::GetIO();
+    ImGuiStyle& style     = ImGui::GetStyle();
+    float minWinSizeX     = style.WindowMinSize.x;
+    style.WindowMinSize.x = 370.0f;
+    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
+      ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+      ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspaceFlags);
+    }
+
+    style.WindowMinSize.x = minWinSizeX;
+
+    /*-------------------Viewport-------------------------------*/
+
+    ImGui::Begin("Viewport");
+    auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+    auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+    auto viewportOffset    = ImGui::GetWindowPos();
+
+    /*blocking events when outside of vieport*/
+    m_ViewportFocused = ImGui::IsWindowFocused();
+    m_ViewportHovered = ImGui::IsWindowHovered();
+    Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+
+    ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+    if (m_ViewportSize.x != viewportPanelSize.x || m_ViewportSize.y != viewportPanelSize.y) {
+      glm::vec2 size = {viewportPanelSize.x, viewportPanelSize.y};
+      ViewportResize(size);
+    }
+    m_ViewportSize = {viewportPanelSize.x, viewportPanelSize.y};
+    auto textureID = ECS::EntityManager::GetInstance()
+                         .RegisterSystem< Systems::Renderer >()
+                         ->GetTextureID()
+                         ->GetHandle();
+    ImGui::Image(reinterpret_cast< void* >(textureID), ImVec2{m_ViewportSize.x, m_ViewportSize.y},
+                 ImVec2{0, 1}, ImVec2{1, 0});
+    ImGui::End();
+    ImGui::End();
+    /*----------------------------------------------------------*/
+  } else {
+    m_ViewportFocused = true;
+    if (ImGui::BeginMainMenuBar()) {
+      DrawMenuBar();
+      ImGui::EndMainMenuBar();
+    }
   }
-  if (dockspaceFlags & ImGuiDockNodeFlags_PassthruCentralNode)
-    windowFlags |= ImGuiWindowFlags_NoBackground;
-
-  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-  ImGui::Begin("DockSpace Demo", &dockSpaceOpen, windowFlags);
-  ImGui::PopStyleVar();
-
-  if (fullscreen)
-    ImGui::PopStyleVar(2);
-
-  // DockSpace
-  ImGuiIO& io           = ImGui::GetIO();
-  ImGuiStyle& style     = ImGui::GetStyle();
-  float minWinSizeX     = style.WindowMinSize.x;
-  style.WindowMinSize.x = 370.0f;
-  if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
-    ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-    ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspaceFlags);
-  }
-
-  style.WindowMinSize.x = minWinSizeX;
-
-  /*----------------------------------------------------------*/
 
   m_FileSystemPanel.OnImGuiRender();
   m_SceneHierarchyPanel.OnImGuiRender();
   m_InspectorPanel.OnImGuiRender();
   m_MaterialPanel.OnImGuiRender();
-
-  /*-------------------Viewport-------------------------------*/
-
-  ImGui::Begin("Viewport");
-  auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
-  auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
-  auto viewportOffset    = ImGui::GetWindowPos();
-
-  ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-  m_ViewportSize           = {viewportPanelSize.x, viewportPanelSize.y};
-  auto test                = ECS::EntityManager::GetInstance()
-                  .RegisterSystem< Systems::Renderer >()
-                  ->GetTextureID()
-                  ->GetHandle();
-  ImGui::Image(reinterpret_cast< void* >(test), ImVec2{m_ViewportSize.x, m_ViewportSize.y},
-               ImVec2{0, 1}, ImVec2{1, 0});
-  //CORE_DEBUG("{0}, {1}", m_ViewportSize.x, m_ViewportSize.y);
-  ImGui::End();
-  ImGui::End();
-  /*------------------------------------------------------------*/
 }
 
 bool EditorLayer::OnWindowResize(Engine::WindowResizeEvent& e) {
-    /*Tu zmiana zeby renderer robil size vieportu*/
-  glm::vec2 size = {(float)e.GetWidth(), (float)e.GetHeight()};
-  SceneManager::GetDisplayScene()->OnWindowResize(m_ViewportSize);
-  editorCameraArgs.screenSize = m_ViewportSize;
+  glm::vec2 size = (m_Dockspace ? m_ViewportSize : glm::vec2((float)e.GetWidth(), e.GetHeight()));
+  ViewportResize(size);
 
-  float aspect = m_ViewportSize.x / m_ViewportSize.y;
-  m_EditorCamera.camera->Aspect(aspect);
   return true;
+}
+auto EditorLayer::ViewportResize(glm::vec2 viewportSize) -> void {
+  SceneManager::GetDisplayScene()->OnWindowResize(viewportSize);
+  editorCameraArgs.screenSize = viewportSize;
+
+  float aspect = viewportSize.x / viewportSize.y;
+  m_EditorCamera.camera->Aspect(aspect);
 }
 
 bool EditorLayer::OnMouseScroll(MouseScrolledEvent& e) {
@@ -240,10 +257,11 @@ bool EditorLayer::OnMouseButtonPress(MouseButtonPressedEvent& e) {
 
 bool EditorLayer::OnMouseButtonRelease(MouseButtonReleasedEvent& e) {
   return true;
-  ;
 }
 
 auto EditorLayer::UpdateEditorCamera() -> void {
+  if (!m_ViewportFocused && !m_ViewportHovered)
+    return;
   if (editorCameraArgs.scrollDelta != 0.0f) {
     m_EditorCamera.transform->Position(m_EditorCamera.transform->Position()
                                        + m_EditorCamera.transform->Forward()
@@ -285,19 +303,18 @@ auto EditorLayer::UpdateEditorCamera() -> void {
 }
 
 auto EditorLayer::DrawMenuBar() -> void {
-  if (ImGui::BeginMainMenuBar()) {
-    if (ImGui::BeginMenu("File")) {
-      if (ImGui::MenuItem("Open...")) {
-        LoadScene();
-      }
-      if (ImGui::MenuItem("Save As...")) {
-        SaveScene();
-      }
-      ImGui::EndMenu();
+  // if (ImGui::BeginMenuBar()) {
+  if (ImGui::BeginMenu("File")) {
+    if (ImGui::MenuItem("Open...")) {
+      LoadScene();
     }
-
-    ImGui::EndMainMenuBar();
+    if (ImGui::MenuItem("Save As...")) {
+      SaveScene();
+    }
+    ImGui::EndMenu();
   }
+  // ImGui::EndMenuBar();
+  //}
 }
 
 auto EditorLayer::SaveScene() -> void {

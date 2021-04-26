@@ -43,9 +43,11 @@ namespace Engine {
   }
 
   void ImGuiLayer::OnEvent(Event& event) {
-    ImGuiIO& io = ImGui::GetIO();
-    //event.Handled |= event.IsInCategory(EventCategory::Mouse) & io.WantCaptureMouse;
-    //event.Handled |= event.IsInCategory(EventCategory::Keyboard) & io.WantCaptureKeyboard;
+    if (m_BlockEvents) {
+      ImGuiIO& io = ImGui::GetIO();
+      event.Handled |= event.IsInCategory(EventCategory::Mouse) & io.WantCaptureMouse;
+      event.Handled |= event.IsInCategory(EventCategory::Keyboard) & io.WantCaptureKeyboard;
+    }
   }
 
   void ImGuiLayer::OnImGuiRender() {

@@ -5,11 +5,12 @@
 #include "Systems/Renderer.h"
 
 namespace Engine {
+  Application* Application::s_Instance = nullptr;
+
   Application::Application() {
     m_Window = std::unique_ptr< Window >(Window::Create(WindowProperties(1600, 900)));
-    // m_Window = std::unique_ptr< Window >(Window::Create());
     m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
-
+    s_Instance   = this;
     m_ImGuiLayer = new ImGuiLayer();
     AddOverlay(m_ImGuiLayer);
 
@@ -67,7 +68,7 @@ namespace Engine {
   bool Application::OnWindowResize(WindowResizeEvent& e) {
     m_Window->SetScreenSize({e.GetWidth(), e.GetHeight()});
     /*teraz w rendere->update()*/
-    //glViewport(0, 0, e.GetWidth(), e.GetHeight());
+    // glViewport(0, 0, e.GetWidth(), e.GetHeight());
     return false;
   }
 }  // namespace Engine
