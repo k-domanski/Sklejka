@@ -242,13 +242,16 @@ auto EditorLayer::SaveScene() -> void {
     auto entities_ids = sg->GetChildren(0);
     std::shared_ptr< ECS::Entity > entity;
 
-    //TODO: Serialize sceneID
+    // TODO: Serialize sceneID
 
     std::string fileContent = "";
 
     bool first = true;
     for (auto id : entities_ids) {
       auto entity = ECS::EntityManager::GetInstance().GetEntity(id);
+      if (entity == nullptr) {
+        continue;
+      }
 
       if (!first)
         fileContent.append("\n" + separator + "\n");
@@ -260,7 +263,6 @@ auto EditorLayer::SaveScene() -> void {
       std::cout << "\nAdding to file content:\n\n" << entity_json;
 
       fileContent.append(entity_json);
-      
     }
 
     std::ofstream ofstream;
@@ -277,12 +279,11 @@ auto EditorLayer::LoadScene() -> void {
     SceneManager::OpenScene(2137);
     m_SceneHierarchyPanel.SetScene(SceneManager::GetCurrentScene());
 
-
     auto current_scene = SceneManager::GetCurrentScene();
     auto sg            = current_scene->SceneGraph();
     auto entities_ids  = sg->GetChildren(0);
 
-    //for (auto id : entities_ids) {
+    // for (auto id : entities_ids) {
     //  if (!ECS::EntityManager::GetInstance().GetEntity(id)->HasComponent< Camera >())
     //    ECS::EntityManager::GetInstance().RemoveEntity(id);
     //}
@@ -306,7 +307,7 @@ auto EditorLayer::LoadScene() -> void {
     for (std::string separated_json : separated_jsons) {
       auto entity = ECS::EntityManager::GetInstance().CreateEntity();
       entity->LoadFromJson(separated_json);
-      if (entity->HasComponent<Camera>()) //HACK: only camera is editor camera
+      if (entity->HasComponent< Camera >())  // HACK: only camera is editor camera
       {
         m_EditorCamera.camera = entity->GetComponent< Camera >();
       }
