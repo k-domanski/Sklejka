@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Mesh.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 namespace Engine::Renderer {
   Mesh::Mesh(const std::vector< Vertex >& vertices, const std::vector< GLuint >& indices) noexcept
@@ -57,6 +59,9 @@ namespace Engine::Renderer {
       }
       case MeshPrimitive::WireframeBox: {
         return CreateWireframeBox();
+      }
+      case MeshPrimitive::WireframeSphere: {
+        return CreateWireframeSphere();
       }
     }
     LOG_WARN("No matching mesh primitive function: Primitive [{}]", primitive._to_string());
@@ -119,7 +124,48 @@ namespace Engine::Renderer {
          {0.0f, 0.0f}},
     };
 
-    const std::vector< GLuint > inds{0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 5, 2, 6, 3, 7, 4, 5, 5, 6, 6, 7, 7, 4};
+    const std::vector< GLuint > inds{0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 5,
+                                     2, 6, 3, 7, 4, 5, 5, 6, 6, 7, 7, 4};
     return std::make_shared< Mesh >(verts, inds, GL::Primitive::Lines);
+  }
+
+  auto Mesh::CreateWireframeSphere() noexcept -> std::shared_ptr< Mesh > {
+    const float sphereLOD = 30.0f;
+    std::vector< Vertex > verts;
+    std::vector< GLuint > inds;
+
+    glm::vec3 normal(0.0f);
+    glm::vec3 uv(0.0f);
+
+    float theta = 0.0f;
+    int j       = 0;
+
+    for (int i = 0; i < sphereLOD; ++i) {
+      Vertex vert{glm::vec3(cos(theta), sin(theta), 0.0f), normal, uv};
+      verts.push_back(vert);
+      inds.push_back(j++);
+
+      theta += 2.0f * M_PI / sphereLOD;
+    }
+    theta = 0.0f;
+    inds.push_back(2137);
+    for (int i = 0; i < sphereLOD; ++i) {
+      Vertex vert{glm::vec3(0.0f, sin(theta), cos(theta)), normal, uv};
+      verts.push_back(vert);
+      inds.push_back(j++);
+
+      theta += 2.0f * M_PI / sphereLOD;
+    }
+    inds.push_back(2137);
+    theta = 0.0f;
+    for (int i = 0; i < sphereLOD; ++i) {
+      Vertex vert{glm::vec3(cos(theta), 0.0f, sin(theta)), normal, uv};
+      verts.push_back(vert);
+      inds.push_back(j++);
+
+      theta += 2.0f * M_PI / sphereLOD;
+    }
+
+    return std::make_shared< Mesh >(verts, inds, GL::Primitive::LineLoop);
   }
 }  // namespace Engine::Renderer
