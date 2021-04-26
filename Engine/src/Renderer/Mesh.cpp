@@ -55,6 +55,9 @@ namespace Engine::Renderer {
       case MeshPrimitive::Plane: {
         return CreatePlane();
       }
+      case MeshPrimitive::WireframeBox: {
+        return CreateWireframeBox();
+      }
     }
     LOG_WARN("No matching mesh primitive function: Primitive [{}]", primitive._to_string());
     return nullptr;
@@ -78,5 +81,45 @@ namespace Engine::Renderer {
                                        {0.0f, 1.0f}}};
     const std::vector< GLuint > inds{0, 1, 2, 2, 3, 0};
     return std::make_shared< Mesh >(verts, inds);
+  }
+
+  auto Mesh::CreateWireframeBox() noexcept -> std::shared_ptr< Mesh > {
+    const std::vector< Vertex > verts{
+        {// Vert 0
+         {-0.5f, -0.5f, -0.5f},
+         {0.0f, 0.0f, 0.0f},
+         {0.0f, 0.0f}},
+        {// Vert 1
+         {-0.5f, -0.5f, 0.5f},
+         {0.0f, 0.0f, 0.0f},
+         {0.0f, 0.0f}},
+        {// Vert 2
+         {-0.5f, 0.5f, 0.5f},
+         {0.0f, 0.0f, 0.0f},
+         {0.0f, 0.0f}},
+        {// Vert 3
+         {-0.5f, 0.5f, -0.5f},
+         {0.0f, 0.0f, 0.0f},
+         {0.0f, 0.0f}},
+        {// Vert 4
+         {0.5f, -0.5f, -0.5f},
+         {0.0f, 0.0f, 0.0f},
+         {0.0f, 0.0f}},
+        {// Vert 5
+         {0.5f, -0.5f, 0.5f},
+         {0.0f, 0.0f, 0.0f},
+         {0.0f, 0.0f}},
+        {// Vert 6
+         {0.5f, 0.5f, 0.5f},
+         {0.0f, 0.0f, 0.0f},
+         {0.0f, 0.0f}},
+        {// Vert 7
+         {0.5f, 0.5f, -0.5f},
+         {0.0f, 0.0f, 0.0f},
+         {0.0f, 0.0f}},
+    };
+
+    const std::vector< GLuint > inds{0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 5, 2, 6, 3, 7, 4, 5, 5, 6, 6, 7, 7, 4};
+    return std::make_shared< Mesh >(verts, inds, GL::Primitive::Lines);
   }
 }  // namespace Engine::Renderer
