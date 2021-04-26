@@ -7,7 +7,7 @@ namespace Engine::GL {
   typedef __ShaderType ShaderType;
 
   BETTER_ENUM(__Primitive, GLenum, Points = GL_POINTS, LineStrip = GL_LINE_STRIP, Lines = GL_LINES,
-              Triangles = GL_TRIANGLES, TriangleStrip = GL_TRIANGLE_STRIP);
+              Triangles = GL_TRIANGLES, TriangleStrip = GL_TRIANGLE_STRIP, LineLoop = GL_LINE_LOOP);
   typedef __Primitive Primitive;
 
   BETTER_ENUM(__MessageSource, GLenum, API = GL_DEBUG_SOURCE_API,

@@ -27,6 +27,9 @@ namespace Engine::Systems {
     _boxCollider = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeBox);
     _boxColliderShader = AssetManager::GetShader("./shaders/color.glsl");
 
+    _sphereCollider = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeSphere);
+    _sphereColliderShader = AssetManager::GetShader("./shaders/color.glsl");
+
     _cameraSystem = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
     _transformUniformBuffer.BindToSlot(_transformUniformSlot);
 
@@ -108,7 +111,36 @@ namespace Engine::Systems {
           _boxColliderShader->BindUniformBlock("u_Camera", 1);
           _boxColliderShader->SetVector("u_MainColor", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
           glDrawElements(_boxCollider->GetPrimitive(), _boxCollider->ElementCount(), GL_UNSIGNED_INT, NULL);
+        } else if (collider->Type == +Components::ColliderType::Sphere)
+        {
+          _sphereColliderShader->Use();
+          _sphereCollider->Use();
+
+          glEnable(GL_PRIMITIVE_RESTART);
+          glPrimitiveRestartIndex(2137);
+
+          auto colModel = transform->GetWorldMatrix();
+          
+          colModel = glm::translate(colModel, collider->Center);
+          colModel      = glm::scale(colModel, glm::vec3(collider->Size.x));
+          
+          _transformUniformData.model     = colModel;
+          _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+          _transformUniformData.modelViewProjection =
+              camera->ProjectionMatrix() * _transformUniformData.modelView;
+
+          // HACK: Assume for now that under slot 1 is camera uniform buffer
+          // TODO: Get the actual slot number from somewhere, somehow :)
+          _transformUniformBuffer.SetData(_transformUniformData);
+          _sphereColliderShader->BindUniformBlock("u_Transform", 0);
+          _sphereColliderShader->BindUniformBlock("u_Camera", 1);
+          _sphereColliderShader->SetVector("u_MainColor", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+          glDrawElements(_sphereCollider->GetPrimitive(), _sphereCollider->ElementCount(),
+                         GL_UNSIGNED_INT, NULL);
+
+          glDisable(GL_PRIMITIVE_RESTART);
         }
+
       }
 
 
