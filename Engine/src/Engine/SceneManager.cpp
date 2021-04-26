@@ -14,15 +14,17 @@ auto Engine::SceneManager::GetCurrentScene() -> std::shared_ptr< Scene > {
 /// </summary>
 /// <returns></returns>
 auto Engine::SceneManager::GetDisplayScene() -> std::shared_ptr< Scene > {
-  if (_openingScene)
-    return _loadingScene;
+  //if (_openingScene)
+  //  return _loadingScene;
   return _currentScene;
 }
 
 auto Engine::SceneManager::LoadScene(const std::string& file) -> void {
+
 }
 
 auto Engine::SceneManager::SaveScene(size_t id) -> void {
+
 }
 
 auto Engine::SceneManager::OpenScene(size_t id) -> void {

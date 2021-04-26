@@ -1,7 +1,12 @@
 #include <pch.h>
 #include <Components/Camera.h>
+#include <nlohmann/json.hpp>
 
 namespace Engine {
+  Camera::Camera()
+      : Component("Camera"), _fov(45), _aspect(1.77), _nearPlane(0.001f), _farPlane(1000.0f) {
+    flags.Set(CameraFlag::Dirty | CameraFlag::NewData);
+  }
   Camera::Camera(float fov, float aspect, float nearPlane, float farPlane)
       : Component("Camera"), _fov(fov), _aspect(aspect), _nearPlane(nearPlane),
         _farPlane(farPlane) {
@@ -66,6 +71,47 @@ namespace Engine {
 
   auto Camera::UniformData() const noexcept -> GL::CameraUniformData {
     return _matrices;
+  }
+
+  std::string Camera::SaveToJson()
+  {
+    nlohmann::json json = nlohmann::json{
+        {"componentType", "camera"},
+        {"fov", _fov},
+        {"aspect", _aspect},
+        {"nearPlane", _nearPlane},
+        {"farPlane", _farPlane},
+      {"flags", flags.GetState()}
+    };
+
+    return json.dump(4);
+  }
+
+  std::string Camera::SaveToJson(std::string filePath)
+  {
+    std::ofstream ofstream;
+    ofstream.open(filePath);
+    ofstream << SaveToJson();
+    ofstream.close();
+
+    return SaveToJson();
+  }
+
+  auto Camera::LoadFromJson(std::string filePath) -> void
+  {
+    nlohmann::json json;
+    if (filePath[0] == '{' || filePath[0] == '\n')  // HACK: Check if string is json
+      json = nlohmann::json::parse(filePath.begin(), filePath.end());
+    else {
+      auto content = Utility::ReadTextFile(filePath);
+      json         = nlohmann::json::parse(content.begin(), content.end());
+    }
+
+    Fov(json["fov"]);
+    Aspect(json["aspect"]);
+    NearPlane(json["nearPlane"]);
+    FarPlane(json["farPlane"]);
+    flags.Set(json["flags"]);
   }
 
   // auto Camera::GetViewMatrix() noexcept -> glm::mat4 {

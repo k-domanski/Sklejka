@@ -9,10 +9,10 @@
 void Engine::Systems::Physics::Update(float deltaTime) {
   for (auto entityId : _entities) {
     auto collider =
-        ECS::EntityManager::GetInstance().GetComponent< Components::Collider >(entityId);
+        ECS::EntityManager::GetComponent< Components::Collider >(entityId);
     auto rigidbody =
-        ECS::EntityManager::GetInstance().GetComponent< Components::Rigidbody >(entityId);
-    auto transform = ECS::EntityManager::GetInstance().GetComponent< Transform >(entityId);
+        ECS::EntityManager::GetComponent< Components::Rigidbody >(entityId);
+    auto transform = ECS::EntityManager::GetComponent< Transform >(entityId);
 
     if (!rigidbody->IsKinematic())
       continue;
@@ -26,10 +26,10 @@ void Engine::Systems::Physics::Update(float deltaTime) {
         continue;
 
       auto collider2 =
-          ECS::EntityManager::GetInstance().GetComponent< Components::Collider >(entity);
+          ECS::EntityManager::GetComponent< Components::Collider >(entity);
       auto rigidbody2 =
-          ECS::EntityManager::GetInstance().GetComponent< Components::Rigidbody >(entity);
-      auto transform2 = ECS::EntityManager::GetInstance().GetComponent< Transform >(entity);
+          ECS::EntityManager::GetComponent< Components::Rigidbody >(entity);
+      auto transform2 = ECS::EntityManager::GetComponent< Transform >(entity);
 
       if (CheckCollision(collider, transform, collider2, transform2)) {
         // std::cout << "Colliding" << std::endl;
@@ -88,18 +88,36 @@ auto Engine::Systems::Physics::CreateBoxShape(std::shared_ptr< Components::Colli
 
   std::vector< glm::vec3 > vertices;
 
-  float xSize = c->Size.x / 2.0f;
+  float xSize = 0.5f;
+  float ySize = 0.5f;
+  float zSize = 0.5f;
+  /*float xSize = c->Size.x / 2.0f;
   float ySize = c->Size.y / 2.0f;
-  float zSize = c->Size.z / 2.0f;
+  float zSize = c->Size.z / 2.0f;*/
 
-  vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(-xSize, -ySize, -zSize, 1.0f)));
+  auto model = t->GetWorldMatrix();
+  model      = glm::translate(model, c->Center);
+  model      = glm::scale(model, c->Size);
+
+
+  vertices.push_back(glm::make_vec3(model * glm::vec4(-xSize, -ySize, -zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(model * glm::vec4(-xSize, ySize, -zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(model * glm::vec4(-xSize, ySize, zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(model * glm::vec4(-xSize, -ySize, zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(model * glm::vec4(xSize, -ySize, -zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(model * glm::vec4(xSize, ySize, -zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(model * glm::vec4(xSize, ySize, zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(model * glm::vec4(xSize, -ySize, zSize, 1.0f)));
+
+
+  /*vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(-xSize, -ySize, -zSize, 1.0f)));
   vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(-xSize, ySize, -zSize, 1.0f)));
   vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(-xSize, ySize, zSize, 1.0f)));
   vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(-xSize, -ySize, zSize, 1.0f)));
   vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(xSize, -ySize, -zSize, 1.0f)));
   vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(xSize, ySize, -zSize, 1.0f)));
   vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(xSize, ySize, zSize, 1.0f)));
-  vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(xSize, -ySize, zSize, 1.0f)));
+  vertices.push_back(glm::make_vec3(t->GetWorldMatrix() * glm::vec4(xSize, -ySize, zSize, 1.0f)));*/
 
   return Utility::GJK::Shape(vertices, center);
 }

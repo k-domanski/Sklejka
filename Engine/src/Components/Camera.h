@@ -22,6 +22,7 @@ namespace Engine {
 
   public:
     CameraBitFlags flags;
+    Camera();
     Camera(float fov, float aspect, float nearPlane, float farPlane);
     auto Fov() const noexcept -> float;
     auto Fov(float fov) noexcept -> float;
@@ -36,5 +37,8 @@ namespace Engine {
     auto ProjectionMatrix() const noexcept -> glm::mat4;
     auto ProjectionMatrix(const glm::mat4& projectionMatrix) noexcept -> glm::mat4;
     auto UniformData() const noexcept -> GL::CameraUniformData;
+    std::string SaveToJson() override;
+    std::string SaveToJson(std::string filePath) override;
+    auto LoadFromJson(std::string filePath) -> void override;
   };
 }  // namespace Engine

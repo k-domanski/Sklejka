@@ -6,7 +6,7 @@
 #include <Renderer/Vertex.h>
 
 namespace Engine::Renderer {
-  BETTER_ENUM(__MeshPrimitive, uint8_t, Plane);
+  BETTER_ENUM(__MeshPrimitive, uint8_t, Plane, WireframeBox);
   typedef __MeshPrimitive MeshPrimitive;
 
   class Mesh {
@@ -36,6 +36,7 @@ namespace Engine::Renderer {
     auto SendDataToBuffers() noexcept -> void;
     static auto CreatePrimitive(MeshPrimitive primitive) noexcept -> std::shared_ptr< Mesh >;
     static auto CreatePlane() noexcept -> std::shared_ptr< Mesh >;
+    static auto CreateWireframeBox() noexcept -> std::shared_ptr< Mesh >;
 
   public:
     static auto GetPrimitive(MeshPrimitive primitive) noexcept -> std::shared_ptr< Mesh >;

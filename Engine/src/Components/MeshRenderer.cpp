@@ -44,8 +44,8 @@ namespace Engine::Components {
   {
     using namespace nlohmann;
     json json = nlohmann::json{{"componentType", "meshRenderer"},
-      {"model", _model->GetFilepath()},
-        {"material", std::to_string(_material->GetAssetID())}};
+                               {"model", Utility::StripToRelativePath(_model->GetFilepath())},
+                               {"material", Utility::StripToRelativePath(_material->FilePath())}};
 
     return json.dump(4);
   }
@@ -60,25 +60,8 @@ namespace Engine::Components {
       json         = nlohmann::json::parse(content.begin(), content.end());
     }
 
-    std::string material_assetID_string = json["material"];
-    std::stringstream ss(material_assetID_string);
-    size_t material_assetID;
-    ss >> material_assetID;
-
     _model = AssetManager::GetModel(json["model"]);
-    _material = AssetManager::GetMaterial(material_assetID);
+    _material = AssetManager::GetMaterial(std::string(json["material"]));
   }
 
-  //auto MeshRenderer::LoadFromJsonString(std::string jsonString) -> void
-  //{
-  //  nlohmann::json json = nlohmann::json::parse(json.begin(), json.end());
-
-  //  std::string material_assetID_string = json["material"];
-  //  std::stringstream ss(material_assetID_string);
-  //  size_t material_assetID;
-  //  ss >> material_assetID;
-
-  //  _model    = AssetManager::GetModel(json["model"]);
-  //  _material = AssetManager::GetMaterial(material_assetID);
-  //}
 }  // namespace Engine::Components

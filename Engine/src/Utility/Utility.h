@@ -45,5 +45,6 @@ namespace Engine::Utility {
   };
 
   auto ReadTextFile(const std::string_view& fileName) -> std::string;
+  auto StripToRelativePath(const std::string& filePath) -> std::string;
   auto ParseShaderSource(std::string source, const std::string& file_path) -> ShaderParseResult;
 }  // namespace Engine::Utility

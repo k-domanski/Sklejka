@@ -6,6 +6,8 @@
 #include <App/Window.h>
 #include <App/AssetManager.h>
 
+#include "Components/Collider.h"
+
 namespace Engine::Systems {
   using namespace GL;
   Renderer::Renderer() {
@@ -21,10 +23,24 @@ namespace Engine::Systems {
 
     _quad         = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
     _quadShader   = AssetManager::GetShader("./shaders/screen_quad.glsl");
+
+    _boxCollider = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeBox);
+    _boxColliderShader = AssetManager::GetShader("./shaders/color.glsl");
+
     _cameraSystem = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
     _transformUniformBuffer.BindToSlot(_transformUniformSlot);
+
+    _debugMaterial = AssetManager::GetMaterial("./materials/_error_.mat");
+    if (_debugMaterial == nullptr) {
+      LOG_ERROR("Failed to load debug material: {}", "./materials/_error_.mat");
+    }
   }
   void Renderer::Update(float deltaTime) {
+    using Engine::Components::MeshRenderer;
+    using Engine::ECS::Entity;
+    using Engine::Renderer::Material;
+    using Engine::Renderer::Mesh;
+
     const auto camera = _cameraSystem->MainCamera();
     if (camera == nullptr) {
       return;
@@ -35,30 +51,85 @@ namespace Engine::Systems {
     GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth);
     GL::Context::DepthTest(true);
 
-    for (auto [material, vec] : _sortedEntities) {
-      if (material == nullptr)
+    // for (auto [material, vec] : _sortedEntities) {
+    for (auto& entityID : _entities) {
+      auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
+      auto material      = mesh_renderer->GetMaterial();
+      auto model         = mesh_renderer->GetModel();
+      std::shared_ptr< Mesh > mesh;
+      // If there is no mesh, there is nothing to show
+      if (model == nullptr || (mesh = model->GetRootMesh()) == nullptr) {
         continue;
-      material->Use();
-      for (auto entityID : vec) {
-        auto meshRenderer =
-            ECS::EntityManager ::GetInstance().GetComponent< Components::MeshRenderer >(entityID);
-        auto mesh      = meshRenderer->GetModel()->getRootMesh();
-        auto shader    = material->GetShader();
-        auto transform = ECS::EntityManager ::GetInstance().GetComponent< Transform >(entityID);
-        mesh->Use();
-        
-        _transformUniformData.model     = transform->GetWorldMatrix();
-        _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
-        _transformUniformData.modelViewProjection =
-            camera->ProjectionMatrix() * _transformUniformData.modelView;
-
-        // HACK: Assume for now that under slot 1 is camera uniform buffer
-        // TODO: Get the actual slot number from somewhere, somehow :)
-        _transformUniformBuffer.SetData(_transformUniformData);
-        shader->BindUniformBlock("u_Transform", 0);
-        shader->BindUniformBlock("u_Camera", 1);
-        glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
       }
+
+      // If no material -> Use debug
+      if (material == nullptr || material->GetShader() == nullptr) {
+        material = _debugMaterial;
+      }
+      auto shader          = material->GetShader();
+      const auto transform = ECS::EntityManager::GetComponent< Transform >(entityID);
+      material->Use();
+      mesh->Use();
+
+      _transformUniformData.model     = transform->GetWorldMatrix();
+      _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+      _transformUniformData.modelViewProjection =
+          camera->ProjectionMatrix() * _transformUniformData.modelView;
+
+      // HACK: Assume for now that under slot 1 is camera uniform buffer
+      // TODO: Get the actual slot number from somewhere, somehow :)
+      _transformUniformBuffer.SetData(_transformUniformData);
+      shader->BindUniformBlock("u_Transform", 0);
+      shader->BindUniformBlock("u_Camera", 1);
+      glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+
+      //collider
+      std::shared_ptr< Components::Collider > collider;
+      if ((collider = ECS::EntityManager::GetComponent< Components::Collider>(entityID)) != nullptr)
+      {
+        if (collider->Type == +Components::ColliderType::Box)
+        {
+          _boxColliderShader->Use();
+          _boxCollider->Use();
+
+          auto colModel = transform->GetWorldMatrix();
+          colModel      = glm::translate(colModel, collider->Center);
+          colModel      = glm::scale(colModel, collider->Size);
+
+          _transformUniformData.model     = colModel;
+          _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+          _transformUniformData.modelViewProjection =
+              camera->ProjectionMatrix() * _transformUniformData.modelView;
+
+          // HACK: Assume for now that under slot 1 is camera uniform buffer
+          // TODO: Get the actual slot number from somewhere, somehow :)
+          _transformUniformBuffer.SetData(_transformUniformData);
+          _boxColliderShader->BindUniformBlock("u_Transform", 0);
+          _boxColliderShader->BindUniformBlock("u_Camera", 1);
+          _boxColliderShader->SetVector("u_MainColor", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+          glDrawElements(_boxCollider->GetPrimitive(), _boxCollider->ElementCount(), GL_UNSIGNED_INT, NULL);
+        }
+      }
+
+
+      // for (auto entityID : vec) {
+      //  auto shader       = material->GetShader();
+      //  auto transform    = ECS::EntityManager::GetComponent< Transform >(entityID);
+      //  auto meshRenderer = ECS::EntityManager ::GetComponent< Components::MeshRenderer
+      //  >(entityID); auto mesh         = meshRenderer->GetModel()->GetRootMesh(); mesh->Use();
+
+      //  _transformUniformData.model     = transform->GetWorldMatrix();
+      //  _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+      //  _transformUniformData.modelViewProjection =
+      //      camera->ProjectionMatrix() * _transformUniformData.modelView;
+
+      //  // HACK: Assume for now that under slot 1 is camera uniform buffer
+      //  // TODO: Get the actual slot number from somewhere, somehow :)
+      //  _transformUniformBuffer.SetData(_transformUniformData);
+      //  shader->BindUniformBlock("u_Transform", 0);
+      //  shader->BindUniformBlock("u_Camera", 1);
+      //  glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+      //}
     }
     // Post process
     GL::Context::BindFramebuffer(FramebufferTarget::ReadWrite, 0);
@@ -87,9 +158,33 @@ namespace Engine::Systems {
   }
 
   auto Renderer::SortByMaterial() -> void {
-    for (auto entityID : _entities) {
-      auto meshRenderer =
-          ECS::EntityManager::GetInstance().GetComponent< Components::MeshRenderer >(entityID);
+    using Engine::Components::MeshRenderer;
+    using Engine::ECS::EntityID;
+    using Engine::Renderer::Material;
+    const auto OrderFunction = [](const EntityID lhs, const EntityID rhs) {
+      auto lmr  = ECS::EntityManager::GetComponent< MeshRenderer >(lhs);
+      auto rmr  = ECS::EntityManager::GetComponent< MeshRenderer >(rhs);
+      auto lmat = lmr->GetMaterial();
+      auto rmat = rmr->GetMaterial();
+      // If there is no material -> push at the end
+      if (lmat == nullptr) {
+        return false;
+      }
+      if (rmat == nullptr) {
+        return true;
+      }
+      // Sort by the queue and then by the asset ID
+      if (rmat->Queue() == rmat->Queue()) {
+        return rmat->GetAssetID() < rmat->GetAssetID();
+      }
+      return rmat->Queue() < rmat->Queue();
+    };
+    // Actual sort
+    std::sort(_entities.begin(), _entities.end(), OrderFunction);
+    // What the fuck :)
+    return;  // Retun the fuck out
+    /*for (auto entityID : _entities) {
+      auto meshRenderer = ECS::EntityManager::GetComponent< Components::MeshRenderer >(entityID);
       if (meshRenderer->IsDirty()) {
         _entitiesToSort.insert(entityID);
         meshRenderer->SetDirty(false);
@@ -97,9 +192,8 @@ namespace Engine::Systems {
     }
 
     for (auto entityID : _entitiesToSort) {
-      auto meshRenderer =
-          ECS::EntityManager::GetInstance().GetComponent< Components::MeshRenderer >(entityID);
-      auto material = meshRenderer->GetMaterial();
+      auto meshRenderer = ECS::EntityManager::GetComponent< Components::MeshRenderer >(entityID);
+      auto material     = meshRenderer->GetMaterial();
       if (material == nullptr)
         continue;
       for (auto& [materialFRST, vec] : _sortedEntities) {
@@ -118,6 +212,6 @@ namespace Engine::Systems {
         _sortedEntities[material].push_back(entityID);
     }
 
-    _entitiesToSort.clear();
+    _entitiesToSort.clear();*/
   }
 }  // namespace Engine::Systems

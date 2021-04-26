@@ -49,7 +49,7 @@ namespace Engine::ECS {
     }
 
     template< class T >
-    auto GetComponent(EntityID entityID) -> std::shared_ptr< T > {
+    auto GetComponentImpl(EntityID entityID) -> std::shared_ptr< T > {
       auto compTypeID = GetComponentTypeID< T >();
       auto list       = GetComponentList< T >();
       /*for (auto element : *list) {
@@ -59,6 +59,10 @@ namespace Engine::ECS {
       return list->GetComponent(entityID);
 
       // return nullptr;
+    }
+    template< class T >
+    static auto GetComponent(EntityID entityID) -> std::shared_ptr< T > {
+      return GetInstance().GetComponentImpl< T >(entityID);
     }
 
     template< class T >

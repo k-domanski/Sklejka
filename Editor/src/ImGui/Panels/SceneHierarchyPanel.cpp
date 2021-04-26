@@ -1,8 +1,11 @@
 #include "SceneHierarchyPanel.h"
 #include <imgui/imgui.h>
 #include <Systems/SceneGraph.h>
+#include <EditorLayer.h>
+#include <filesystem>
 
 using namespace Engine;
+
 namespace Editor {
   SceneHierarchyPanel::SceneHierarchyPanel() {
     _selectedCallback = [](const std::shared_ptr< Engine::ECS::Entity >& entity) {};
@@ -20,8 +23,21 @@ namespace Editor {
     if (ImGui::Button("+", ImVec2{25, 25})) {
       ImGui::OpenPopup("Create");
     }
-
+    ImGui::BeginChild("Supa Tree");
     DrawEntity(ECS::EntityManager::GetInstance().GetEntity(0));
+    ImGui::EndChild();
+    if (ImGui::BeginDragDropTarget()) {
+      if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
+        auto payload_str = std::string(static_cast< char* >(payload->Data));
+        LOG_TRACE("Drag n Drop: {}", payload_str);
+        auto ext = std::filesystem::path(payload_str).extension().string();
+        std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+        if (ext == ".fbx" || ext == ".obj") {
+          _editorLayer->AddObjectOnScene(payload_str);
+        }
+      }
+      ImGui::EndDragDropTarget();
+    }
 
     if (ImGui::BeginPopup("Create")) {
       if (ImGui::MenuItem("Create Empty")) {
@@ -37,13 +53,17 @@ namespace Editor {
   }
 
   void SceneHierarchyPanel::DrawEntity(std::shared_ptr< ECS::Entity > entity) {
+    if (entity == nullptr) {
+      return;
+    }
     auto camera = entity->GetComponent< Camera >();
     if (camera != nullptr && camera->flags.GetAll(CameraFlag::EditorCamera) != 0)
       return;
 
-    auto id              = entity->GetID();
-    auto tag             = entity->Name();
-    const auto& children = m_Scene->SceneGraph()->GetChildren(id);
+    auto id                = entity->GetID();
+    auto tag               = entity->Name();
+    const auto& children   = m_Scene->SceneGraph()->GetChildren(id);
+    const auto panel_width = ImGui::GetWindowContentRegionWidth();
 
     ImGuiTreeNodeFlags flags = ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0)
                                | ((children.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0)
@@ -53,6 +73,13 @@ namespace Editor {
     bool open = ImGui::TreeNodeEx((void*)entity->GetID(), flags, tag.c_str());
     if (ImGui::IsItemClicked()) {
       SetSelectedEntity(entity);
+    }
+    if (ImGui::BeginPopupContextItem("item context menu")) {
+      if (ImGui::Selectable("Remove")) {
+        LOG_INFO("Removing {}", entity->Name());
+        RecursiveRemoveEntity(entity->GetID());
+      }
+      ImGui::EndPopup();
     }
     if (ImGui::BeginDragDropSource()) {
       ImGui::SetDragDropPayload("Scene_Hierarchy", &id, sizeof(ECS::EntityID));
@@ -73,4 +100,13 @@ namespace Editor {
       ImGui::TreePop();
     }
   }
+
+  auto SceneHierarchyPanel::RecursiveRemoveEntity(Engine::ECS::EntityID entityID) -> void {
+    const auto sg = m_Scene->SceneGraph();
+    for (auto& child : sg->GetChildren(entityID)) {
+      RecursiveRemoveEntity(child);
+    }
+    Engine::ECS::EntityManager::GetInstance().RemoveEntity(entityID);
+  }
+
 }  // namespace Editor

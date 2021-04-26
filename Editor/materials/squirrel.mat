@@ -1,11 +1,11 @@
 {
     "assetID": "3554629179663661456",
-    "diffuseFilepath": "D:\\Studia\\Semestr VI\\PBL\\Engine\\Sklejka\\Editor\\textures\\squ.png",
+    "diffuseFilepath": "./textures\\squ.png",
     "mainColor": [
         1.0,
         1.0,
         1.0,
         1.0
     ],
-    "shaderFilepath": "D:\\Studia\\Semestr VI\\PBL\\Engine\\Sklejka\\Editor\\shaders\\default.glsl"
+    "shaderFilepath": "./shaders\\default.glsl"
 }

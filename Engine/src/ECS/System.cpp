@@ -3,18 +3,16 @@
 #include "Component.h"
 
 namespace Engine::ECS {
-  auto System::ComponentsCount() -> int
-  {
+  auto System::ComponentsCount() -> int {
     return _entities.size();
   }
 
-  auto System::ContainsSignature(ComponentTypeID componentID) -> bool
-  {
+  auto System::ContainsSignature(ComponentTypeID componentID) -> bool {
     return _signatures.find(componentID) != _signatures.end();
   }
 
   auto System::SignatureMatch(const EntitySignature& entitySignature) -> bool {
-    for(auto& compTypeID : _signatures) {
+    for (auto& compTypeID : _signatures) {
       auto it = entitySignature.find(compTypeID);
       if (it == entitySignature.end())
         return false;
@@ -22,17 +20,16 @@ namespace Engine::ECS {
     return true;
   }
 
-  auto System::AddEntity(EntityID id) -> void
-  {
-    if (_entities.find(id) != _entities.end())
+  auto System::AddEntity(EntityID id) -> void {
+    if (auto it = std::find(_entities.begin(), _entities.end(), id); it != _entities.end()) {
       return;
-
-    _entities.insert(id);
+    }
+    _entities.push_back(id);
   }
 
-  auto System::RemoveEntity(EntityID id) -> void
-  {
-    if (_entities.find(id) != _entities.end())
-      _entities.erase(id);
+  auto System::RemoveEntity(EntityID id) -> void {
+    if (auto it = std::find(_entities.begin(), _entities.end(), id); it != _entities.end()) {
+      _entities.erase(it);
+    }
   }
-}  // namespace ECS
+}  // namespace Engine::ECS
