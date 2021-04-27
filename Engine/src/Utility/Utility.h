@@ -8,6 +8,7 @@ namespace Engine::Utility {
   class BitFlags {
   public:
     typedef typename EType::_integral value_t;
+    typedef EType Flag;
     auto Set(const value_t flag) noexcept -> void {
       _state = _state | flag;
     }
@@ -48,3 +49,9 @@ namespace Engine::Utility {
   auto StripToRelativePath(const std::string& filePath) -> std::string;
   auto ParseShaderSource(std::string source, const std::string& file_path) -> ShaderParseResult;
 }  // namespace Engine::Utility
+
+namespace Engine {
+  BETTER_ENUM(__DataFlags, uint8_t, Dirty = Helpers::Bit8(0), Updated = Helpers::Bit8(1));
+  typedef Utility::BitFlags< __DataFlags > DataFlags;
+
+}  // namespace Engine
