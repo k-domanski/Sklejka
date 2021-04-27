@@ -49,7 +49,7 @@ void EditorLayer::OnAttach() {
   m_Entity2 = ECS::EntityManager::GetInstance().CreateEntity();
   m_Pepe    = ECS::EntityManager::GetInstance().CreateEntity();
   // LOG_TRACE("Past");
-  m_Material = AssetManager::GetMaterial("./scenes/material.json");
+  m_Material = nullptr;
   // m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
   //                                       "./textures/pepo_sad.png", texture);
 
@@ -84,8 +84,8 @@ void EditorLayer::OnAttach() {
   // m_Entity1->GetComponent< Components::MeshRenderer
   // >()->SaveToJson("./scenes/meshRenderer1.json");
 
-  box1->LoadFromJson("./scenes/box1.json");
-  box2->LoadFromJson("./scenes/box2.json");
+  //box1->LoadFromJson("./scenes/box1.json");
+  //box2->LoadFromJson("./scenes/box2.json");
 
   /*box1->Size      = glm::vec3(1.0f);
   box1->IsTrigger = false;
@@ -101,11 +101,6 @@ void EditorLayer::OnAttach() {
   box1->SaveToJson("./scenes/box1.json");
   box2->SaveToJson("./scenes/box2.json");*/
 
-  auto tr1 = m_Entity1->GetComponent< Transform >();
-  auto tr2 = m_Entity2->GetComponent< Transform >();
-
-  tr1->LoadFromJson("./scenes/tr1.json");
-  tr2->LoadFromJson("./scenes/tr2.json");
   m_PepeTransform->Position({0.0f, 1.0f, 0.0f});
   m_PepeTransform->Scale({0.2f, 0.2f, 0.2f});
 
