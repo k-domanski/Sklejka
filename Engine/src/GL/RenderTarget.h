@@ -3,6 +3,7 @@
 #include <GL/FrameBuffer.h>
 #include <GL/TextureAttachment.h>
 #include <GL/Renderbuffer.h>
+#include <Utility/Utility.h>
 
 namespace Engine::GL {
   class RenderTarget {
@@ -14,8 +15,14 @@ namespace Engine::GL {
     std::shared_ptr< IFramebufferAttachment > _depthAttachment;
     std::shared_ptr< IFramebufferAttachment > _stencilAttachment;
     std::shared_ptr< IFramebufferAttachment > _depthStencilAttachment;
+    /* Cache attachment operations */
+    std::map< GLuint, std::shared_ptr< IFramebufferAttachment > > _newColorAttachments;
+    std::shared_ptr< IFramebufferAttachment > _newDepthAttachment;
+    std::shared_ptr< IFramebufferAttachment > _newStencilAttachment;
+    std::shared_ptr< IFramebufferAttachment > _newDepthStencilAttachment;
 
   public:
+    Engine::DataFlags flags;
     RenderTarget(GLuint width, GLuint height) noexcept;
     RenderTarget(const RenderTarget&) = delete;
     auto operator=(const RenderTarget&) -> RenderTarget& = delete;
@@ -33,7 +40,12 @@ namespace Engine::GL {
 
   private:
     auto SetDrawBuffers() noexcept -> void;
-    auto BindSwap(GLenum target) noexcept -> GLuint;
+    auto BindSwap(FramebufferTarget target) noexcept -> GLuint;
+    auto UpdateAttachments() noexcept -> void;
+    auto UpdateColorAttachments() noexcept -> void;
+    auto UpdateDepthAttachment() noexcept -> void;
+    auto UpdateStencilAttachment() noexcept -> void;
+    auto UpdateDepthStencilAttachment() noexcept -> void;
   };
 
 }  // namespace Engine::GL

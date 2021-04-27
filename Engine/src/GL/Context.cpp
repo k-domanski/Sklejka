@@ -52,7 +52,9 @@ namespace Engine::GL {
   auto Context::SetClearColor(const glm::vec4& color) noexcept -> void {
     if (_clearColor == color)
       return;
-    glClearColor(color.r, color.g, color.b, color.a);
+    /* Apply gamma correction */
+    auto g_color = glm::pow(glm::vec3(color), glm::vec3(2.2f));
+    glClearColor(g_color.r, g_color.g, g_color.b, color.a);
     _clearColor = color;
   }
   auto Context::SetClearBufferMask(GLbitfield mask) noexcept -> void {
