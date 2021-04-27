@@ -82,7 +82,7 @@ namespace Engine {
         return nullptr;
       }
       int x, y, n;
-      auto pixel_data = stbi_load(file.data(), &x, &y, &n, 4);
+      auto pixel_data = stbi_loadf(file.data(), &x, &y, &n, 4);
       auto texture    = std::make_shared< GL::Texture2D >(x, y, pixel_data);
       texture->FilePath(file);
       stbi_image_free(pixel_data);

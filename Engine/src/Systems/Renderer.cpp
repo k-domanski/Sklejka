@@ -17,8 +17,9 @@ namespace Engine::Systems {
     auto size        = Window::Get().GetScreenSize();
     _quad            = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
     _pingPongBuffer  = std::make_shared< PingPongBuffer >(size);
-    _finalPassShader = AssetManager::GetShader("./shaders/screen_quad.glsl");
     _blurShader      = AssetManager::GetShader("./shaders/blur.glsl");
+    _fishEyeShader   = AssetManager::GetShader("./shaders/fish_eye.glsl");
+    _finalPassShader = AssetManager::GetShader("./shaders/final_pass.glsl");
 
     _boxCollider =
         Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeBox);
@@ -220,8 +221,17 @@ namespace Engine::Systems {
     GL::Context::DepthTest(false);
     _quad->Use();
 
+    /* Fish Eye */
+    if (false) {
+      _fishEyeShader->Use();
+      _fishEyeShader->SetValue("u_MainTexture", 0);
+      _pingPongBuffer->Swap();
+      _pingPongBuffer->BackTexture()->Bind(0);
+      glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
+    }
+
     /* Blur */
-    if(true){
+    if (false) {
       _blurShader->Use();
       _blurShader->SetValue("u_MainTexture", 0);
       // Horizontal
