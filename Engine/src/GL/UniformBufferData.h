@@ -12,4 +12,11 @@ namespace Engine::GL {
     glm::mat4 projection;      // 16 byte alignment
     glm::mat4 viewProjection;  // 16 byte alignment
   };
+  struct DirectionalLightUniformData {
+    glm::vec3 direction;  // 16 byte alignment
+    glm::vec3 ambient;    // 16 byte alignment
+    glm::vec3 diffuse;    // 16 byte alignment
+    glm::vec3 specular;   // 16 byte alignment
+    float intensity;      // 16 byte alignment
+  };
 }  // namespace Engine::GL
