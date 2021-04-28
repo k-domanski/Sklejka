@@ -249,28 +249,27 @@ namespace Editor {
     }
   };
   /*Directional Light*/
-  class DirectionalLightView : public ComponentView<Engine::DirectionalLight> {
+  class DirectionalLightView : public ComponentView< Engine::DirectionalLight > {
     auto OnDraw() -> void override {
-        glm::vec3 direction = _component->Direction();
-        DrawVec3("Direction", direction);
-        _component->Direction(direction);
+      glm::vec3 direction = _component->Direction();
+      DrawVec3("Direction", direction);
+      _component->Direction(direction);
 
-        /*Crashuje przy edycji gdy obydwa sa otwarte*/
-        glm::vec3 ambient = _component->Ambient();
-        if (ImGui::CollapsingHeader("Ambient")) {
-            ImGui::PushItemWidth(125);
-            ImGui::ColorPicker3("", &ambient[0]);
-            ImGui::PopItemWidth();
-        }
-        _component->Ambient(ambient);
+      glm::vec3 ambient = _component->Ambient();
+      if (ImGui::CollapsingHeader("Ambient##h")) {
+        ImGui::PushItemWidth(125);
+        ImGui::ColorPicker3("Ambient##p", &ambient[0]);
+        ImGui::PopItemWidth();
+      }
+      _component->Ambient(ambient);
 
-        glm::vec3 diffuse = _component->Diffuse();
-        if (ImGui::CollapsingHeader("Diffuse")) {
-            ImGui::PushItemWidth(125);
-            ImGui::ColorPicker3("", &diffuse[0]);
-            ImGui::PopItemWidth();
-        }
-        _component->Diffuse(diffuse);
+      glm::vec3 diffuse = _component->Diffuse();
+      if (ImGui::CollapsingHeader("Diffuse##h")) {
+        ImGui::PushItemWidth(125);
+        ImGui::ColorPicker3("Diffuse##p", &diffuse[0]);
+        ImGui::PopItemWidth();
+      }
+      _component->Diffuse(diffuse);
     }
   };
 }  // namespace Editor

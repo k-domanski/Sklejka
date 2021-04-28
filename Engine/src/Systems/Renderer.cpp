@@ -46,6 +46,8 @@ namespace Engine::Systems {
     using Engine::Renderer::Material;
     using Engine::Renderer::Mesh;
 
+    int cutted = 0;
+
     const auto camera = _cameraSystem->MainCamera();
     if (camera == nullptr) {
       return;
@@ -73,13 +75,23 @@ namespace Engine::Systems {
       }
       auto shader          = material->GetShader();
       const auto transform = ECS::EntityManager::GetComponent< Transform >(entityID);
-      material->Use();
-      mesh->Use();
 
       _transformUniformData.model     = transform->GetWorldMatrix();
       _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
       _transformUniformData.modelViewProjection =
           camera->ProjectionMatrix() * _transformUniformData.modelView;
+
+      // frustum culling
+      CalculateFrustrum(_transformUniformData.modelViewProjection);
+      auto sphere = model->GetBoundingSphere();
+      if (!SphereInFrustum(sphere.first, sphere.second)) {
+        //std::cout << "cutted by frustum" << std::endl;
+        cutted++;
+        continue;
+      }
+
+      material->Use();
+      mesh->Use();
 
       // HACK: Assume for now that under slot 1 is camera uniform buffer
       // TODO: Get the actual slot number from somewhere, somehow :)
@@ -144,7 +156,7 @@ namespace Engine::Systems {
         }
       }
     }
-
+    std::cout << "cutted by frustum: "<< cutted << std::endl;
     cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
     // Post process
     PostProcessing();
@@ -222,6 +234,88 @@ namespace Engine::Systems {
 
     _entitiesToSort.clear();*/
   }
+
+  auto Renderer::CalculateFrustrum(glm::mat4 clip) -> void {
+    //auto clip = proj * modelView;
+    float t;
+    // right
+    _frustum[0][0] = clip[0][3] - clip[0][0];
+    _frustum[0][1] = clip[1][3] - clip[1][0];
+    _frustum[0][2] = clip[2][3] - clip[2][0];
+    _frustum[0][3] = clip[3][3] - clip[3][0];
+    t              = sqrt(_frustum[0][0] * _frustum[0][0] + _frustum[0][1] * _frustum[0][1]
+             + _frustum[0][2] * _frustum[0][2]);
+    _frustum[0][0] /= t;
+    _frustum[0][1] /= t;
+    _frustum[0][2] /= t;
+    _frustum[0][3] /= t;
+    // left
+    _frustum[1][0] = clip[0][3] + clip[0][0];
+    _frustum[1][1] = clip[1][3] + clip[1][0];
+    _frustum[1][2] = clip[2][3] + clip[2][0];
+    _frustum[1][3] = clip[3][3] + clip[3][0];
+    t              = sqrt(_frustum[1][0] * _frustum[1][0] + _frustum[1][1] * _frustum[1][1]
+             + _frustum[1][2] * _frustum[1][2]);
+    _frustum[1][0] /= t;
+    _frustum[1][1] /= t;
+    _frustum[1][2] /= t;
+    _frustum[1][3] /= t;
+    // bottom
+    _frustum[2][0] = clip[0][3] + clip[0][1];
+    _frustum[2][1] = clip[1][3] + clip[1][1];
+    _frustum[2][2] = clip[2][3] + clip[2][1];
+    _frustum[2][3] = clip[3][3] + clip[3][1];
+    t              = sqrt(_frustum[2][0] * _frustum[2][0] + _frustum[2][1] * _frustum[2][1]
+             + _frustum[2][2] * _frustum[2][2]);
+    _frustum[2][0] /= t;
+    _frustum[2][1] /= t;
+    _frustum[2][2] /= t;
+    _frustum[2][3] /= t;
+    // top
+    _frustum[3][0] = clip[0][3] - clip[0][1];
+    _frustum[3][1] = clip[1][3] - clip[1][1];
+    _frustum[3][2] = clip[2][3] - clip[2][1];
+    _frustum[3][3] = clip[3][3] - clip[3][1];
+    t              = sqrt(_frustum[3][0] * _frustum[3][0] + _frustum[3][1] * _frustum[3][1]
+             + _frustum[3][2] * _frustum[3][2]);
+    _frustum[3][0] /= t;
+    _frustum[3][1] /= t;
+    _frustum[3][2] /= t;
+    _frustum[3][3] /= t;
+    // far
+    _frustum[4][0] = clip[0][3] - clip[0][2];
+    _frustum[4][1] = clip[1][3] - clip[1][2];
+    _frustum[4][2] = clip[2][3] - clip[2][2];
+    _frustum[4][3] = clip[3][3] - clip[3][2];
+    t              = sqrt(_frustum[4][0] * _frustum[4][0] + _frustum[4][1] * _frustum[4][1]
+             + _frustum[4][2] * _frustum[4][2]);
+    _frustum[4][0] /= t;
+    _frustum[4][1] /= t;
+    _frustum[4][2] /= t;
+    _frustum[4][3] /= t;
+    // near
+    _frustum[5][0] = clip[0][3] + clip[0][2];
+    _frustum[5][1] = clip[1][3] + clip[1][2];
+    _frustum[5][2] = clip[2][3] + clip[2][2];
+    _frustum[5][3] = clip[3][3] + clip[3][2];
+    t              = sqrt(_frustum[5][0] * _frustum[5][0] + _frustum[5][1] * _frustum[5][1]
+             + _frustum[5][2] * _frustum[5][2]);
+    _frustum[5][0] /= t;
+    _frustum[5][1] /= t;
+    _frustum[5][2] /= t;
+    _frustum[5][3] /= t;
+  }
+
+  auto Renderer::SphereInFrustum(glm::vec3 center, float radius) -> bool {
+    for (int i = 0; i < 6; ++i) {
+      if (_frustum[i][0] * center.x + _frustum[i][1] * center.y + _frustum[i][2] * center.z
+              + _frustum[i][3]
+          <= -radius)
+        return false;
+    }
+      return true;
+  }
+
   auto Renderer::PostProcessing() -> void {
     /* Context Setup */
     GL::Context::DepthTest(false);
