@@ -65,6 +65,12 @@ namespace Engine::Renderer {
     _sphereCenter     = glm::vec3(0.0f);  // for now its enough latter maybe average vertex?
     float maxDistance = 0;
 
+    for (auto vertex : mesh->GetVertices())
+    {
+      _sphereCenter += vertex.position;
+    }
+    _sphereCenter /= mesh->GetVertices().size();
+
     for (auto vertex : mesh->GetVertices()) {
       float distance = glm::distance(vertex.position, _sphereCenter);
       if (distance > maxDistance)
