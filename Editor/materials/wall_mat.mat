@@ -7,5 +7,5 @@
         0.4595959782600403,
         1.0
     ],
-    "shaderFilepath": "./\\shaders\\color.glsl"
+    "shaderFilepath": "./\\shaders\\color_light.glsl"
 }
