@@ -43,9 +43,11 @@ namespace Engine::Components {
   std::string MeshRenderer::SaveToJson()
   {
     using namespace nlohmann;
-    json json = nlohmann::json{{"componentType", "meshRenderer"},
-                               {"model", Utility::StripToRelativePath(_model->GetFilepath())},
-                               {"material", Utility::StripToRelativePath(_material->FilePath())}};
+    json json = nlohmann::json{
+        {"componentType", "meshRenderer"},
+        {"model", Utility::StripToRelativePath(_model->GetFilepath())},
+        {"material",
+         _material != nullptr ? Utility::StripToRelativePath(_material->FilePath()) : ""}};
 
     return json.dump(4);
   }
