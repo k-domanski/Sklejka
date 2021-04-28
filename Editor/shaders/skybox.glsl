@@ -1,7 +1,7 @@
 #version 430
 
 #shader vertex
-#include "vs_common.incl"
+// #include "vs_common.incl"
 
 layout (location = 0) in vec3 aPos;
 
@@ -19,7 +19,7 @@ void main()
 #endshader
 
 #shader fragment
-#include "fs_common.incl"
+// #include "fs_common.incl"
 
 out vec4 FragColor;
 

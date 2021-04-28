@@ -9,6 +9,10 @@
 #include <Systems/CameraSystem.h>
 #include <Renderer/PingPongBuffer.h>
 
+namespace Engine::GL {
+  class Cubemap;
+}
+
 namespace Engine::Systems {
   class Renderer : public ECS::System {
   public:
@@ -36,6 +40,8 @@ namespace Engine::Systems {
 
     std::shared_ptr< CameraSystem > _cameraSystem;
     std::shared_ptr< Engine::Renderer::Material > _debugMaterial;
+
+    std::shared_ptr<GL::Cubemap> cubemap;
 
     uint32_t _transformUniformSlot{0u};
     GL::TransformUniformData _transformUniformData;
