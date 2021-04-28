@@ -11,6 +11,7 @@ namespace Engine::Systems {
     AddSignature< Camera >();
     AddSignature< Transform >();
 
+    _editorView = true;
     /*auto size      = Window::Get().GetScreenSize();
     _renderTexture = std::make_shared< RenderTarget >(size.x, size.y);
     _renderTexture->AttachColor(0, std::make_shared< TextureAttachment >(
@@ -43,7 +44,7 @@ namespace Engine::Systems {
     if (_mainCamera == nullptr) {
       for (auto entityID : _entities) {
         auto camera = EntityManager::GetComponent< Camera >(entityID);
-        if (camera->flags.Get(CameraFlag::MainCamera)) {
+        if (camera->flags.Get(_editorView ? CameraFlag::EditorCamera : CameraFlag::MainCamera)) {
           if (_mainCamera == nullptr) {
             _mainCamera = camera;
           } else {
@@ -62,5 +63,10 @@ namespace Engine::Systems {
   }
   auto CameraSystem::MainCamera() const noexcept -> std::shared_ptr< Camera > {
     return _mainCamera;
+  }
+
+  auto CameraSystem::SwitchView() -> void {
+    _mainCamera = nullptr;
+    _editorView = !_editorView;
   }
 }  // namespace Engine::Systems

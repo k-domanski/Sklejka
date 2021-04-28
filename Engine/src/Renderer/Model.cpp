@@ -10,18 +10,23 @@ namespace Engine::Renderer {
   Model::Model(const std::shared_ptr< Mesh >& mesh) noexcept {
     _filepath = "";
     meshes.push_back(mesh);
+    CreateBoundingSphere();
   }
   Model::Model(std::string_view path) {
     loadModel(path);
+    CreateBoundingSphere();
   }
 
   std::shared_ptr< Mesh > Model::GetRootMesh() {
     return meshes[0];
   }
 
-  std::string Model::GetFilepath()
-  {
+  std::string Model::GetFilepath() {
     return _filepath;
+  }
+
+  std::pair< glm::vec3, float > Model::GetBoundingSphere() {
+    return std::make_pair(_sphereCenter, _radius);
   }
 
   void Model::loadModel(std::string_view path) {
@@ -52,6 +57,21 @@ namespace Engine::Renderer {
     for (size_t i = 0; i < node->mNumChildren; i++) {
       processNode(node->mChildren[i], scene, lastMesh);
     }
+  }
+
+  void Model::CreateBoundingSphere() {
+    const auto mesh = GetRootMesh();
+
+    _sphereCenter     = glm::vec3(0.0f);  // for now its enough latter maybe average vertex?
+    float maxDistance = 0;
+
+    for (auto vertex : mesh->GetVertices()) {
+      float distance = glm::distance(vertex.position, _sphereCenter);
+      if (distance > maxDistance)
+        maxDistance = distance;
+    }
+
+    _radius = maxDistance;
   }
 
   std::shared_ptr< Mesh > Model::processMesh(aiMesh* mesh, const aiScene* scene) {
