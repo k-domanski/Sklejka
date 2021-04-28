@@ -1,0 +1,11 @@
+{
+    "assetID": "104593292668041438",
+    "diffuseFilepath": "./textures/Stormtrooper_D.png",
+    "mainColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "shaderFilepath": "./shaders/default.glsl"
+}
