@@ -249,19 +249,27 @@ namespace Editor {
     }
   };
   /*Directional Light*/
-  class DirectionalLightView : public ComponentView<Engine::DirectionalLight> {
+  class DirectionalLightView : public ComponentView< Engine::DirectionalLight > {
     auto OnDraw() -> void override {
-        glm::vec3 direction = _component->Direction();
-        DrawVec3("Direction", direction);
-        _component->Direction(direction);
+      glm::vec3 direction = _component->Direction();
+      DrawVec3("Direction", direction);
+      _component->Direction(direction);
 
-        glm::vec3 ambient = _component->Ambient();
-        DrawVec3("Ambient", ambient);
-        _component->Ambient(ambient);
+      glm::vec3 ambient = _component->Ambient();
+      if (ImGui::CollapsingHeader("Ambient##h")) {
+        ImGui::PushItemWidth(125);
+        ImGui::ColorPicker3("Ambient##p", &ambient[0]);
+        ImGui::PopItemWidth();
+      }
+      _component->Ambient(ambient);
 
-        glm::vec3 diffuse = _component->Diffuse();
-        DrawVec3("Diffuse", diffuse);
-        _component->Diffuse(diffuse);
+      glm::vec3 diffuse = _component->Diffuse();
+      if (ImGui::CollapsingHeader("Diffuse##h")) {
+        ImGui::PushItemWidth(125);
+        ImGui::ColorPicker3("Diffuse##p", &diffuse[0]);
+        ImGui::PopItemWidth();
+      }
+      _component->Diffuse(diffuse);
     }
   };
 }  // namespace Editor
