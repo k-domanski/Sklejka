@@ -93,9 +93,9 @@ namespace Engine::Renderer {
       vec.z         = mesh->mNormals[i].z;
       vertex.normal = vec;
 
-      uv.x      = mesh->mTextureCoords[0][i].x;
+     /* uv.x      = mesh->mTextureCoords[0][i].x;
       uv.y      = mesh->mTextureCoords[0][i].y;
-      vertex.uv = uv;
+      vertex.uv = uv;*/
 
       if (mesh->mTextureCoords[0]) {
         glm::vec2 vec;

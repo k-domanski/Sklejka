@@ -41,6 +41,10 @@ namespace Engine::Systems {
     GL::TransformUniformData _transformUniformData;
     GL::TransformUniformBuffer _transformUniformBuffer;
 
+    float _frustum[6][4];
+
+    auto CalculateFrustrum(glm::mat4 proj, glm::mat4 modelView) -> void;
+    auto SphereInFrustum(glm::vec3 center, float radius) -> bool;
     auto PostProcessing() -> void;
     auto SortByMaterial() -> void;
   };
