@@ -7,6 +7,7 @@
 #include <App/AssetManager.h>
 
 #include "Components/Collider.h"
+#include "GL/Cubemap.h"
 
 namespace Engine::Systems {
   using namespace GL;
@@ -36,6 +37,8 @@ namespace Engine::Systems {
     if (_debugMaterial == nullptr) {
       LOG_ERROR("Failed to load debug material: {}", "./materials/_error_.mat");
     }
+
+    cubemap = std::make_shared< Cubemap >("./skyboxes/forest");
   }
   void Renderer::Update(float deltaTime) {
     using Engine::Components::MeshRenderer;
@@ -154,7 +157,7 @@ namespace Engine::Systems {
       }
     }
     std::cout << "cutted by frustum: "<< cutted << std::endl;
-
+    cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
     // Post process
     PostProcessing();
   }
