@@ -31,6 +31,7 @@ namespace Engine::Renderer {
     auto Use() noexcept -> void;
     auto ElementCount() const noexcept -> GLuint;
     auto GetPrimitive() const noexcept -> GL::Primitive;
+    auto GetVertices() const -> std::vector< Vertex >;
 
   private:
     auto SendDataToBuffers() noexcept -> void;

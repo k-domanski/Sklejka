@@ -23,7 +23,6 @@ void main() {
 
 layout(std140) uniform u_Directional {
 	vec3 u_Direction;
-
 	vec3 u_Ambient;
 	vec3 u_Diffuse;
 	vec3 u_Specular;

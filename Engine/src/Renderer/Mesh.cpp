@@ -41,6 +41,11 @@ namespace Engine::Renderer {
   auto Mesh::GetPrimitive() const noexcept -> GL::Primitive {
     return _primitive;
   }
+
+  auto Mesh::GetVertices() const -> std::vector< Vertex > {
+    return _vertexData;
+  }
+
   auto Mesh::SendDataToBuffers() noexcept -> void {
     _vertexArray.Bind();
     _vertexBuffer.SetData(_vertexData.size() * sizeof(Vertex), _vertexData.data());

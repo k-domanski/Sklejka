@@ -84,8 +84,8 @@ void EditorLayer::OnAttach() {
   // m_Entity1->GetComponent< Components::MeshRenderer
   // >()->SaveToJson("./scenes/meshRenderer1.json");
 
-  //box1->LoadFromJson("./scenes/box1.json");
-  //box2->LoadFromJson("./scenes/box2.json");
+  // box1->LoadFromJson("./scenes/box1.json");
+  // box2->LoadFromJson("./scenes/box2.json");
 
   /*box1->Size      = glm::vec3(1.0f);
   box1->IsTrigger = false;
@@ -135,6 +135,7 @@ void EditorLayer::OnEvent(Event& event) {
   dispatcher.Dispatch< MouseScrolledEvent >(BIND_EVENT_FN(EditorLayer::OnMouseScroll));
   dispatcher.Dispatch< MouseButtonPressedEvent >(BIND_EVENT_FN(EditorLayer::OnMouseButtonPress));
   dispatcher.Dispatch< MouseButtonReleasedEvent >(BIND_EVENT_FN(EditorLayer::OnMouseButtonRelease));
+  dispatcher.Dispatch< KeyPressedEvent >(BIND_EVENT_FN(EditorLayer::OnKeyPress));
 }
 
 void EditorLayer::OnImGuiRender() {
@@ -169,6 +170,15 @@ bool EditorLayer::OnMouseButtonPress(MouseButtonPressedEvent& e) {
 
 bool EditorLayer::OnMouseButtonRelease(MouseButtonReleasedEvent& e) {
   return false;
+}
+
+bool EditorLayer::OnKeyPress(Engine::KeyPressedEvent& e) {
+  if (e.GetKeyCode() == GLFW_KEY_C) {
+    // TODO: switch camera somehow
+    // SceneManager::GetCurrentScene().
+    ECS::EntityManager::GetInstance().GetSystem< Systems::CameraSystem >()->SwitchView();
+  }
+  return true;
 }
 
 auto EditorLayer::UpdateEditorCamera() -> void {
@@ -304,8 +314,11 @@ auto EditorLayer::LoadScene() -> void {
       entity->LoadFromJson(separated_json);
       if (entity->HasComponent< Camera >())  // HACK: only camera is editor camera
       {
-        m_EditorCamera.camera = entity->GetComponent< Camera >();            
+        m_EditorCamera.camera    = entity->GetComponent< Camera >();
         m_EditorCamera.transform = entity->GetComponent< Transform >();
+        // HACK: set camera to editor camera only, camera switching
+        m_EditorCamera.camera->flags.Set(CameraFlag::EditorCamera);
+        m_EditorCamera.camera->flags.Clear(CameraFlag::MainCamera);
       }
       sg->AddChild(0, entity->GetID());
     }

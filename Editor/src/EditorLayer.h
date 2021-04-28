@@ -29,6 +29,7 @@ private:
   bool OnMouseScroll(Engine::MouseScrolledEvent& e);
   bool OnMouseButtonPress(Engine::MouseButtonPressedEvent& e);
   bool OnMouseButtonRelease(Engine::MouseButtonReleasedEvent& e);
+  bool OnKeyPress(Engine::KeyPressedEvent& e);
   auto UpdateEditorCamera() -> void;
   auto DrawMenuBar() -> void;
   auto SaveScene() -> void;

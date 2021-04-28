@@ -83,6 +83,7 @@ namespace Engine::Systems {
       _transformUniformBuffer.SetData(_transformUniformData);
       shader->BindUniformBlock("u_Transform", 0);
       shader->BindUniformBlock("u_Camera", 1);
+      shader->BindUniformBlock("u_Directional", 2);
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
 
       // collider
