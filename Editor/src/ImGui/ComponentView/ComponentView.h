@@ -255,12 +255,21 @@ namespace Editor {
         DrawVec3("Direction", direction);
         _component->Direction(direction);
 
+        /*Crashuje przy edycji gdy obydwa sa otwarte*/
         glm::vec3 ambient = _component->Ambient();
-        DrawVec3("Ambient", ambient);
+        if (ImGui::CollapsingHeader("Ambient")) {
+            ImGui::PushItemWidth(125);
+            ImGui::ColorPicker3("", &ambient[0]);
+            ImGui::PopItemWidth();
+        }
         _component->Ambient(ambient);
 
         glm::vec3 diffuse = _component->Diffuse();
-        DrawVec3("Diffuse", diffuse);
+        if (ImGui::CollapsingHeader("Diffuse")) {
+            ImGui::PushItemWidth(125);
+            ImGui::ColorPicker3("", &diffuse[0]);
+            ImGui::PopItemWidth();
+        }
         _component->Diffuse(diffuse);
     }
   };
