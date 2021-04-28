@@ -61,7 +61,7 @@ void EditorLayer::OnAttach() {
   m_Entity2->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
   m_PepeTransform = m_Pepe->AddComponent< Transform >();
   m_Pepe->AddComponent< Components::MeshRenderer >(
-      m_PepeModel, AssetManager::GetMaterial("./scenes/pepeMat.json"));
+      m_PepeModel, AssetManager::GetMaterial("./materials/stormtrooper.mat"));
   auto sg = SceneManager::GetDisplayScene()->SceneGraph();
   sg->AddChild(0, m_Pepe->GetID());
   sg->AddChild(0, m_Entity1->GetID());
