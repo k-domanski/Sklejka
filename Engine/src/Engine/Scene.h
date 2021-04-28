@@ -15,6 +15,7 @@ namespace Engine {
     class Renderer;
     class CameraSystem;
     class Physics;
+    class LightSystem;
   }  // namespace Systems
 
   namespace ECS {
@@ -27,6 +28,7 @@ namespace Engine {
     std::shared_ptr< Systems::Renderer > _renderSystem;
     std::shared_ptr< Systems::CameraSystem > _cameraSystem;
     std::shared_ptr< Systems::Physics > _physicsSystem;
+    std::shared_ptr<Systems::LightSystem> _lightSystem;
 
     size_t _id;
     std::vector< std::shared_ptr< ECS::Entity > > _entities;

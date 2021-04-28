@@ -19,17 +19,22 @@ void main() {
 
 #shader fragment
 #include "fs_common.incl"
-out vec4 frag_color;
 
+vec3 GammaCompress(vec3 color, float gamma) {
+  return pow(color, vec3(1.0f / gamma));
+}
+
+out vec4 frag_color;
 in ShaderData {
   vec2 uv;
   vec3 v_pos;
 }
 fs_in;
-
+float gamma = 2.2f;
 void main() {
   // frag_color = vec4(vec3(1.0f) - texture(u_MainTexture, fs_in.uv).rgb, 1.0f);
   // frag_color = vec4(texture(u_MainTexture, fs_in.uv).rgb * remap(fs_in.v_pos), 1.0f);
-  frag_color = vec4(texture(u_MainTexture, fs_in.uv).rgb, 1.0f);
+  vec3 texel = texture(u_MainTexture, fs_in.uv).rgb;
+  frag_color = vec4(GammaCompress(texel, gamma), 1.0f);
 }
 #endshader

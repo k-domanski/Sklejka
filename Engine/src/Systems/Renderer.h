@@ -7,6 +7,7 @@
 #include <GL/RenderTarget.h>
 #include <GL/Buffer.h>
 #include <Systems/CameraSystem.h>
+#include <Renderer/PingPongBuffer.h>
 
 namespace Engine::Systems {
   class Renderer : public ECS::System {
@@ -21,10 +22,11 @@ namespace Engine::Systems {
     std::map< std::shared_ptr< Engine::Renderer::Material >, std::vector< ECS::EntityID > >
         _sortedEntities;
     std::set< ECS::EntityID > _entitiesToSort;
-    std::shared_ptr< Engine::GL::RenderTarget > _renderTarget;
-    std::shared_ptr< Engine::GL::TextureAttachment > _screenTexture;
+    std::shared_ptr< Engine::Renderer::PingPongBuffer > _pingPongBuffer;
     std::shared_ptr< Engine::Renderer::Mesh > _quad;
-    std::shared_ptr< Engine::GL::Shader > _quadShader;
+    std::shared_ptr< Engine::GL::Shader > _blurShader;
+    std::shared_ptr< Engine::GL::Shader > _fishEyeShader;
+    std::shared_ptr< Engine::GL::Shader > _finalPassShader;
 
     std::shared_ptr< Engine::Renderer::Mesh > _boxCollider;
     std::shared_ptr< Engine::GL::Shader > _boxColliderShader;
@@ -39,6 +41,7 @@ namespace Engine::Systems {
     GL::TransformUniformData _transformUniformData;
     GL::TransformUniformBuffer _transformUniformBuffer;
 
+    auto PostProcessing() -> void;
     auto SortByMaterial() -> void;
   };
 

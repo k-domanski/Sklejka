@@ -10,24 +10,23 @@
 
 namespace Engine::Systems {
   using namespace GL;
+  using Engine::Renderer::PingPongBuffer;
   Renderer::Renderer() {
     AddSignature< Components::MeshRenderer >();
     AddSignature< Transform >();
-    // OnWindowResize(Window::Get().GetScreenSize());
-    auto size     = Window::Get().GetScreenSize();
-    _renderTarget = std::make_shared< RenderTarget >(size.x, size.y);
-    _screenTexture =
-        std::make_shared< TextureAttachment >(size.x, size.y, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
-    _renderTarget->AttachColor(0, _screenTexture);
-    _renderTarget->AttachDepthStencil(std::make_shared< Renderbuffer >(size.x, size.y));
+    auto size        = Window::Get().GetScreenSize();
+    _quad            = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
+    _pingPongBuffer  = std::make_shared< PingPongBuffer >(size);
+    _blurShader      = AssetManager::GetShader("./shaders/blur.glsl");
+    _fishEyeShader   = AssetManager::GetShader("./shaders/fish_eye.glsl");
+    _finalPassShader = AssetManager::GetShader("./shaders/final_pass.glsl");
 
-    _quad         = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
-    _quadShader   = AssetManager::GetShader("./shaders/screen_quad.glsl");
-
-    _boxCollider = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeBox);
+    _boxCollider =
+        Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeBox);
     _boxColliderShader = AssetManager::GetShader("./shaders/color.glsl");
 
-    _sphereCollider = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeSphere);
+    _sphereCollider =
+        Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeSphere);
     _sphereColliderShader = AssetManager::GetShader("./shaders/color.glsl");
 
     _cameraSystem = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
@@ -50,7 +49,7 @@ namespace Engine::Systems {
     }
     SortByMaterial();
     // Geometry
-    _renderTarget->Bind(FramebufferTarget::ReadWrite);
+    _pingPongBuffer->Bind(FramebufferTarget::ReadWrite);
     GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth);
     GL::Context::DepthTest(true);
 
@@ -84,14 +83,14 @@ namespace Engine::Systems {
       _transformUniformBuffer.SetData(_transformUniformData);
       shader->BindUniformBlock("u_Transform", 0);
       shader->BindUniformBlock("u_Camera", 1);
+      shader->BindUniformBlock("u_Directional", 2);
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
 
-      //collider
+      // collider
       std::shared_ptr< Components::Collider > collider;
-      if ((collider = ECS::EntityManager::GetComponent< Components::Collider>(entityID)) != nullptr)
-      {
-        if (collider->Type == +Components::ColliderType::Box)
-        {
+      if ((collider = ECS::EntityManager::GetComponent< Components::Collider >(entityID))
+          != nullptr) {
+        if (collider->Type == +Components::ColliderType::Box) {
           _boxColliderShader->Use();
           _boxCollider->Use();
 
@@ -110,9 +109,9 @@ namespace Engine::Systems {
           _boxColliderShader->BindUniformBlock("u_Transform", 0);
           _boxColliderShader->BindUniformBlock("u_Camera", 1);
           _boxColliderShader->SetVector("u_MainColor", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-          glDrawElements(_boxCollider->GetPrimitive(), _boxCollider->ElementCount(), GL_UNSIGNED_INT, NULL);
-        } else if (collider->Type == +Components::ColliderType::Sphere)
-        {
+          glDrawElements(_boxCollider->GetPrimitive(), _boxCollider->ElementCount(),
+                         GL_UNSIGNED_INT, NULL);
+        } else if (collider->Type == +Components::ColliderType::Sphere) {
           _sphereColliderShader->Use();
           _sphereCollider->Use();
 
@@ -120,10 +119,10 @@ namespace Engine::Systems {
           glPrimitiveRestartIndex(2137);
 
           auto colModel = transform->GetWorldMatrix();
-          
+
           colModel = glm::translate(colModel, collider->Center);
-          colModel      = glm::scale(colModel, glm::vec3(collider->Size.x));
-          
+          colModel = glm::scale(colModel, glm::vec3(collider->Size.x));
+
           _transformUniformData.model     = colModel;
           _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
           _transformUniformData.modelViewProjection =
@@ -140,38 +139,10 @@ namespace Engine::Systems {
 
           glDisable(GL_PRIMITIVE_RESTART);
         }
-
       }
-
-
-      // for (auto entityID : vec) {
-      //  auto shader       = material->GetShader();
-      //  auto transform    = ECS::EntityManager::GetComponent< Transform >(entityID);
-      //  auto meshRenderer = ECS::EntityManager ::GetComponent< Components::MeshRenderer
-      //  >(entityID); auto mesh         = meshRenderer->GetModel()->GetRootMesh(); mesh->Use();
-
-      //  _transformUniformData.model     = transform->GetWorldMatrix();
-      //  _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
-      //  _transformUniformData.modelViewProjection =
-      //      camera->ProjectionMatrix() * _transformUniformData.modelView;
-
-      //  // HACK: Assume for now that under slot 1 is camera uniform buffer
-      //  // TODO: Get the actual slot number from somewhere, somehow :)
-      //  _transformUniformBuffer.SetData(_transformUniformData);
-      //  shader->BindUniformBlock("u_Transform", 0);
-      //  shader->BindUniformBlock("u_Camera", 1);
-      //  glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
-      //}
     }
     // Post process
-    GL::Context::BindFramebuffer(FramebufferTarget::ReadWrite, 0);
-    GL::Context::ClearBuffers(GL::BufferBit::Color);
-    GL::Context::DepthTest(false);
-    _quad->Use();
-    _quadShader->Use();
-    _quadShader->SetValue("u_mainTexture", 0);
-    _screenTexture->Bind(0);
-    glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
+    PostProcessing();
   }
 
   auto Renderer::AddEntity(ECS::EntityID id) -> void {
@@ -180,12 +151,13 @@ namespace Engine::Systems {
 
   auto Renderer::OnWindowResize(glm::vec2 windowSize) -> void {
     using namespace GL;
-    auto size     = windowSize;
-    _renderTarget = std::make_shared< RenderTarget >(size.x, size.y);
+    auto size       = windowSize;
+    _pingPongBuffer = std::make_shared< PingPongBuffer >(size);
+    /*_renderTarget = std::make_shared< RenderTarget >(size.x, size.y);
     _screenTexture =
         std::make_shared< TextureAttachment >(size.x, size.y, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
     _renderTarget->AttachColor(0, _screenTexture);
-    _renderTarget->AttachDepthStencil(std::make_shared< Renderbuffer >(size.x, size.y));
+    _renderTarget->AttachDepthStencil(std::make_shared< Renderbuffer >(size.x, size.y));*/
   }
 
   auto Renderer::SortByMaterial() -> void {
@@ -244,5 +216,44 @@ namespace Engine::Systems {
     }
 
     _entitiesToSort.clear();*/
+  }
+  auto Renderer::PostProcessing() -> void {
+    /* Context Setup */
+    GL::Context::DepthTest(false);
+    _quad->Use();
+
+    /* Fish Eye */
+    if (false) {
+      _fishEyeShader->Use();
+      _fishEyeShader->SetValue("u_MainTexture", 0);
+      _pingPongBuffer->Swap();
+      _pingPongBuffer->BackTexture()->Bind(0);
+      glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
+    }
+
+    /* Blur */
+    if (false) {
+      _blurShader->Use();
+      _blurShader->SetValue("u_MainTexture", 0);
+      // Horizontal
+      _pingPongBuffer->Swap();
+      _pingPongBuffer->BackTexture()->Bind(0);
+      _blurShader->SetValue("u_Horizontal", 1);
+      glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
+
+      // Vertical
+      _pingPongBuffer->Swap();
+      _pingPongBuffer->BackTexture()->Bind(0);
+      _blurShader->SetValue("u_Horizontal", 0);
+      glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
+    }
+
+    /* Final Pass */
+    _pingPongBuffer->FrontTexture()->Bind(0);
+    GL::Context::BindFramebuffer(FramebufferTarget::ReadWrite, 0);
+    GL::Context::ClearBuffers(GL::BufferBit::Color);
+    _finalPassShader->Use();
+    _finalPassShader->SetValue("u_MainTexture", 0);
+    glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
   }
 }  // namespace Engine::Systems
