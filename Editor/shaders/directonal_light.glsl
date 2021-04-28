@@ -34,10 +34,10 @@ in vec3 v_pos;
 in vec2 v_uv;
 in vec3 v_normal;
 out vec4 out_color;
-
+vec3 calculateDirectionalLight(vec3 normal);
 void main() {
 	//vec3 viewDirection = normalize(cameraPosition, v_pos);
-	vec3 result = calculateDirectionalLight(v_normal, viewDirection);
+	vec3 result = calculateDirectionalLight(v_normal);
     out_color = vec4(result, 1.0f);
 }
 

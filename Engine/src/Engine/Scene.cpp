@@ -3,6 +3,7 @@
 #include <Systems/Renderer.h>
 #include <Systems/SceneGraph.h>
 #include <Systems/CameraSystem.h>
+#include <Systems/LightSystem.h>
 #include "Systems/Physics.h"
 //#include <ECS/ECS.h>
 #include "ECS/EntityManager.h"
@@ -17,6 +18,7 @@ namespace Engine {
     _cameraSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
     _renderSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
     _physicsSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
+    _lightSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::LightSystem>();
   }
 
   auto Scene::Update(float deltaTime) -> void {
@@ -28,6 +30,7 @@ namespace Engine {
     //
     // And after them scene graph again?
     _cameraSystem->Update(deltaTime);
+    _lightSystem->Update(deltaTime);
   }
   auto Scene::Draw() -> void {
     _renderSystem->Update(0.0f);

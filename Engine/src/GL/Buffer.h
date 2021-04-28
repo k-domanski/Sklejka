@@ -96,4 +96,5 @@ namespace Engine::GL {
 
   typedef UniformBuffer< CameraUniformData > CameraUniformBuffer;
   typedef UniformBuffer< TransformUniformData > TransformUniformBuffer;
+  typedef UniformBuffer< DirectionalLightUniformData > DirectionalLightUniformBuffer;
 }  // namespace Engine::GL

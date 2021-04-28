@@ -24,6 +24,7 @@ namespace Engine {
     auto Specular(glm::vec3 specular) noexcept -> glm::vec3;
     auto Intensity() const noexcept -> float;
     auto Intensity(float intensity) noexcept -> float;
+    auto UniformData() const noexcept -> GL::DirectionalLightUniformData;
     auto SaveToJson() -> std::string override;
     auto SaveToJson(std::string filePath) -> std::string override;
     auto LoadFromJson(std::string filePath) -> void override;

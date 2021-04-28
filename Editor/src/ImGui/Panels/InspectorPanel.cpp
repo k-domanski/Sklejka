@@ -49,6 +49,9 @@ namespace Editor {
     if (_entity->HasComponent< Engine::Components::Collider >()) {
       _componentViews.push_back(std::make_shared< ColliderView >());
     }
+    if (_entity->HasComponent< Engine::DirectionalLight>()) {
+        _componentViews.push_back(std::make_shared< DirectionalLightView>());
+    }
   }
 
   auto InspectorPanel::WrapViewInTreeNode(const std::shared_ptr< IComponentView >& view) -> void {
@@ -152,6 +155,16 @@ namespace Editor {
           APP_WARN("{} entity already has Collider component!", _entity->Name());
         }
         ImGui::CloseCurrentPopup();
+      }
+      if (ImGui::MenuItem("Directional Light")) {
+          if (_entity->GetComponent< DirectionalLight >() == nullptr) {
+              _entity->AddComponent< DirectionalLight >();
+              ReattachEntity();
+          }
+          else {
+              APP_WARN("{} entity already has DirectionalLight component!", _entity->Name());
+          }
+          ImGui::CloseCurrentPopup();
       }
       ReattachEntity();
       ImGui::EndPopup();

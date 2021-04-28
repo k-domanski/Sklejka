@@ -22,28 +22,32 @@ namespace Engine {
   }
   auto DirectionalLight::Ambient(glm::vec3 ambient) noexcept -> glm::vec3 {
     flags.Set(LightFlag::Dirty | LightFlag::NewData);
-    return m_Data.ambient;
+    return m_Data.ambient = ambient;
   }
   auto DirectionalLight::Diffuse() const noexcept -> glm::vec3 {
     return m_Data.diffuse;
   }
   auto DirectionalLight::Diffuse(glm::vec3 diffuse) noexcept -> glm::vec3 {
     flags.Set(LightFlag::Dirty | LightFlag::NewData);
-    return m_Data.diffuse;
+    return m_Data.diffuse = diffuse;
   }
   auto DirectionalLight::Specular() const noexcept -> glm::vec3 {
     return m_Data.specular;
   }
   auto DirectionalLight::Specular(glm::vec3 specular) noexcept -> glm::vec3 {
     flags.Set(LightFlag::Dirty | LightFlag::NewData);
-    return m_Data.specular;
+    return m_Data.specular = specular;
   }
   auto DirectionalLight::Intensity() const noexcept -> float {
     return m_Data.intensity;
   }
   auto DirectionalLight::Intensity(float intensity) noexcept -> float {
     flags.Set(LightFlag::Dirty | LightFlag::NewData);
-    return m_Data.intensity;
+    return m_Data.intensity = intensity;
+  }
+  auto DirectionalLight::UniformData() const noexcept -> GL::DirectionalLightUniformData
+  {
+      return m_Data;
   }
   auto DirectionalLight::SaveToJson() -> std::string {
     nlohmann::json json = nlohmann::json{
