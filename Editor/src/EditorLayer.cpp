@@ -9,8 +9,10 @@
 using namespace Engine;
 EditorLayer::EditorLayer(const std::string& name): Layer(name) {
   // Scene manager test
-  SceneManager::AddScene(std::make_shared< Scene >(1));
-  SceneManager::OpenScene(1);
+  size_t sceneID = AssetManager::GenerateAssetID();
+  SceneManager::AddScene(std::make_shared< Scene >(sceneID));
+  std::cout << "sceneID: " << sceneID << "\n";
+  SceneManager::OpenScene(sceneID);
 }
 void EditorLayer::OnAttach() {
   LOG_TRACE("Working directory: {}", AssetManager::GetWoringDir());
@@ -247,21 +249,20 @@ auto EditorLayer::SaveScene() -> void {
     auto entities_ids = sg->GetChildren(0);
     std::shared_ptr< ECS::Entity > entity;
 
-    // TODO: Serialize sceneID
+    using namespace nlohmann;
+    json json = nlohmann::json{
+        {"sceneID", SceneManager::GetCurrentScene()->GetID()},
+    };
 
-    std::string fileContent = "";
+    std::string fileContent = json.dump(4);
 
-    bool first = true;
     for (auto id : entities_ids) {
       auto entity = ECS::EntityManager::GetInstance().GetEntity(id);
       if (entity == nullptr) {
         continue;
       }
 
-      if (!first)
-        fileContent.append("\n" + separator + "\n");
-      else
-        first = false;
+      fileContent.append("\n" + separator + "\n");
 
       auto entity_json = entity->SaveToJson();
 
@@ -280,18 +281,6 @@ auto EditorLayer::SaveScene() -> void {
 auto EditorLayer::LoadScene() -> void {
   std::optional< std::string > filepath = FileDialog::OpenFile("Scene (*.scene)\0*.scene\0");
   if (filepath) {
-    SceneManager::AddScene(std::make_shared< Scene >(2137));
-    SceneManager::OpenScene(2137);
-    m_SceneHierarchyPanel.SetScene(SceneManager::GetCurrentScene());
-
-    auto current_scene = SceneManager::GetCurrentScene();
-    auto sg            = current_scene->SceneGraph();
-    auto entities_ids  = sg->GetChildren(0);
-
-    // for (auto id : entities_ids) {
-    //  if (!ECS::EntityManager::GetInstance().GetEntity(id)->HasComponent< Camera >())
-    //    ECS::EntityManager::GetInstance().RemoveEntity(id);
-    //}
 
     auto content = Utility::ReadTextFile(filepath.value());
     std::vector< std::string > separated_jsons;
@@ -309,9 +298,22 @@ auto EditorLayer::LoadScene() -> void {
 
     separated_jsons.push_back(content);
 
-    for (std::string separated_json : separated_jsons) {
+    nlohmann::json sceneJson =
+        nlohmann::json::parse(separated_jsons[0].begin(), separated_jsons[0].end());
+
+    size_t sceneID = sceneJson["sceneID"];
+
+    SceneManager::AddScene(std::make_shared< Scene >(sceneID));
+    SceneManager::OpenScene(sceneID);
+    m_SceneHierarchyPanel.SetScene(SceneManager::GetCurrentScene());
+
+    auto current_scene = SceneManager::GetCurrentScene();
+    auto sg            = current_scene->SceneGraph();
+    auto entities_ids  = sg->GetChildren(0);
+
+    for (int i = 1; i < separated_jsons.size(); i++) {
       auto entity = ECS::EntityManager::GetInstance().CreateEntity();
-      entity->LoadFromJson(separated_json);
+      entity->LoadFromJson(separated_jsons[i]);
       if (entity->HasComponent< Camera >())  // HACK: only camera is editor camera
       {
         m_EditorCamera.camera    = entity->GetComponent< Camera >();
@@ -324,6 +326,7 @@ auto EditorLayer::LoadScene() -> void {
     }
   }
 }
+
 
 auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> void {
   auto model = AssetManager::GetModel(path);

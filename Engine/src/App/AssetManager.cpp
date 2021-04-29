@@ -19,7 +19,7 @@ auto FileExists(const std::string& path) -> bool {
 }
 
 namespace Engine {
-  auto AssetManager::GenerateAssetID() {
+  auto AssetManager::GenerateAssetID() -> size_t {
     std::random_device dv;
     std::mt19937_64 mt(dv());
     return static_cast< size_t >(mt());

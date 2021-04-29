@@ -17,9 +17,9 @@ namespace Engine {
     static inline std::unordered_map< std::size_t, std::shared_ptr< Renderer::Material > >
         _loadedMaterials;
 
-    static auto GenerateAssetID();
 
   public:
+    static auto GenerateAssetID() -> size_t;
     static auto GetWoringDir() -> std::string;
     static auto GetShader(std::string file) -> std::shared_ptr< GL::Shader >;
     static auto GetModel(std::string file) -> std::shared_ptr< Renderer::Model >;
