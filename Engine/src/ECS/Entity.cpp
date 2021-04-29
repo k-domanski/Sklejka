@@ -6,6 +6,7 @@
 
 #include "../../../Editor/src/ImGui/Panels/FileSystemPanel.h"
 #include "Components/Collider.h"
+#include "Components/DirectionalLight.h"
 #include "Components/Rigidbody.h"
 #include "ECS/EntityManager.h"
 
@@ -107,7 +108,8 @@ namespace Engine::ECS {
         AddComponent< Components::Rigidbody >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "camera")
         AddComponent< Camera >()->LoadFromJson(separated_jsons[i]);
-
+      else if (component_type == "directionalLight")
+        AddComponent< DirectionalLight >()->LoadFromJson(separated_jsons[i]);
     }
   }
 }  // namespace Engine::ECS
