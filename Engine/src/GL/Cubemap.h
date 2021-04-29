@@ -7,6 +7,7 @@ namespace Engine::GL
   class Cubemap {
   private:
     unsigned int skyboxVAO;
+    unsigned int skyboxVBO;
     unsigned int cubemapTexture;
     std::shared_ptr< Shader > skyboxShader;
     std::vector< std::string > faces;

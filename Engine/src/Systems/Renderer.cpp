@@ -156,8 +156,8 @@ namespace Engine::Systems {
         }
       }
     }
-    std::cout << "cutted by frustum: "<< cutted << std::endl;
-    cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
+    std::cout << "cut by frustum: "<< cutted << std::endl;
+    //cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
     // Post process
     PostProcessing();
   }

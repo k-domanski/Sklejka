@@ -36,7 +36,7 @@ void Engine::GL::Cubemap::Create(std::string path)
                             1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f};
 
   // skybox VAO
-  unsigned int skyboxVBO;
+  //unsigned int skyboxVBO;
   glGenVertexArrays(1, &skyboxVAO);
   glGenBuffers(1, &skyboxVBO);
   glBindVertexArray(skyboxVAO);
@@ -91,6 +91,7 @@ void Engine::GL::Cubemap::Draw(glm::mat4 view, glm::mat4 projection)
   skyboxShader->SetMatrix("projection", projection);
   // skybox cube
   glBindVertexArray(skyboxVAO);
+  glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
   glDrawArrays(GL_TRIANGLES, 0, 36);
