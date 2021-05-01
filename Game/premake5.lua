@@ -15,23 +15,37 @@ project "Game"
 
     defines
     {
+        "GLFW_INCLUDE_NONE",
         "LOG_APP"
     }
 
     includedirs
     {
         "%{wks.location}/Engine/src",
-        "%{IncludeDir.irrKlang}/include"
+        "%{wks.location}/Game/src",
+        "%{IncludeDir.irrKlang}/include",
+        "%{wks.location}/Engine/vendor/spdlog/include",
+        "%{wks.location}/Engine/vendor",
+        "%{wks.location}/Engine/vendor/assimp/include",
+        "%{IncludeDir.GLFW}",
+        "%{IncludeDir.Glad}",
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.glm}",
+        "%{IncludeDir.stb_image}",
+        "%{IncludeDir.better_enums}/include",
+        "%{IncludeDir.stb_image}",
+        "%{IncludeDir.rttr}/src",
+        "%{IncludeDir.json}/single_include"
     }
 
     links
     {
-        --"Engine"
+        "Engine"
     }
 
     postbuildcommands
     {
-        --("copy \"%{wks.location}lib\" \"%{cfg.buildtarget.directory}\"")
+        ("copy \"%{wks.location}lib\" \"%{cfg.buildtarget.directory}\"")
     }
 
     filter "system.windows"
