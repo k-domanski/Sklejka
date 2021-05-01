@@ -162,9 +162,9 @@ bool EditorLayer::OnMouseScroll(MouseScrolledEvent& e) {
 }
 
 bool EditorLayer::OnMouseButtonPress(MouseButtonPressedEvent& e) {
-  if (e.GetMouseButton() == 2)
+  if (e.GetMouseButton() == MouseCode::ButtonMiddle)
     editorCameraArgs.m3LastPos = Input::GetMousePosition();
-  else if (e.GetMouseButton() == 1)
+  else if (e.GetMouseButton() == MouseCode::ButtonRight)
     editorCameraArgs.m2LastPos = Input::GetMousePosition();
 
   return true;
@@ -191,7 +191,7 @@ auto EditorLayer::UpdateEditorCamera() -> void {
     editorCameraArgs.scrollDelta = 0.0f;
   }
   /*Scroll Pressed Movement*/
-  if (Input::IsMouseButtonPressed(2)) {
+  if (Input::IsMouseButtonPressed(MouseCode::ButtonMiddle)) {
     auto cursorPos = Input::GetMousePosition();
     auto delta     = cursorPos - editorCameraArgs.m3LastPos;
     delta /= editorCameraArgs.screenSize;
@@ -203,7 +203,7 @@ auto EditorLayer::UpdateEditorCamera() -> void {
     editorCameraArgs.m3LastPos = cursorPos;
   }
   /*Right Mouse Button*/
-  else if (Input::IsMouseButtonPressed(1)) {
+  else if (Input::IsMouseButtonPressed(MouseCode::ButtonRight)) {
     auto cursorPos = Input::GetMousePosition();
     auto delta     = cursorPos - editorCameraArgs.m2LastPos;
     delta /= editorCameraArgs.screenSize;

@@ -23,3 +23,8 @@
 #include "Utility/Serializer.h"
 #include "Utility/FileDialog.h"
 #include "Components/MeshRenderer.h"
+
+/*KeyCodes*/
+#include <App/KeyCodes/KeyCode.h>
+#include <App/KeyCodes/MouseCode.h>
+#include <App/KeyCodes/GamepadCode.h>
