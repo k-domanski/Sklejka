@@ -53,14 +53,20 @@ namespace Engine::Systems {
   auto SceneGraph::AddChild(ECS::EntityID parent, ECS::EntityID child) -> void {
     SetParent(child, parent);
   }
-  // auto SceneGraph::AddEntity(ECS::EntityID id) -> void {
-  //  ECS::System::AddEntity(id);
-  //  SetParent(id, _rootID);
-  //}
-  // auto SceneGraph::AddEntity(ECS::EntityID id, ECS::EntityID parent) -> void {
-  //  ECS::System::AddEntity(id);
-  //  SetParent(id, parent);
-  //}
+  auto SceneGraph::DetachFromGraph(ECS::EntityID entityID) -> void {
+    // Find parent
+    if (_childParentMap.count(entityID) == 0) {  // entity not in graph
+      return;
+    }
+    auto parent       = _childParentMap[entityID];
+    auto& parent_list = _parentChildMap[parent];
+    auto it           = std::find(parent_list.begin(), parent_list.end(), entityID);
+    assert(("Child had registered parent, but parent did not have this child registered.",
+            it != parent_list.end()));
+    parent_list.erase(it);
+    _childParentMap.erase(entityID);
+  }
+
   auto SceneGraph::GetRootID() -> ECS::EntityID& {
     return _rootID;
   }

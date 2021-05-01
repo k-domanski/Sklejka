@@ -3,40 +3,6 @@
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
-    "entityID": "12753813659362318240",
-    "entityName": "Entity"
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "transform",
-    "localPosition": {
-        "x": 0.972573459148407,
-        "y": 0.47785836458206177,
-        "z": -2.8643367290496826
-    },
-    "localRotation": {
-        "w": -0.9997848272323608,
-        "x": -0.019408853724598885,
-        "y": 0.007030229549854994,
-        "z": -0.0031361642759293318
-    },
-    "localScale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    }
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "aspect": 1.8591140508651733,
-    "componentType": "camera",
-    "farPlane": 1000.0,
-    "flags": 10,
-    "fov": 45.0,
-    "nearPlane": 0.0010000000474974513
-}
-42091169692137SUPERJSONENTITYSEPARATOR42091169692137
-{
     "entityID": "2716217050967015727",
     "entityName": "pionowa_1"
 }

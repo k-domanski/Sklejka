@@ -48,6 +48,7 @@ private:
 
   /*Camera*/
   struct {
+    std::shared_ptr< Engine::ECS::Entity > entity;
     std::shared_ptr< Engine::Camera > camera;
     std::shared_ptr< Engine::Transform > transform;
   } m_EditorCamera;
@@ -56,7 +57,7 @@ private:
   /*ECS*/
   ptr_t< Engine::Scene > m_Scene;
   // = nullptr;  // scene manager test
-  //std::make_shared< Scene >(); 
+  // std::make_shared< Scene >();
   ptr_t< Engine::ECS::Entity > m_Entity1;
   ptr_t< Engine::ECS::Entity > m_Entity2;
   std::shared_ptr< Engine::ECS::Entity > m_Pepe;

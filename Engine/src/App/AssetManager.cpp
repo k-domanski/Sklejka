@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "AssetManager.h"
 #include "Renderer/Material.h"
+#include <Engine/Scene.h>
+#include <Systems/SceneGraph.h>
+#include <Components/Camera.h>
 
 #include <random>
 #include <Utility/Utility.h>
@@ -143,5 +146,85 @@ namespace Engine {
       return nullptr;
     }
     return _loadedMaterials[assetID];
+  }
+  auto AssetManager::SaveScene(const std::shared_ptr< Scene >& scene, std::string file) -> void {
+    const std::string separator = "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";
+    auto sg                     = scene->SceneGraph();
+    auto entities_ids           = sg->GetChildren(0);
+
+    using namespace nlohmann;
+    json json = nlohmann::json{
+        {"sceneID", SceneManager::GetCurrentScene()->GetID()},
+    };
+
+    std::string fileContent = json.dump(4);
+
+    for (auto id : entities_ids) {
+      const auto& entity = ECS::EntityManager::GetInstance().GetEntity(id);
+      if (entity == nullptr) {
+        continue;
+      }
+      // Ommit serialization of editor camera
+      if (const auto& camera_component = entity->GetComponent< Camera >();
+          camera_component != nullptr) {
+        if (camera_component->flags.Get(CameraFlag::EditorCamera)) {
+          continue;
+        }
+      }
+      fileContent.append("\n" + separator + "\n");
+
+      auto entity_json = entity->SaveToJson();
+
+      fileContent.append(entity_json);
+    }
+
+    std::ofstream ofstream;
+    ofstream.open(file);
+    ofstream << fileContent;
+    ofstream.close();
+  }
+  auto AssetManager::LoadScene(std::string file) -> std::shared_ptr< Scene > {
+    file = Utility::StripToRelativePath(file);
+    if (_loadedScenes.count(file) == 0) {
+      auto content = Utility::ReadTextFile(file);
+      std::vector< std::string > separated_jsons;
+
+      std::string delimiter =
+          "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";  // TODO: Move to one place
+                                                                   // instead of declaring each time
+      size_t pos = 0;
+      std::string token;
+      while ((pos = content.find(delimiter)) != std::string::npos) {
+        token = content.substr(0, pos);
+        separated_jsons.push_back(token);
+        content.erase(0, pos + delimiter.length());
+      }
+
+      separated_jsons.push_back(content);
+
+      nlohmann::json sceneJson =
+          nlohmann::json::parse(separated_jsons[0].begin(), separated_jsons[0].end());
+
+      size_t sceneID = sceneJson["sceneID"];
+
+      auto current_scene = SceneManager::GetCurrentScene();
+      auto scene         = std::make_shared< Scene >(sceneID);
+      SceneManager::AddScene(scene);
+      SceneManager::OpenScene(scene->GetID());
+
+      auto sg           = scene->SceneGraph();
+      auto entities_ids = sg->GetChildren(0);
+
+      for (int i = 1; i < separated_jsons.size(); i++) {
+        auto entity = ECS::EntityManager::GetInstance().CreateEntity();
+        entity->LoadFromJson(separated_jsons[i]);
+        // Removed 'Has Editor Camera' check - editor camera should not be serialized
+        sg->AddChild(0, entity->GetID());
+      }
+      SceneManager::OpenScene(current_scene->GetID());
+      _loadedScenes[file] = scene;
+      return scene;
+    }
+    return _loadedScenes[file];
   }
 }  // namespace Engine

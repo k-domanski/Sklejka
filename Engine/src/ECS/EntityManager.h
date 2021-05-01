@@ -119,6 +119,14 @@ namespace Engine::ECS {
     auto GetAllComponents(EntityID id) -> std::vector< std::shared_ptr< Component > >;
     auto Update(float deltaTime) -> void;
     auto Clear() -> void;
+    static auto InjectEntity(const std::shared_ptr< Entity >& entity) -> void;
+    template< typename T >
+    static auto InjectComponent(const std::shared_ptr< T >& component) -> void {
+      auto list = GetInstance().GetComponentList< T >();
+      list->AddComponent(component);
+      auto& instance = GetInstance();
+      instance.UpdateEntity(instance.GetEntity(component->GetEntityID()));
+    }
 
     // auto Draw() -> void;
 

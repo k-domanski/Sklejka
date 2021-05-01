@@ -46,8 +46,6 @@ namespace Engine::Systems {
     using Engine::Renderer::Material;
     using Engine::Renderer::Mesh;
 
-    int cutted = 0;
-
     const auto camera = _cameraSystem->MainCamera();
     if (camera == nullptr) {
       return;
@@ -85,8 +83,6 @@ namespace Engine::Systems {
       CalculateFrustrum(_transformUniformData.modelViewProjection);
       auto sphere = model->GetBoundingSphere();
       if (!SphereInFrustum(sphere.first, sphere.second)) {
-        //std::cout << "cutted by frustum" << std::endl;
-        cutted++;
         continue;
       }
 
@@ -156,7 +152,6 @@ namespace Engine::Systems {
         }
       }
     }
-    std::cout << "cut by frustum: "<< cutted << std::endl;
     cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
     // Post process
     PostProcessing();
@@ -236,7 +231,7 @@ namespace Engine::Systems {
   }
 
   auto Renderer::CalculateFrustrum(glm::mat4 clip) -> void {
-    //auto clip = proj * modelView;
+    // auto clip = proj * modelView;
     float t;
     // right
     _frustum[0][0] = clip[0][3] - clip[0][0];
@@ -313,7 +308,7 @@ namespace Engine::Systems {
           <= -radius)
         return false;
     }
-      return true;
+    return true;
   }
 
   auto Renderer::PostProcessing() -> void {
