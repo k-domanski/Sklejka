@@ -9,5 +9,9 @@ namespace Engine {
     static glm::vec2 GetMousePosition();
     static float GetMouseX();
     static float GetMouseY();
+
+    /*Gamepad*/
+    static bool IsGamepadButtonPressed(int keycode);
+    static float GetGamepadAxis(int axis);
   };
 }  // namespace Engine

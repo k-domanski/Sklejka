@@ -11,13 +11,12 @@ namespace Engine {
 		BUTTON_RIGHT_BUMPER    = 5,
 		BUTTON_BACK            = 6,
 		BUTTON_START           = 7,
-		BUTTON_GUIDE           = 8,
-		BUTTON_LEFT_THUMB      = 9,
-		BUTTON_RIGHT_THUMB     = 10,
-		BUTTON_DPAD_UP         = 11,
-		BUTTON_DPAD_RIGHT      = 12,
-		BUTTON_DPAD_DOWN       = 13,
-		BUTTON_DPAD_LEFT       = 14,
+		BUTTON_LEFT_THUMB      = 8,
+		BUTTON_RIGHT_THUMB     = 9,
+		BUTTON_DPAD_UP         = 10,
+		BUTTON_DPAD_RIGHT      = 11,
+		BUTTON_DPAD_DOWN       = 12,
+		BUTTON_DPAD_LEFT       = 13,
 		BUTTON_LAST            = BUTTON_DPAD_LEFT,
 		
 		BUTTON_CROSS       = BUTTON_A,
@@ -26,4 +25,14 @@ namespace Engine {
 		BUTTON_TRIANGLE    = BUTTON_Y);
 	
 	typedef __GamepadCode GamepadCode;
+
+	BETTER_ENUM(__GamepadAxes, uint16_t,
+		HORIZONTAL_LEFT = 0,
+		VERTICAL_LEFT   = 1,
+		HORIZONAL_RIGHT = 2,
+		VERTICAL_RIGHT  = 3,
+		TRIGGER_LEFT    = 4,
+		TRIGGER_RIGHT   = 5
+		);
+	typedef __GamepadAxes GamepadAxes;
 }

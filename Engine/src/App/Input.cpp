@@ -29,4 +29,24 @@ namespace Engine {
   float Input::GetMouseY() {
     return GetMousePosition().y;
   }
+
+  bool Input::IsGamepadButtonPressed(int keycode) {
+    if (!glfwJoystickPresent(GLFW_JOYSTICK_1))
+      return false;
+
+    int count;
+    const unsigned char* buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &count);
+    if (buttons[keycode]) {
+      return true;
+    }
+    return false;
+  }
+
+  float Input::GetGamepadAxis(int axis) {
+    if (!glfwJoystickPresent(GLFW_JOYSTICK_1))
+      return false;
+    int count;
+    const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &count);
+    return axes[axis];
+  }
 }  // namespace Engine
