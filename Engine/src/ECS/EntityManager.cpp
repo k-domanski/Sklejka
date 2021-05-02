@@ -128,6 +128,10 @@ namespace Engine::ECS {
     SceneManager::GetCurrentScene()->_registeredSystems.clear();
   }
 
+  auto EntityManager::InjectEntity(const std::shared_ptr< Entity >& entity) -> void {
+    SceneManager::GetCurrentScene()->_entities.push_back(entity);
+  }
+
   /* auto EntityManager::Draw() -> void {
     for (auto [id, system] : _registeredSystems) {
       system->Draw();

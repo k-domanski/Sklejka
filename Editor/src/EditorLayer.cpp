@@ -32,8 +32,9 @@ void EditorLayer::OnAttach() {
   m_PepeMaterial->SetShader(m_Shader);
   m_PepeMaterial->SetMainTexture(pepe_texture);
 
-  auto aspect        = Engine::Window::Get().GetAspectRatio();
-  auto camera_entity = Engine::ECS::EntityManager::GetInstance().CreateEntity();
+  auto aspect           = Engine::Window::Get().GetAspectRatio();
+  auto camera_entity    = Engine::ECS::EntityManager::GetInstance().CreateEntity();
+  m_EditorCamera.entity = camera_entity;
   m_EditorCamera.camera =
       camera_entity->AddComponent< Engine::Camera >(45.0f, aspect, 0.001f, 1000.0f);
   m_EditorCamera.transform = camera_entity->AddComponent< Engine::Transform >();
@@ -243,90 +244,33 @@ auto EditorLayer::DrawMenuBar() -> void {
 auto EditorLayer::SaveScene() -> void {
   std::optional< std::string > filepath = FileDialog::SaveFile("Scene (*.scene)\0*.scene\0");
   if (filepath) {
-    std::string separator = "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";
+    auto scene = SceneManager::GetCurrentScene();
+    auto graph = scene->SceneGraph();
 
-    auto sg           = SceneManager::GetCurrentScene()->SceneGraph();
-    auto entities_ids = sg->GetChildren(0);
-    std::shared_ptr< ECS::Entity > entity;
-
-    using namespace nlohmann;
-    json json = nlohmann::json{
-        {"sceneID", SceneManager::GetCurrentScene()->GetID()},
-    };
-
-    std::string fileContent = json.dump(4);
-
-    for (auto id : entities_ids) {
-      auto entity = ECS::EntityManager::GetInstance().GetEntity(id);
-      if (entity == nullptr) {
-        continue;
-      }
-
-      fileContent.append("\n" + separator + "\n");
-
-      auto entity_json = entity->SaveToJson();
-
-      std::cout << "\nAdding to file content:\n\n" << entity_json;
-
-      fileContent.append(entity_json);
-    }
-
-    std::ofstream ofstream;
-    ofstream.open(filepath.value());
-    ofstream << fileContent;
-    ofstream.close();
+    // Detach Editor Camera before saving
+    graph->DetachFromGraph(m_EditorCamera.entity->GetID());
+    AssetManager::SaveScene(SceneManager::GetCurrentScene(), filepath.value());
+    // Reattach Editor Camera before saving
+    graph->AddChild(0, m_EditorCamera.entity->GetID());
   }
 }
 
 auto EditorLayer::LoadScene() -> void {
   std::optional< std::string > filepath = FileDialog::OpenFile("Scene (*.scene)\0*.scene\0");
   if (filepath) {
+    auto scene = AssetManager::LoadScene(filepath.value());
 
-    auto content = Utility::ReadTextFile(filepath.value());
-    std::vector< std::string > separated_jsons;
-
-    std::string delimiter =
-        "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";  // TODO: Move to one place
-                                                                 // instead of declaring each time
-    size_t pos = 0;
-    std::string token;
-    while ((pos = content.find(delimiter)) != std::string::npos) {
-      token = content.substr(0, pos);
-      separated_jsons.push_back(token);
-      content.erase(0, pos + delimiter.length());
-    }
-
-    separated_jsons.push_back(content);
-
-    nlohmann::json sceneJson =
-        nlohmann::json::parse(separated_jsons[0].begin(), separated_jsons[0].end());
-
-    size_t sceneID = sceneJson["sceneID"];
-
-    SceneManager::AddScene(std::make_shared< Scene >(sceneID));
-    SceneManager::OpenScene(sceneID);
+    SceneManager::AddScene(scene);
+    SceneManager::OpenScene(scene->GetID());
     m_SceneHierarchyPanel.SetScene(SceneManager::GetCurrentScene());
 
-    auto current_scene = SceneManager::GetCurrentScene();
-    auto sg            = current_scene->SceneGraph();
-    auto entities_ids  = sg->GetChildren(0);
-
-    for (int i = 1; i < separated_jsons.size(); i++) {
-      auto entity = ECS::EntityManager::GetInstance().CreateEntity();
-      entity->LoadFromJson(separated_jsons[i]);
-      if (entity->HasComponent< Camera >())  // HACK: only camera is editor camera
-      {
-        m_EditorCamera.camera    = entity->GetComponent< Camera >();
-        m_EditorCamera.transform = entity->GetComponent< Transform >();
-        // HACK: set camera to editor camera only, camera switching
-        m_EditorCamera.camera->flags.Set(CameraFlag::EditorCamera);
-        m_EditorCamera.camera->flags.Clear(CameraFlag::MainCamera);
-      }
-      sg->AddChild(0, entity->GetID());
-    }
+    /* Force inject editor camera into the scene */
+    scene->SceneGraph()->AddChild(0, m_EditorCamera.entity->GetID());
+    ECS::EntityManager::InjectEntity(m_EditorCamera.entity);
+    ECS::EntityManager::InjectComponent< Transform >(m_EditorCamera.transform);
+    ECS::EntityManager::InjectComponent< Camera >(m_EditorCamera.camera);
   }
 }
-
 
 auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> void {
   auto model = AssetManager::GetModel(path);
