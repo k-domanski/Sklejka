@@ -36,16 +36,6 @@ private:
   auto LoadScene() -> void;
 
 private:
-  /*Temporary*/
-  float m_Time = 0;
-  float m_it   = 0;
-
-  ptr_t< Engine::GL::Shader > m_Shader;
-  ptr_t< Engine::Renderer::Mesh > m_ConeMesh;
-  ptr_t< Engine::Renderer::Material > m_Material;
-  std::shared_ptr< Engine::Renderer::Model > m_PepeModel;
-  std::shared_ptr< Engine::Renderer::Material > m_PepeMaterial;
-
   /*Camera*/
   struct {
     std::shared_ptr< Engine::ECS::Entity > entity;
@@ -54,14 +44,8 @@ private:
   } m_EditorCamera;
   EditorCameraArgs editorCameraArgs;
 
-  /*ECS*/
+  /*Scene*/
   ptr_t< Engine::Scene > m_Scene;
-  // = nullptr;  // scene manager test
-  // std::make_shared< Scene >();
-  ptr_t< Engine::ECS::Entity > m_Entity1;
-  ptr_t< Engine::ECS::Entity > m_Entity2;
-  std::shared_ptr< Engine::ECS::Entity > m_Pepe;
-  std::shared_ptr< Engine::Transform > m_PepeTransform;
 
   /*Panels*/
   Editor::SceneHierarchyPanel m_SceneHierarchyPanel;

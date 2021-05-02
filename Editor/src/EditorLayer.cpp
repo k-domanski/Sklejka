@@ -16,22 +16,8 @@ EditorLayer::EditorLayer(const std::string& name): Layer(name) {
 }
 void EditorLayer::OnAttach() {
   LOG_TRACE("Working directory: {}", AssetManager::GetWoringDir());
-  /*Assets*/
-  auto texture   = AssetManager::GetTexture2D("./textures/pepo_sad.png");
-  auto coneModel = AssetManager::GetModel("./models/cube.fbx");
-  m_Shader       = AssetManager::GetShader("./shaders/default.glsl");
-  assert(("Failed to acquire shader", m_Shader != nullptr));
-  m_ConeMesh = coneModel->GetRootMesh();
-  // m_PepeModel       = AssetManager::GetModel("./models/squirrel.fbx");
-  m_PepeModel = AssetManager::GetModel("./models/silly_dancing.fbx");
-  // auto tex_shader   = AssetManager::GetShader("./shaders/texture_shader.glsl");
-  auto pepe_texture = AssetManager::GetTexture2D("./textures/Stormtrooper_D.png");
-  // auto pepe_texture = AssetManager::GetTexture2D("./textures/Untilted.png");
-  m_PepeMaterial = AssetManager::CreateMaterial();
 
-  m_PepeMaterial->SetShader(m_Shader);
-  m_PepeMaterial->SetMainTexture(pepe_texture);
-
+  /* ---------Camera--------- */
   auto aspect           = Engine::Window::Get().GetAspectRatio();
   auto camera_entity    = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   m_EditorCamera.entity = camera_entity;
@@ -40,89 +26,39 @@ void EditorLayer::OnAttach() {
   m_EditorCamera.transform = camera_entity->AddComponent< Engine::Transform >();
   SceneManager::GetDisplayScene()->SceneGraph()->AddChild(0, camera_entity->GetID());
 
-  /*Camera*/
   m_EditorCamera.camera->flags.Set(Engine::CameraFlag::MainCamera);
   m_EditorCamera.camera->flags.Set(Engine::CameraFlag::EditorCamera);
   editorCameraArgs.screenSize = Window::Get().GetScreenSize();
   m_EditorCamera.transform->Position({0.0f, 0.0f, 2.0f});
   m_EditorCamera.transform->Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
+  /* ----------------------- */
 
-  /*ECS Scene*/
-  m_Entity1 = ECS::EntityManager::GetInstance().CreateEntity();
-  m_Entity2 = ECS::EntityManager::GetInstance().CreateEntity();
-  m_Pepe    = ECS::EntityManager::GetInstance().CreateEntity();
-  // LOG_TRACE("Past");
-  m_Material = nullptr;
-  // m_Material = AssetManager::GetMaterial(m_Shader, "./shaders/default.glsl",
-  //                                       "./textures/pepo_sad.png", texture);
-
-  m_Entity1->AddComponent< Transform >();
-  /*m_Entity1->AddComponent< Components::MeshRenderer >();*/
-  m_Entity1->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
-
-  m_Entity2->AddComponent< Transform >();
-  m_Entity2->AddComponent< Components::MeshRenderer >(coneModel, m_Material);
-  m_PepeTransform = m_Pepe->AddComponent< Transform >();
-  m_Pepe->AddComponent< Components::MeshRenderer >(
-      m_PepeModel, AssetManager::GetMaterial("./materials/stormtrooper.mat"));
-  auto sg = SceneManager::GetDisplayScene()->SceneGraph();
-  sg->AddChild(0, m_Pepe->GetID());
-  sg->AddChild(0, m_Entity1->GetID());
-  sg->AddChild(0, m_Entity2->GetID());
-
-  /*Editor Panels*/
+  /* ---------Editor Panels--------- */
   m_SceneHierarchyPanel.SetScene(SceneManager::GetDisplayScene());
   m_SceneHierarchyPanel.SetEditorLayer(this);
   m_SceneHierarchyPanel.SetSelectionCallback(
       [this](auto& entity) { m_InspectorPanel.AttachEntity(entity); });
   m_FileSystemPanel.SetScene(SceneManager::GetDisplayScene());
   m_FileSystemPanel.SetEditorLayer(this);
-  /*------------------------*/
+  /*---------------------------------*/
 
-  auto box1 = m_Entity1->AddComponent< Components::Collider >();
-  auto rb1  = m_Entity1->AddComponent< Components::Rigidbody >();
-  auto box2 = m_Entity2->AddComponent< Components::Collider >();
-  auto rb2  = m_Entity2->AddComponent< Components::Rigidbody >();
-
-  // m_Entity1->GetComponent< Components::MeshRenderer
-  // >()->SaveToJson("./scenes/meshRenderer1.json");
-
-  // box1->LoadFromJson("./scenes/box1.json");
-  // box2->LoadFromJson("./scenes/box2.json");
-
-  /*box1->Size      = glm::vec3(1.0f);
-  box1->IsTrigger = false;
-  box1->Center    = glm::vec3(0.0f);
-  rb1->SetGravity(false);
-  rb1->SetKinematic(true);
-  box2->Size      = glm::vec3(1.0f);
-  box2->IsTrigger = false;
-  box2->Center    = glm::vec3(0.0f);
-  rb2->SetGravity(false);
-  rb2->SetKinematic(true);
-
-  box1->SaveToJson("./scenes/box1.json");
-  box2->SaveToJson("./scenes/box2.json");*/
-
-  m_PepeTransform->Position({0.0f, 1.0f, 0.0f});
-  m_PepeTransform->Scale({0.2f, 0.2f, 0.2f});
-
-  // m_Entity1->SaveToJson("./scenes/m_Entity1.entity");
+  /* -----------------------Start scene---------------------------- */
+  // auto scene = AssetManager::LoadScene("./\\scenes\\dzielo_sztuki_with_no_cam.scene");
+  //
+  // SceneManager::AddScene(scene);
+  // SceneManager::OpenScene(scene->GetID());
+  // m_SceneHierarchyPanel.SetScene(SceneManager::GetCurrentScene());
+  //
+  ///* Force inject editor camera into the scene */
+  // scene->SceneGraph()->AddChild(0, m_EditorCamera.entity->GetID());
+  // ECS::EntityManager::InjectEntity(m_EditorCamera.entity);
+  // ECS::EntityManager::InjectComponent< Transform >(m_EditorCamera.transform);
+  // ECS::EntityManager::InjectComponent< Camera >(m_EditorCamera.camera);
+  /* ---------------------------------------------------------------- */
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {
-  /* -------------------------- */
-  /* TODO: CameraController move to separate class?*/
   UpdateEditorCamera();
-  /* -------------------------- */
-  m_Time += deltaTime / 2.0f;
-  // auto tr1 = m_Entity1->GetComponent< Transform >();
-  // tr1->Rotate(deltaTime * 0.3, {0.0f, 1.0f, 0.0f});
-  // m_PepeTransform->Rotate(deltaTime * 0.1, {0.0f, 1.0f, 0.0f});
-  // auto pos = tr1->Position();
-  // tr1->Position(glm::vec3(sin(m_Time) * m_it, 0.0f, 0.0f));
-  // m_it += deltaTime / 20.0f;
-  // std::cout << "sin time: " << sin(m_Time)*m_it << std::endl;
 
   SceneManager::GetCurrentScene()->Update(deltaTime);
   /*Update systemów w aplikacji?*/
@@ -176,7 +112,7 @@ bool EditorLayer::OnMouseButtonRelease(MouseButtonReleasedEvent& e) {
 }
 
 bool EditorLayer::OnKeyPress(Engine::KeyPressedEvent& e) {
-  if (e.GetKeyCode() == GLFW_KEY_C) {
+  if (e.GetKeyCode() == Key::C) {
     // TODO: switch camera somehow
     // SceneManager::GetCurrentScene().
     ECS::EntityManager::GetInstance().GetSystem< Systems::CameraSystem >()->SwitchView();

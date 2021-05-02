@@ -22,8 +22,8 @@ namespace Engine {
 		BUTTON_CROSS       = BUTTON_A,
 		BUTTON_CIRCLE      = BUTTON_B,
 		BUTTON_SQUARE      = BUTTON_X,
-		BUTTON_TRIANGLE    = BUTTON_Y);
-	
+		BUTTON_TRIANGLE    = BUTTON_Y
+	);
 	typedef __GamepadCode GamepadCode;
 
 	BETTER_ENUM(__GamepadAxes, uint16_t,
@@ -33,6 +33,6 @@ namespace Engine {
 		VERTICAL_RIGHT  = 3,
 		TRIGGER_LEFT    = 4,
 		TRIGGER_RIGHT   = 5
-		);
+	);
 	typedef __GamepadAxes GamepadAxes;
 }
