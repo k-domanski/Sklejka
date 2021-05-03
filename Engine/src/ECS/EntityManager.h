@@ -123,8 +123,8 @@ namespace Engine::ECS {
     template< typename T >
     static auto InjectComponent(const std::shared_ptr< T >& component) -> void {
       auto list = GetInstance().GetComponentList< T >();
-      list->AddComponent(component);
       auto& instance = GetInstance();
+      list->AddComponent(component);
       instance.UpdateEntity(instance.GetEntity(component->GetEntityID()));
     }
 

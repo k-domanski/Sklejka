@@ -5,6 +5,7 @@
 #include <Systems/CameraSystem.h>
 #include <Systems/LightSystem.h>
 #include "Systems/Physics.h"
+#include <Systems/ScriptSystem.h>
 //#include <ECS/ECS.h>
 #include "ECS/EntityManager.h"
 
@@ -18,10 +19,14 @@ namespace Engine {
     _cameraSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
     _renderSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
     _physicsSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
-    _lightSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::LightSystem>();
+    _lightSystem   = ECS::EntityManager::GetInstance().RegisterSystem< Systems::LightSystem >();
+    _scriptSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ScriptSystem >();
   }
 
   auto Scene::Update(float deltaTime) -> void {
+    // Update scripts
+    _scriptSystem->Update(deltaTime);
+
     // Update other systems before
     _sceneGraph->Update(deltaTime);
     // Physics go here
@@ -39,7 +44,19 @@ namespace Engine {
     return _sceneGraph;
   }
 
+  auto Scene::CameraSystem() -> std::shared_ptr< Systems::CameraSystem > {
+    return _cameraSystem;
+  }
+
   auto Scene::OnWindowResize(glm::vec2 windowSize) -> void {
     _renderSystem->OnWindowResize(windowSize);
+  }
+  auto Scene::FindEntity(const std::string& name) -> std::shared_ptr< ECS::Entity > {
+    auto it = std::find_if(_entities.begin(), _entities.end(),
+                           [&name](const auto& entity) { return entity->Name() == name; });
+    if (it == _entities.end()) {
+      return nullptr;
+    }
+    return *it;
   }
 }  // namespace Engine

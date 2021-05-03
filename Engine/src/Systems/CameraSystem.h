@@ -22,5 +22,7 @@ namespace Engine::Systems {
     auto Update(float deltaTime) -> void override;
     auto MainCamera() const noexcept -> std::shared_ptr< Camera >;
     auto SwitchView() -> void;
+    auto EditorView(bool enable) -> void;
+    auto FindMainCamera() -> void;
   };
 }  // namespace Engine::Systems

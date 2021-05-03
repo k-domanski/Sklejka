@@ -4,6 +4,7 @@
 #include <Engine/Scene.h>
 #include <Systems/SceneGraph.h>
 #include <Components/Camera.h>
+#include <Systems/CameraSystem.h>
 
 #include <random>
 #include <Utility/Utility.h>
@@ -186,7 +187,12 @@ namespace Engine {
   auto AssetManager::LoadScene(std::string file) -> std::shared_ptr< Scene > {
     file = Utility::StripToRelativePath(file);
     if (_loadedScenes.count(file) == 0) {
-      auto content = Utility::ReadTextFile(file);
+      bool success = false;
+      auto content = Utility::ReadTextFile(file, &success);
+      if (!success) {
+        LOG_ERROR("Failed to load scene: {}", file);
+        return nullptr;
+      }
       std::vector< std::string > separated_jsons;
 
       std::string delimiter =
@@ -212,8 +218,7 @@ namespace Engine {
       SceneManager::AddScene(scene);
       SceneManager::OpenScene(scene->GetID());
 
-      auto sg           = scene->SceneGraph();
-      auto entities_ids = sg->GetChildren(0);
+      auto sg = scene->SceneGraph();
 
       for (int i = 1; i < separated_jsons.size(); i++) {
         auto entity = ECS::EntityManager::GetInstance().CreateEntity();
@@ -221,7 +226,10 @@ namespace Engine {
         // Removed 'Has Editor Camera' check - editor camera should not be serialized
         sg->AddChild(0, entity->GetID());
       }
-      SceneManager::OpenScene(current_scene->GetID());
+      if (current_scene != nullptr) {
+        SceneManager::OpenScene(current_scene->GetID());
+      }
+      scene->CameraSystem()->FindMainCamera();
       _loadedScenes[file] = scene;
       return scene;
     }

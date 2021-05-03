@@ -55,14 +55,20 @@ auto ProcessIncludeDirective(std::string content, const std::string& parent_dir)
   return content;
 }
 
-auto Engine::Utility::ReadTextFile(const std::string_view& fileName) -> std::string {
+auto Engine::Utility::ReadTextFile(const std::string_view& fileName, bool* success) -> std::string {
   std::ifstream file(fileName.data());
   if (!file.good()) {
     LOG_ERROR("Failed to open the file: {}", fileName);
+    if (success != nullptr) {
+      *success = false;
+    }
     return "";
   }
 
   std::string content((std::istreambuf_iterator< char >(file)), std::istreambuf_iterator< char >());
+  if (success != nullptr) {
+    *success = true;
+  }
   return content;
 }
 

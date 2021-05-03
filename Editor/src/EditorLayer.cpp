@@ -194,13 +194,18 @@ auto EditorLayer::SaveScene() -> void {
 auto EditorLayer::LoadScene() -> void {
   std::optional< std::string > filepath = FileDialog::OpenFile("Scene (*.scene)\0*.scene\0");
   if (filepath) {
+    /* Remove editor camera from current scene */
+    ECS::EntityManager::GetInstance().RemoveEntity(m_EditorCamera.entity->GetID());
+
     auto scene = AssetManager::LoadScene(filepath.value());
 
     SceneManager::AddScene(scene);
     SceneManager::OpenScene(scene->GetID());
     m_SceneHierarchyPanel.SetScene(SceneManager::GetCurrentScene());
 
-    /* Force inject editor camera into the scene */
+    scene->CameraSystem()->EditorView(true);
+
+    /* Force inject editor camera into the new scene */
     scene->SceneGraph()->AddChild(0, m_EditorCamera.entity->GetID());
     ECS::EntityManager::InjectEntity(m_EditorCamera.entity);
     ECS::EntityManager::InjectComponent< Transform >(m_EditorCamera.transform);

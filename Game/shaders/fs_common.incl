@@ -1,0 +1,7 @@
+vec3 remap(vec3 val) {
+  return val * 2.0f + 1.0f;
+}
+
+uniform sampler2D u_MainTexture;
+uniform sampler2D u_NormalMap;
+uniform vec4 u_MainColor;

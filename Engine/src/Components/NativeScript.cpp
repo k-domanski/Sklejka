@@ -8,35 +8,39 @@ auto Engine::ScriptOrderOperator::operator()(const std::shared_ptr< IScript >& l
   return lhs->Priority() < rhs->Priority();
 }
 
-auto Engine::NativeScript::Attach(const std::shared_ptr< IScript >& script) -> void {
-  if (script == nullptr) {
-    return;
+namespace Engine {
+  NativeScript::NativeScript(): ECS::Component("Native Script") {
   }
-  script->Entity(Entity());
-  _scripts.insert(script);
-  script->OnCreate();
-}
+  auto NativeScript::Attach(const std::shared_ptr< IScript >& script) -> void {
+    if (script == nullptr) {
+      return;
+    }
+    script->Entity(Entity());
+    _scripts.insert(script);
+    script->OnCreate();
+  }
 
-auto Engine::NativeScript::Detach(const std::shared_ptr< IScript >& script) -> void {
-  if (script == nullptr) {
-    return;
+  auto NativeScript::Detach(const std::shared_ptr< IScript >& script) -> void {
+    if (script == nullptr) {
+      return;
+    }
+    if (_scripts.count(script) == 0) {
+      return;
+    }
+    script->OnDestroy();
+    _scripts.erase(script);
   }
-  if (_scripts.count(script) == 0) {
-    return;
-  }
-  script->OnDestroy();
-  _scripts.erase(script);
-}
 
-auto Engine::NativeScript::Update(float deltaTime) -> void {
-  for (auto& script : _scripts) {
-    script->Update(deltaTime);
+  auto NativeScript::Update(float deltaTime) -> void {
+    for (auto& script : _scripts) {
+      script->Update(deltaTime);
+    }
   }
-}
 
-auto Engine::NativeScript::Entity() -> std::shared_ptr< ECS::Entity > {
-  if (_entity == nullptr) {
-    _entity = ECS::EntityManager::GetInstance().GetEntity(GetEntityID());
+  auto NativeScript::Entity() -> std::shared_ptr< ECS::Entity > {
+    if (_entity == nullptr) {
+      _entity = ECS::EntityManager::GetInstance().GetEntity(GetEntityID());
+    }
+    return _entity;
   }
-  return _entity;
-}
+}  // namespace Engine

@@ -1,0 +1,11 @@
+{
+    "assetID": "3554629179663661456",
+    "diffuseFilepath": "./textures\\squ.png",
+    "mainColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "shaderFilepath": "./\\shaders\\directonal_light.glsl"
+}

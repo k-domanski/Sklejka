@@ -1,0 +1,11 @@
+{
+    "assetID": "1858363847687505461",
+    "diffuseFilepath": "",
+    "mainColor": [
+        0.6565656661987305,
+        0.5172941088676453,
+        0.0,
+        1.0
+    ],
+    "shaderFilepath": "./\\shaders\\color_light.glsl"
+}

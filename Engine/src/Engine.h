@@ -25,6 +25,8 @@
 #include <Utility/FileDialog.h>
 #include <Components/MeshRenderer.h>
 
+#include <Engine/Script.h>
+
 /*KeyCodes*/
 #include <App/KeyCodes/KeyCode.h>
 #include <App/KeyCodes/MouseCode.h>

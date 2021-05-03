@@ -11,7 +11,7 @@ namespace Engine::Systems {
     AddSignature< Camera >();
     AddSignature< Transform >();
 
-    _editorView = true;
+    _editorView = false;
     /*auto size      = Window::Get().GetScreenSize();
     _renderTexture = std::make_shared< RenderTarget >(size.x, size.y);
     _renderTexture->AttachColor(0, std::make_shared< TextureAttachment >(
@@ -42,17 +42,7 @@ namespace Engine::Systems {
 
     // Find main camera
     if (_mainCamera == nullptr) {
-      for (auto entityID : _entities) {
-        auto camera = EntityManager::GetComponent< Camera >(entityID);
-        if (camera->flags.Get(_editorView ? CameraFlag::EditorCamera : CameraFlag::MainCamera)) {
-          if (_mainCamera == nullptr) {
-            _mainCamera = camera;
-          } else {
-            // Multiple main cameras - log warning and use first one
-            LOG_WARN("Multiple Main Cameras detected");
-          }
-        }
-      }
+      FindMainCamera();
     }
 
     if (_mainCamera->flags.Get(CameraFlag::NewData)) {
@@ -68,5 +58,21 @@ namespace Engine::Systems {
   auto CameraSystem::SwitchView() -> void {
     _mainCamera = nullptr;
     _editorView = !_editorView;
+  }
+  auto CameraSystem::EditorView(bool enable) -> void {
+    _editorView = enable;
+  }
+  auto CameraSystem::FindMainCamera() -> void {
+    for (auto entityID : _entities) {
+      auto camera = EntityManager::GetComponent< Camera >(entityID);
+      if (camera->flags.Get(_editorView ? CameraFlag::EditorCamera : CameraFlag::MainCamera)) {
+        if (_mainCamera == nullptr) {
+          _mainCamera = camera;
+        } else {
+          // Multiple main cameras - log warning and use first one
+          LOG_WARN("Multiple Main Cameras detected");
+        }
+      }
+    }
   }
 }  // namespace Engine::Systems

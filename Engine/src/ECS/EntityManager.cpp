@@ -95,7 +95,7 @@ namespace Engine::ECS {
     for (auto signature : *entity->_signature) {
       SceneManager::GetCurrentScene()->_componentLists[signature]->Remove(id);
     }
-    entity->_signature->clear();
+    // entity->_signature->clear();
 
     auto it = std::find(SceneManager::GetCurrentScene()->_entities.begin(),
                         SceneManager::GetCurrentScene()->_entities.end(), entity);
@@ -129,7 +129,13 @@ namespace Engine::ECS {
   }
 
   auto EntityManager::InjectEntity(const std::shared_ptr< Entity >& entity) -> void {
-    SceneManager::GetCurrentScene()->_entities.push_back(entity);
+    auto& entities = SceneManager::GetCurrentScene()->_entities;
+    auto it        = std::find(entities.begin(), entities.end(), entity);
+    if (it != entities.end()) {
+      LOG_WARN("Entity already in the scene: {}: {}", entity->Name(), entity->GetID());
+      return;
+    }
+    entities.push_back(entity);
   }
 
   /* auto EntityManager::Draw() -> void {

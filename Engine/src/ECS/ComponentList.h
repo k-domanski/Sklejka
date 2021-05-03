@@ -24,8 +24,11 @@ namespace Engine::ECS {
     auto AddComponent(const std::shared_ptr< T > component) -> void {
       // Only one component of type T on the Entity
       auto it = FindIterator(component->GetEntityID());
-      if (it == _components.end())
-        _components.push_back(component);
+      if (it != _components.end()) {
+        LOG_WARN("Component already inserted: {}", component->Name());
+        return;
+      }
+      _components.push_back(component);
     }
     auto Remove(EntityID entityID) -> void override {
       auto it = FindIterator(entityID);

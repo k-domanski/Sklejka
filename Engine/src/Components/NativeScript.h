@@ -17,6 +17,7 @@ namespace Engine {
     std::multiset< std::shared_ptr< IScript >, ScriptOrderOperator > _scripts;
 
   public:
+    NativeScript();
     auto Attach(const std::shared_ptr< IScript >& script) -> void;
     auto Detach(const std::shared_ptr< IScript >& script) -> void;
     auto Update(float deltaTime) -> void;
