@@ -1,7 +1,8 @@
 #include <GameLayer.h>
 #include <filesystem>
-#include <Scripts/CameraController.h>
 #include <Components/NativeScript.h>
+#include <Scripts/CameraController.h>
+#include <Scripts/PlayerController.h>
 
 using namespace Engine;
 GameLayer::GameLayer(): Engine::Layer("Game") {
@@ -39,5 +40,7 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::ECS::Entity >& player) -> v
   camera_tr->Position(player_tr->Position());
 
   auto native_script = camera_entity->AddComponent< Engine::NativeScript >();
+
   native_script->Attach(std::make_shared< CameraController >(player_tr));
+  native_script->Attach(std::make_shared< PlayerController >(player_tr));
 }
