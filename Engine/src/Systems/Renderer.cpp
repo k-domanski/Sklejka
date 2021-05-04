@@ -31,7 +31,6 @@ namespace Engine::Systems {
     _sphereColliderShader = AssetManager::GetShader("./shaders/color.glsl");
 
     _cameraSystem = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
-    _transformUniformBuffer.BindToSlot(_transformUniformSlot);
 
     _debugMaterial = AssetManager::GetMaterial("./materials/_error_.mat");
     if (_debugMaterial == nullptr) {
@@ -45,6 +44,8 @@ namespace Engine::Systems {
     using Engine::ECS::Entity;
     using Engine::Renderer::Material;
     using Engine::Renderer::Mesh;
+    //Hack: for now here to repair bug, consider OnStart in systems 
+    _transformUniformBuffer.BindToSlot(_transformUniformSlot);
 
     const auto camera = _cameraSystem->MainCamera();
     if (camera == nullptr) {
