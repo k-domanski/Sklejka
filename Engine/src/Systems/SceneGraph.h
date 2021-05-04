@@ -23,6 +23,7 @@ namespace Engine::Systems {
     /*Editor Gui*/
     auto GetRootID() -> ECS::EntityID&;
     auto GetChildren(ECS::EntityID id) -> std::vector< ECS::EntityID >&;
+    auto GetParent(ECS::EntityID id) -> ECS::EntityID;
 
   private:
     auto RecursiveUpdateParentAndChildren(std::shared_ptr< Transform >& transform,

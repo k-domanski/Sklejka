@@ -73,6 +73,11 @@ namespace Engine::Systems {
   auto SceneGraph::GetChildren(ECS::EntityID id) -> std::vector< ECS::EntityID >& {
     return _parentChildMap[id];
   }
+
+  auto SceneGraph::GetParent(ECS::EntityID id) -> ECS::EntityID {
+    return _childParentMap[id];
+  }
+
   auto SceneGraph::RecursiveUpdateParentAndChildren(std::shared_ptr< Transform >& transform,
                                                     std::shared_ptr< Transform > parent) -> void {
     if (parent == nullptr) {

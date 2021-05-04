@@ -46,9 +46,10 @@ namespace Engine::ECS {
       return _name = name;
     }
 
-    std::string SaveToJson();
-    std::string SaveToJson(std::string filepath);
+    std::string SaveToJson(size_t parentID);
+    std::string SaveToJson(std::string filepath, size_t parentID);
     void LoadFromJson(std::string filepath);
+    EntityID GetParentFromJson(std::string json_string);
 
   private:
     EntityID _entityID{0};

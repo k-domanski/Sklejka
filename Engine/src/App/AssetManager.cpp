@@ -153,6 +153,8 @@ namespace Engine {
     auto sg                     = scene->SceneGraph();
     auto entities_ids           = sg->GetChildren(0);
 
+
+
     using namespace nlohmann;
     json json = nlohmann::json{
         {"sceneID", SceneManager::GetCurrentScene()->GetID()},
@@ -160,7 +162,17 @@ namespace Engine {
 
     std::string fileContent = json.dump(4);
 
-    for (auto id : entities_ids) {
+    for (int i = 0; i < entities_ids.size(); i++) {
+      auto id = entities_ids[i];
+      std::cout << "\nSaving entity " << id;
+      auto children      = sg->GetChildren(id);
+
+      for (auto child : children)
+      {
+        entities_ids.push_back(child); // Add each child to list of entities to serialize
+        std::cout << "\nadding child " << child << " to entities list";
+      }
+
       const auto& entity = ECS::EntityManager::GetInstance().GetEntity(id);
       if (entity == nullptr) {
         continue;
@@ -174,7 +186,7 @@ namespace Engine {
       }
       fileContent.append("\n" + separator + "\n");
 
-      auto entity_json = entity->SaveToJson();
+      auto entity_json = entity->SaveToJson(sg->GetParent(entity->GetID()));
 
       fileContent.append(entity_json);
     }
@@ -223,9 +235,11 @@ namespace Engine {
       for (int i = 1; i < separated_jsons.size(); i++) {
         auto entity = ECS::EntityManager::GetInstance().CreateEntity();
         entity->LoadFromJson(separated_jsons[i]);
+        auto parentID = entity->GetParentFromJson(separated_jsons[i]);
         // Removed 'Has Editor Camera' check - editor camera should not be serialized
-        sg->AddChild(0, entity->GetID());
+        sg->AddChild(parentID, entity->GetID());
       }
+
       if (current_scene != nullptr) {
         SceneManager::OpenScene(current_scene->GetID());
       }

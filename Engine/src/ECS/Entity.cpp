@@ -24,7 +24,7 @@ namespace Engine::ECS {
     return EntityManager::GetInstance().GetAllComponents(_entityID);
   }
 
-  std::string Entity::SaveToJson()
+  std::string Entity::SaveToJson(size_t parentID)
   {
     std::string separator = "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137";
 
@@ -34,6 +34,7 @@ namespace Engine::ECS {
     json json = nlohmann::json{
         {"entityID", std::to_string(GetID())},
         {"entityName", _name},
+        {"parentID", parentID}
     };
     std::string fileContent = json.dump(4);
 
@@ -46,14 +47,14 @@ namespace Engine::ECS {
     return fileContent;
   }
 
-  std::string Entity::SaveToJson(std::string filepath)
+  std::string Entity::SaveToJson(std::string filepath, size_t parentID)
   {
     std::ofstream ofstream;
     ofstream.open(filepath);
-    ofstream << SaveToJson();
+    ofstream << SaveToJson(parentID);
     ofstream.close();
 
-    return SaveToJson();
+    return SaveToJson(parentID);
   }
 
   void Entity::LoadFromJson(std::string filepath)
@@ -111,5 +112,26 @@ namespace Engine::ECS {
       else if (component_type == "directionalLight")
         AddComponent< DirectionalLight >()->LoadFromJson(separated_jsons[i]);
     }
+  }
+
+  EntityID Entity::GetParentFromJson(std::string json_string)
+  {
+    std::vector< std::string > separated_jsons;
+    std::string delimiter = "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137"; //TODO: Move to one place instead of declaring each time
+
+    size_t pos = 0;
+    std::string token;
+    while ((pos = json_string.find(delimiter)) != std::string::npos) {
+      token = json_string.substr(0, pos);
+      separated_jsons.push_back(token);
+      json_string.erase(0, pos + delimiter.length());
+    }
+
+    separated_jsons.push_back(json_string);
+
+    nlohmann::json entity_json =
+        nlohmann::json::parse(separated_jsons[0].begin(), separated_jsons[0].end());
+
+    return entity_json["parentID"] != nullptr ? entity_json["parentID"] : 0;
   }
 }  // namespace Engine::ECS
