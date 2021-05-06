@@ -23,9 +23,7 @@ namespace Engine::Systems {
     auto OnWindowResize(glm::vec2 windowSize) -> void;
 
   private:
-    std::map< std::shared_ptr< Engine::Renderer::Material >, std::vector< ECS::EntityID > >
-        _sortedEntities;
-    std::set< ECS::EntityID > _entitiesToSort;
+    std::vector< ECS::EntityID > _visibleEntities;
     std::shared_ptr< Engine::Renderer::PingPongBuffer > _pingPongBuffer;
     std::shared_ptr< Engine::Renderer::Mesh > _quad;
     std::shared_ptr< Engine::GL::Shader > _blurShader;
@@ -48,11 +46,14 @@ namespace Engine::Systems {
     GL::TransformUniformBuffer _transformUniformBuffer;
 
     float _frustum[6][4];
+    std::shared_ptr< GL::RenderTarget > _depthTarget;
+
 
     auto CalculateFrustrum(glm::mat4 clip) -> void;
     auto SphereInFrustum(glm::vec3 center, float radius) -> bool;
     auto PostProcessing() -> void;
     auto SortByMaterial() -> void;
+    auto SortByDistance(std::shared_ptr< Camera > cam) -> void;
   };
 
 }  // namespace Engine::Systems

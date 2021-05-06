@@ -37,6 +37,10 @@ namespace Engine::Systems {
       LOG_ERROR("Failed to load debug material: {}", "./materials/_error_.mat");
     }
 
+    _depthTarget = std::make_shared< GL::RenderTarget >(size.x, size.y);
+    auto depth   = std::make_shared< GL::Renderbuffer >(size.x, size.y);
+    _depthTarget->AttachDepthStencil(depth);
+
     cubemap = std::make_shared< Cubemap >("./skyboxes/forest");
   }
   void Renderer::Update(float deltaTime) {
@@ -44,13 +48,97 @@ namespace Engine::Systems {
     using Engine::ECS::Entity;
     using Engine::Renderer::Material;
     using Engine::Renderer::Mesh;
-    //Hack: for now here to repair bug, consider OnStart in systems 
+    // Hack: for now here to repair bug, consider OnStart in systems
     _transformUniformBuffer.BindToSlot(_transformUniformSlot);
+
+    int i = 0;
+    int j = 0;
 
     const auto camera = _cameraSystem->MainCamera();
     if (camera == nullptr) {
       return;
     }
+    SortByDistance(camera);
+    _depthTarget->Bind(FramebufferTarget::ReadWrite);
+    GL::Context::ClearBuffers(GL::BufferBit::Depth);
+    GL::Context::DepthTest(true);
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+    glStencilMask(GL_FALSE);
+    //glDepthMask(GL_FALSE);  //----------------------
+    // calculate frustum culling and occlusion
+    _debugMaterial->Use();
+    auto debugShader = _debugMaterial->GetShader();
+    for (auto& entityID : _entities) {
+      auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
+      auto model         = mesh_renderer->GetModel();
+      std::shared_ptr< Mesh > mesh;
+      // If there is no mesh, there is nothing to show
+      if (model == nullptr || (mesh = model->GetRootMesh()) == nullptr) {
+        continue;
+      }
+
+      const auto transform = ECS::EntityManager::GetComponent< Transform >(entityID);
+
+      _transformUniformData.model     = transform->GetWorldMatrix();
+      _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+      _transformUniformData.modelViewProjection =
+          camera->ProjectionMatrix() * _transformUniformData.modelView;
+
+      // frustum culling
+      CalculateFrustrum(_transformUniformData.modelViewProjection);
+      auto sphere = model->GetBoundingSphere();
+      if (!SphereInFrustum(sphere.first, sphere.second)) {
+        i++;
+        continue;
+      }
+
+      auto& query = model->GetQuery();
+      // auto lastFrameRes = query.AnySamplesPassed();
+
+      query.Start();
+
+      auto boundingMesh = model->GetBoundingBox();
+      boundingMesh->Use();
+      _transformUniformBuffer.SetData(_transformUniformData);
+      debugShader->BindUniformBlock("u_Transform", 0);
+      debugShader->BindUniformBlock("u_Camera", 1);
+      debugShader->BindUniformBlock("u_Directional", 2);
+      glDrawElements(boundingMesh->GetPrimitive(), boundingMesh->ElementCount(), GL_UNSIGNED_INT,
+                     NULL);
+
+      /*if (lastFrameRes) {
+        glDepthMask(GL_TRUE);
+        _visibleEntities.push_back(entityID);
+        mesh->Use();
+        _transformUniformBuffer.SetData(_transformUniformData);
+        debugShader->BindUniformBlock("u_Transform", 0);
+        debugShader->BindUniformBlock("u_Camera", 1);
+        debugShader->BindUniformBlock("u_Directional", 2);
+        glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+      } else {
+        glDepthMask(GL_FALSE);
+        auto boundingMesh = model->GetBoundingBox();
+        boundingMesh->Use();
+        _transformUniformBuffer.SetData(_transformUniformData);
+        debugShader->BindUniformBlock("u_Transform", 0);
+        debugShader->BindUniformBlock("u_Camera", 1);
+        debugShader->BindUniformBlock("u_Directional", 2);
+        glDrawElements(boundingMesh->GetPrimitive(), boundingMesh->ElementCount(), GL_UNSIGNED_INT,
+                       NULL);
+        j++;
+      }*/
+
+      query.End();
+
+      auto res = query.AnySamplesPassed();
+      if (res)
+        _visibleEntities.push_back(entityID);
+      else
+        j++;
+    }
+    glDepthMask(GL_TRUE);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glStencilMask(GL_TRUE);
     SortByMaterial();
     // Geometry
     _pingPongBuffer->Bind(FramebufferTarget::ReadWrite);
@@ -58,7 +146,7 @@ namespace Engine::Systems {
     GL::Context::DepthTest(true);
 
     // for (auto [material, vec] : _sortedEntities) {
-    for (auto& entityID : _entities) {
+    for (auto& entityID : _visibleEntities) {
       auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
       auto material      = mesh_renderer->GetMaterial();
       auto model         = mesh_renderer->GetModel();
@@ -80,12 +168,13 @@ namespace Engine::Systems {
       _transformUniformData.modelViewProjection =
           camera->ProjectionMatrix() * _transformUniformData.modelView;
 
-      // frustum culling
-      CalculateFrustrum(_transformUniformData.modelViewProjection);
-      auto sphere = model->GetBoundingSphere();
-      if (!SphereInFrustum(sphere.first, sphere.second)) {
-        continue;
-      }
+      //// frustum culling
+      // CalculateFrustrum(_transformUniformData.modelViewProjection);
+      // auto sphere = model->GetBoundingSphere();
+      // if (!SphereInFrustum(sphere.first, sphere.second)) {
+      //  i++;
+      //  continue;
+      //}
 
       material->Use();
       mesh->Use();
@@ -155,7 +244,10 @@ namespace Engine::Systems {
     }
     cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
     // Post process
+    LOG_DEBUG("Cutted by frustum: " + std::to_string(i)
+              + ", cutted by occlusion lf: " + std::to_string(j));
     PostProcessing();
+    _visibleEntities.clear();
   }
 
   auto Renderer::AddEntity(ECS::EntityID id) -> void {
@@ -166,6 +258,9 @@ namespace Engine::Systems {
     using namespace GL;
     auto size       = windowSize;
     _pingPongBuffer = std::make_shared< PingPongBuffer >(size);
+    _depthTarget    = std::make_shared< GL::RenderTarget >(size.x, size.y);
+    auto depth      = std::make_shared< GL::Renderbuffer >(size.x, size.y);
+    _depthTarget->AttachDepthStencil(depth);
     /*_renderTarget = std::make_shared< RenderTarget >(size.x, size.y);
     _screenTexture =
         std::make_shared< TextureAttachment >(size.x, size.y, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
@@ -196,7 +291,8 @@ namespace Engine::Systems {
       return rmat->Queue() < rmat->Queue();
     };
     // Actual sort
-    std::sort(_entities.begin(), _entities.end(), OrderFunction);
+    std::sort(_visibleEntities.begin(), _visibleEntities.end(), OrderFunction);
+    // std::sort(_entities.begin(), _entities.end(), OrderFunction);
     // What the fuck :)
     return;  // Retun the fuck out
     /*for (auto entityID : _entities) {
@@ -229,6 +325,27 @@ namespace Engine::Systems {
     }
 
     _entitiesToSort.clear();*/
+  }
+
+  auto Renderer::SortByDistance(std::shared_ptr< Camera > cam) -> void {
+    using Engine::Components::MeshRenderer;
+    using Engine::ECS::EntityID;
+    using Engine::Renderer::Material;
+
+    auto camTrans = ECS::EntityManager::GetComponent< Transform >(cam->GetEntityID());
+    auto camPos   = camTrans->WorldPosition();
+
+    const auto OrderFunction = [camPos](const EntityID lhs, const EntityID rhs) {
+      auto ltr  = ECS::EntityManager::GetComponent< Transform >(lhs);
+      auto rtr  = ECS::EntityManager::GetComponent< Transform >(rhs);
+      auto lpos = ltr->WorldPosition();
+      auto rpos = rtr->WorldPosition();
+      auto ldis = glm::distance2(camPos, lpos);
+      auto rdis = glm::distance2(camPos, rpos);
+      return ldis < rdis;
+    };
+    // Actual sort
+    std::sort(_entities.begin(), _entities.end(), OrderFunction);
   }
 
   auto Renderer::CalculateFrustrum(glm::mat4 clip) -> void {

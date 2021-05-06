@@ -11,10 +11,14 @@ namespace Engine::Renderer {
     _filepath = "";
     meshes.push_back(mesh);
     CreateBoundingSphere();
+    CreateBoundingBox();
+    _query = GL::QueryObject();
   }
   Model::Model(std::string_view path) {
     loadModel(path);
     CreateBoundingSphere();
+    CreateBoundingBox();
+    _query = GL::QueryObject();
   }
 
   std::shared_ptr< Mesh > Model::GetRootMesh() {
@@ -27,6 +31,14 @@ namespace Engine::Renderer {
 
   std::pair< glm::vec3, float > Model::GetBoundingSphere() {
     return std::make_pair(_sphereCenter, _radius);
+  }
+
+  std::shared_ptr< Mesh > Model::GetBoundingBox() {
+    return _boundingBox;
+  }
+
+  auto Model::GetQuery() -> GL::QueryObject& {
+    return _query;
   }
 
   void Model::loadModel(std::string_view path) {
@@ -65,8 +77,7 @@ namespace Engine::Renderer {
     _sphereCenter     = glm::vec3(0.0f);  // for now its enough latter maybe average vertex?
     float maxDistance = 0;
 
-    for (auto vertex : mesh->GetVertices())
-    {
+    for (auto vertex : mesh->GetVertices()) {
       _sphereCenter += vertex.position;
     }
     _sphereCenter /= mesh->GetVertices().size();
@@ -78,6 +89,64 @@ namespace Engine::Renderer {
     }
 
     _radius = maxDistance;
+  }
+
+  void Model::CreateBoundingBox() {
+    const auto mesh = GetRootMesh();
+
+    glm::vec3 min(INFINITY);
+    glm::vec3 max(-INFINITY);
+
+    for (auto& vertex : mesh->GetVertices()) {
+      if (vertex.position.x > max.x)
+        max.x = vertex.position.x;
+      if (vertex.position.y > max.y)
+        max.y = vertex.position.y;
+      if (vertex.position.z > max.z)
+        max.z = vertex.position.z;
+      if (vertex.position.x < min.x)
+        min.x = vertex.position.x;
+      if (vertex.position.y < min.y)
+        min.y = vertex.position.y;
+      if (vertex.position.z < min.z)
+        min.z = vertex.position.z;
+    }
+
+    const std::vector< Vertex > verts{{// Vert 0
+                                       {min.x, min.y, min.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 1
+                                       {min.x, max.y, min.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 2
+                                       {min.x, max.y, max.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 3
+                                       {min.x, min.y, max.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 4
+                                       {max.x, min.y, min.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 5
+                                       {max.x, max.y, min.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 6
+                                       {max.x, max.y, max.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 7
+                                       {max.x, min.y, max.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}}};
+    const std::vector< GLuint > inds{0, 3, 2, 2, 1, 0, 3, 7, 6, 6, 2, 3, 7, 4, 5, 5, 6, 7,
+                                     4, 0, 1, 1, 5, 4, 1, 2, 6, 6, 5, 1, 4, 7, 3, 3, 0, 4};
+    _boundingBox = std::make_shared< Mesh >(verts, inds);
   }
 
   std::shared_ptr< Mesh > Model::processMesh(aiMesh* mesh, const aiScene* scene) {
@@ -99,9 +168,9 @@ namespace Engine::Renderer {
       vec.z         = mesh->mNormals[i].z;
       vertex.normal = vec;
 
-     /* uv.x      = mesh->mTextureCoords[0][i].x;
-      uv.y      = mesh->mTextureCoords[0][i].y;
-      vertex.uv = uv;*/
+      /* uv.x      = mesh->mTextureCoords[0][i].x;
+       uv.y      = mesh->mTextureCoords[0][i].y;
+       vertex.uv = uv;*/
 
       if (mesh->mTextureCoords[0]) {
         glm::vec2 vec;

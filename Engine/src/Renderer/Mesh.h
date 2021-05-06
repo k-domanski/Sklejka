@@ -5,6 +5,8 @@
 #include <GL/GLEnum.h>
 #include <Renderer/Vertex.h>
 
+#include <GL/QueryObject.h>
+
 namespace Engine::Renderer {
   BETTER_ENUM(__MeshPrimitive, uint8_t, Plane, WireframeBox, WireframeSphere);
   typedef __MeshPrimitive MeshPrimitive;
