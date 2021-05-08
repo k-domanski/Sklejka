@@ -251,9 +251,9 @@ namespace Editor {
   /*Directional Light*/
   class DirectionalLightView : public ComponentView< Engine::DirectionalLight > {
     auto OnDraw() -> void override {
-      glm::vec3 direction = _component->Direction();
-      DrawVec3("Direction", direction);
-      _component->Direction(direction);
+      //glm::vec3 direction = _component->Direction();
+      //DrawVec3("Direction", direction);
+      //_component->Direction(direction);
 
       glm::vec3 ambient = _component->Ambient();
       if (ImGui::CollapsingHeader("Ambient##h")) {

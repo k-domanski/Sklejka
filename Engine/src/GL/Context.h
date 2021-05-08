@@ -16,9 +16,10 @@ namespace Engine::GL {
     /* Other */
     static inline glm::vec4 _clearColor{0.0f};
     static inline GLbitfield _clearBitMask{0u};
-    static inline bool _depthTestEnabled = false;
-    static inline bool _faceCullingEnabled      = false;
+    static inline bool _depthTestEnabled   = false;
+    static inline bool _faceCullingEnabled = false;
     static inline glm::ivec4 _viewport;
+    static inline Face _cullFace = +Face::Back;
 
   public:
     static auto Initialize() noexcept -> void;
@@ -53,6 +54,8 @@ namespace Engine::GL {
     static auto ClearBuffers(GLbitfield mask) noexcept -> void;
     static auto DepthTest(bool enable) noexcept -> void;
     static auto FaceCulling(bool enable) noexcept -> void;
+    static auto CullFace(Face face) noexcept -> void;
+    static auto Viewport() noexcept -> glm::vec4;
     static auto Viewport(int x, int y, unsigned width, unsigned height) noexcept -> void;
   };
 }  // namespace Engine::GL

@@ -179,6 +179,16 @@ namespace Engine::GL {
     }
     _faceCullingEnabled = enable;
   }
+  auto Context::CullFace(Face face) noexcept -> void {
+    if (face == _cullFace) {
+      return;
+    }
+    glCullFace(face);
+    _cullFace = face;
+  }
+  auto Context::Viewport() noexcept -> glm::vec4 {
+    return _viewport;
+  }
   auto Context::Viewport(int x, int y, unsigned width, unsigned height) noexcept -> void {
     if (_viewport == glm::ivec4{x, y, width, height}) {
       return;

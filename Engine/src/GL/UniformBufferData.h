@@ -42,4 +42,7 @@ namespace Engine::GL {
     */
     float intensity;  // Data 4 bytes
   };
+  struct ShadowUniformData {
+    glm::mat4 lightSpaceMatrix;
+  };
 }  // namespace Engine::GL

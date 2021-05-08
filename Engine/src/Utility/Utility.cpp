@@ -34,7 +34,7 @@ auto RecursiveIncludeProcess(std::string& content, const std::string& parent_dir
     included_files.push_back(fp);
     auto include_content = ReadTextFile(parent_dir + fp);
     include_content      = RemoveAllComments(include_content, "//");
-    content.insert(include_pos[i], include_content);
+    content.insert(include_pos[i], "\n" + include_content);
 
     ++include_count;
   }

@@ -8,6 +8,7 @@
 #include <GL/Buffer.h>
 #include <Systems/CameraSystem.h>
 #include <Renderer/PingPongBuffer.h>
+#include <Systems/LightSystem.h>
 
 namespace Engine::GL {
   class Cubemap;
@@ -37,9 +38,10 @@ namespace Engine::Systems {
     std::shared_ptr< Engine::GL::Shader > _sphereColliderShader;
 
     std::shared_ptr< CameraSystem > _cameraSystem;
+    std::shared_ptr< LightSystem > _lightSystem;
     std::shared_ptr< Engine::Renderer::Material > _debugMaterial;
 
-    std::shared_ptr<GL::Cubemap> cubemap;
+    std::shared_ptr< GL::Cubemap > cubemap;
 
     uint32_t _transformUniformSlot{0u};
     GL::TransformUniformData _transformUniformData;
@@ -48,6 +50,14 @@ namespace Engine::Systems {
     float _frustum[6][4];
     std::shared_ptr< GL::RenderTarget > _depthTarget;
 
+    uint32_t _shadowUniformSlot{6u};
+    GL::ShadowUniformBuffer _shadowUniformBuffer;
+    GL::ShadowUniformData _shadowUniformData;
+    std::shared_ptr< GL::Shader > _shadowMapShader;
+    glm::vec2 _shadowMapSize;
+    glm::mat4 _shadowProjection;
+    std::shared_ptr< GL::RenderTarget > _shadowTarget;
+    std::shared_ptr< GL::TextureAttachment > _shadowTexture;
 
     auto CalculateFrustrum(glm::mat4 clip) -> void;
     auto SphereInFrustum(glm::vec3 center, float radius) -> bool;

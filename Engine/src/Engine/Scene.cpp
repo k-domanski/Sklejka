@@ -16,10 +16,10 @@ namespace Engine {
 
   auto Scene::OpenScene() -> void {
     _sceneGraph    = ECS::EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();
+    _lightSystem   = ECS::EntityManager::GetInstance().RegisterSystem< Systems::LightSystem >();
     _cameraSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
     _renderSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
     _physicsSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
-    _lightSystem   = ECS::EntityManager::GetInstance().RegisterSystem< Systems::LightSystem >();
     _scriptSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ScriptSystem >();
   }
 

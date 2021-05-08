@@ -37,4 +37,7 @@ namespace Engine::GL {
   BETTER_ENUM(__FramebufferTarget, GLenum, ReadWrite = GL_FRAMEBUFFER, Read = GL_READ_FRAMEBUFFER,
               Write = GL_DRAW_FRAMEBUFFER);
   typedef __FramebufferTarget FramebufferTarget;
+
+  BETTER_ENUM(__Face, GLenum, Front = GL_FRONT, Back = GL_BACK);
+  typedef __Face Face;
 }  // namespace Engine::GL

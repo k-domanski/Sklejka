@@ -45,15 +45,14 @@ namespace Engine {
     flags.Set(LightFlag::Dirty | LightFlag::NewData);
     return m_Data.intensity = intensity;
   }
-  auto DirectionalLight::UniformData() const noexcept -> GL::DirectionalLightUniformData
-  {
-      return m_Data;
+  auto DirectionalLight::UniformData() const noexcept -> GL::DirectionalLightUniformData {
+    return m_Data;
   }
   auto DirectionalLight::SaveToJson() -> std::string {
     nlohmann::json json = nlohmann::json{
         {"componentType", "directionalLight"},
-        {"direction",
-         {{"x", m_Data.direction.x}, {"y", m_Data.direction.y}, {"z", m_Data.direction.z}}},
+        /*{"direction",
+         {{"x", m_Data.direction.x}, {"y", m_Data.direction.y}, {"z", m_Data.direction.z}}},*/
         {"ambient", {{"x", m_Data.ambient.x}, {"y", m_Data.ambient.y}, {"z", m_Data.ambient.z}}},
         {"diffuse", {{"x", m_Data.diffuse.x}, {"y", m_Data.diffuse.y}, {"z", m_Data.diffuse.z}}},
         {"specular",
@@ -79,7 +78,7 @@ namespace Engine {
       json         = nlohmann::json::parse(content.begin(), content.end());
     }
 
-    Direction(glm::vec3(json["direction"]["x"], json["direction"]["y"], json["direction"]["z"]));
+    // Direction(glm::vec3(json["direction"]["x"], json["direction"]["y"], json["direction"]["z"]));
     Ambient(glm::vec3(json["ambient"]["x"], json["ambient"]["y"], json["ambient"]["z"]));
     Diffuse(glm::vec3(json["diffuse"]["x"], json["diffuse"]["y"], json["diffuse"]["z"]));
     Specular(glm::vec3(json["specular"]["x"], json["specular"]["y"], json["specular"]["z"]));

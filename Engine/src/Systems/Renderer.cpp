@@ -31,6 +31,7 @@ namespace Engine::Systems {
     _sphereColliderShader = AssetManager::GetShader("./shaders/color.glsl");
 
     _cameraSystem = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
+    _lightSystem  = ECS::EntityManager::GetInstance().GetSystem< LightSystem >();
 
     _debugMaterial = AssetManager::GetMaterial("./materials/_error_.mat");
     if (_debugMaterial == nullptr) {
@@ -40,6 +41,20 @@ namespace Engine::Systems {
     _depthTarget = std::make_shared< GL::RenderTarget >(size.x, size.y);
     auto depth   = std::make_shared< GL::Renderbuffer >(size.x, size.y);
     _depthTarget->AttachDepthStencil(depth);
+
+    /* Shadow map setup */
+    _shadowMapSize = glm::vec2(1024.0f, 1024.0f) * 2.0f;
+    _shadowTarget  = std::make_shared< GL::RenderTarget >(_shadowMapSize.x, _shadowMapSize.y);
+    _shadowTexture = std::make_shared< GL::TextureAttachment >(
+        _shadowMapSize.x, _shadowMapSize.y, GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT, GL_FLOAT);
+    _shadowTarget->AttachDepth(_shadowTexture);
+    _shadowTarget->Bind(FramebufferTarget::ReadWrite);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    _shadowProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -20.0f, 10.0f);
+    _shadowUniformBuffer.BindToSlot(_shadowUniformSlot);
+    _shadowMapShader = AssetManager::GetShader("./shaders/shadow_map.glsl");
+    _shadowMapShader->BindUniformBlock("u_ShadowData", _shadowUniformSlot);
 
     cubemap = std::make_shared< Cubemap >("./skyboxes/forest");
   }
@@ -58,65 +73,47 @@ namespace Engine::Systems {
     if (camera == nullptr) {
       return;
     }
-    SortByDistance(camera);
-    _depthTarget->Bind(FramebufferTarget::ReadWrite);
-    GL::Context::ClearBuffers(GL::BufferBit::Depth);
-    GL::Context::DepthTest(true);
-    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-    glStencilMask(GL_FALSE);
-    //glDepthMask(GL_FALSE);  //----------------------
-    // calculate frustum culling and occlusion
-    _debugMaterial->Use();
-    auto debugShader = _debugMaterial->GetShader();
-    for (auto& entityID : _entities) {
-      auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
-      auto model         = mesh_renderer->GetModel();
-      std::shared_ptr< Mesh > mesh;
-      // If there is no mesh, there is nothing to show
-      if (model == nullptr || (mesh = model->GetRootMesh()) == nullptr) {
-        continue;
-      }
+    /* CULLING */
+    if (false) {
+      SortByDistance(camera);
+      _depthTarget->Bind(FramebufferTarget::ReadWrite);
+      GL::Context::ClearBuffers(GL::BufferBit::Depth);
+      GL::Context::DepthTest(true);
+      glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+      glStencilMask(GL_FALSE);
+      // glDepthMask(GL_FALSE);  //----------------------
+      // calculate frustum culling and occlusion
+      _debugMaterial->Use();
+      auto debugShader = _debugMaterial->GetShader();
+      for (auto& entityID : _entities) {
+        auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
+        auto model         = mesh_renderer->GetModel();
+        std::shared_ptr< Mesh > mesh;
+        // If there is no mesh, there is nothing to show
+        if (model == nullptr || (mesh = model->GetRootMesh()) == nullptr) {
+          continue;
+        }
 
-      const auto transform = ECS::EntityManager::GetComponent< Transform >(entityID);
+        const auto transform = ECS::EntityManager::GetComponent< Transform >(entityID);
 
-      _transformUniformData.model     = transform->GetWorldMatrix();
-      _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
-      _transformUniformData.modelViewProjection =
-          camera->ProjectionMatrix() * _transformUniformData.modelView;
+        _transformUniformData.model     = transform->GetWorldMatrix();
+        _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+        _transformUniformData.modelViewProjection =
+            camera->ProjectionMatrix() * _transformUniformData.modelView;
 
-      // frustum culling
-      CalculateFrustrum(_transformUniformData.modelViewProjection);
-      auto sphere = model->GetBoundingSphere();
-      if (!SphereInFrustum(sphere.first, sphere.second)) {
-        i++;
-        continue;
-      }
+        // frustum culling
+        CalculateFrustrum(_transformUniformData.modelViewProjection);
+        auto sphere = model->GetBoundingSphere();
+        if (!SphereInFrustum(sphere.first, sphere.second)) {
+          i++;
+          continue;
+        }
 
-      auto& query = model->GetQuery();
-      // auto lastFrameRes = query.AnySamplesPassed();
+        auto& query = model->GetQuery();
+        // auto lastFrameRes = query.AnySamplesPassed();
 
-      query.Start();
+        query.Start();
 
-      auto boundingMesh = model->GetBoundingBox();
-      boundingMesh->Use();
-      _transformUniformBuffer.SetData(_transformUniformData);
-      debugShader->BindUniformBlock("u_Transform", 0);
-      debugShader->BindUniformBlock("u_Camera", 1);
-      debugShader->BindUniformBlock("u_Directional", 2);
-      glDrawElements(boundingMesh->GetPrimitive(), boundingMesh->ElementCount(), GL_UNSIGNED_INT,
-                     NULL);
-
-      /*if (lastFrameRes) {
-        glDepthMask(GL_TRUE);
-        _visibleEntities.push_back(entityID);
-        mesh->Use();
-        _transformUniformBuffer.SetData(_transformUniformData);
-        debugShader->BindUniformBlock("u_Transform", 0);
-        debugShader->BindUniformBlock("u_Camera", 1);
-        debugShader->BindUniformBlock("u_Directional", 2);
-        glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
-      } else {
-        glDepthMask(GL_FALSE);
         auto boundingMesh = model->GetBoundingBox();
         boundingMesh->Use();
         _transformUniformBuffer.SetData(_transformUniformData);
@@ -125,28 +122,106 @@ namespace Engine::Systems {
         debugShader->BindUniformBlock("u_Directional", 2);
         glDrawElements(boundingMesh->GetPrimitive(), boundingMesh->ElementCount(), GL_UNSIGNED_INT,
                        NULL);
-        j++;
-      }*/
 
-      query.End();
+        /*if (lastFrameRes) {
+          glDepthMask(GL_TRUE);
+          _visibleEntities.push_back(entityID);
+          mesh->Use();
+          _transformUniformBuffer.SetData(_transformUniformData);
+          debugShader->BindUniformBlock("u_Transform", 0);
+          debugShader->BindUniformBlock("u_Camera", 1);
+          debugShader->BindUniformBlock("u_Directional", 2);
+          glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+        } else {
+          glDepthMask(GL_FALSE);
+          auto boundingMesh = model->GetBoundingBox();
+          boundingMesh->Use();
+          _transformUniformBuffer.SetData(_transformUniformData);
+          debugShader->BindUniformBlock("u_Transform", 0);
+          debugShader->BindUniformBlock("u_Camera", 1);
+          debugShader->BindUniformBlock("u_Directional", 2);
+          glDrawElements(boundingMesh->GetPrimitive(), boundingMesh->ElementCount(),
+        GL_UNSIGNED_INT, NULL); j++;
+        }*/
 
-      auto res = query.AnySamplesPassed();
-      if (res)
-        _visibleEntities.push_back(entityID);
-      else
-        j++;
+        query.End();
+
+        auto res = query.AnySamplesPassed();
+        if (res)
+          _visibleEntities.push_back(entityID);
+        else
+          j++;
+      }
+      glDepthMask(GL_TRUE);
+      glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+      glStencilMask(GL_TRUE);
     }
-    glDepthMask(GL_TRUE);
-    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    glStencilMask(GL_TRUE);
     SortByMaterial();
+
+    /* Shadows */
+    GL::Context::DepthTest(true);
+    if (_lightSystem != nullptr) {
+      auto light = _lightSystem->Light();
+      if (light != nullptr && light->flags.GetAny(LightFlag::Dirty | LightFlag::NewData)) {
+        auto light_tr = ECS::EntityManager::GetComponent< Transform >(light->GetEntityID());
+        if (light_tr->flags.Get(TransformFlag::NewData)) {
+          const auto& fr  = light_tr->Forward();
+          const auto& pos = light_tr->Position();
+          _shadowUniformData.lightSpaceMatrix =
+              _shadowProjection * glm::lookAt(pos, pos + fr, {0.0f, 1.0f, 0.0f});
+          _shadowUniformBuffer.SetData(_shadowUniformData);
+        }
+        _shadowTarget->Bind(FramebufferTarget::ReadWrite);
+        GL::Context::Viewport(0, 0, _shadowMapSize.x, _shadowMapSize.y);
+        GL::Context::ClearBuffers(BufferBit::Depth);
+        GL::Context::FaceCulling(true);
+        GL::Context::CullFace(Face::Front);
+        _shadowMapShader->Use();
+        _shadowMapShader->BindUniformBlock("u_Transform", 0);
+        _shadowMapShader->BindUniformBlock("u_Camera", 1);
+        _shadowMapShader->BindUniformBlock("u_Directional", 2);
+        for (auto& entityID : _entities) {
+          auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
+          auto material      = mesh_renderer->GetMaterial();
+          auto model         = mesh_renderer->GetModel();
+          if (material == nullptr || model == nullptr) {
+            continue;
+          }
+          auto mesh = model->GetRootMesh();
+          mesh->Use();
+          const auto transform        = ECS::EntityManager::GetComponent< Transform >(entityID);
+          _transformUniformData.model = transform->GetWorldMatrix();
+          _transformUniformBuffer.SetData(_transformUniformData);
+          glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+        }
+        const auto window_size = Window::Get().GetScreenSize();
+        GL::Context::Viewport(0, 0, window_size.x, window_size.y);
+        GL::Context::CullFace(Face::Back);
+      }
+    }
+
+    // Debug
+    if (false) {
+      GL::Context::BindFramebuffer(FramebufferTarget::ReadWrite, 0);
+      _quad->Use();
+      GL::Context::DepthTest(false);
+      auto draw_depth = AssetManager::GetShader("./shaders/depth_draw.glsl");
+      draw_depth->Use();
+      draw_depth->SetValue("u_ShadowDepthTexture", (int)_shadowUniformSlot);
+      _shadowTexture->Bind(_shadowUniformSlot);
+      glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
+      GL::Context::DepthTest(true);
+      return;
+    }
+
     // Geometry
     _pingPongBuffer->Bind(FramebufferTarget::ReadWrite);
     GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth);
     GL::Context::DepthTest(true);
-
+    _shadowTexture->Bind(_shadowUniformSlot);
     // for (auto [material, vec] : _sortedEntities) {
-    for (auto& entityID : _visibleEntities) {
+    // for (auto& entityID : _visibleEntities) {
+    for (auto& entityID : _entities) {
       auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
       auto material      = mesh_renderer->GetMaterial();
       auto model         = mesh_renderer->GetModel();
@@ -185,6 +260,8 @@ namespace Engine::Systems {
       shader->BindUniformBlock("u_Transform", 0);
       shader->BindUniformBlock("u_Camera", 1);
       shader->BindUniformBlock("u_Directional", 2);
+      shader->BindUniformBlock("u_ShadowData", _shadowUniformSlot);
+      shader->SetValue("u_ShadowDepthTexture", (int)_shadowUniformSlot);
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
 
       // collider
@@ -244,8 +321,9 @@ namespace Engine::Systems {
     }
     cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
     // Post process
-    LOG_DEBUG("Cutted by frustum: " + std::to_string(i)
-              + ", cutted by occlusion lf: " + std::to_string(j));
+    // LOG_DEBUG("Cutted by frustum: " + std::to_string(i)
+    //          + ", cutted by occlusion lf: " + std::to_string(j));
+
     PostProcessing();
     _visibleEntities.clear();
   }
