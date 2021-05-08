@@ -51,7 +51,7 @@ namespace Engine::Systems {
     _shadowTarget->Bind(FramebufferTarget::ReadWrite);
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
-    _shadowProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -20.0f, 10.0f);
+    _shadowProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -10.0f, 10.0f);
     _shadowUniformBuffer.BindToSlot(_shadowUniformSlot);
     _shadowMapShader = AssetManager::GetShader("./shaders/shadow_map.glsl");
     _shadowMapShader->BindUniformBlock("u_ShadowData", _shadowUniformSlot);
@@ -73,8 +73,9 @@ namespace Engine::Systems {
     if (camera == nullptr) {
       return;
     }
+    const auto camera_tr = ECS::EntityManager::GetComponent< Transform >(camera->GetEntityID());
     /* CULLING */
-    if (false) {
+    if (true) {
       SortByDistance(camera);
       _depthTarget->Bind(FramebufferTarget::ReadWrite);
       GL::Context::ClearBuffers(GL::BufferBit::Depth);
@@ -166,7 +167,7 @@ namespace Engine::Systems {
         auto light_tr = ECS::EntityManager::GetComponent< Transform >(light->GetEntityID());
         if (light_tr->flags.Get(TransformFlag::NewData)) {
           const auto& fr  = light_tr->Forward();
-          const auto& pos = light_tr->Position();
+          const auto& pos = camera_tr->Position() + camera_tr->Forward() * 5.0f;
           _shadowUniformData.lightSpaceMatrix =
               _shadowProjection * glm::lookAt(pos, pos + fr, {0.0f, 1.0f, 0.0f});
           _shadowUniformBuffer.SetData(_shadowUniformData);
@@ -200,7 +201,7 @@ namespace Engine::Systems {
       }
     }
 
-    // Debug
+    // Debug - remove later
     if (false) {
       GL::Context::BindFramebuffer(FramebufferTarget::ReadWrite, 0);
       _quad->Use();
@@ -219,9 +220,8 @@ namespace Engine::Systems {
     GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth);
     GL::Context::DepthTest(true);
     _shadowTexture->Bind(_shadowUniformSlot);
-    // for (auto [material, vec] : _sortedEntities) {
-    // for (auto& entityID : _visibleEntities) {
-    for (auto& entityID : _entities) {
+     for (auto& entityID : _visibleEntities) {
+    //for (auto& entityID : _entities) {
       auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
       auto material      = mesh_renderer->GetMaterial();
       auto model         = mesh_renderer->GetModel();

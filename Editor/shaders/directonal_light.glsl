@@ -37,12 +37,10 @@ void main() {
   /*view direction for specular*/
   // vec3 viewDirection = normalize(cameraPosition, v_pos);
   vec3 lightSpacePosUV = ndc2uv(fs_in.lightSpacePos.xyz / fs_in.lightSpacePos.w);
-  float shadowMapDepth = texture(u_ShadowDepthTexture, lightSpacePosUV.xy).r;
 
   vec3 normal  = normalize(fs_in.normal);
-  // float bias   = max(0.05 * (1.0 - dot(normal, -u_Direction)), u_ShadowBias);
   float bias   = u_ShadowBias;
-  float shadow = calculateShadow(lightSpacePosUV, shadowMapDepth, bias);
+  float shadow = calculateShadow(lightSpacePosUV, u_ShadowDepthTexture, bias);
 
   vec3 result = calculateDirectionalLight(fs_in.normal, fs_in.uv, shadow);
   out_color   = vec4(result, 1.0f);
