@@ -21,6 +21,7 @@ namespace Engine::Renderer {
     GL::Primitive _primitive = GL::Primitive::Triangles;
     std::vector< Vertex > _vertexData;
     std::vector< GLuint > _indiceData;
+    std::string _name;
 
   public:
     Mesh(const std::vector< Vertex >& vertices, const std::vector< GLuint >& indices) noexcept;
@@ -34,6 +35,8 @@ namespace Engine::Renderer {
     auto ElementCount() const noexcept -> GLuint;
     auto GetPrimitive() const noexcept -> GL::Primitive;
     auto GetVertices() const -> std::vector< Vertex >;
+    auto GetName() -> std::string;
+    auto SetName(std::string name) -> void;
 
   private:
     auto SendDataToBuffers() noexcept -> void;

@@ -161,11 +161,37 @@ auto EditorLayer::UpdateEditorCamera() -> void {
   }
 }
 
+auto EditorLayer::OpenModel() {
+  std::optional< std::string > filepath = FileDialog::OpenFile("Model (*.fbx, *.FBX)\0*.fbx\0");
+  if (filepath)
+  {
+    std::shared_ptr< Renderer::Model > model_ptr = std::make_shared< Renderer::Model >(filepath.value());
+    std::shared_ptr< Renderer::Mesh > root_mesh_ptr = model_ptr->GetRootMesh();
+
+    std::shared_ptr< Renderer::Model > root_model_ptr =
+        std::make_shared< Renderer::Model >(root_mesh_ptr);
+
+    ECS::EntityID rootID = AddObjectOnScene(root_model_ptr, 0);
+
+    for (int i = 1; i < model_ptr->GetMeshCount(); i++)
+    {
+      std::shared_ptr< Renderer::Mesh > mesh_ptr = model_ptr->GetMesh(i);
+      std::shared_ptr< Renderer::Model > submodel_ptr =
+          std::make_shared< Renderer::Model >(mesh_ptr);
+
+      AddObjectOnScene(submodel_ptr, rootID);
+    }
+  }
+}
+
 auto EditorLayer::DrawMenuBar() -> void {
   if (ImGui::BeginMainMenuBar()) {
     if (ImGui::BeginMenu("File")) {
       if (ImGui::MenuItem("Open...")) {
         LoadScene();
+      }
+      if (ImGui::MenuItem("Load model...")) {
+        OpenModel();
       }
       if (ImGui::MenuItem("Save As...")) {
         SaveScene();
@@ -213,10 +239,10 @@ auto EditorLayer::LoadScene() -> void {
   }
 }
 
-auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> void {
+auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> ECS::EntityID {
   auto model = AssetManager::GetModel(path);
   if (model->GetRootMesh() == nullptr)
-    return;
+    return 0;
   using namespace Engine::ECS;
   using namespace Engine::Components;
   auto entity = EntityManager::GetInstance().CreateEntity();
@@ -228,4 +254,22 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
   entity->AddComponent< MeshRenderer >(model, mat);
 
   SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, entity->GetID());
+  return entity->GetID();
+}
+
+auto EditorLayer::AddObjectOnScene(std::shared_ptr<Renderer::Model> model, Engine::ECS::EntityID parent) -> ECS::EntityID {
+  if (model->GetRootMesh() == nullptr)
+    return 0;
+  using namespace Engine::ECS;
+  using namespace Engine::Components;
+  auto entity = EntityManager::GetInstance().CreateEntity();
+  entity->Name(model->GetRootMesh()->GetName());
+  entity->AddComponent< Transform >();
+  /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
+  auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
+  auto mat = AssetManager::GetMaterial("./materials/default_color.mat");
+  entity->AddComponent< MeshRenderer >(model, mat);
+
+  SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, entity->GetID());
+  return entity->GetID();
 }

@@ -19,6 +19,8 @@ namespace Engine::Renderer {
     std::pair< glm::vec3, float > GetBoundingSphere();
     std::shared_ptr<Mesh> GetBoundingBox();
     auto GetQuery() -> GL::QueryObject&;
+    int GetMeshCount();
+    std::shared_ptr< Mesh > GetMesh(int index);
 
   private:
     std::vector< std::shared_ptr< Mesh > > meshes;

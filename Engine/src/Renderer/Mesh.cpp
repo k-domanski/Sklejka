@@ -13,6 +13,7 @@ namespace Engine::Renderer {
              GL::Primitive primitive) noexcept
       : Mesh(vertices, indices) {
     _primitive = primitive;
+    _name      = "mesh";
   }
   Mesh::Mesh(Mesh&& other) noexcept
       : _vertexArray(std::move(other._vertexArray)), _vertexBuffer(std::move(other._vertexBuffer)),
@@ -44,6 +45,16 @@ namespace Engine::Renderer {
 
   auto Mesh::GetVertices() const -> std::vector< Vertex > {
     return _vertexData;
+  }
+
+  auto Mesh::GetName() -> std::string
+  {
+    return _name;
+  }
+
+  auto Mesh::SetName(std::string name) -> void
+  {
+    _name = name;
   }
 
   auto Mesh::SendDataToBuffers() noexcept -> void {

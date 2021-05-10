@@ -41,6 +41,17 @@ namespace Engine::Renderer {
     return _query;
   }
 
+  int Model::GetMeshCount()
+  {
+    return meshes.size();
+  }
+
+  std::shared_ptr< Mesh > Model::GetMesh(int index)
+  {
+    return meshes[index];
+  }
+
+
   void Model::loadModel(std::string_view path) {
     Assimp::Importer importer;
     const aiScene* scene =
@@ -63,6 +74,7 @@ namespace Engine::Renderer {
       meshes.push_back(processMesh(mesh, scene));
 
       lastMesh = meshes.back();
+      std::cout << "\nPushing " << mesh->mName.C_Str() << " mesh to meshes vector";
     }
 
     // Repeat process for all the children
@@ -191,8 +203,9 @@ namespace Engine::Renderer {
         indices.push_back(face.mIndices[j]);
       }
     }
-
-    return std::make_shared< Mesh >(vertices, indices);
+    std::shared_ptr<Mesh> final_mesh = std::make_shared< Mesh >(vertices, indices);
+    final_mesh->SetName(mesh->mName.C_Str());
+    return final_mesh;
   }
 
 }  // namespace Engine::Renderer
