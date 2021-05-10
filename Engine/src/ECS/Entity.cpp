@@ -3,13 +3,11 @@
 
 #include <nlohmann/json.hpp>
 
-
 #include "../../../Editor/src/ImGui/Panels/FileSystemPanel.h"
 #include "Components/Collider.h"
 #include "Components/DirectionalLight.h"
 #include "Components/Rigidbody.h"
 #include "ECS/EntityManager.h"
-
 
 namespace Engine::ECS {
   auto Entity::GetID() const -> EntityID {
@@ -24,22 +22,18 @@ namespace Engine::ECS {
     return EntityManager::GetInstance().GetAllComponents(_entityID);
   }
 
-  std::string Entity::SaveToJson(size_t parentID)
-  {
+  std::string Entity::SaveToJson(size_t parentID) {
     std::string separator = "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137";
 
     std::vector< std::shared_ptr< Component > > components = GetAllComponents();
 
     using namespace nlohmann;
-    json json = nlohmann::json{
-        {"entityID", std::to_string(GetID())},
-        {"entityName", _name},
-        {"parentID", parentID}
-    };
+    json json               = nlohmann::json{{"entityID", std::to_string(GetID())},
+                               {"entityName", _name},
+                               {"parentID", parentID}};
     std::string fileContent = json.dump(4);
 
-    for (std::shared_ptr< Component > component : components)
-    {
+    for (std::shared_ptr< Component > component : components) {
       fileContent.append("\n" + separator);
       fileContent.append("\n" + component->SaveToJson());
     }
@@ -47,8 +41,7 @@ namespace Engine::ECS {
     return fileContent;
   }
 
-  std::string Entity::SaveToJson(std::string filepath, size_t parentID)
-  {
+  std::string Entity::SaveToJson(std::string filepath, size_t parentID) {
     std::ofstream ofstream;
     ofstream.open(filepath);
     ofstream << SaveToJson(parentID);
@@ -57,8 +50,7 @@ namespace Engine::ECS {
     return SaveToJson(parentID);
   }
 
-  void Entity::LoadFromJson(std::string filepath)
-  {
+  void Entity::LoadFromJson(std::string filepath) {
     std::string content = "";
     if (filepath[0] == '{' || filepath[0] == '\n'
         || filepath[0] == ' ')  // HACK: Check if string is json
@@ -67,8 +59,10 @@ namespace Engine::ECS {
       content = Utility::ReadTextFile(filepath);
 
     std::vector< std::string > separated_jsons;
-   
-    std::string delimiter = "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137"; //TODO: Move to one place instead of declaring each time
+
+    std::string delimiter =
+        "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137";  // TODO: Move to one place
+                                                                    // instead of declaring each time
 
     size_t pos = 0;
     std::string token;
@@ -93,8 +87,7 @@ namespace Engine::ECS {
 
     std::cout << "Loading entity with ID " << entityID_string << "\n";
 
-    for (int i = 1; i < separated_jsons.size(); i++)
-    {
+    for (int i = 1; i < separated_jsons.size(); i++) {
       nlohmann::json component_json =
           nlohmann::json::parse(separated_jsons[i].begin(), separated_jsons[i].end());
 
@@ -111,13 +104,16 @@ namespace Engine::ECS {
         AddComponent< Camera >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "directionalLight")
         AddComponent< DirectionalLight >()->LoadFromJson(separated_jsons[i]);
+      else if (component_type == "node")
+        AddComponent< Node >()->LoadFromJson(separated_jsons[i]);
     }
   }
 
-  EntityID Entity::GetParentFromJson(std::string json_string)
-  {
+  EntityID Entity::GetParentFromJson(std::string json_string) {
     std::vector< std::string > separated_jsons;
-    std::string delimiter = "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137"; //TODO: Move to one place instead of declaring each time
+    std::string delimiter =
+        "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137";  // TODO: Move to one place
+                                                                    // instead of declaring each time
 
     size_t pos = 0;
     std::string token;

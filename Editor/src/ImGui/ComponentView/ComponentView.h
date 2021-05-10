@@ -5,6 +5,7 @@
 #include "Components/Collider.h"
 #include "Components/Rigidbody.h"
 #include "Components/DirectionalLight.h"
+#include "Components/Node.h"
 #include <filesystem>
 
 namespace Editor {
@@ -251,8 +252,8 @@ namespace Editor {
   /*Directional Light*/
   class DirectionalLightView : public ComponentView< Engine::DirectionalLight > {
     auto OnDraw() -> void override {
-      //glm::vec3 direction = _component->Direction();
-      //DrawVec3("Direction", direction);
+      // glm::vec3 direction = _component->Direction();
+      // DrawVec3("Direction", direction);
       //_component->Direction(direction);
 
       glm::vec3 ambient = _component->Ambient();
@@ -270,6 +271,22 @@ namespace Editor {
         ImGui::PopItemWidth();
       }
       _component->Diffuse(diffuse);
+    }
+  };
+
+  /* Node */
+  class NodeView : public ComponentView< Engine::Node > {
+    auto OnDraw() -> void override {
+      auto index = _component->Index();
+      ImGui::LabelText("Self Index##A", "Self Index");
+      if (ImGui::InputInt("Index_Self##1", &index)) {
+        _component->Index(index);
+      }
+      ImGui::LabelText("Next Index##B", "Next Index");
+      auto next_index = _component->NextIndex();
+      if (ImGui::InputInt("Index_Next##2", &next_index)) {
+        _component->NextIndex(next_index);
+      }
     }
   };
 }  // namespace Editor

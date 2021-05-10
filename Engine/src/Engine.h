@@ -24,6 +24,7 @@
 #include <Utility/Serializer.h>
 #include <Utility/FileDialog.h>
 #include <Components/MeshRenderer.h>
+#include <Components/Node.h>
 
 #include <Engine/Script.h>
 
