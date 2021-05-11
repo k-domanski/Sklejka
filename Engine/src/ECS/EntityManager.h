@@ -38,13 +38,14 @@ namespace Engine::ECS {
       auto it         = entity->_signature->find(compTypeID);
       assert(it == entity->_signature->end());
       entity->_signature->insert(compTypeID);
-      UpdateEntity(entity);
 
       // TODO: Create Component Instance
       auto component       = std::make_shared< T >(std::forward< Args >(args)...);
       component->_entityID = entityID;
       auto list            = GetComponentList< T >();
       list->AddComponent(component);
+
+      UpdateEntity(entity);
       return component;
     }
 
@@ -122,7 +123,7 @@ namespace Engine::ECS {
     static auto InjectEntity(const std::shared_ptr< Entity >& entity) -> void;
     template< typename T >
     static auto InjectComponent(const std::shared_ptr< T >& component) -> void {
-      auto list = GetInstance().GetComponentList< T >();
+      auto list      = GetInstance().GetComponentList< T >();
       auto& instance = GetInstance();
       list->AddComponent(component);
       instance.UpdateEntity(instance.GetEntity(component->GetEntityID()));

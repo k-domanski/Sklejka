@@ -14,4 +14,6 @@ auto CameraController::Update(float deltaTime) -> void {
   auto z        = _playerTransform->Forward() * _offset.z;
   auto offset   = x + y + z;
   auto position = _cameraTransform->Position(_playerTransform->Position() + offset);
+  auto look_dir = glm::normalize(_playerTransform->Position() - position);
+  _cameraTransform->Forward(look_dir);
 }

@@ -568,7 +568,7 @@ namespace Engine::Systems {
     _debugMaterial->Use();
     for (auto id : node_system->Entities()) {
       const auto& transform = ECS::EntityManager::GetComponent< Transform >(id);
-      transform->Scale(glm::vec3(0.5f));
+      transform->Scale(glm::vec3(0.1f));
       _transformUniformData.model     = transform->GetWorldMatrix();
       _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
       _transformUniformData.modelViewProjection =
