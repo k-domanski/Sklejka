@@ -166,20 +166,12 @@ auto EditorLayer::OpenModel() {
   if (filepath)
   {
     std::shared_ptr< Renderer::Model > model_ptr = std::make_shared< Renderer::Model >(filepath.value());
-    std::shared_ptr< Renderer::Mesh > root_mesh_ptr = model_ptr->GetRootMesh();
 
-    std::shared_ptr< Renderer::Model > root_model_ptr =
-        std::make_shared< Renderer::Model >(root_mesh_ptr);
-
-    ECS::EntityID rootID = AddObjectOnScene(root_model_ptr, 0);
+    ECS::EntityID rootID = AddObjectOnScene(model_ptr, 0, 0);
 
     for (int i = 1; i < model_ptr->GetMeshCount(); i++)
     {
-      std::shared_ptr< Renderer::Mesh > mesh_ptr = model_ptr->GetMesh(i);
-      std::shared_ptr< Renderer::Model > submodel_ptr =
-          std::make_shared< Renderer::Model >(mesh_ptr);
-
-      AddObjectOnScene(submodel_ptr, rootID);
+      AddObjectOnScene(model_ptr, i, rootID);
     }
   }
 }
@@ -257,19 +249,20 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
   return entity->GetID();
 }
 
-auto EditorLayer::AddObjectOnScene(std::shared_ptr<Renderer::Model> model, Engine::ECS::EntityID parent) -> ECS::EntityID {
+auto EditorLayer::AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
+                                   Engine::ECS::EntityID parent) -> ECS::EntityID {
   if (model->GetRootMesh() == nullptr)
     return 0;
   using namespace Engine::ECS;
   using namespace Engine::Components;
   auto entity = EntityManager::GetInstance().CreateEntity();
-  entity->Name(model->GetRootMesh()->GetName());
+  entity->Name(model->GetMesh(meshIndex)->GetName());
   entity->AddComponent< Transform >();
-  entity->GetComponent< Transform >()->SetLocalMatrix(model->GetRootMesh()->GetModelMatrix());
+  entity->GetComponent< Transform >()->SetLocalMatrix(model->GetMesh(meshIndex)->GetModelMatrix());
   /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
   auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
   auto mat = AssetManager::GetMaterial("./materials/default_color.mat");
-  entity->AddComponent< MeshRenderer >(model, mat);
+  entity->AddComponent< MeshRenderer >(model, meshIndex, mat);
 
   SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, entity->GetID());
   return entity->GetID();

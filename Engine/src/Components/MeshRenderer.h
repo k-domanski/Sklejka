@@ -11,7 +11,8 @@ namespace Engine::Components {
     MeshRenderer(): Component("Mesh Renderer"), _dirty(true) {
     }
     MeshRenderer(std::shared_ptr< Renderer::Model > model,
-                 std::shared_ptr< Renderer::Material > material, int meshIndex)
+                 int meshIndex,
+                 std::shared_ptr< Renderer::Material > material)
         : Component("Mesh Renderer"), _model(model), _material(material), _meshIndex(meshIndex),
           _dirty(true) {
     }

@@ -228,7 +228,7 @@ namespace Engine::Systems {
       auto model         = mesh_renderer->GetModel();
       std::shared_ptr< Mesh > mesh;
       // If there is no mesh, there is nothing to show
-      if (model == nullptr || (mesh = model->GetRootMesh()) == nullptr) {
+      if (model == nullptr || (mesh = model->GetMesh(mesh_renderer->GetMeshIndex())) == nullptr) {
         continue;
       }
 
