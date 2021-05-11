@@ -65,7 +65,8 @@ namespace Engine::Systems {
   auto CameraSystem::FindMainCamera() -> void {
     for (auto entityID : _entities) {
       auto camera = EntityManager::GetComponent< Camera >(entityID);
-      if (camera->flags.Get(_editorView ? CameraFlag::EditorCamera : CameraFlag::MainCamera)) {
+      if (camera
+          && camera->flags.Get(_editorView ? CameraFlag::EditorCamera : CameraFlag::MainCamera)) {
         if (_mainCamera == nullptr) {
           _mainCamera = camera;
         } else {

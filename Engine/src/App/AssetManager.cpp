@@ -153,8 +153,6 @@ namespace Engine {
     auto sg                     = scene->SceneGraph();
     auto entities_ids           = sg->GetChildren(0);
 
-
-
     using namespace nlohmann;
     json json = nlohmann::json{
         {"sceneID", SceneManager::GetCurrentScene()->GetID()},
@@ -165,11 +163,10 @@ namespace Engine {
     for (int i = 0; i < entities_ids.size(); i++) {
       auto id = entities_ids[i];
       std::cout << "\nSaving entity " << id;
-      auto children      = sg->GetChildren(id);
+      auto children = sg->GetChildren(id);
 
-      for (auto child : children)
-      {
-        entities_ids.push_back(child); // Add each child to list of entities to serialize
+      for (auto child : children) {
+        entities_ids.push_back(child);  // Add each child to list of entities to serialize
         std::cout << "\nadding child " << child << " to entities list";
       }
 

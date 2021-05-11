@@ -6,6 +6,7 @@
 #include <Systems/LightSystem.h>
 #include "Systems/Physics.h"
 #include <Systems/ScriptSystem.h>
+#include <Systems/NodeSystem.h>
 //#include <ECS/ECS.h>
 #include "ECS/EntityManager.h"
 
@@ -21,11 +22,13 @@ namespace Engine {
     _renderSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
     _physicsSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
     _scriptSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ScriptSystem >();
+    _nodeSystem    = ECS::EntityManager::GetInstance().RegisterSystem< Engine::NodeSystem >();
   }
 
   auto Scene::Update(float deltaTime) -> void {
     // Update scripts
     _scriptSystem->Update(deltaTime);
+    _nodeSystem->Update(deltaTime);
 
     // Update other systems before
     _sceneGraph->Update(deltaTime);
@@ -58,5 +61,8 @@ namespace Engine {
       return nullptr;
     }
     return *it;
+  }
+  auto Scene::NodeSystem() const -> std::shared_ptr< Engine::NodeSystem > {
+    return _nodeSystem;
   }
 }  // namespace Engine
