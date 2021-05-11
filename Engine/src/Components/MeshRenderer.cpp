@@ -51,6 +51,7 @@ namespace Engine::Components {
     json json = nlohmann::json{
         {"componentType", "meshRenderer"},
         {"model", Utility::StripToRelativePath(_model->GetFilepath())},
+        {"meshIndex", _meshIndex},
         {"material",
          _material != nullptr ? Utility::StripToRelativePath(_material->FilePath()) : ""}};
 
@@ -69,6 +70,7 @@ namespace Engine::Components {
 
     _model = AssetManager::GetModel(json["model"]);
     _material = AssetManager::GetMaterial(std::string(json["material"]));
+    _meshIndex = json["meshIndex"];
   }
 
 }  // namespace Engine::Components
