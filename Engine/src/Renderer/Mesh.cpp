@@ -57,6 +57,17 @@ namespace Engine::Renderer {
     _name = name;
   }
 
+  auto Mesh::GetModelMatrix() -> glm::mat4
+  {
+    return _modelMatrix;
+  }
+
+  auto Mesh::SetModelMatrix(glm::mat4 matrix) -> void
+  {
+    _modelMatrix = matrix;
+  }
+
+
   auto Mesh::SendDataToBuffers() noexcept -> void {
     _vertexArray.Bind();
     _vertexBuffer.SetData(_vertexData.size() * sizeof(Vertex), _vertexData.data());

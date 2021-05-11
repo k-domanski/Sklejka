@@ -43,6 +43,21 @@ namespace Engine {
     return glm::translate(glm::mat4(1.0f), _position) * glm::toMat4(_rotation)
            * glm::scale(glm::mat4(1.0f), _scale);
   }
+
+  auto Transform::SetLocalMatrix(glm::mat4 matrix) -> void
+  {
+    glm::vec3 scale;
+    glm::quat rotation;
+    glm::vec3 translation;
+    glm::vec3 skew;
+    glm::vec4 perspective;
+    glm::decompose(matrix, scale, rotation, translation, skew, perspective);
+
+    Position(translation);
+    Rotation(rotation);
+    Scale(scale);
+  }
+
   auto Transform::GetWorldMatrix() const noexcept -> glm::mat4 {
     return _modelMatrix;
   }

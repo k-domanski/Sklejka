@@ -22,6 +22,7 @@ namespace Engine::Renderer {
     std::vector< Vertex > _vertexData;
     std::vector< GLuint > _indiceData;
     std::string _name;
+    glm::mat4 _modelMatrix;
 
   public:
     Mesh(const std::vector< Vertex >& vertices, const std::vector< GLuint >& indices) noexcept;
@@ -37,6 +38,8 @@ namespace Engine::Renderer {
     auto GetVertices() const -> std::vector< Vertex >;
     auto GetName() -> std::string;
     auto SetName(std::string name) -> void;
+    auto GetModelMatrix() -> glm::mat4;
+    auto SetModelMatrix(glm::mat4 matrix) -> void;
 
   private:
     auto SendDataToBuffers() noexcept -> void;

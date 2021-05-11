@@ -32,6 +32,7 @@ namespace Engine {
     auto Scale() const noexcept -> glm::vec3;
     auto Scale(const glm::vec3& scale) noexcept -> glm::vec3;
     auto GetLocalMatrix() const noexcept -> glm::mat4;
+    auto SetLocalMatrix(glm::mat4 matrix) -> void;
     auto GetWorldMatrix() const noexcept -> glm::mat4;
     auto Right() const noexcept -> glm::vec3;
     auto Up() const noexcept -> glm::vec3;

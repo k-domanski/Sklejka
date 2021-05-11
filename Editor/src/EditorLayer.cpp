@@ -265,6 +265,7 @@ auto EditorLayer::AddObjectOnScene(std::shared_ptr<Renderer::Model> model, Engin
   auto entity = EntityManager::GetInstance().CreateEntity();
   entity->Name(model->GetRootMesh()->GetName());
   entity->AddComponent< Transform >();
+  entity->GetComponent< Transform >()->SetLocalMatrix(model->GetRootMesh()->GetModelMatrix());
   /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
   auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
   auto mat = AssetManager::GetMaterial("./materials/default_color.mat");

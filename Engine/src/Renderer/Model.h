@@ -21,6 +21,7 @@ namespace Engine::Renderer {
     auto GetQuery() -> GL::QueryObject&;
     int GetMeshCount();
     std::shared_ptr< Mesh > GetMesh(int index);
+    glm::mat4 aiMat4ToGlmMat4(aiMatrix4x4 aiMat);
 
   private:
     std::vector< std::shared_ptr< Mesh > > meshes;
@@ -28,7 +29,8 @@ namespace Engine::Renderer {
     void processNode(aiNode* node, const aiScene* scene, std::shared_ptr< Mesh > parent = nullptr);
     void CreateBoundingSphere();
     void CreateBoundingBox();
-    std::shared_ptr< Mesh > processMesh(aiMesh* mesh, const aiScene* scene);
+    std::shared_ptr< Mesh > processMesh(aiMesh* mesh, const aiScene* scene,
+                                        glm::mat4 transformation);
     std::string _filepath;
     glm::vec3 _sphereCenter;
     float _radius;
