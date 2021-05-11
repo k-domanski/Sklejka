@@ -188,7 +188,7 @@ namespace Engine::Systems {
           if (material == nullptr || model == nullptr) {
             continue;
           }
-          auto mesh = model->GetRootMesh();
+          auto mesh = model->GetMesh(mesh_renderer->GetMeshIndex());
           mesh->Use();
           const auto transform        = ECS::EntityManager::GetComponent< Transform >(entityID);
           _transformUniformData.model = transform->GetWorldMatrix();

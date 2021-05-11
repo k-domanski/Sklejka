@@ -8,6 +8,11 @@ namespace Engine::Components {
     return _model;
   }
 
+  auto MeshRenderer::GetMeshIndex() -> int
+  {
+    return _meshIndex;
+  }
+
   auto MeshRenderer::SetModel(std::shared_ptr< Renderer::Model > model) -> void {
     _model  = model;
     _dirty = true;
