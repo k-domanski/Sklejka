@@ -8,7 +8,7 @@
 #include <GL/QueryObject.h>
 
 namespace Engine::Renderer {
-  BETTER_ENUM(__MeshPrimitive, uint8_t, Plane, WireframeBox, WireframeSphere);
+  BETTER_ENUM(__MeshPrimitive, uint8_t, Plane, WireframeBox, WireframeSphere, Cube);
   typedef __MeshPrimitive MeshPrimitive;
 
   class Mesh {
@@ -41,6 +41,7 @@ namespace Engine::Renderer {
     static auto CreatePlane() noexcept -> std::shared_ptr< Mesh >;
     static auto CreateWireframeBox() noexcept -> std::shared_ptr< Mesh >;
     static auto CreateWireframeSphere() noexcept -> std::shared_ptr< Mesh >;
+    static auto CreateCube() noexcept -> std::shared_ptr< Mesh >;
 
   public:
     static auto GetPrimitive(MeshPrimitive primitive) noexcept -> std::shared_ptr< Mesh >;
