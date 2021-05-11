@@ -20,6 +20,10 @@ namespace Engine::ECS {
     return true;
   }
 
+  auto System::Entities() const -> std::vector< EntityID > {
+    return _entities;
+  }
+
   auto System::AddEntity(EntityID id) -> void {
     if (auto it = std::find(_entities.begin(), _entities.end(), id); it != _entities.end()) {
       return;

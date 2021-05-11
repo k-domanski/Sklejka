@@ -963,6 +963,38 @@
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
+    "entityID": "607315761349011689",
+    "entityName": "squirrel_final",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 1.0,
+        "y": 0.5,
+        "z": -2.200000047683716
+    },
+    "localRotation": {
+        "w": 0.6629732847213745,
+        "x": -0.24589921534061432,
+        "y": -0.24589921534061432,
+        "z": -0.6629732847213745
+    },
+    "localScale": {
+        "x": 0.019999999552965164,
+        "y": 0.019999999552965164,
+        "z": 0.019999999552965164
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./\\materials\\squirrel.mat",
+    "model": "./\\models\\squirrel_final.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
     "entityID": "10432576322336631323",
     "entityName": "dirlight",
     "parentID": 0
@@ -976,10 +1008,10 @@
         "z": 0.0
     },
     "localRotation": {
-        "w": 0.8754260540008545,
-        "x": 0.23456971347332,
-        "y": -0.4082179069519043,
-        "z": 0.10938165336847305
+        "w": 0.7531599998474121,
+        "x": 0.4157665967941284,
+        "y": -0.24637363851070404,
+        "z": -0.44630512595176697
     },
     "localScale": {
         "x": 1.0,
@@ -999,6 +1031,11 @@
         "x": 0.7722772359848022,
         "y": 0.36858633160591125,
         "z": 0.0
+    },
+    "direction": {
+        "x": -0.742235004901886,
+        "y": -0.4063618779182434,
+        "z": 0.5328763127326965
     },
     "flags": 3,
     "intensity": 1.0,
@@ -1021,93 +1058,6 @@
         "x": 0.0,
         "y": 0.0,
         "z": 0.0
-    },
-    "localRotation": {
-        "w": 1.0,
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "localScale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    }
-}
-42091169692137SUPERJSONENTITYSEPARATOR42091169692137
-{
-    "entityID": "7187771492576934571",
-    "entityName": "Nodes",
-    "parentID": 0
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "transform",
-    "localPosition": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "localRotation": {
-        "w": 1.0,
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "localScale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    }
-}
-42091169692137SUPERJSONENTITYSEPARATOR42091169692137
-{
-    "entityID": "11751545274343852895",
-    "entityName": "Main Camera",
-    "parentID": 0
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "transform",
-    "localPosition": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "localRotation": {
-        "w": 1.0,
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "localScale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    }
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "aspect": 1.7799999713897705,
-    "componentType": "camera",
-    "farPlane": 1000.0,
-    "flags": 6,
-    "fov": 45.0,
-    "nearPlane": 0.0010000000474974513
-}
-42091169692137SUPERJSONENTITYSEPARATOR42091169692137
-{
-    "entityID": "14762396314580135308",
-    "entityName": "Player",
-    "parentID": 0
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "transform",
-    "localPosition": {
-        "x": 1.0,
-        "y": 0.5,
-        "z": -2.200000047683716
     },
     "localRotation": {
         "w": 1.0,
@@ -1184,196 +1134,4 @@
     "componentType": "meshRenderer",
     "material": "./\\materials\\cactus.mat",
     "model": "./\\models\\ziele\\kaktus.fbx"
-}
-42091169692137SUPERJSONENTITYSEPARATOR42091169692137
-{
-    "entityID": "8805149181127845801",
-    "entityName": "Node 1",
-    "parentID": 7187771492576934571
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "transform",
-    "localPosition": {
-        "x": 1.0,
-        "y": 0.5,
-        "z": -1.0
-    },
-    "localRotation": {
-        "w": 1.0,
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "localScale": {
-        "x": 0.10000000149011612,
-        "y": 0.10000000149011612,
-        "z": 0.10000000149011612
-    }
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "node",
-    "index": 0,
-    "nextIndex": 1
-}
-42091169692137SUPERJSONENTITYSEPARATOR42091169692137
-{
-    "entityID": "5125533302954911091",
-    "entityName": "Node 2",
-    "parentID": 7187771492576934571
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "transform",
-    "localPosition": {
-        "x": 1.0,
-        "y": 0.5,
-        "z": 6.5
-    },
-    "localRotation": {
-        "w": 1.0,
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "localScale": {
-        "x": 0.10000000149011612,
-        "y": 0.10000000149011612,
-        "z": 0.10000000149011612
-    }
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "node",
-    "index": 1,
-    "nextIndex": 2
-}
-42091169692137SUPERJSONENTITYSEPARATOR42091169692137
-{
-    "entityID": "17100559225157905560",
-    "entityName": "Node 3",
-    "parentID": 7187771492576934571
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "transform",
-    "localPosition": {
-        "x": -1.0,
-        "y": 0.5,
-        "z": 9.0
-    },
-    "localRotation": {
-        "w": 1.0,
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "localScale": {
-        "x": 0.10000000149011612,
-        "y": 0.10000000149011612,
-        "z": 0.10000000149011612
-    }
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "node",
-    "index": 2,
-    "nextIndex": 3
-}
-42091169692137SUPERJSONENTITYSEPARATOR42091169692137
-{
-    "entityID": "15018207232511590926",
-    "entityName": "Node 4",
-    "parentID": 7187771492576934571
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "transform",
-    "localPosition": {
-        "x": -2.200000047683716,
-        "y": 0.5,
-        "z": 3.0
-    },
-    "localRotation": {
-        "w": 1.0,
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "localScale": {
-        "x": 0.10000000149011612,
-        "y": 0.10000000149011612,
-        "z": 0.10000000149011612
-    }
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "node",
-    "index": 3,
-    "nextIndex": 4
-}
-42091169692137SUPERJSONENTITYSEPARATOR42091169692137
-{
-    "entityID": "8819184759590307275",
-    "entityName": "Node 5",
-    "parentID": 7187771492576934571
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "transform",
-    "localPosition": {
-        "x": -1.899999976158142,
-        "y": 0.5,
-        "z": -2.799999952316284
-    },
-    "localRotation": {
-        "w": 1.0,
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "localScale": {
-        "x": 0.10000000149011612,
-        "y": 0.10000000149011612,
-        "z": 0.10000000149011612
-    }
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "node",
-    "index": 4,
-    "nextIndex": 0
-}
-42091169692137SUPERJSONENTITYSEPARATOR42091169692137
-{
-    "entityID": "607315761349011689",
-    "entityName": "model",
-    "parentID": 14762396314580135308
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "transform",
-    "localPosition": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "localRotation": {
-        "w": 0.6629732847213745,
-        "x": -0.24589921534061432,
-        "y": -0.24589921534061432,
-        "z": -0.6629732847213745
-    },
-    "localScale": {
-        "x": 0.019999999552965164,
-        "y": 0.019999999552965164,
-        "z": 0.019999999552965164
-    }
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "meshRenderer",
-    "material": "./\\materials\\squirrel.mat",
-    "model": "./\\models\\squirrel_final.fbx"
 }

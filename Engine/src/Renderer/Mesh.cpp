@@ -90,6 +90,9 @@ namespace Engine::Renderer {
       case MeshPrimitive::WireframeSphere: {
         return CreateWireframeSphere();
       }
+      case MeshPrimitive::Cube: {
+        return CreateCube();
+      }
     }
     LOG_WARN("No matching mesh primitive function: Primitive [{}]", primitive._to_string());
     return nullptr;
@@ -194,5 +197,42 @@ namespace Engine::Renderer {
     }
 
     return std::make_shared< Mesh >(verts, inds, GL::Primitive::LineLoop);
+  }
+  auto Mesh::CreateCube() noexcept -> std::shared_ptr< Mesh > {
+    const std::vector< Vertex > verts{{// Vert 0
+                                       {-.5f, -.5f, .5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 1
+                                       {.5f, -.5f, .5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 2
+                                       {.5f, .5f, .5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 3
+                                       {-.5f, .5f, .5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 4
+                                       {-.5f, -.5f, -.5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 5
+                                       {.5f, -.5f, -.5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 6
+                                       {.5f, .5f, -.5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 7
+                                       {-.5f, .5f, -.5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}}};
+    const std::vector< GLuint > inds{0, 1, 2, 2, 3, 0, 1, 5, 6, 6, 2, 1, 5, 4, 7, 7, 6, 5,
+                                     4, 0, 3, 3, 7, 4, 3, 2, 6, 6, 7, 3, 4, 5, 1, 1, 0, 4};
+    return std::make_shared< Mesh >(verts, inds);
   }
 }  // namespace Engine::Renderer

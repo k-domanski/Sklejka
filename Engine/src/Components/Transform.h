@@ -37,12 +37,13 @@ namespace Engine {
     auto Right() const noexcept -> glm::vec3;
     auto Up() const noexcept -> glm::vec3;
     auto Forward() const noexcept -> glm::vec3;
+    auto Forward(const glm::vec3& forward) noexcept -> glm::vec3;
     auto Rotate(float radians, const glm::vec3& axis) noexcept -> glm::quat;
     auto WorldPosition() const noexcept -> glm::vec3;
     auto WorlScale() const noexcept -> glm::vec3;
     std::string SaveToJson(std::string filePath) override;
     std::string SaveToJson() override;
     auto LoadFromJson(std::string filePath) -> void override;
-    //auto LoadFromJsonString(std::string jsonString) -> void override;
+    // auto LoadFromJsonString(std::string jsonString) -> void override;
   };
 }  // namespace Engine
