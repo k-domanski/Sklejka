@@ -6,10 +6,10 @@ namespace Engine::Renderer {
   PingPongBuffer::PingPongBuffer(glm::vec2 size): _size(size) {
     _renderTargets[0]  = std::make_shared< GL::RenderTarget >(size.x, size.y);
     _renderTargets[1]  = std::make_shared< GL::RenderTarget >(size.x, size.y);
-    _renderTextures[0] = std::make_shared< GL::TextureAttachment >(size.x, size.y, GL_RGBA, GL_RGBA,
-                                                                   GL_UNSIGNED_BYTE);
-    _renderTextures[1] = std::make_shared< GL::TextureAttachment >(size.x, size.y, GL_RGBA, GL_RGBA,
-                                                                   GL_UNSIGNED_BYTE);
+    _renderTextures[0] = std::make_shared< GL::TextureAttachment >(size.x, size.y, GL_RGB16F, GL_RGBA,
+                                                                   GL_FLOAT);
+    _renderTextures[1] = std::make_shared< GL::TextureAttachment >(size.x, size.y, GL_RGB16F, GL_RGBA,
+                                                                   GL_FLOAT);
     _renderTargets[0]->AttachColor(0, _renderTextures[0]);
     _renderTargets[1]->AttachColor(0, _renderTextures[1]);
 

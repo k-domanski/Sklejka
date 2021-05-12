@@ -1,7 +1,7 @@
-vec3 remap(vec3 val) {
-  return val * 2.0f + 1.0f;
-}
-
 uniform sampler2D u_MainTexture;
 uniform sampler2D u_NormalMap;
-uniform vec4 u_MainColor;
+uniform vec4 u_Color;
+
+vec4 gamma2linear(vec4 color) {
+  return vec4(pow(color.rgb, vec3(2.2)), color.a);
+}

@@ -71,7 +71,7 @@ auto Engine::Renderer::Image::Draw(glm::mat4 model, glm::mat4 proj) -> void {
   _shader->SetMatrix("projection", proj);
   _shader->SetMatrix("model", model);
   _shader->SetValue("u_MainTexture", 0);
-  _shader->SetVector("u_MainColor", _color);
+  _shader->SetVector("u_Color", _color);
   _shader->SetValue("ratio", _ratio);
   _shader->SetValue("horizontal", _horizontal);
   glDrawElements(_mesh->GetPrimitive(), _mesh->ElementCount(), GL_UNSIGNED_INT, NULL);

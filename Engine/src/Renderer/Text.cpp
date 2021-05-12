@@ -73,7 +73,7 @@ auto Engine::Renderer::Text::RenderText(float x, float y, float scale) -> void {
   //_shader->Use();
   // glUniform3f(glGetUniformLocation(_shader->GetHandle(), "textColor"), color.x, color.y,
   // color.z);
-  _shader->SetVector("u_MainColor", _color);
+  _shader->SetVector("u_Color", _color);
   glActiveTexture(GL_TEXTURE0);
   glBindVertexArray(VAO);
 

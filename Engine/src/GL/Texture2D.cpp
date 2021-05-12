@@ -6,7 +6,7 @@ using Engine::GL::Context;
 namespace Engine::GL {
   Texture2D::Texture2D(GLint width, GLint height, const GLvoid* data) noexcept
       : _minFilter(GL_LINEAR_MIPMAP_LINEAR), _magFilter(GL_LINEAR), _wrapMode(GL_REPEAT),
-        _size(width, height), _component(GL_RGBA), _dataType(GL_FLOAT) {
+        _size(width, height), _component(GL_RGBA), _dataType(GL_UNSIGNED_BYTE) {
     Create(width, height, data);
   }
 

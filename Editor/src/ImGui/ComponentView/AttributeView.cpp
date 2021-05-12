@@ -69,7 +69,8 @@ namespace Editor {
 
     ImGui::PopID();
   }
-  auto DrawFloat(const std::string& name, float& value, float sliderSpeed) -> void {
+  auto DrawFloat(const std::string& name, float& value, float min, float max, float sliderSpeed)
+      -> bool {
     float columnWidth = 100.0f;
     ImGuiIO& io       = ImGui::GetIO();
 
@@ -83,11 +84,12 @@ namespace Editor {
     ImGui::PushMultiItemsWidths(1, ImGui::CalcItemWidth());
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{2, 2});
 
-    ImGui::DragFloat("##X", &value, sliderSpeed, 0.0f, 0.0f, "%.2f");
+    auto res = ImGui::DragFloat("##X", &value, sliderSpeed, min, max, "%.2f");
     ImGui::PopItemWidth();
     ImGui::PopStyleVar();
     ImGui::Columns(1);
     ImGui::PopID();
+    return res;
   }
   auto DrawBool(const std::string& name, bool& value) -> void {
     float columnWidth = 100.0f;

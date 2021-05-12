@@ -26,6 +26,5 @@ out vec4 out_color;
 void main() {
   vec3 texel = texture(u_MainTexture, v_uv).rgb;
   out_color  = vec4(texel, 1.0f);
-  // out_color = vec4(remap(v_pos), 1.0f);
 }
 #endshader

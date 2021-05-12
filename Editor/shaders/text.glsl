@@ -21,6 +21,6 @@ out vec4 out_color;
 
 void main() {
   vec4 sampled = vec4(1.0f, 1.0f, 1.0f, texture(u_MainTexture, v_uv).r);
-  out_color = vec4(u_MainColor.xyz, 1.0f) * sampled;
+  out_color = vec4(u_Color.xyz, 1.0f) * sampled;
 }
 #endshader
