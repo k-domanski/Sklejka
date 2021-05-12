@@ -76,7 +76,7 @@ namespace Engine::Systems {
     }
     const auto camera_tr = ECS::EntityManager::GetComponent< Transform >(camera->GetEntityID());
     /* CULLING */
-    if (true) {
+    if (false) {
       SortByDistance(camera);
       _depthTarget->Bind(FramebufferTarget::ReadWrite);
       GL::Context::ClearBuffers(GL::BufferBit::Depth);
@@ -221,8 +221,8 @@ namespace Engine::Systems {
     GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth);
     GL::Context::DepthTest(true);
     _shadowTexture->Bind(_shadowUniformSlot);
-    for (auto& entityID : _visibleEntities) {
-      // for (auto& entityID : _entities) {
+    //for (auto& entityID : _visibleEntities) {
+       for (auto& entityID : _entities) {
       auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
       auto material      = mesh_renderer->GetMaterial();
       auto model         = mesh_renderer->GetModel();
