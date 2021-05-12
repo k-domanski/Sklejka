@@ -30,7 +30,7 @@ namespace Engine::Renderer {
     void CreateBoundingSphere();
     void CreateBoundingBox();
     std::shared_ptr< Mesh > processMesh(aiMesh* mesh, const aiScene* scene,
-                                        glm::mat4 transformation);
+                                        glm::mat4 transformation, int parentIndex);
     std::string _filepath;
     glm::vec3 _sphereCenter;
     float _radius;

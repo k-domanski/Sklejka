@@ -23,8 +23,8 @@ public:
   virtual void OnImGuiRender() override;
 
   auto AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent = 0) -> ECS::EntityID;
-  auto AddObjectOnScene(std::shared_ptr< Renderer::Model > model,
-                        int meshIndex, Engine::ECS::EntityID parent)
+  auto AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
+                        Engine::ECS::EntityID parent, std::vector< ECS::EntityID >* loadedMeshes)
       -> ECS::EntityID;
 
 private:

@@ -14,11 +14,12 @@ namespace Engine::Renderer {
       : Mesh(vertices, indices) {
     _primitive = primitive;
     _name      = "mesh";
+    _parent    = -1;
   }
   Mesh::Mesh(Mesh&& other) noexcept
       : _vertexArray(std::move(other._vertexArray)), _vertexBuffer(std::move(other._vertexBuffer)),
         _indiceBuffer(std::move(other._indiceBuffer)), _vertexData(std::move(other._vertexData)),
-        _indiceData(std::move(other._indiceData)), _primitive(other._primitive) {
+        _indiceData(std::move(other._indiceData)), _primitive(other._primitive), _parent(other._parent) {
   }
   auto Mesh::operator=(Mesh&& other) -> Mesh& {
     if (&other == this)
@@ -29,6 +30,7 @@ namespace Engine::Renderer {
     _vertexData   = std::move(other._vertexData);
     _indiceData   = std::move(other._indiceData);
     _primitive    = other._primitive;
+    _parent = other._parent;
     return *this;
   }
   auto Mesh::Use() noexcept -> void {
@@ -55,6 +57,16 @@ namespace Engine::Renderer {
   auto Mesh::SetName(std::string name) -> void
   {
     _name = name;
+  }
+
+  auto Mesh::GetParentMesh() -> int
+  {
+    return _parent;
+  }
+
+  auto Mesh::SetParentMesh(int parentMeshIndex) -> void
+  {
+    _parent = parentMeshIndex;
   }
 
   auto Mesh::GetModelMatrix() -> glm::mat4

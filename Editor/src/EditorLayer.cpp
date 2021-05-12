@@ -166,12 +166,13 @@ auto EditorLayer::OpenModel() {
   if (filepath)
   {
     std::shared_ptr< Renderer::Model > model_ptr = std::make_shared< Renderer::Model >(filepath.value());
+    std::vector< ECS::EntityID > loadedMeshes_ids(100);
 
-    ECS::EntityID rootID = AddObjectOnScene(model_ptr, 0, 0);
+    ECS::EntityID rootID = AddObjectOnScene(model_ptr, 0, 0, &loadedMeshes_ids);
 
     for (int i = 1; i < model_ptr->GetMeshCount(); i++)
     {
-      AddObjectOnScene(model_ptr, i, rootID);
+      AddObjectOnScene(model_ptr, i, rootID, &loadedMeshes_ids);
     }
   }
 }
@@ -250,7 +251,7 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
 }
 
 auto EditorLayer::AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
-                                   Engine::ECS::EntityID parent) -> ECS::EntityID {
+                                   Engine::ECS::EntityID parent, std::vector<ECS::EntityID>* loadedMeshes) -> ECS::EntityID {
   if (model->GetRootMesh() == nullptr)
     return 0;
   using namespace Engine::ECS;
@@ -264,6 +265,9 @@ auto EditorLayer::AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int
   auto mat = AssetManager::GetMaterial("./materials/default_color.mat");
   entity->AddComponent< MeshRenderer >(model, meshIndex, mat);
 
-  SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, entity->GetID());
+  int parentMeshIndex = model->GetMesh(meshIndex)->GetParentMesh();
+  SceneManager::GetDisplayScene()->SceneGraph()->AddChild(
+      parentMeshIndex != -1 ? (*loadedMeshes)[parentMeshIndex] : 0, entity->GetID());
+  loadedMeshes->insert(loadedMeshes->begin() + meshIndex, entity->GetID());
   return entity->GetID();
 }

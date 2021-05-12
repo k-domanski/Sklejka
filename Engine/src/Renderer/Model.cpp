@@ -71,10 +71,14 @@ namespace Engine::Renderer {
     std::shared_ptr< Mesh > lastMesh = nullptr;
     for (size_t i = 0; i < node->mNumMeshes; i++) {
       aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-      meshes.push_back(processMesh(mesh, scene, aiMat4ToGlmMat4(node->mTransformation)));
+      int parentIndex =
+          parent != nullptr ? find(meshes.begin(), meshes.end(), parent) - meshes.begin() : -1;
+      meshes.push_back(processMesh(mesh, scene, aiMat4ToGlmMat4(node->mTransformation), 
+          parentIndex));
 
       lastMesh = meshes.back();
-      std::cout << "\nPushing " << mesh->mName.C_Str() << " mesh to meshes vector";
+      std::cout << "\nPushing " << mesh->mName.C_Str() << " mesh to meshes vector with meshParent "
+                << parentIndex;
     }
 
     // Repeat process for all the children
@@ -161,7 +165,7 @@ namespace Engine::Renderer {
     _boundingBox = std::make_shared< Mesh >(verts, inds);
   }
 
-  std::shared_ptr< Mesh > Model::processMesh(aiMesh* mesh, const aiScene* scene, glm::mat4 transformation) {
+  std::shared_ptr< Mesh > Model::processMesh(aiMesh* mesh, const aiScene* scene, glm::mat4 transformation, int parentIndex) {
     std::vector< Vertex > vertices;
     std::vector< GLuint > indices;
 
@@ -206,6 +210,7 @@ namespace Engine::Renderer {
     std::shared_ptr<Mesh> final_mesh = std::make_shared< Mesh >(vertices, indices);
     final_mesh->SetName(mesh->mName.C_Str());
     final_mesh->SetModelMatrix(transformation);
+    final_mesh->SetParentMesh(parentIndex);
     return final_mesh;
   }
 
