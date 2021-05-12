@@ -3,7 +3,6 @@
 
 #include <nlohmann/json.hpp>
 
-
 #include "glm/gtx/matrix_decompose.hpp"
 
 namespace Engine {
@@ -43,6 +42,21 @@ namespace Engine {
     return glm::translate(glm::mat4(1.0f), _position) * glm::toMat4(_rotation)
            * glm::scale(glm::mat4(1.0f), _scale);
   }
+
+  auto Transform::SetLocalMatrix(glm::mat4 matrix) -> void
+  {
+    glm::vec3 scale;
+    glm::quat rotation;
+    glm::vec3 translation;
+    glm::vec3 skew;
+    glm::vec4 perspective;
+    glm::decompose(matrix, scale, rotation, translation, skew, perspective);
+
+    Position(translation);
+    Rotation(rotation);
+    Scale(scale);
+  }
+
   auto Transform::GetWorldMatrix() const noexcept -> glm::mat4 {
     return _modelMatrix;
   }
@@ -60,6 +74,12 @@ namespace Engine {
     // TODO: if dirty -> update
     return glm::normalize(static_cast< glm::mat3 >(_modelMatrix) * glm::vec3{0.0f, 0.0f, 1.0f});
     // return _rotation * glm::vec3{0.0f, 0.0f, 1.0f};
+  }
+  auto Transform::Forward(const glm::vec3& forward) noexcept -> glm::vec3 {
+    flags.Set(TransformFlag::Dirty | TransformFlag::NewData);
+    _modelMatrix[2] = glm::vec4(forward, 0.0f);
+    _rotation       = glm::quat_cast(static_cast< glm::mat3 >(_modelMatrix));
+    return forward;
   }
   auto Transform::Rotate(float radians, const glm::vec3& axis) noexcept -> glm::quat {
     flags.Set(TransformFlag::Dirty | TransformFlag::NewData);
@@ -90,8 +110,7 @@ namespace Engine {
     return SaveToJson();
   }
 
-  std::string Transform::SaveToJson()
-  {
+  std::string Transform::SaveToJson() {
     nlohmann::json json = nlohmann::json{
         {"componentType", "transform"},
         {"localPosition", {{"x", _position.x}, {"y", _position.y}, {"z", _position.z}}},
@@ -102,18 +121,15 @@ namespace Engine {
     return json.dump(4);
   }
 
-  auto Transform::LoadFromJson(std::string filePath) -> void
-  {
+  auto Transform::LoadFromJson(std::string filePath) -> void {
     nlohmann::json json;
     if (filePath[0] == '{' || filePath[0] == '\n')  // HACK: Check if string is json
       json = nlohmann::json::parse(filePath.begin(), filePath.end());
-    else
-    {
-      auto content        = Utility::ReadTextFile(filePath);
-      json = nlohmann::json::parse(content.begin(), content.end());
+    else {
+      auto content = Utility::ReadTextFile(filePath);
+      json         = nlohmann::json::parse(content.begin(), content.end());
     }
 
-    
     Position(glm::vec3(json["localPosition"]["x"], json["localPosition"]["y"],
                        json["localPosition"]["z"]));
 
@@ -121,10 +137,9 @@ namespace Engine {
                        json["localRotation"]["y"], json["localRotation"]["z"]));
 
     Scale(glm::vec3(json["localScale"]["x"], json["localScale"]["y"], json["localScale"]["z"]));
-    
   }
 
-  //auto Transform::LoadFromJsonString(std::string jsonString) -> void
+  // auto Transform::LoadFromJsonString(std::string jsonString) -> void
   //{
   //  nlohmann::json json = nlohmann::json::parse(jsonString.begin(), jsonString.end());
 

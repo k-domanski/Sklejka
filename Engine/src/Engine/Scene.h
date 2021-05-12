@@ -19,6 +19,7 @@ namespace Engine {
     class LightSystem;
     class ScriptSystem;
   }  // namespace Systems
+  class NodeSystem;
 
   namespace ECS {
     class EntityManager;
@@ -33,6 +34,7 @@ namespace Engine {
     std::shared_ptr< Systems::LightSystem > _lightSystem;
     std::shared_ptr< Systems::ScriptSystem > _scriptSystem;
     std::shared_ptr< Systems::GUISystem > _GUISystem;
+    std::shared_ptr< NodeSystem > _nodeSystem;
 
     size_t _id;
     std::vector< std::shared_ptr< ECS::Entity > > _entities;
@@ -55,5 +57,6 @@ namespace Engine {
     auto CameraSystem() -> std::shared_ptr< Systems::CameraSystem >;
     auto OnWindowResize(glm::vec2 windowSize) -> void;
     auto FindEntity(const std::string& name) -> std::shared_ptr< ECS::Entity >;
+    auto NodeSystem() const -> std::shared_ptr< Engine::NodeSystem >;
   };
 }  // namespace Engine

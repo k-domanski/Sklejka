@@ -22,7 +22,10 @@ public:
   virtual void OnEvent(Engine::Event& event) override;
   virtual void OnImGuiRender() override;
 
-  auto AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent = 0) -> void;
+  auto AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent = 0) -> ECS::EntityID;
+  auto AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
+                        Engine::ECS::EntityID parent, std::vector< ECS::EntityID >* loadedMeshes)
+      -> ECS::EntityID;
 
 private:
   bool OnWindowResize(Engine::WindowResizeEvent& e);
@@ -31,6 +34,7 @@ private:
   bool OnMouseButtonRelease(Engine::MouseButtonReleasedEvent& e);
   bool OnKeyPress(Engine::KeyPressedEvent& e);
   auto UpdateEditorCamera() -> void;
+  auto OpenModel();
   auto DrawMenuBar() -> void;
   auto SaveScene() -> void;
   auto LoadScene() -> void;

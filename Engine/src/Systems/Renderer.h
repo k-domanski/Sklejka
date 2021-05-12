@@ -64,6 +64,10 @@ namespace Engine::Systems {
     auto PostProcessing() -> void;
     auto SortByMaterial() -> void;
     auto SortByDistance(std::shared_ptr< Camera > cam) -> void;
+
+#if defined(_DEBUG)
+    auto DrawNodes() -> void;
+#endif
   };
 
 }  // namespace Engine::Systems

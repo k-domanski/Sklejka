@@ -49,8 +49,11 @@ namespace Editor {
     if (_entity->HasComponent< Engine::Components::Collider >()) {
       _componentViews.push_back(std::make_shared< ColliderView >());
     }
-    if (_entity->HasComponent< Engine::DirectionalLight>()) {
-        _componentViews.push_back(std::make_shared< DirectionalLightView>());
+    if (_entity->HasComponent< Engine::DirectionalLight >()) {
+      _componentViews.push_back(std::make_shared< DirectionalLightView >());
+    }
+    if (_entity->HasComponent< Engine::Node >()) {
+      _componentViews.push_back(std::make_shared< NodeView >());
     }
   }
 
@@ -72,7 +75,7 @@ namespace Editor {
     ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
 
     /* TODO: Remove component in pop up menu, some other settings*/
-    if (ImGui::Button("+", ImVec2{lineHeight, lineHeight})) {
+    if (ImGui::Button("...", ImVec2{lineHeight, lineHeight})) {
       ImGui::OpenPopup("ComponentSettings");
     }
 
@@ -157,14 +160,22 @@ namespace Editor {
         ImGui::CloseCurrentPopup();
       }
       if (ImGui::MenuItem("Directional Light")) {
-          if (_entity->GetComponent< DirectionalLight >() == nullptr) {
-              _entity->AddComponent< DirectionalLight >();
-              ReattachEntity();
-          }
-          else {
-              APP_WARN("{} entity already has DirectionalLight component!", _entity->Name());
-          }
-          ImGui::CloseCurrentPopup();
+        if (_entity->GetComponent< DirectionalLight >() == nullptr) {
+          _entity->AddComponent< DirectionalLight >();
+          ReattachEntity();
+        } else {
+          APP_WARN("{} entity already has DirectionalLight component!", _entity->Name());
+        }
+        ImGui::CloseCurrentPopup();
+      }
+      if (ImGui::MenuItem("Node")) {
+        if (_entity->GetComponent< Node >() == nullptr) {
+          _entity->AddComponent< Node >();
+          ReattachEntity();
+        } else {
+          APP_WARN("{} entity already has Node component!", _entity->Name());
+        }
+        ImGui::CloseCurrentPopup();
       }
       ReattachEntity();
       ImGui::EndPopup();

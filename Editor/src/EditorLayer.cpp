@@ -161,11 +161,30 @@ auto EditorLayer::UpdateEditorCamera() -> void {
   }
 }
 
+auto EditorLayer::OpenModel() {
+  std::optional< std::string > filepath = FileDialog::OpenFile("Model (*.fbx, *.FBX)\0*.fbx\0");
+  if (filepath)
+  {
+    std::shared_ptr< Renderer::Model > model_ptr = std::make_shared< Renderer::Model >(filepath.value());
+    std::vector< ECS::EntityID > loadedMeshes_ids(100);
+
+    ECS::EntityID rootID = AddObjectOnScene(model_ptr, 0, 0, &loadedMeshes_ids);
+
+    for (int i = 1; i < model_ptr->GetMeshCount(); i++)
+    {
+      AddObjectOnScene(model_ptr, i, rootID, &loadedMeshes_ids);
+    }
+  }
+}
+
 auto EditorLayer::DrawMenuBar() -> void {
   if (ImGui::BeginMainMenuBar()) {
     if (ImGui::BeginMenu("File")) {
       if (ImGui::MenuItem("Open...")) {
         LoadScene();
+      }
+      if (ImGui::MenuItem("Load model...")) {
+        OpenModel();
       }
       if (ImGui::MenuItem("Save As...")) {
         SaveScene();
@@ -213,10 +232,10 @@ auto EditorLayer::LoadScene() -> void {
   }
 }
 
-auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> void {
+auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> ECS::EntityID {
   auto model = AssetManager::GetModel(path);
   if (model->GetRootMesh() == nullptr)
-    return;
+    return 0;
   using namespace Engine::ECS;
   using namespace Engine::Components;
   auto entity = EntityManager::GetInstance().CreateEntity();
@@ -228,4 +247,27 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
   entity->AddComponent< MeshRenderer >(model, mat);
 
   SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, entity->GetID());
+  return entity->GetID();
+}
+
+auto EditorLayer::AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
+                                   Engine::ECS::EntityID parent, std::vector<ECS::EntityID>* loadedMeshes) -> ECS::EntityID {
+  if (model->GetRootMesh() == nullptr)
+    return 0;
+  using namespace Engine::ECS;
+  using namespace Engine::Components;
+  auto entity = EntityManager::GetInstance().CreateEntity();
+  entity->Name(model->GetMesh(meshIndex)->GetName());
+  entity->AddComponent< Transform >();
+  entity->GetComponent< Transform >()->SetLocalMatrix(model->GetMesh(meshIndex)->GetModelMatrix());
+  /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
+  auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
+  auto mat = AssetManager::GetMaterial("./materials/default_color.mat");
+  entity->AddComponent< MeshRenderer >(model, meshIndex, mat);
+
+  int parentMeshIndex = model->GetMesh(meshIndex)->GetParentMesh();
+  SceneManager::GetDisplayScene()->SceneGraph()->AddChild(
+      parentMeshIndex != -1 ? (*loadedMeshes)[parentMeshIndex] : 0, entity->GetID());
+  loadedMeshes->insert(loadedMeshes->begin() + meshIndex, entity->GetID());
+  return entity->GetID();
 }

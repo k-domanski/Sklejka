@@ -8,7 +8,7 @@
 #include <GL/QueryObject.h>
 
 namespace Engine::Renderer {
-  BETTER_ENUM(__MeshPrimitive, uint8_t, Plane, WireframeBox, WireframeSphere);
+  BETTER_ENUM(__MeshPrimitive, uint8_t, Plane, WireframeBox, WireframeSphere, Cube);
   typedef __MeshPrimitive MeshPrimitive;
 
   class Mesh {
@@ -21,6 +21,9 @@ namespace Engine::Renderer {
     GL::Primitive _primitive = GL::Primitive::Triangles;
     std::vector< Vertex > _vertexData;
     std::vector< GLuint > _indiceData;
+    std::string _name;
+    glm::mat4 _modelMatrix;
+    int _parent; // meshIndex of parentMesh in model root if -1
 
   public:
     Mesh(const std::vector< Vertex >& vertices, const std::vector< GLuint >& indices) noexcept;
@@ -34,6 +37,14 @@ namespace Engine::Renderer {
     auto ElementCount() const noexcept -> GLuint;
     auto GetPrimitive() const noexcept -> GL::Primitive;
     auto GetVertices() const -> std::vector< Vertex >;
+    auto GetName() -> std::string;
+    auto SetName(std::string name) -> void;
+
+    auto GetParentMesh() -> int;
+    auto SetParentMesh(int parentMeshIndex) -> void;
+
+    auto GetModelMatrix() -> glm::mat4;
+    auto SetModelMatrix(glm::mat4 matrix) -> void;
 
   private:
     auto SendDataToBuffers() noexcept -> void;
@@ -41,6 +52,7 @@ namespace Engine::Renderer {
     static auto CreatePlane() noexcept -> std::shared_ptr< Mesh >;
     static auto CreateWireframeBox() noexcept -> std::shared_ptr< Mesh >;
     static auto CreateWireframeSphere() noexcept -> std::shared_ptr< Mesh >;
+    static auto CreateCube() noexcept -> std::shared_ptr< Mesh >;
 
   public:
     static auto GetPrimitive(MeshPrimitive primitive) noexcept -> std::shared_ptr< Mesh >;

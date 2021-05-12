@@ -13,11 +13,13 @@ namespace Engine::Renderer {
              GL::Primitive primitive) noexcept
       : Mesh(vertices, indices) {
     _primitive = primitive;
+    _name      = "mesh";
+    _parent    = -1;
   }
   Mesh::Mesh(Mesh&& other) noexcept
       : _vertexArray(std::move(other._vertexArray)), _vertexBuffer(std::move(other._vertexBuffer)),
         _indiceBuffer(std::move(other._indiceBuffer)), _vertexData(std::move(other._vertexData)),
-        _indiceData(std::move(other._indiceData)), _primitive(other._primitive) {
+        _indiceData(std::move(other._indiceData)), _primitive(other._primitive), _parent(other._parent) {
   }
   auto Mesh::operator=(Mesh&& other) -> Mesh& {
     if (&other == this)
@@ -28,6 +30,7 @@ namespace Engine::Renderer {
     _vertexData   = std::move(other._vertexData);
     _indiceData   = std::move(other._indiceData);
     _primitive    = other._primitive;
+    _parent = other._parent;
     return *this;
   }
   auto Mesh::Use() noexcept -> void {
@@ -45,6 +48,37 @@ namespace Engine::Renderer {
   auto Mesh::GetVertices() const -> std::vector< Vertex > {
     return _vertexData;
   }
+
+  auto Mesh::GetName() -> std::string
+  {
+    return _name;
+  }
+
+  auto Mesh::SetName(std::string name) -> void
+  {
+    _name = name;
+  }
+
+  auto Mesh::GetParentMesh() -> int
+  {
+    return _parent;
+  }
+
+  auto Mesh::SetParentMesh(int parentMeshIndex) -> void
+  {
+    _parent = parentMeshIndex;
+  }
+
+  auto Mesh::GetModelMatrix() -> glm::mat4
+  {
+    return _modelMatrix;
+  }
+
+  auto Mesh::SetModelMatrix(glm::mat4 matrix) -> void
+  {
+    _modelMatrix = matrix;
+  }
+
 
   auto Mesh::SendDataToBuffers() noexcept -> void {
     _vertexArray.Bind();
@@ -67,6 +101,9 @@ namespace Engine::Renderer {
       }
       case MeshPrimitive::WireframeSphere: {
         return CreateWireframeSphere();
+      }
+      case MeshPrimitive::Cube: {
+        return CreateCube();
       }
     }
     LOG_WARN("No matching mesh primitive function: Primitive [{}]", primitive._to_string());
@@ -172,5 +209,42 @@ namespace Engine::Renderer {
     }
 
     return std::make_shared< Mesh >(verts, inds, GL::Primitive::LineLoop);
+  }
+  auto Mesh::CreateCube() noexcept -> std::shared_ptr< Mesh > {
+    const std::vector< Vertex > verts{{// Vert 0
+                                       {-.5f, -.5f, .5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 1
+                                       {.5f, -.5f, .5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 2
+                                       {.5f, .5f, .5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 3
+                                       {-.5f, .5f, .5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 4
+                                       {-.5f, -.5f, -.5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 5
+                                       {.5f, -.5f, -.5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 6
+                                       {.5f, .5f, -.5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 7
+                                       {-.5f, .5f, -.5f},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}}};
+    const std::vector< GLuint > inds{0, 1, 2, 2, 3, 0, 1, 5, 6, 6, 2, 1, 5, 4, 7, 7, 6, 5,
+                                     4, 0, 3, 3, 7, 4, 3, 2, 6, 6, 7, 3, 4, 5, 1, 1, 0, 4};
+    return std::make_shared< Mesh >(verts, inds);
   }
 }  // namespace Engine::Renderer

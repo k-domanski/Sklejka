@@ -8,6 +8,7 @@
 
 #include "Components/Collider.h"
 #include "GL/Cubemap.h"
+#include <Systems/NodeSystem.h>
 
 namespace Engine::Systems {
   using namespace GL;
@@ -188,7 +189,7 @@ namespace Engine::Systems {
           if (material == nullptr || model == nullptr) {
             continue;
           }
-          auto mesh = model->GetRootMesh();
+          auto mesh = model->GetMesh(mesh_renderer->GetMeshIndex());
           mesh->Use();
           const auto transform        = ECS::EntityManager::GetComponent< Transform >(entityID);
           _transformUniformData.model = transform->GetWorldMatrix();
@@ -220,14 +221,14 @@ namespace Engine::Systems {
     GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth);
     GL::Context::DepthTest(true);
     _shadowTexture->Bind(_shadowUniformSlot);
-     for (auto& entityID : _visibleEntities) {
-    //for (auto& entityID : _entities) {
+    for (auto& entityID : _visibleEntities) {
+      // for (auto& entityID : _entities) {
       auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
       auto material      = mesh_renderer->GetMaterial();
       auto model         = mesh_renderer->GetModel();
       std::shared_ptr< Mesh > mesh;
       // If there is no mesh, there is nothing to show
-      if (model == nullptr || (mesh = model->GetRootMesh()) == nullptr) {
+      if (model == nullptr || (mesh = model->GetMesh(mesh_renderer->GetMeshIndex())) == nullptr) {
         continue;
       }
 
@@ -320,9 +321,10 @@ namespace Engine::Systems {
       }
     }
     cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
-    // Post process
-    // LOG_DEBUG("Cutted by frustum: " + std::to_string(i)
-    //          + ", cutted by occlusion lf: " + std::to_string(j));
+
+#if defined(_DEBUG)
+    DrawNodes();
+#endif
 
     PostProcessing();
     _visibleEntities.clear();
@@ -546,4 +548,34 @@ namespace Engine::Systems {
     _finalPassShader->SetValue("u_MainTexture", 0);
     glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
   }
+
+/* Debug draw calls */
+#if defined(_DEBUG)
+  auto Renderer::DrawNodes() -> void {
+    const auto node_system = ECS::EntityManager::GetInstance().GetSystem< Engine::NodeSystem >();
+    const auto cube        = AssetManager::GetModel(Engine::Renderer::ModelPrimitive::Cube);
+    const auto camera      = _cameraSystem->MainCamera();
+
+    if (!cube) {
+      return;
+    }
+    const auto mesh = cube->GetRootMesh();
+    if (!(node_system && camera && mesh)) {
+      return;
+    }
+
+    mesh->Use();
+    _debugMaterial->Use();
+    for (auto id : node_system->Entities()) {
+      const auto& transform = ECS::EntityManager::GetComponent< Transform >(id);
+      transform->Scale(glm::vec3(0.1f));
+      _transformUniformData.model     = transform->GetWorldMatrix();
+      _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+      _transformUniformData.modelViewProjection =
+          camera->ProjectionMatrix() * _transformUniformData.modelView;
+      _transformUniformBuffer.SetData(_transformUniformData);
+      glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+    }
+  }
+#endif
 }  // namespace Engine::Systems
