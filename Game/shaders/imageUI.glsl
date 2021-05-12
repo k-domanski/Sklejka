@@ -32,7 +32,7 @@ void main() {
       if(v_uv.y > ratio)
       alpha = 0.0f;
   }
-  vec3 texel = texture(u_MainTexture, v_uv).rgb;
-  out_color  = vec4(texel, alpha);
+  vec4 texel = texture(u_MainTexture, v_uv);
+  out_color  = vec4(u_MainColor.xyz, alpha) * texel;
 }
 #endshader

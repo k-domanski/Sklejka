@@ -10,24 +10,34 @@ PlayerController::PlayerController(const std::shared_ptr< Engine::Transform >& p
 }
 
 auto PlayerController::OnCreate() -> void {
-  _image      = std::make_shared< ImageData >();
-  auto entity = ECS::EntityManager::GetInstance().CreateEntity();
-  auto renderer = entity->AddComponent< Components::UIRenderer >();
-  _image->transform = entity->AddComponent< Transform >();
-  _image->image     = std::make_shared< Renderer::Image >();
-  //renderer->GetElements().push_back(std::static_pointer_cast< Renderer::UIElement>(_image->image));
-  renderer->GetElements().push_back(_image->image);
+  _bar            = std::make_shared< BarData >();
+  auto entity     = ECS::EntityManager::GetInstance().CreateEntity();
+  auto renderer   = entity->AddComponent< Components::UIRenderer >();
+  _bar->transform = entity->AddComponent< Transform >();
+  _bar->bar       = std::make_shared< Renderer::Bar >();
+  renderer->GetElements().push_back(_bar->bar);
 
-  _image->image->Ratio(0.5f);
-  _image->transform->Position(glm::vec3(300.0f, 300.0f, 0.0f));
+  _bar->bar->FillRatio(0.5f);
+  _bar->transform->Position(glm::vec3(400.0f, 200.0f, 0.0f));
+  _bar->bar->BackgroundColor(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
+  _bar->bar->FillColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));
+  _bar->bar->Size(glm::vec2(300.0f, 100.0f));
+  _bar->bar->Padding(glm::vec2(5.0f, 5.0f));
   _nodeSystem    = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
   _currentNode   = _nodeSystem->GetNode(0);
   _nodeTransform = EntityManager::GetComponent< Transform >(_currentNode->GetEntityID());
+  time           = 0.0f;
 }
 
 auto PlayerController::Update(float deltaTime) -> void {
   // auto new_pos = _playerTransform->Position() + _playerTransform->Forward() * _speed * deltaTime;
   /* Replace it with Transform Right/Up/Forward once model gets the correct pivot */
+
+  time += deltaTime;
+
+  _bar->bar->FillRatio(sin(time));
+  if (time > 360.0f)
+    time -= 360.0f;
 
   /* Seek target */
   SeekTarget(deltaTime);
