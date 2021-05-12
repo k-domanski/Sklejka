@@ -16,7 +16,6 @@ auto PlayerController::OnCreate() -> void {
 auto PlayerController::Update(float deltaTime) -> void {
   // auto new_pos = _playerTransform->Position() + _playerTransform->Forward() * _speed * deltaTime;
   /* Replace it with Transform Right/Up/Forward once model gets the correct pivot */
-  auto move_delta = glm::vec3{0.0f, 0.0f, 1.0f};
 
   /* Seek target */
   SeekTarget(deltaTime);
@@ -25,13 +24,17 @@ auto PlayerController::Update(float deltaTime) -> void {
       ((float)Engine::Input::IsKeyPressed(Key::W)) - ((float)Engine::Input::IsKeyPressed(Key::S));
   auto horizontal_move =
       ((float)Engine::Input::IsKeyPressed(Key::D)) - ((float)Engine::Input::IsKeyPressed(Key::A));
+  auto roll =
+      ((float)Engine::Input::IsKeyPressed(Key::E)) - ((float)Engine::Input::IsKeyPressed(Key::Q));
 
-  move_delta += vertical_move * glm::vec3{0.0f, -1.0f, 0.0f};
-  move_delta += horizontal_move * glm::vec3{-1.0f, 0.0f, 0.0f};
+  auto move_delta = glm::vec3{0.0f};
+  move_delta += vertical_move * -_playerTransform->Up();
+  move_delta += horizontal_move * -_playerTransform->Right();
 
   //_playerTransform->Position(_playerTransform->Position() + move_delta * _speed * deltaTime);
   _playerTransform->Position(_playerTransform->Position()
-                             + glm::normalize(_moveVelocity) * _speed * deltaTime);
+                             + (glm::normalize(_moveVelocity) + move_delta) * _speed * deltaTime);
+  _playerTransform->Rotate(roll * deltaTime, _playerTransform->Forward());
 }
 
 auto PlayerController::SeekTarget(float deltaTime) -> void {

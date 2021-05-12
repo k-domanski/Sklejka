@@ -8,13 +8,12 @@ namespace Engine::Components {
     return _model;
   }
 
-  auto MeshRenderer::GetMeshIndex() -> int
-  {
+  auto MeshRenderer::GetMeshIndex() -> int {
     return _meshIndex;
   }
 
   auto MeshRenderer::SetModel(std::shared_ptr< Renderer::Model > model) -> void {
-    _model  = model;
+    _model = model;
     _dirty = true;
   }
 
@@ -35,8 +34,7 @@ namespace Engine::Components {
     _dirty = dirty;
   }
 
-  std::string MeshRenderer::SaveToJson(std::string filePath)
-  {
+  std::string MeshRenderer::SaveToJson(std::string filePath) {
     std::ofstream ofstream;
     ofstream.open(filePath);
     ofstream << SaveToJson();
@@ -45,8 +43,7 @@ namespace Engine::Components {
     return SaveToJson();
   }
 
-  std::string MeshRenderer::SaveToJson()
-  {
+  std::string MeshRenderer::SaveToJson() {
     using namespace nlohmann;
     json json = nlohmann::json{
         {"componentType", "meshRenderer"},
@@ -58,8 +55,7 @@ namespace Engine::Components {
     return json.dump(4);
   }
 
-  auto MeshRenderer::LoadFromJson(std::string filePath) -> void
-  {
+  auto MeshRenderer::LoadFromJson(std::string filePath) -> void {
     nlohmann::json json;
     if (filePath[0] == '{' || filePath[0] == '\n')  // HACK: Check if string is json
       json = nlohmann::json::parse(filePath.begin(), filePath.end());
@@ -68,9 +64,13 @@ namespace Engine::Components {
       json         = nlohmann::json::parse(content.begin(), content.end());
     }
 
-    _model = AssetManager::GetModel(json["model"]);
+    _model    = AssetManager::GetModel(json["model"]);
     _material = AssetManager::GetMaterial(std::string(json["material"]));
-    _meshIndex = json["meshIndex"];
+    if (json.count("meshIndex") != 0) {
+      _meshIndex = json["meshIndex"];
+    } else {
+      _meshIndex = 0;
+    }
   }
 
 }  // namespace Engine::Components
