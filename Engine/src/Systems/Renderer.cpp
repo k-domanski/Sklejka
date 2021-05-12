@@ -44,7 +44,7 @@ namespace Engine::Systems {
     _depthTarget->AttachDepthStencil(depth);
 
     /* Shadow map setup */
-    _shadowMapSize = glm::vec2(1024.0f, 1024.0f) * 2.0f;
+    _shadowMapSize = glm::vec2(1024.0f, 1024.0f) * 3.0f;
     _shadowTarget  = std::make_shared< GL::RenderTarget >(_shadowMapSize.x, _shadowMapSize.y);
     _shadowTexture = std::make_shared< GL::TextureAttachment >(
         _shadowMapSize.x, _shadowMapSize.y, GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT, GL_FLOAT);
@@ -52,7 +52,7 @@ namespace Engine::Systems {
     _shadowTarget->Bind(FramebufferTarget::ReadWrite);
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
-    _shadowProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, -10.0f, 100.0f);
+    _shadowProjection = glm::ortho(-30.0f, 30.0f, -30.0f, 30.0f, -30.0f, 30.0f);
     _shadowUniformBuffer.BindToSlot(_shadowUniformSlot);
     _shadowMapShader = AssetManager::GetShader("./shaders/shadow_map.glsl");
     _shadowMapShader->BindUniformBlock("u_ShadowData", _shadowUniformSlot);
