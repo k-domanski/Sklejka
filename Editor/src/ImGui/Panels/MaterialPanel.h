@@ -29,6 +29,7 @@ namespace Editor {
 
     auto ShaderSelection() -> void;
     auto TextureSelection() -> void;
+    auto PBRParams() -> void;
     auto ColorSelection() -> void;
 
     auto SaveMaterial(const std::shared_ptr< Engine::Renderer::Material >& material) -> void;

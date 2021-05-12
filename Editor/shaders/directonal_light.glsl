@@ -18,8 +18,10 @@ void main() {
   vs_out.normal        = mat3(transpose(inverse(u_Model))) * a_Normal;
   vs_out.posWS         = u_Model * vec4(a_Position, 1.0f);
   vs_out.lightSpacePos = u_LightSpaceMatrix * u_Model * vec4(a_Position, 1.0f);
-  vs_out.cameraPos     = (u_View * vec4(0.0f, 0.0f, 0.0f, -1.0f)).xyz;
-  gl_Position          = u_ViewProjection * vs_out.posWS;
+  gl_Position = u_ViewProjection * vs_out.posWS;
+  /* Retreive camera pos */
+  vec3 col4        = (u_View * vec4(0.0f, 0.0f, 0.0f, 1.0f)).xyz;
+  vs_out.cameraPos = -(transpose(mat3(u_View)) * col4);
 }
 #endshader
 
@@ -38,7 +40,7 @@ fs_in;
 out vec4 out_color;
 void main() {
   vec3 lightSpacePosUV = ndc2uv(fs_in.lightSpacePos.xyz / fs_in.lightSpacePos.w);
-  vec3 texel_color     = texture(u_MainTexture, fs_in.uv).rgb * u_Color.rgb;
+  vec3 texel_color     = gamma2linear(texture(u_MainTexture, fs_in.uv)).rgb * u_Color.rgb;
 
   vec3 normal    = normalize(fs_in.normal);
   vec3 view_dir  = normalize(fs_in.cameraPos - fs_in.posWS.xyz);

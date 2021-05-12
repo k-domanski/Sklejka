@@ -21,26 +21,27 @@ namespace Engine::GL {
       So consecutive vec3s have addresses (offsets): 0x0, 0x12, 0x24, 0x32...
       We have to add padding in the struct
     */
-    glm::vec3 direction;  // Data 12 bytes
-    float __pad1[1]{0};   // Padding 4 bytes
-                          // Total 16 bytes
+    glm::vec3 direction{0};  // Data 12 bytes
+    float __pad1[1]{0};      // Padding 4 bytes
+                             // Total 16 bytes
 
-    glm::vec3 ambient;   // Data 12 bytes
-    float __pad2[1]{0};  // Padding 4 byte
-                         // Total 16 bytes
+    glm::vec3 ambient{0};  // Data 12 bytes
+    float __pad2[1]{0};    // Padding 4 byte
+                           // Total 16 bytes
 
-    glm::vec3 diffuse;   // Data 12 bytes
-    float __pad3[1]{0};  // Padding 4 bytes
-                         // Total 16 bytes
+    glm::vec3 diffuse{0};  // Data 12 bytes
+    float __pad3[1]{0};    // Padding 4 bytes
+                           // Total 16 bytes
 
-    glm::vec3 specular;  // Data 12 bytes
+    glm::vec3 specular{0};  // Data 12 bytes
     /*
       Now for the intensity: 1 float has alighment of 4 bytes and has to be on addresses
         that are multipleof 4: 0x0, 0x4, 0x8, ...
       Since previous data type was vec3 witch has 12 bytes,
         the intensity is already aligned - no padding.
     */
-    float intensity;  // Data 4 bytes
+    float intensity{0};   // Data 4 bytes
+    float shadowBias{0};  // Data 4 bytes
   };
   struct ShadowUniformData {
     glm::mat4 lightSpaceMatrix;

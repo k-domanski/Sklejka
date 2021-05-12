@@ -12,6 +12,8 @@ namespace Engine::Renderer {
     std::shared_ptr< GL::Shader > _shader;
     std::shared_ptr< GL::Texture2D > _mainTexture;
     glm::vec4 _mainColor{1.0f, 1.0f, 1.0f, 1.0f};
+    float _roughness = 0.0f;
+    float _metalness = 0.0f;
 
   public:
     Material(std::size_t assetID);
@@ -22,6 +24,10 @@ namespace Engine::Renderer {
     auto GetMainTexture() -> std::shared_ptr< GL::Texture2D >;
     auto MainColor() const noexcept -> glm::vec4;
     auto MainColor(const glm::vec4& color) noexcept -> glm::vec4;
+    auto Roughness() const noexcept -> float;
+    auto Roughness(float value) noexcept -> float;
+    auto Metalness() const noexcept -> float;
+    auto Metalness(float value) noexcept -> float;
     auto MainColorPtr() -> float*;
     auto Queue() const noexcept -> uint32_t;
     auto Queue(uint32_t queue) noexcept -> uint32_t;

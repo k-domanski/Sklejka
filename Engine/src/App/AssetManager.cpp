@@ -86,7 +86,8 @@ namespace Engine {
         return nullptr;
       }
       int x, y, n;
-      auto pixel_data = stbi_loadf(file.data(), &x, &y, &n, 4);
+      //auto pixel_data = stbi_loadf(file.data(), &x, &y, &n, 4);
+      auto pixel_data = stbi_load(file.data(), &x, &y, &n, 4);
       auto texture    = std::make_shared< GL::Texture2D >(x, y, pixel_data);
       texture->FilePath(file);
       stbi_image_free(pixel_data);
@@ -135,6 +136,8 @@ namespace Engine {
         auto vec = json["mainColor"].get< std::vector< float > >();
         material->MainColor({vec[0], vec[1], vec[2], vec[3]});
       }
+      material->Roughness(READ_VALUE(json, "roughness", 0));
+      material->Metalness(READ_VALUE(json, "metalness", 0));
       _loadedMaterials[assetID] = material;
       material->FilePath(file);
       return material;

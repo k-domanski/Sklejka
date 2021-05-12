@@ -45,6 +45,13 @@ namespace Engine {
     flags.Set(LightFlag::Dirty | LightFlag::NewData);
     return m_Data.intensity = intensity;
   }
+  auto DirectionalLight::ShadowBias() const noexcept -> float {
+    return m_Data.shadowBias;
+  }
+  auto DirectionalLight::ShadowBias(float value) noexcept -> float {
+    flags.Set(LightFlag::Dirty | LightFlag::NewData);
+    return m_Data.shadowBias = value;
+  }
   auto DirectionalLight::UniformData() const noexcept -> GL::DirectionalLightUniformData {
     return m_Data;
   }
@@ -58,6 +65,7 @@ namespace Engine {
         {"specular",
          {{"x", m_Data.specular.x}, {"y", m_Data.specular.y}, {"z", m_Data.specular.z}}},
         {"intensity", m_Data.intensity},
+        {"shadowBias", m_Data.shadowBias},
         {"flags", flags.GetState()}};
     return json.dump(4);
   }
@@ -83,6 +91,7 @@ namespace Engine {
     Diffuse(glm::vec3(json["diffuse"]["x"], json["diffuse"]["y"], json["diffuse"]["z"]));
     Specular(glm::vec3(json["specular"]["x"], json["specular"]["y"], json["specular"]["z"]));
     Intensity(json["intensity"]);
+    ShadowBias(READ_VALUE(json, "shadowBias", 0.001f));
     flags.Set(json["flags"]);
   }
 }  // namespace Engine

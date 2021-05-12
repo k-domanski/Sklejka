@@ -1032,6 +1032,7 @@
     },
     "flags": 3,
     "intensity": 1.0,
+    "shadowBias": 0.0010000000474974513,
     "specular": {
         "x": 0.0,
         "y": 0.0,

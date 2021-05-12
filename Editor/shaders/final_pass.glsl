@@ -33,6 +33,7 @@ fs_in;
 float gamma = 2.2f;
 void main() {
   vec3 texel = texture(u_MainTexture, fs_in.uv).rgb;
+  texel = texel / (texel + vec3(1.0f));
   frag_color = vec4(GammaCompress(texel, gamma), 1.0f);
 }
 #endshader

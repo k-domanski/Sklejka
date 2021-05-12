@@ -28,6 +28,18 @@ namespace Engine::Renderer {
   auto Material::MainColor(const glm::vec4& color) noexcept -> glm::vec4 {
     return _mainColor = color;
   }
+  auto Material::Roughness() const noexcept -> float {
+    return _roughness;
+  }
+  auto Material::Roughness(float value) noexcept -> float {
+    return _roughness = value;
+  }
+  auto Material::Metalness() const noexcept -> float {
+    return _metalness;
+  }
+  auto Material::Metalness(float value) noexcept -> float {
+    return _metalness = value;
+  }
   auto Material::MainColorPtr() -> float* {
     return &_mainColor[0];
   }
@@ -46,7 +58,9 @@ namespace Engine::Renderer {
         {"assetID", std::to_string(_assetID)},
         {"shaderFilepath", (_shader != nullptr ? _shader->FilePath() : "")},
         {"diffuseFilepath", (_mainTexture != nullptr ? _mainTexture->FilePath() : "")},
-        {"mainColor", json::array({_mainColor.r, _mainColor.g, _mainColor.b, _mainColor.a})}};
+        {"mainColor", json::array({_mainColor.r, _mainColor.g, _mainColor.b, _mainColor.a})},
+        {"roughness", _roughness},
+        {"metalness", _metalness}};
 
     return json.dump(4);
   }
@@ -69,5 +83,7 @@ namespace Engine::Renderer {
     _shader->SetValue("u_MainTexture", 0);
     // TODO: Use uniform buffer if we have a lot of data
     _shader->SetVector("u_Color", _mainColor);
+    _shader->SetValue("u_Roughness", _roughness);
+    _shader->SetValue("u_Metalness", _metalness);
   }
 }  // namespace Engine::Renderer
