@@ -3,6 +3,8 @@
 #include <Utility/Helpers.h>
 #include <GL/GLEnum.h>
 
+#include "GL/Texture2D.h"
+
 namespace Engine::Utility {
   template< typename EType >
   class BitFlags {
@@ -43,6 +45,13 @@ namespace Engine::Utility {
     std::string version;
     std::string infoMessage;
     std::vector< std::pair< GL::ShaderType, std::string > > shaders;
+  };
+
+  struct Character {
+    std::shared_ptr< GL::Texture2D > Texture;
+    glm::ivec2 Size;
+    glm::ivec2 Bearing;
+    unsigned int Advance;
   };
 
   auto ReadTextFile(const std::string_view& fileName, bool* success = nullptr) -> std::string;

@@ -40,7 +40,7 @@ namespace Engine {
     auto Forward(const glm::vec3& forward) noexcept -> glm::vec3;
     auto Rotate(float radians, const glm::vec3& axis) noexcept -> glm::quat;
     auto WorldPosition() const noexcept -> glm::vec3;
-    auto WorlScale() const noexcept -> glm::vec3;
+    auto WorldScale() const noexcept -> glm::vec3;
     std::string SaveToJson(std::string filePath) override;
     std::string SaveToJson() override;
     auto LoadFromJson(std::string filePath) -> void override;

@@ -8,11 +8,14 @@ namespace Engine::GL {
     GLint _minFilter;
     GLint _magFilter;
     GLint _wrapMode;
+    GLint _component;
+    GLint _dataType;
     glm::ivec2 _size;
     std::string _filePath;
 
   public:
     Texture2D(GLint width, GLint height, const GLvoid* data) noexcept;
+    Texture2D(GLint width, GLint height, const GLvoid* data, GLint wrapMode, GLint filter, GLint component, GLint dataType) noexcept;
     Texture2D(const Texture2D&) = delete;
     auto operator=(const Texture2D&) -> Texture2D& = delete;
     Texture2D(Texture2D&& other) noexcept;

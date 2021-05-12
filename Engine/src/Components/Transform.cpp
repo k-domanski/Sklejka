@@ -90,7 +90,7 @@ namespace Engine {
     return glm::vec3(_modelMatrix[3]);
   }
 
-  auto Transform::WorlScale() const noexcept -> glm::vec3 {
+  auto Transform::WorldScale() const noexcept -> glm::vec3 {
     glm::vec3 scale;
     glm::quat rotation;
     glm::vec3 translation;

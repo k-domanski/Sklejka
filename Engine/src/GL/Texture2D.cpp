@@ -6,12 +6,21 @@ using Engine::GL::Context;
 namespace Engine::GL {
   Texture2D::Texture2D(GLint width, GLint height, const GLvoid* data) noexcept
       : _minFilter(GL_LINEAR_MIPMAP_LINEAR), _magFilter(GL_LINEAR), _wrapMode(GL_REPEAT),
-        _size(width, height) {
+        _size(width, height), _component(GL_RGBA), _dataType(GL_FLOAT) {
     Create(width, height, data);
   }
+
+    Texture2D::Texture2D(GLint width, GLint height, const GLvoid* data, GLint wrapMode, GLint filter,
+                       GLint component, GLint dataType) noexcept
+      : _minFilter(filter), _magFilter(filter), _wrapMode(wrapMode), _size(width, height),
+        _component(component), _dataType(dataType)
+  {
+    Create(width, height, data);
+  }
+
   Texture2D::Texture2D(Texture2D&& other) noexcept
       : _handle(other._handle), _minFilter(other._minFilter), _magFilter(other._magFilter),
-        _wrapMode(other._wrapMode) {
+        _wrapMode(other._wrapMode), _component(other._component), _dataType(other._dataType) {
     other._handle = 0u;
   }
   auto Texture2D::operator=(Texture2D&& other) noexcept -> Texture2D& {
@@ -33,7 +42,7 @@ namespace Engine::GL {
 
     glGenTextures(1, &_handle);
     Context::BindTexture(GL_TEXTURE_2D, _handle);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_FLOAT, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, _component, width, height, 0, _component, _dataType, data);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _wrapMode);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _wrapMode);

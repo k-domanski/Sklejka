@@ -3,6 +3,8 @@
 #include <GL/GLCore.h>
 #include <Renderer/Model.h>
 
+#include "Utility/Utility.h"
+
 namespace Engine {
   class Scene;
 
@@ -19,6 +21,8 @@ namespace Engine {
     static inline std::unordered_map< std::size_t, std::shared_ptr< Renderer::Material > >
         _loadedMaterials;
     static inline std::unordered_map< std::string, std::shared_ptr< Scene > > _loadedScenes;
+    static inline std::unordered_map< std::string, std::shared_ptr<std::map< char, Utility::Character >> >
+        _loadedCharacters;
 
   public:
     static auto GenerateAssetID() -> size_t;
@@ -33,5 +37,7 @@ namespace Engine {
     static auto GetMaterial(std::size_t assetID) -> std::shared_ptr< Renderer::Material >;
     static auto SaveScene(const std::shared_ptr< Scene >& scene, std::string file) -> void;
     static auto LoadScene(std::string file) -> std::shared_ptr< Scene >;
+    static auto GetCharacters(std::string file, int fontSize)
+        -> std::shared_ptr<std::map< char, Utility::Character >>;
   };
 }  // namespace Engine

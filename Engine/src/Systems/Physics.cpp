@@ -73,7 +73,7 @@ auto Engine::Systems::Physics::CreateSphereShape(std::shared_ptr< Components::Co
 
   auto center = make_vec3(center4);
 
-  auto radius = c->Size * t->WorlScale();
+  auto radius = c->Size * t->WorldScale();
 
   return Utility::GJK::Shape(true, radius.x, center);
 }

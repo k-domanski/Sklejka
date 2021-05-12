@@ -4,11 +4,13 @@
 
 #include "Renderer/Bar.h"
 #include "Renderer/Image.h"
+#include "Renderer/Text.h"
 
 struct BarData
 {
   std::shared_ptr<Engine::Transform> transform;
   std::shared_ptr<Engine::Renderer::Bar> bar;
+  std::shared_ptr<Engine::Renderer::Text> text;
 };
 
 class PlayerController : public Engine::Script {

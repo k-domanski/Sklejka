@@ -23,6 +23,14 @@ auto PlayerController::OnCreate() -> void {
   _bar->bar->FillColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));
   _bar->bar->Size(glm::vec2(300.0f, 100.0f));
   _bar->bar->Padding(glm::vec2(5.0f, 5.0f));
+  _bar->text = std::make_shared< Renderer::Text >();
+  _bar->text->Color(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
+  _bar->text->Size(1.0f);
+  _bar->text->SetText("Example SHADOW bar");
+
+  renderer->GetElements().push_back(_bar->text);
+
+
   _nodeSystem    = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
   _currentNode   = _nodeSystem->GetNode(0);
   _nodeTransform = EntityManager::GetComponent< Transform >(_currentNode->GetEntityID());

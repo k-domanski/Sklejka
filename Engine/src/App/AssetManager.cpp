@@ -11,6 +11,8 @@
 #include <App/Log.h>
 #include <filesystem>
 
+#include "freetype/freetype.h"
+
 namespace fs = std::filesystem;
 using namespace Engine::Utility;
 
@@ -245,5 +247,73 @@ namespace Engine {
       return scene;
     }
     return _loadedScenes[file];
+  }
+
+  auto AssetManager::GetCharacters(std::string file, int fontSize)
+      -> std::shared_ptr<std::map< char, Utility::Character >> {
+    auto characters = std::make_shared< std::map< char, Utility::Character > >();
+
+    if (_loadedCharacters.count(file) == 0)
+    {
+      FT_Library ft;
+      if (FT_Init_FreeType(&ft)) {
+        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+        return characters;
+      }
+
+      FT_Face face;
+      if (FT_New_Face(ft, file.c_str(), 0, &face)) {
+        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+        return characters;
+      }
+
+      FT_Set_Pixel_Sizes(face, 0, fontSize);
+
+      if (FT_Load_Char(face, 'X', FT_LOAD_RENDER)) {
+        std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+        return characters;
+      }
+
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
+
+      for (unsigned char c = 0; c < 128; c++) {
+        // load character glyph
+        if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
+          std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+          continue;
+        }
+        // generate texture
+
+        std::shared_ptr< GL::Texture2D > texture = std::make_shared< GL::Texture2D >(
+            face->glyph->bitmap.width, face->glyph->bitmap.rows, face->glyph->bitmap.buffer,
+            GL_CLAMP_TO_EDGE, GL_LINEAR, GL_RED, GL_UNSIGNED_BYTE);
+
+        // unsigned int texture;
+        // glGenTextures(1, &texture);
+        // glBindTexture(GL_TEXTURE_2D, texture);
+        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows,
+        // 0,
+        //             GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
+        //// set texture options
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // now store character for later use
+        Character character = {
+            texture, glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+            glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top), face->glyph->advance.x};
+        characters->insert(std::pair< char, Character >(c, character));
+      }
+
+      _loadedCharacters[file] = characters;
+
+      FT_Done_Face(face);
+      FT_Done_FreeType(ft);
+
+      return characters;
+    }
+
+    return _loadedCharacters[file];
   }
 }  // namespace Engine
