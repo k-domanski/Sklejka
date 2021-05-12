@@ -121,7 +121,7 @@ namespace Engine::Systems {
         _transformUniformBuffer.SetData(_transformUniformData);
         debugShader->BindUniformBlock("u_Transform", 0);
         debugShader->BindUniformBlock("u_Camera", 1);
-        debugShader->BindUniformBlock("u_Directional", 2);
+        debugShader->BindUniformBlock("u_DirectionalLight", 2);
         glDrawElements(boundingMesh->GetPrimitive(), boundingMesh->ElementCount(), GL_UNSIGNED_INT,
                        NULL);
 
@@ -132,7 +132,7 @@ namespace Engine::Systems {
           _transformUniformBuffer.SetData(_transformUniformData);
           debugShader->BindUniformBlock("u_Transform", 0);
           debugShader->BindUniformBlock("u_Camera", 1);
-          debugShader->BindUniformBlock("u_Directional", 2);
+          debugShader->BindUniformBlock("u_DirectionalLight", 2);
           glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
         } else {
           glDepthMask(GL_FALSE);
@@ -141,7 +141,7 @@ namespace Engine::Systems {
           _transformUniformBuffer.SetData(_transformUniformData);
           debugShader->BindUniformBlock("u_Transform", 0);
           debugShader->BindUniformBlock("u_Camera", 1);
-          debugShader->BindUniformBlock("u_Directional", 2);
+          debugShader->BindUniformBlock("u_DirectionalLight", 2);
           glDrawElements(boundingMesh->GetPrimitive(), boundingMesh->ElementCount(),
         GL_UNSIGNED_INT, NULL); j++;
         }*/
@@ -181,7 +181,7 @@ namespace Engine::Systems {
         _shadowMapShader->Use();
         _shadowMapShader->BindUniformBlock("u_Transform", 0);
         _shadowMapShader->BindUniformBlock("u_Camera", 1);
-        _shadowMapShader->BindUniformBlock("u_Directional", 2);
+        _shadowMapShader->BindUniformBlock("u_DirectionalLight", 2);
         for (auto& entityID : _entities) {
           auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
           auto material      = mesh_renderer->GetMaterial();
@@ -260,7 +260,7 @@ namespace Engine::Systems {
       _transformUniformBuffer.SetData(_transformUniformData);
       shader->BindUniformBlock("u_Transform", 0);
       shader->BindUniformBlock("u_Camera", 1);
-      shader->BindUniformBlock("u_Directional", 2);
+      shader->BindUniformBlock("u_DirectionalLight", 2);
       shader->BindUniformBlock("u_ShadowData", _shadowUniformSlot);
       shader->SetValue("u_ShadowDepthTexture", (int)_shadowUniformSlot);
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
@@ -287,7 +287,7 @@ namespace Engine::Systems {
           _transformUniformBuffer.SetData(_transformUniformData);
           _boxColliderShader->BindUniformBlock("u_Transform", 0);
           _boxColliderShader->BindUniformBlock("u_Camera", 1);
-          _boxColliderShader->SetVector("u_MainColor", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+          _boxColliderShader->SetVector("u_Color", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
           glDrawElements(_boxCollider->GetPrimitive(), _boxCollider->ElementCount(),
                          GL_UNSIGNED_INT, NULL);
         } else if (collider->Type == +Components::ColliderType::Sphere) {
@@ -312,7 +312,7 @@ namespace Engine::Systems {
           _transformUniformBuffer.SetData(_transformUniformData);
           _sphereColliderShader->BindUniformBlock("u_Transform", 0);
           _sphereColliderShader->BindUniformBlock("u_Camera", 1);
-          _sphereColliderShader->SetVector("u_MainColor", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+          _sphereColliderShader->SetVector("u_Color", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
           glDrawElements(_sphereCollider->GetPrimitive(), _sphereCollider->ElementCount(),
                          GL_UNSIGNED_INT, NULL);
 

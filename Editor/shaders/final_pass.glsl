@@ -32,8 +32,6 @@ in ShaderData {
 fs_in;
 float gamma = 2.2f;
 void main() {
-  // frag_color = vec4(vec3(1.0f) - texture(u_MainTexture, fs_in.uv).rgb, 1.0f);
-  // frag_color = vec4(texture(u_MainTexture, fs_in.uv).rgb * remap(fs_in.v_pos), 1.0f);
   vec3 texel = texture(u_MainTexture, fs_in.uv).rgb;
   frag_color = vec4(GammaCompress(texel, gamma), 1.0f);
 }

@@ -68,6 +68,6 @@ namespace Engine::Renderer {
     _shader->Use();
     _shader->SetValue("u_MainTexture", 0);
     // TODO: Use uniform buffer if we have a lot of data
-    _shader->SetVector("u_MainColor", _mainColor);
+    _shader->SetVector("u_Color", _mainColor);
   }
 }  // namespace Engine::Renderer

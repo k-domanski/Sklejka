@@ -41,7 +41,9 @@ void main() {
   float bias   = u_ShadowBias;
   float shadow = calculateShadow(lightSpacePosUV, u_ShadowDepthTexture, bias);
 
-  vec3 result = calculateDirectionalLightColor(fs_in.normal, u_MainColor, shadow);
+
+  // vec3 result = PBR(normal, vec3 V, vec3 L, vec3 F0, vec3 albedo, float roughness, float metalness);
+  vec3 result = calculateDirectionalLightColor(fs_in.normal, u_Color, shadow);
   out_color   = vec4(result, 1.0f);
 }
 #endshader
