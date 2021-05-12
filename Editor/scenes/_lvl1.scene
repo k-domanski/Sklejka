@@ -1,0 +1,4110 @@
+{
+    "sceneID": 5875865408162286984
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14848551272262033276",
+    "entityName": "Level1",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 0.7071067094802856,
+        "x": -0.7071068286895752,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 0,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2975243139641238449",
+    "entityName": "Light",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": -0.3640288710594177,
+        "x": -0.1397375613451004,
+        "y": -0.8596832752227783,
+        "z": 0.33000150322914124
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "ambient": {
+        "x": 0.019607843831181526,
+        "y": 0.019607843831181526,
+        "z": 0.019607843831181526
+    },
+    "componentType": "directionalLight",
+    "diffuse": {
+        "x": 1.0,
+        "y": 0.9734783172607422,
+        "z": 0.7524752616882324
+    },
+    "flags": 3,
+    "intensity": 1.0,
+    "shadowBias": 0.0,
+    "specular": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2550037703754677997",
+    "entityName": "Chunk.001",
+    "parentID": 14848551272262033276
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 1,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9131337322527757717",
+    "entityName": "Chunk.002",
+    "parentID": 14848551272262033276
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 23.53499984741211,
+        "z": -4.164400100708008
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 17,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "581832336087511711",
+    "entityName": "Chunk.003",
+    "parentID": 14848551272262033276
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 47.49599838256836,
+        "z": -8.123800277709961
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 35,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5328779298434887266",
+    "entityName": "Chunk.004",
+    "parentID": 14848551272262033276
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 13.694999694824219,
+        "y": 80.39299774169922,
+        "z": -14.392000198364258
+    },
+    "localRotation": {
+        "w": -3.940385440159844e-08,
+        "x": 0.9014551043510437,
+        "y": -0.43287259340286255,
+        "z": 1.8921461730769806e-08
+    },
+    "localScale": {
+        "x": -1.0,
+        "y": -1.0,
+        "z": -1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 62,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "7703316016510652003",
+    "entityName": "Chunk.005",
+    "parentID": 14848551272262033276
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 30.65399932861328,
+        "y": 111.1500015258789,
+        "z": -20.798999786376953
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 89,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6050025328706769302",
+    "entityName": "Chunk.006",
+    "parentID": 14848551272262033276
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 30.63800048828125,
+        "y": 134.7899932861328,
+        "z": -24.974000930786133
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 107,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "7040260485533907500",
+    "entityName": "Cube.009",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 10.952885627746582,
+        "z": -1.7474210262298584
+    },
+    "localRotation": {
+        "w": 0.9961947202682495,
+        "x": -0.087155781686306,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 5.0,
+        "y": 12.0,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 2,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13044141376261771034",
+    "entityName": "Plane.057",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.1905975341796875,
+        "y": 8.194902420043945,
+        "z": -2.134355306625366
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 3,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14444640330011267742",
+    "entityName": "Plane.056",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.7532267570495605,
+        "y": 11.680633544921875,
+        "z": -2.6024863719940186
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 4,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "15106074157532966210",
+    "entityName": "Plane.055",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.7532267570495605,
+        "y": 18.684837341308594,
+        "z": -5.060174465179443
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 5,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "8410833793319558590",
+    "entityName": "Plane.047",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.864545822143555,
+        "y": 1.3698291778564453,
+        "z": -2.00947642326355
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1771352606807385952",
+    "entityName": "Plane.039",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.184528827667236,
+        "y": 1.2244129180908203,
+        "z": -1.778279423713684
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "10815196370086569828",
+    "entityName": "Plane.038",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.628100395202637,
+        "y": 15.414491653442383,
+        "z": -3.0364773273468018
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 8,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1887943702416918994",
+    "entityName": "Plane.036",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.852785110473633,
+        "y": 12.242788314819336,
+        "z": -2.37613844871521
+    },
+    "localRotation": {
+        "w": -2.219724279939328e-07,
+        "x": -2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 9,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "12661721509421758789",
+    "entityName": "Plane.035",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.8094682693481445,
+        "y": 4.466547012329102,
+        "z": -2.324411153793335
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 10,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3825153346726697094",
+    "entityName": "Plane.034",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.515730381011963,
+        "y": 18.448226928710938,
+        "z": -4.061411380767822
+    },
+    "localRotation": {
+        "w": -2.219724279939328e-07,
+        "x": -2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 11,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "8111904149300568909",
+    "entityName": "Plane.032",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055155277252197,
+        "y": 21.101192474365234,
+        "z": -3.8228137493133545
+    },
+    "localRotation": {
+        "w": -0.0003522324259392917,
+        "x": -0.0003522324259392917,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 12,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "570442637338809890",
+    "entityName": "Plane.031",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055155277252197,
+        "y": 15.223441123962402,
+        "z": -2.69402813911438
+    },
+    "localRotation": {
+        "w": -0.0003522324259392917,
+        "x": -0.0003522324259392917,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 13,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "17126732165602265845",
+    "entityName": "Plane.030",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.595547676086426,
+        "y": 5.019890308380127,
+        "z": -1.3260457515716553
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 14,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5565273979789500367",
+    "entityName": "Plane.029",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.4356369972229,
+        "y": 7.910752773284912,
+        "z": -1.8227107524871826
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 15,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "12095395532743896261",
+    "entityName": "Plane.028",
+    "parentID": 2550037703754677997
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.0123419761657715,
+        "y": 21.69412612915039,
+        "z": -3.98896861076355
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 16,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3904433708856087486",
+    "entityName": "Cube.012",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 10.952884674072266,
+        "z": -1.7296428680419922
+    },
+    "localRotation": {
+        "w": 0.9961947202682495,
+        "x": -0.08715580403804779,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 5.0,
+        "y": 12.0,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 18,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14766716094659942844",
+    "entityName": "Plane.112",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.901741027832031,
+        "y": 6.088859558105469,
+        "z": -2.1165771484375
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 19,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11384576459107593247",
+    "entityName": "Plane.111",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.864545822143555,
+        "y": 15.293865203857422,
+        "z": -4.391286849975586
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 20,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6729298412863253780",
+    "entityName": "Plane.110",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.353847026824951,
+        "y": 9.148502349853516,
+        "z": -1.7605009078979492
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 21,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "15370897573801516798",
+    "entityName": "Plane.109",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.527271270751953,
+        "y": 18.378856658935547,
+        "z": -3.447636604309082
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 22,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "16764033187919513626",
+    "entityName": "Plane.108",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -5.035415172576904,
+        "y": 3.668508529663086,
+        "z": -0.8062763214111328
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 23,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4592754601891616906",
+    "entityName": "Plane.107",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.588603973388672,
+        "y": 6.269231796264648,
+        "z": -2.0592288970947266
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 24,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4047087441283533726",
+    "entityName": "Plane.100",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.0123419761657715,
+        "y": 18.19521713256836,
+        "z": -3.29708194732666
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 25,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "7096211410337626273",
+    "entityName": "Plane.098",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.012341499328613,
+        "y": 12.284809112548828,
+        "z": -2.2247352600097656
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 26,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6310566889502138558",
+    "entityName": "Plane.097",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.012340545654297,
+        "y": 0.5539436340332031,
+        "z": -0.2093830108642578
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 27,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2592369264936169492",
+    "entityName": "Plane.096",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.172252178192139,
+        "y": 9.393943786621094,
+        "z": -1.7280702590942383
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 28,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "938603790906746258",
+    "entityName": "Plane.075",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055155277252197,
+        "y": 15.223442077636719,
+        "z": -2.6762495040893555
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 29,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "15817445877307812875",
+    "entityName": "Plane.073",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055155277252197,
+        "y": 21.101192474365234,
+        "z": -3.8050355911254883
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 30,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "8195511262073831390",
+    "entityName": "Plane.064",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055155277252197,
+        "y": 3.4599151611328125,
+        "z": -0.6209192276000977
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 31,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11675266236314787380",
+    "entityName": "Plane.060",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.599382400512695,
+        "y": 21.101192474365234,
+        "z": -3.775249481201172
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 32,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11812932746714242519",
+    "entityName": "Plane.059",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.642195224761963,
+        "y": 12.382789611816406,
+        "z": -2.1949501037597656
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 33,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3754097297967839290",
+    "entityName": "Plane.058",
+    "parentID": 9131337322527757717
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.642195224761963,
+        "y": 0.5539436340332031,
+        "z": -0.1795973777770996
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 34,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11749189905432055821",
+    "entityName": "Cube.013",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -0.2220897674560547,
+        "y": 16.431446075439453,
+        "z": -2.796210289001465
+    },
+    "localRotation": {
+        "w": 0.9961947202682495,
+        "x": -0.087155781686306,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 5.0,
+        "y": 18.0,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 36,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "16274040733433912665",
+    "entityName": "Plane.137",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.998422622680664,
+        "y": 12.929946899414063,
+        "z": -3.549539566040039
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 37,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "10460037019529964384",
+    "entityName": "Plane.136",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.76435661315918,
+        "y": 17.366199493408203,
+        "z": -4.836902618408203
+    },
+    "localRotation": {
+        "w": 0.705967903137207,
+        "x": 0.705967903137207,
+        "y": -0.04011626914143562,
+        "z": -0.040116261690855026
+    },
+    "localScale": {
+        "x": 0.01000000350177288,
+        "y": 0.009999999776482582,
+        "z": 0.01000000350177288
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 38,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2956539749831629082",
+    "entityName": "Plane.135",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.10882568359375,
+        "y": 14.552608489990234,
+        "z": -4.495556831359863
+    },
+    "localRotation": {
+        "w": -2.219724279939328e-07,
+        "x": -2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 39,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "8706148304442628624",
+    "entityName": "Plane.134",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 14.515690803527832,
+        "y": 26.885334014892578,
+        "z": -6.130138397216797
+    },
+    "localRotation": {
+        "w": 0.296426922082901,
+        "x": 0.2964268624782562,
+        "y": 0.6419743895530701,
+        "z": 0.6419743895530701
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 40,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13208194246799021708",
+    "entityName": "Plane.133",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.9266185760498047,
+        "y": 29.075931549072266,
+        "z": -4.955976486206055
+    },
+    "localRotation": {
+        "w": 0.6631712317466736,
+        "x": 0.6631712913513184,
+        "y": -0.24536478519439697,
+        "z": -0.24536478519439697
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.0051825400441884995
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 41,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4967027527226716024",
+    "entityName": "Plane.132",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 8.971841812133789,
+        "y": 35.08485794067383,
+        "z": -6.095283508300781
+    },
+    "localRotation": {
+        "w": 0.6435447335243225,
+        "x": 0.6435447931289673,
+        "y": -0.2930019795894623,
+        "z": -0.2930019199848175
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 42,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "7372756890864831341",
+    "entityName": "Plane.131",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.723222732543945,
+        "y": 0.6519699096679688,
+        "z": -1.6252708435058594
+    },
+    "localRotation": {
+        "w": 2.219724279939328e-07,
+        "x": 2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 43,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13400998791255624381",
+    "entityName": "Plane.130",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.408580780029297,
+        "y": 10.765846252441406,
+        "z": -2.615314483642578
+    },
+    "localRotation": {
+        "w": -2.219724279939328e-07,
+        "x": -2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 44,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "10825894562216275354",
+    "entityName": "Plane.129",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.972578048706055,
+        "y": 33.03215408325195,
+        "z": -6.097171783447266
+    },
+    "localRotation": {
+        "w": 0.6413431763648987,
+        "x": 0.6413432955741882,
+        "y": -0.2977900207042694,
+        "z": -0.29778987169265747
+    },
+    "localScale": {
+        "x": 0.005182539112865925,
+        "y": 0.005182540509849787,
+        "z": 0.005182539112865925
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 45,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "666782149243092272",
+    "entityName": "Plane.128",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -5.372472763061523,
+        "y": 3.2106475830078125,
+        "z": -0.9121074676513672
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 46,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4843517916489033270",
+    "entityName": "Plane.127",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -1.5577945709228516,
+        "y": 26.667675018310547,
+        "z": -5.837947845458984
+    },
+    "localRotation": {
+        "w": 0.6863462328910828,
+        "x": 0.6863462924957275,
+        "y": -0.17008475959300995,
+        "z": -0.17008469998836517
+    },
+    "localScale": {
+        "x": 0.0051825400441884995,
+        "y": 0.005182540509849787,
+        "z": 0.0051825400441884995
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 47,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13476928354787186494",
+    "entityName": "Plane.126",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 6.584342956542969,
+        "y": 19.989459991455078,
+        "z": -4.978192329406738
+    },
+    "localRotation": {
+        "w": 0.20009787380695343,
+        "x": 0.20009784400463104,
+        "y": 0.6782040596008301,
+        "z": 0.6782041788101196
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 48,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1815853338083726189",
+    "entityName": "Plane.125",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.799917221069336,
+        "y": 4.201686859130859,
+        "z": -1.1801576614379883
+    },
+    "localRotation": {
+        "w": 2.219724279939328e-07,
+        "x": 2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 49,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "12800094808430696873",
+    "entityName": "Plane.124",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.509309768676758,
+        "y": 6.511936187744141,
+        "z": -1.4686450958251953
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 50,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9748214157779382658",
+    "entityName": "Plane.123",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.458391189575195,
+        "y": 0.09299087524414063,
+        "z": -0.6254034042358398
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 51,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5424021041040639178",
+    "entityName": "Plane.122",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.349401473999023,
+        "y": 9.40279769897461,
+        "z": -1.9653100967407227
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 52,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6392297825966635299",
+    "entityName": "Plane.121",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -3.32171630859375,
+        "y": 20.608936309814453,
+        "z": -3.505788803100586
+    },
+    "localRotation": {
+        "w": 0.7032895684242249,
+        "x": 0.7032897472381592,
+        "y": -0.07337360829114914,
+        "z": -0.07337358593940735
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 53,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3727300098223120201",
+    "entityName": "Plane.120",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 2.253084182739258,
+        "y": 30.147098541259766,
+        "z": -5.689138412475586
+    },
+    "localRotation": {
+        "w": 0.646977424621582,
+        "x": 0.6469773650169373,
+        "y": -0.285342276096344,
+        "z": -0.2853422462940216
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 54,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6682233461677894582",
+    "entityName": "Plane.119",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.927717208862305,
+        "y": 17.420764923095703,
+        "z": -3.7792234420776367
+    },
+    "localRotation": {
+        "w": 0.05339979752898216,
+        "x": 0.05339980125427246,
+        "y": 0.7050876617431641,
+        "z": 0.705087423324585
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 55,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9645238161246101646",
+    "entityName": "Plane.118",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 8.067949295043945,
+        "y": 22.152599334716797,
+        "z": -4.6106109619140625
+    },
+    "localRotation": {
+        "w": 0.25794094800949097,
+        "x": 0.25794100761413574,
+        "y": 0.6583817601203918,
+        "z": 0.6583815813064575
+    },
+    "localScale": {
+        "x": 0.010922874324023724,
+        "y": 0.010922875255346298,
+        "z": 0.010922874324023724
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 56,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4034246336146077864",
+    "entityName": "Plane.117",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 10.174545288085938,
+        "y": 24.08364486694336,
+        "z": -4.6106109619140625
+    },
+    "localRotation": {
+        "w": 0.25794094800949097,
+        "x": 0.25794100761413574,
+        "y": 0.6583817601203918,
+        "z": 0.6583815813064575
+    },
+    "localScale": {
+        "x": 0.010922874324023724,
+        "y": 0.010922875255346298,
+        "z": 0.010922874324023724
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 57,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "7543548735802798763",
+    "entityName": "Plane.116",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -3.2933349609375,
+        "y": 23.573474884033203,
+        "z": -3.983957290649414
+    },
+    "localRotation": {
+        "w": 0.7032895684242249,
+        "x": 0.7032897472381592,
+        "y": -0.07337360084056854,
+        "z": -0.07337355613708496
+    },
+    "localScale": {
+        "x": 0.009999998845160007,
+        "y": 0.009999999776482582,
+        "z": 0.009999998845160007
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 58,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9249008339460885779",
+    "entityName": "Plane.115",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.005502700805664,
+        "y": 32.538394927978516,
+        "z": -6.167305946350098
+    },
+    "localRotation": {
+        "w": 0.646977424621582,
+        "x": 0.6469773650169373,
+        "y": -0.2853423058986664,
+        "z": -0.285342276096344
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 59,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "916323959543188368",
+    "entityName": "Plane.114",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.693071365356445,
+        "y": 7.475101470947266,
+        "z": -1.6972932815551758
+    },
+    "localRotation": {
+        "w": 0.005671525839716196,
+        "x": 0.005671525839716196,
+        "y": 0.707084059715271,
+        "z": 0.7070840001106262
+    },
+    "localScale": {
+        "x": 0.009999996051192284,
+        "y": 0.009999999776482582,
+        "z": 0.009999996051192284
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 60,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5583520459575781525",
+    "entityName": "Plane.113",
+    "parentID": 581832336087511711
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 12.077791213989258,
+        "y": 25.423053741455078,
+        "z": -5.804404258728027
+    },
+    "localRotation": {
+        "w": 0.1624295860528946,
+        "x": 0.16242963075637817,
+        "y": 0.6881982088088989,
+        "z": 0.6881979703903198
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 61,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5954347263032407901",
+    "entityName": "Cube.014",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -0.22208404541015625,
+        "y": 16.43144989013672,
+        "z": -2.7962093353271484
+    },
+    "localRotation": {
+        "w": 0.9961947202682495,
+        "x": -0.087155781686306,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 5.0,
+        "y": 18.0,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 63,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9746568374915924141",
+    "entityName": "Plane.162",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 14.515693664550781,
+        "y": 26.885330200195313,
+        "z": -6.130138397216797
+    },
+    "localRotation": {
+        "w": 0.296426922082901,
+        "x": 0.2964268624782562,
+        "y": 0.6419743895530701,
+        "z": 0.6419743895530701
+    },
+    "localScale": {
+        "x": 0.010000000707805157,
+        "y": 0.009999999776482582,
+        "z": 0.010000000707805157
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 64,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1930699489032219119",
+    "entityName": "Plane.161",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.10882568359375,
+        "y": 14.5526123046875,
+        "z": -4.49555778503418
+    },
+    "localRotation": {
+        "w": -2.219724279939328e-07,
+        "x": -2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010000000707805157,
+        "y": 0.009999999776482582,
+        "z": 0.010000000707805157
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 65,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2901727496839078607",
+    "entityName": "Plane.160",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.764350891113281,
+        "y": 17.366195678710938,
+        "z": -4.836902618408203
+    },
+    "localRotation": {
+        "w": 0.705967903137207,
+        "x": 0.705967903137207,
+        "y": -0.04011625424027443,
+        "z": -0.04011624678969383
+    },
+    "localScale": {
+        "x": 0.010000004433095455,
+        "y": 0.009999999776482582,
+        "z": 0.010000004433095455
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 66,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "17097461552413595793",
+    "entityName": "Plane.159",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.998424530029297,
+        "y": 12.929946899414063,
+        "z": -3.549539566040039
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526418894529343,
+        "z": 0.0034526418894529343
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 67,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3538958161090720017",
+    "entityName": "Plane.158",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.4085845947265625,
+        "y": 10.765846252441406,
+        "z": -2.615314483642578
+    },
+    "localRotation": {
+        "w": -2.219724279939328e-07,
+        "x": -2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 68,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "15278166778552914882",
+    "entityName": "Plane.157",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.723224639892578,
+        "y": 0.6519699096679688,
+        "z": -1.6252708435058594
+    },
+    "localRotation": {
+        "w": 2.219724279939328e-07,
+        "x": 2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.0051825400441884995,
+        "y": 0.005182540509849787,
+        "z": 0.0051825400441884995
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 69,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4041098465732278466",
+    "entityName": "Plane.156",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 8.971839904785156,
+        "y": 35.08485412597656,
+        "z": -6.095283508300781
+    },
+    "localRotation": {
+        "w": 0.6435447335243225,
+        "x": 0.6435447931289673,
+        "y": -0.2930019795894623,
+        "z": -0.2930019199848175
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 70,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13149543066362837866",
+    "entityName": "Plane.155",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.9266166687011719,
+        "y": 29.07593536376953,
+        "z": -4.955976486206055
+    },
+    "localRotation": {
+        "w": 0.6631712317466736,
+        "x": 0.6631713509559631,
+        "y": -0.24536475539207458,
+        "z": -0.24536478519439697
+    },
+    "localScale": {
+        "x": 0.005182539112865925,
+        "y": 0.005182540509849787,
+        "z": 0.005182539112865925
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 71,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "12392047345499970174",
+    "entityName": "Plane.154",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.799922943115234,
+        "y": 4.201690673828125,
+        "z": -1.1801576614379883
+    },
+    "localRotation": {
+        "w": 2.219724279939328e-07,
+        "x": 2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.0051825400441884995,
+        "y": 0.005182540509849787,
+        "z": 0.0051825400441884995
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 72,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "8618012391804171887",
+    "entityName": "Plane.153",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 6.584342956542969,
+        "y": 19.989456176757813,
+        "z": -4.978193283081055
+    },
+    "localRotation": {
+        "w": 0.20009787380695343,
+        "x": 0.20009784400463104,
+        "y": 0.6782040596008301,
+        "z": 0.6782041788101196
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 73,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "447687672034030776",
+    "entityName": "Plane.152",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -1.5577964782714844,
+        "y": 26.66767120361328,
+        "z": -5.837947845458984
+    },
+    "localRotation": {
+        "w": 0.6863462328910828,
+        "x": 0.6863462924957275,
+        "y": -0.17008474469184875,
+        "z": -0.17008469998836517
+    },
+    "localScale": {
+        "x": 0.0051825400441884995,
+        "y": 0.005182540509849787,
+        "z": 0.0051825400441884995
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 74,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11124043253016870088",
+    "entityName": "Plane.151",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -5.372474670410156,
+        "y": 3.2106475830078125,
+        "z": -0.9121074676513672
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 75,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "878006064375843226",
+    "entityName": "Plane.150",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.972572326660156,
+        "y": 33.03215789794922,
+        "z": -6.097171783447266
+    },
+    "localRotation": {
+        "w": 0.6413431763648987,
+        "x": 0.6413432955741882,
+        "y": -0.2977900207042694,
+        "z": -0.29778987169265747
+    },
+    "localScale": {
+        "x": 0.005182539112865925,
+        "y": 0.005182540509849787,
+        "z": 0.005182539112865925
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 76,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "17580559480190556908",
+    "entityName": "Plane.149",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 10.174545288085938,
+        "y": 24.083648681640625,
+        "z": -4.6106109619140625
+    },
+    "localRotation": {
+        "w": 0.2579408288002014,
+        "x": 0.2579409182071686,
+        "y": 0.6583818793296814,
+        "z": 0.6583815813064575
+    },
+    "localScale": {
+        "x": 0.010922876186668873,
+        "y": 0.010922875255346298,
+        "z": 0.010922876186668873
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 77,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9874309542732650828",
+    "entityName": "Plane.148",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 8.067955017089844,
+        "y": 22.152603149414063,
+        "z": -4.6106109619140625
+    },
+    "localRotation": {
+        "w": 0.2579408288002014,
+        "x": 0.2579409182071686,
+        "y": 0.6583818793296814,
+        "z": 0.6583815813064575
+    },
+    "localScale": {
+        "x": 0.010922876186668873,
+        "y": 0.010922875255346298,
+        "z": 0.010922876186668873
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 78,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4372343948813207077",
+    "entityName": "Plane.147",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.927711486816406,
+        "y": 17.42076873779297,
+        "z": -3.7792224884033203
+    },
+    "localRotation": {
+        "w": 0.05339979752898216,
+        "x": 0.05339980125427246,
+        "y": 0.7050876617431641,
+        "z": 0.705087423324585
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 79,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2698644853085684056",
+    "entityName": "Plane.146",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 2.253082275390625,
+        "y": 30.14710235595703,
+        "z": -5.689138412475586
+    },
+    "localRotation": {
+        "w": 0.646977424621582,
+        "x": 0.6469773650169373,
+        "y": -0.285342276096344,
+        "z": -0.2853422462940216
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 80,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "12992206394685470289",
+    "entityName": "Plane.145",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -3.3217201232910156,
+        "y": 20.608932495117188,
+        "z": -3.505788803100586
+    },
+    "localRotation": {
+        "w": 0.7032895684242249,
+        "x": 0.7032897472381592,
+        "y": -0.07337359338998795,
+        "z": -0.07337358593940735
+    },
+    "localScale": {
+        "x": 0.010922876186668873,
+        "y": 0.010922875255346298,
+        "z": 0.010922876186668873
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 81,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "12005819697045194623",
+    "entityName": "Plane.144",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.349399566650391,
+        "y": 9.402801513671875,
+        "z": -1.965311050415039
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.00035208091139793396,
+        "z": 0.00035208091139793396
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 82,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11926845487552548673",
+    "entityName": "Plane.143",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.458393096923828,
+        "y": 0.09299087524414063,
+        "z": -0.6254034042358398
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.00035208091139793396,
+        "z": 0.00035208091139793396
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 83,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9231147558109022496",
+    "entityName": "Plane.142",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.509307861328125,
+        "y": 6.511940002441406,
+        "z": -1.4686450958251953
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.00035208091139793396,
+        "z": 0.00035208091139793396
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 84,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2202020327336776431",
+    "entityName": "Plane.141",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 12.077781677246094,
+        "y": 25.423057556152344,
+        "z": -5.804403305053711
+    },
+    "localRotation": {
+        "w": 0.1624295860528946,
+        "x": 0.16242963075637817,
+        "y": 0.6881982088088989,
+        "z": 0.6881979703903198
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 85,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11859705309137490901",
+    "entityName": "Plane.140",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.693077087402344,
+        "y": 7.475105285644531,
+        "z": -1.6972942352294922
+    },
+    "localRotation": {
+        "w": 0.005671525839716196,
+        "x": 0.005671525839716196,
+        "y": 0.707084059715271,
+        "z": 0.7070840001106262
+    },
+    "localScale": {
+        "x": 0.009999996051192284,
+        "y": 0.009999999776482582,
+        "z": 0.009999996051192284
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 86,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14224208597199221130",
+    "entityName": "Plane.139",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.005500793457031,
+        "y": 32.53839111328125,
+        "z": -6.167306900024414
+    },
+    "localRotation": {
+        "w": 0.646977424621582,
+        "x": 0.6469773650169373,
+        "y": -0.2853423058986664,
+        "z": -0.285342276096344
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 87,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "17943143621782924521",
+    "entityName": "Plane.138",
+    "parentID": 5328779298434887266
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -3.2933349609375,
+        "y": 23.573471069335938,
+        "z": -3.983957290649414
+    },
+    "localRotation": {
+        "w": 0.7032895684242249,
+        "x": 0.7032897472381592,
+        "y": -0.07337360084056854,
+        "z": -0.07337355613708496
+    },
+    "localScale": {
+        "x": 0.009999998845160007,
+        "y": 0.009999999776482582,
+        "z": 0.009999998845160007
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 88,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "288776432389331483",
+    "entityName": "Cube.015",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 10.952888488769531,
+        "z": -1.7296428680419922
+    },
+    "localRotation": {
+        "w": 0.9961947202682495,
+        "x": -0.08715580403804779,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 5.0,
+        "y": 12.0,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 90,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "15157636459765038842",
+    "entityName": "Plane.178",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.901741027832031,
+        "y": 6.088859558105469,
+        "z": -2.1165771484375
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 91,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11035033178006749078",
+    "entityName": "Plane.177",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.864545822143555,
+        "y": 15.293869018554688,
+        "z": -4.391286849975586
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 92,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14107355721076672253",
+    "entityName": "Plane.176",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.353847503662109,
+        "y": 9.14849853515625,
+        "z": -1.7605018615722656
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 93,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "10226925308159245550",
+    "entityName": "Plane.175",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.527271270751953,
+        "y": 18.37885284423828,
+        "z": -3.4476375579833984
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 94,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14122570545732042533",
+    "entityName": "Plane.174",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -5.0354156494140625,
+        "y": 3.6685104370117188,
+        "z": -0.8062763214111328
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 95,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11578090632151612479",
+    "entityName": "Plane.173",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.588603973388672,
+        "y": 6.269233703613281,
+        "z": -2.0592288970947266
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 96,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "316158546593661178",
+    "entityName": "Plane.172",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.01234245300293,
+        "y": 18.195213317871094,
+        "z": -3.2970809936523438
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 97,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13697653733568809879",
+    "entityName": "Plane.171",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.012340545654297,
+        "y": 12.284805297851563,
+        "z": -2.2247352600097656
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 98,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6097883969740263853",
+    "entityName": "Plane.170",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.012340545654297,
+        "y": 0.5539474487304688,
+        "z": -0.2093830108642578
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 99,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6466938728944982479",
+    "entityName": "Plane.169",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.172252655029297,
+        "y": 9.393943786621094,
+        "z": -1.7280712127685547
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 100,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5220894412577019868",
+    "entityName": "Plane.168",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055156707763672,
+        "y": 15.223442077636719,
+        "z": -2.676250457763672
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 101,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "18116203881478944155",
+    "entityName": "Plane.167",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055156707763672,
+        "y": 21.10118865966797,
+        "z": -3.805034637451172
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 102,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "8999909179194572182",
+    "entityName": "Plane.166",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055156707763672,
+        "y": 3.4599151611328125,
+        "z": -0.6209201812744141
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 103,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "464680414961148948",
+    "entityName": "Plane.165",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.599382400512695,
+        "y": 21.10118865966797,
+        "z": -3.775249481201172
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 104,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5560364714662481453",
+    "entityName": "Plane.164",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.6421966552734375,
+        "y": 12.382789611816406,
+        "z": -2.1949501037597656
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 105,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "15986775217132305418",
+    "entityName": "Plane.163",
+    "parentID": 7703316016510652003
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.6421966552734375,
+        "y": 0.5539398193359375,
+        "z": -0.1795978546142578
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 106,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2068047795499495661",
+    "entityName": "Cube.016",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 10.952880859375,
+        "z": -1.7474212646484375
+    },
+    "localRotation": {
+        "w": 0.9961947202682495,
+        "x": -0.087155781686306,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 5.0,
+        "y": 12.0,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 108,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11086771542400604894",
+    "entityName": "Plane.192",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.1905975341796875,
+        "y": 8.194900512695313,
+        "z": -2.1343555450439453
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 109,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "8907821856048396072",
+    "entityName": "Plane.191",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.753227233886719,
+        "y": 11.680633544921875,
+        "z": -2.6024856567382813
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 110,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "10339589500955028014",
+    "entityName": "Plane.190",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.753227233886719,
+        "y": 18.684829711914063,
+        "z": -5.060174942016602
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 111,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14873993686202933471",
+    "entityName": "Plane.189",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.864545822143555,
+        "y": 1.3698272705078125,
+        "z": -2.0094757080078125
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 112,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13812855727258294572",
+    "entityName": "Plane.188",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.184528350830078,
+        "y": 1.2244110107421875,
+        "z": -1.778280258178711
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 113,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14458309714034022785",
+    "entityName": "Plane.187",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.628101348876953,
+        "y": 15.41448974609375,
+        "z": -3.036478042602539
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 114,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4490415342515165985",
+    "entityName": "Plane.186",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.852783203125,
+        "y": 12.242782592773438,
+        "z": -2.376138687133789
+    },
+    "localRotation": {
+        "w": -2.219724279939328e-07,
+        "x": -2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 115,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2343462995714578557",
+    "entityName": "Plane.185",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.809467315673828,
+        "y": 4.466552734375,
+        "z": -2.324411392211914
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 116,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1625268561833379905",
+    "entityName": "Plane.184",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.5157318115234375,
+        "y": 18.448226928710938,
+        "z": -4.061410903930664
+    },
+    "localRotation": {
+        "w": -2.219724279939328e-07,
+        "x": -2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 117,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "15770371576286906646",
+    "entityName": "Plane.183",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055156707763672,
+        "y": 21.1011962890625,
+        "z": -3.822813034057617
+    },
+    "localRotation": {
+        "w": -0.0003522324259392917,
+        "x": -0.0003522324259392917,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 118,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "497414924539451845",
+    "entityName": "Plane.182",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055156707763672,
+        "y": 15.223434448242188,
+        "z": -2.694028854370117
+    },
+    "localRotation": {
+        "w": -0.0003522324259392917,
+        "x": -0.0003522324259392917,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 119,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13948762101737828560",
+    "entityName": "Plane.181",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.595546722412109,
+        "y": 5.0198974609375,
+        "z": -1.3260459899902344
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 120,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "12063795501892738615",
+    "entityName": "Plane.180",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.435636520385742,
+        "y": 7.9107513427734375,
+        "z": -1.8227100372314453
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 121,
+    "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4815602364662963784",
+    "entityName": "Plane.179",
+    "parentID": 6050025328706769302
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.01234245300293,
+        "y": 21.694122314453125,
+        "z": -3.9889678955078125
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 122,
+    "model": "./\\models\\Level1.fbx"
+}

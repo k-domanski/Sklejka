@@ -52,7 +52,7 @@ namespace Engine::Systems {
     _shadowTarget->Bind(FramebufferTarget::ReadWrite);
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
-    _shadowProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -10.0f, 10.0f);
+    _shadowProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, -10.0f, 100.0f);
     _shadowUniformBuffer.BindToSlot(_shadowUniformSlot);
     _shadowMapShader = AssetManager::GetShader("./shaders/shadow_map.glsl");
     _shadowMapShader->BindUniformBlock("u_ShadowData", _shadowUniformSlot);
@@ -202,6 +202,7 @@ namespace Engine::Systems {
       }
     }
 
+    #if defined(_DEBUG)
     // Debug - remove later
     if (false) {
       GL::Context::BindFramebuffer(FramebufferTarget::ReadWrite, 0);
@@ -215,6 +216,7 @@ namespace Engine::Systems {
       GL::Context::DepthTest(true);
       return;
     }
+    #endif
 
     // Geometry
     _pingPongBuffer->Bind(FramebufferTarget::ReadWrite);
