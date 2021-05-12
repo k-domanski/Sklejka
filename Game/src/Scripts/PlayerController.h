@@ -1,6 +1,8 @@
 #pragma once
 #include <Engine.h>
 
+#include "Renderer/Image.h"
+
 struct ImageData
 {
   std::shared_ptr<Engine::Transform> transform;
