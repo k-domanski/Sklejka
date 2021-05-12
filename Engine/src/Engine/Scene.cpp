@@ -8,6 +8,7 @@
 #include <Systems/ScriptSystem.h>
 //#include <ECS/ECS.h>
 #include "ECS/EntityManager.h"
+#include "Systems/GUISystem.h"
 
 namespace Engine {
   auto Scene::GetID() -> size_t {
@@ -21,6 +22,7 @@ namespace Engine {
     _renderSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
     _physicsSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
     _scriptSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ScriptSystem >();
+    _GUISystem     = ECS::EntityManager::GetInstance().RegisterSystem< Systems::GUISystem >();
   }
 
   auto Scene::Update(float deltaTime) -> void {
@@ -39,6 +41,7 @@ namespace Engine {
   }
   auto Scene::Draw() -> void {
     _renderSystem->Update(0.0f);
+    _GUISystem->Update(0.0f);
   }
   auto Scene::SceneGraph() -> std::shared_ptr< Systems::SceneGraph > {
     return _sceneGraph;
@@ -50,6 +53,7 @@ namespace Engine {
 
   auto Scene::OnWindowResize(glm::vec2 windowSize) -> void {
     _renderSystem->OnWindowResize(windowSize);
+    _GUISystem->OnWindowResize(windowSize);
   }
   auto Scene::FindEntity(const std::string& name) -> std::shared_ptr< ECS::Entity > {
     auto it = std::find_if(_entities.begin(), _entities.end(),

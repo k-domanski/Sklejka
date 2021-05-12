@@ -1,5 +1,6 @@
 #pragma once
 #include "ECS/Types.h"
+#include "Systems/GUISystem.h"
 //#include "ECS/EntityManager.h"
 //#include <pch.h>
 
@@ -31,6 +32,7 @@ namespace Engine {
     std::shared_ptr< Systems::Physics > _physicsSystem;
     std::shared_ptr< Systems::LightSystem > _lightSystem;
     std::shared_ptr< Systems::ScriptSystem > _scriptSystem;
+    std::shared_ptr< Systems::GUISystem > _GUISystem;
 
     size_t _id;
     std::vector< std::shared_ptr< ECS::Entity > > _entities;

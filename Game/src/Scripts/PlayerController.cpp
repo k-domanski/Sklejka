@@ -1,11 +1,23 @@
 #include "PlayerController.h"
 
+#include "Components/UIRenderer.h"
+
 using namespace Engine;
 PlayerController::PlayerController(const std::shared_ptr< Engine::Transform >& player_transform)
     : _playerTransform(player_transform) {
 }
 
 auto PlayerController::OnCreate() -> void {
+  _image      = std::make_shared< ImageData >();
+  auto entity = ECS::EntityManager::GetInstance().CreateEntity();
+  auto renderer = entity->AddComponent< Components::UIRenderer >();
+  _image->transform = entity->AddComponent< Transform >();
+  _image->image     = std::make_shared< Renderer::Image >();
+  //renderer->GetElements().push_back(std::static_pointer_cast< Renderer::UIElement>(_image->image));
+  renderer->GetElements().push_back(_image->image);
+
+  _image->image->Ratio(0.5f);
+  _image->transform->Position(glm::vec3(300.0f, 300.0f, 0.0f));
 }
 
 auto PlayerController::Update(float deltaTime) -> void {
