@@ -33,6 +33,6 @@ void main() {
       alpha = 0.0f;
   }
   vec4 texel = texture(u_MainTexture, v_uv);
-  out_color  = vec4(u_MainColor.xyz, alpha) * texel;
+  out_color  = vec4(u_Color.xyz, alpha) * texel;
 }
 #endshader
