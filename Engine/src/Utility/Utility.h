@@ -3,6 +3,9 @@
 #include <Utility/Helpers.h>
 #include <GL/GLEnum.h>
 
+#define READ_VALUE(json, attribute_name, default_value)                                            \
+  (json.count(attribute_name) == 0 ? default_value : json[attribute_name])
+
 namespace Engine::Utility {
   template< typename EType >
   class BitFlags {

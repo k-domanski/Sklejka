@@ -2,5 +2,4 @@ layout(std140) uniform u_ShadowData {
   mat4 u_LightSpaceMatrix;
 };
 
-uniform float u_ShadowBias = 0.00001f;
 uniform sampler2D u_ShadowDepthTexture;

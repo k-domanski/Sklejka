@@ -16,6 +16,6 @@ in vec2 v_uv;
 out vec4 out_color;
 
 void main() {
-  out_color = u_MainColor;
+  out_color = u_Color;
 }
 #endshader

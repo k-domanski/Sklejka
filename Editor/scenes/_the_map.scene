@@ -31,6 +31,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -63,6 +64,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\wall_mat.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_2.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -95,6 +97,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\wall_mat.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_2.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -127,6 +130,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\wall_mat.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -159,6 +163,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_2.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -191,6 +196,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\wall_mat.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_2.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -223,6 +229,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -255,6 +262,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -287,6 +295,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\latajaca.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -319,6 +328,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\ground_mt.mat",
+    "meshIndex": 0,
     "model": "./\\models\\cube.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -351,6 +361,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -383,6 +394,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_2.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -415,6 +427,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\wall_mat.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -447,6 +460,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_2.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -479,6 +493,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\wall_mat.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -511,6 +526,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -543,6 +559,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\wall_mat.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -575,6 +592,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\wall_mat.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_2.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -607,6 +625,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -639,6 +658,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -671,6 +691,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_2.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -703,6 +724,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -735,6 +757,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -767,6 +790,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_2.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -799,6 +823,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -831,6 +856,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_2.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -863,6 +889,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -895,6 +922,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_2.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -927,6 +955,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./materials/default_color.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -959,6 +988,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\wall_mat.mat",
+    "meshIndex": 0,
     "model": "./\\models\\beton\\pionowa_XL_1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -979,7 +1009,7 @@
         "w": 0.8754260540008545,
         "x": 0.23456971347332,
         "y": -0.4082179069519043,
-        "z": 0.10938165336847305
+        "z": 0.10938164591789246
     },
     "localScale": {
         "x": 1.0,
@@ -990,18 +1020,19 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "ambient": {
-        "x": 0.09832370281219482,
-        "y": 0.16831684112548828,
-        "z": 0.16593070328235626
+        "x": 0.03921568766236305,
+        "y": 0.03921568766236305,
+        "z": 0.03921568766236305
     },
     "componentType": "directionalLight",
     "diffuse": {
-        "x": 0.7722772359848022,
-        "y": 0.36858633160591125,
-        "z": 0.0
+        "x": 1.0,
+        "y": 0.9210861325263977,
+        "z": 0.6534653902053833
     },
     "flags": 3,
     "intensity": 1.0,
+    "shadowBias": 0.0010000000474974513,
     "specular": {
         "x": 0.0,
         "y": 0.0,
@@ -1151,6 +1182,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\cactus.mat",
+    "meshIndex": 0,
     "model": "./\\models\\ziele\\kaktus.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -1183,6 +1215,7 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\cactus.mat",
+    "meshIndex": 0,
     "model": "./\\models\\ziele\\kaktus.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -1375,5 +1408,6 @@
 {
     "componentType": "meshRenderer",
     "material": "./\\materials\\squirrel.mat",
+    "meshIndex": 0,
     "model": "./\\models\\squirrel_final.fbx"
 }

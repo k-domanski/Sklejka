@@ -99,6 +99,7 @@ namespace Editor {
 
     ImGui::BeginGroup();
     ShaderSelection();
+    PBRParams();
     TextureSelection();
     ColorSelection();
     ImGui::EndGroup();
@@ -163,6 +164,16 @@ namespace Editor {
         }
       }
       ImGui::EndCombo();
+    }
+  }
+  auto MaterialPanel::PBRParams() -> void {
+    auto roughness = _selectedMaterial->Roughness();
+    if (ImGui::SliderFloat("Roughness", &roughness, 0.0f, 1.0f)) {
+      _selectedMaterial->Roughness(roughness);
+    }
+    auto metalness = _selectedMaterial->Metalness();
+    if (ImGui::SliderFloat("Metalness", &metalness, 0.0f, 1.0f)) {
+      _selectedMaterial->Metalness(metalness);
     }
   }
   auto MaterialPanel::ColorSelection() -> void {
