@@ -168,12 +168,49 @@ namespace Engine::Renderer {
   std::shared_ptr< Mesh > Model::processMesh(aiMesh* mesh, const aiScene* scene, glm::mat4 transformation, int parentIndex) {
     std::vector< Vertex > vertices;
     std::vector< GLuint > indices;
-
+    std::vector<JointVertexData> joints;
+    std::map<std::string, unsigned int> boneMap;
+    unsigned int numberofBones = 0;
+    joints.resize(mesh->mNumVertices);
+    struct TestStruct {
+        float weight;
+        unsigned int boneID;
+    };
+    std::vector<TestStruct> test;
+    test.resize(mesh->mNumVertices);
+    /*--------------Animation--------------------*/
+    if (mesh->HasBones())
+    {
+        for (int i = 0; i < mesh->mNumBones; i++)
+        {
+            unsigned int BoneIndex = 0;
+            std::string BoneName(mesh->mBones[i]->mName.data);
+            if (boneMap.find(BoneName) == boneMap.end())
+            {
+                BoneIndex = numberofBones;
+                numberofBones++;
+                //boneMap[BoneName] = BoneIndex;
+            }
+            else
+            {
+                BoneIndex = boneMap[BoneName];
+            }
+            boneMap[BoneName] = BoneIndex;
+            for (int j = 0; j < mesh->mBones[i]->mNumWeights; j++)
+            {
+                unsigned int id = mesh->mBones[i]->mWeights[j].mVertexId;
+                float weight = mesh->mBones[i]->mWeights[j].mWeight;
+                joints[id].AddJointData(BoneIndex, weight);
+            }
+        }
+    }
+    /*------------------------------------------*/
     for (size_t i = 0; i < mesh->mNumVertices; i++) {
       Vertex vertex;
       glm::vec3 vec;
       glm::vec2 uv;
-
+      glm::ivec4 boneID;
+      glm::vec4 weights;
       vec.x           = mesh->mVertices[i].x;
       vec.y           = mesh->mVertices[i].y;
       vec.z           = mesh->mVertices[i].z;
@@ -183,11 +220,23 @@ namespace Engine::Renderer {
       vec.y         = mesh->mNormals[i].y;
       vec.z         = mesh->mNormals[i].z;
       vertex.normal = vec;
+      
+      boneID.x = joints[i].BoneIDs[0];
+      boneID.y = joints[i].BoneIDs[1];
+      boneID.z = joints[i].BoneIDs[2];
+      boneID.w = joints[i].BoneIDs[3];
+      vertex.jointIDs = boneID;
+      
+      weights.x = joints[i].weights[0];
+      weights.y = joints[i].weights[1];
+      weights.z = joints[i].weights[2];
+      weights.w = joints[i].weights[3];
+      vertex.weights = weights;
+
 
       /* uv.x      = mesh->mTextureCoords[0][i].x;
        uv.y      = mesh->mTextureCoords[0][i].y;
        vertex.uv = uv;*/
-
       if (mesh->mTextureCoords[0]) {
         glm::vec2 vec;
         vec.x     = mesh->mTextureCoords[0][i].x;
@@ -196,6 +245,7 @@ namespace Engine::Renderer {
       } else {
         vertex.uv = glm::vec2(0.0f, 0.0f);
       }
+      
 
       // Add the created vertex to the vector
       vertices.push_back(vertex);
@@ -207,6 +257,8 @@ namespace Engine::Renderer {
         indices.push_back(face.mIndices[j]);
       }
     }
+    
+
     std::shared_ptr<Mesh> final_mesh = std::make_shared< Mesh >(vertices, indices);
     final_mesh->SetName(mesh->mName.C_Str());
     final_mesh->SetModelMatrix(transformation);

@@ -5,7 +5,7 @@
 
 namespace Engine::Renderer {
   typedef MeshPrimitive ModelPrimitive;
-
+#define NUM_JOINTS_PER_VERTEX 4
   class Material;
   class Model {
   public:
@@ -36,5 +36,23 @@ namespace Engine::Renderer {
     float _radius;
     GL::QueryObject _query;
     std::shared_ptr< Mesh > _boundingBox;
+    struct JointVertexData {
+        std::string name;
+        unsigned int BoneIDs[NUM_JOINTS_PER_VERTEX] = { 0 };
+        float weights[NUM_JOINTS_PER_VERTEX] = { 0.0f };
+
+        void AddJointData(unsigned int BoneID, float weight)
+        {
+            for (int i = 0; i < NUM_JOINTS_PER_VERTEX; i++)
+            {
+                if (weights[i] == 0.0f)
+                {
+                    BoneIDs[i] = BoneID;
+                    weights[i] = weight;
+                    return;
+                }
+            }
+        }
+    };
   };
 }  // namespace Engine::Renderer
