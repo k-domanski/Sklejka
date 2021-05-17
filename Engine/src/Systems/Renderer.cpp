@@ -189,7 +189,7 @@ namespace Engine::Systems {
           if (material == nullptr || model == nullptr) {
             continue;
           }
-          auto mesh = model->GetMesh(mesh_renderer->GetMeshIndex());
+          auto mesh = model->GetMesh(mesh_renderer->MeshIndex());
           mesh->Use();
           const auto transform        = ECS::EntityManager::GetComponent< Transform >(entityID);
           _transformUniformData.model = transform->GetWorldMatrix();
@@ -230,7 +230,7 @@ namespace Engine::Systems {
       auto model         = mesh_renderer->GetModel();
       std::shared_ptr< Mesh > mesh;
       // If there is no mesh, there is nothing to show
-      if (model == nullptr || (mesh = model->GetMesh(mesh_renderer->GetMeshIndex())) == nullptr) {
+      if (model == nullptr || (mesh = model->GetMesh(mesh_renderer->MeshIndex())) == nullptr) {
         continue;
       }
 

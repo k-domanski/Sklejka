@@ -41,16 +41,13 @@ namespace Engine::Renderer {
     return _query;
   }
 
-  int Model::GetMeshCount()
-  {
+  int Model::GetMeshCount() {
     return meshes.size();
   }
 
-  std::shared_ptr< Mesh > Model::GetMesh(int index)
-  {
-    return meshes[index];
+  std::shared_ptr< Mesh > Model::GetMesh(int index) {
+    return meshes[glm::clamp(index, 0, GetMeshCount() - 1)];
   }
-
 
   void Model::loadModel(std::string_view path) {
     Assimp::Importer importer;
@@ -73,8 +70,8 @@ namespace Engine::Renderer {
       aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
       int parentIndex =
           parent != nullptr ? find(meshes.begin(), meshes.end(), parent) - meshes.begin() : -1;
-      meshes.push_back(processMesh(mesh, scene, aiMat4ToGlmMat4(node->mTransformation), 
-          parentIndex));
+      meshes.push_back(
+          processMesh(mesh, scene, aiMat4ToGlmMat4(node->mTransformation), parentIndex));
 
       lastMesh = meshes.back();
       std::cout << "\nPushing " << mesh->mName.C_Str() << " mesh to meshes vector with meshParent "
@@ -165,7 +162,8 @@ namespace Engine::Renderer {
     _boundingBox = std::make_shared< Mesh >(verts, inds);
   }
 
-  std::shared_ptr< Mesh > Model::processMesh(aiMesh* mesh, const aiScene* scene, glm::mat4 transformation, int parentIndex) {
+  std::shared_ptr< Mesh > Model::processMesh(aiMesh* mesh, const aiScene* scene,
+                                             glm::mat4 transformation, int parentIndex) {
     std::vector< Vertex > vertices;
     std::vector< GLuint > indices;
 
@@ -207,7 +205,7 @@ namespace Engine::Renderer {
         indices.push_back(face.mIndices[j]);
       }
     }
-    std::shared_ptr<Mesh> final_mesh = std::make_shared< Mesh >(vertices, indices);
+    std::shared_ptr< Mesh > final_mesh = std::make_shared< Mesh >(vertices, indices);
     final_mesh->SetName(mesh->mName.C_Str());
     final_mesh->SetModelMatrix(transformation);
     final_mesh->SetParentMesh(parentIndex);
@@ -239,6 +237,5 @@ namespace Engine::Renderer {
 
     return output;
   }
-
 
 }  // namespace Engine::Renderer

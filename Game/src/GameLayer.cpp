@@ -10,11 +10,13 @@ GameLayer::GameLayer(): Engine::Layer("Game") {
 
 auto GameLayer::OnAttach() -> void {
   LOG_TRACE("Current dir: {}", std::filesystem::current_path().string());
-  auto scene = AssetManager::LoadScene("./scenes/_the_map.scene");
+  auto scene = AssetManager::LoadScene("./scenes/_lvl1.scene");
+  //auto scene = AssetManager::LoadScene("./scenes/_the_map.scene");
   SceneManager::AddScene(scene);
   SceneManager::OpenScene(scene->GetID());
 
-  _player = scene->FindEntity("Player");
+  //_player = scene->FindEntity("Player");
+  _player = scene->FindEntity("Player_Rect");
   LOG_TRACE("Player name: {}", _player->Name());
 
   SetupPlayer(_player);

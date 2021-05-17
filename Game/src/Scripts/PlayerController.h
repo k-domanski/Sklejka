@@ -15,7 +15,7 @@ struct BarData
 
 class PlayerController : public Engine::Script {
 private:
-  float _speed             = 0.5f;
+  float _speed             = 2.0f;
   float _minNodeDistance   = 0.2f;
   float _seekSpeed         = 1.0f;
   glm::vec3 _moveVelocity = {0.0f, 0.0f, 1.0f};

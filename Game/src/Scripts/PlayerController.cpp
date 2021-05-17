@@ -58,8 +58,8 @@ auto PlayerController::Update(float deltaTime) -> void {
       ((float)Engine::Input::IsKeyPressed(Key::E)) - ((float)Engine::Input::IsKeyPressed(Key::Q));
 
   auto move_delta = glm::vec3{0.0f};
-  move_delta += vertical_move * -_playerTransform->Up();
-  move_delta += horizontal_move * -_playerTransform->Right();
+  move_delta += vertical_move * _playerTransform->Up();
+  move_delta += horizontal_move * _playerTransform->Right();
 
   //_playerTransform->Position(_playerTransform->Position() + move_delta * _speed * deltaTime);
   _playerTransform->Position(_playerTransform->Position()

@@ -11,12 +11,15 @@ namespace Engine::GL {
     auto type_enum     = MessageType::_from_integral_unchecked(type);
     auto severity_enum = MessageSeverity::_from_integral_unchecked(severity);
     switch (severity_enum) {
-      case MessageSeverity::High:
-      case MessageSeverity::Medium:
-      case MessageSeverity::Low: {
+      case MessageSeverity::High:{
         CORE_ERROR("[SEVERITY: {0}][TYPE: {1}][SOURCE: {2}]\n{3}\n", severity_enum._to_string(),
                    type_enum._to_string(), source_enum._to_string(), message);
         break;
+      }
+      case MessageSeverity::Medium:
+      case MessageSeverity::Low: {
+        LOG_WARN("[SEVERITY: {0}][TYPE: {1}][SOURCE: {2}]\n{3}\n", severity_enum._to_string(),
+                 type_enum._to_string(), source_enum._to_string(), message);
       }
       default: {
         CORE_INFO("[SEVERITY: {0}][TYPE: {1}][SOURCE: {2}]\n{3}\n", severity_enum._to_string(),

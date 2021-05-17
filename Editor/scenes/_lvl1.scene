@@ -49,10 +49,10 @@
         "z": 0.0
     },
     "localRotation": {
-        "w": -0.3640288710594177,
-        "x": -0.1397375613451004,
-        "y": -0.8596832752227783,
-        "z": 0.33000150322914124
+        "w": 0.3640288710594177,
+        "x": 0.13973765075206757,
+        "y": 0.8596832752227783,
+        "z": -0.330001562833786
     },
     "localScale": {
         "x": 1.0,
@@ -75,11 +75,98 @@
     },
     "flags": 3,
     "intensity": 1.0,
-    "shadowBias": 0.0,
+    "shadowBias": 0.0010000000474974513,
     "specular": {
         "x": 0.0,
         "y": 0.0,
         "z": 0.0
+    }
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13875865970930572597",
+    "entityName": "Camera",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "aspect": 1.7799999713897705,
+    "componentType": "camera",
+    "farPlane": 1000.0,
+    "flags": 6,
+    "fov": 70.0,
+    "nearPlane": 0.009999999776482582
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "18182325637327988518",
+    "entityName": "Player_Rect",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 8.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11045733911986247795",
+    "entityName": "Nodes",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
     }
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
@@ -279,6 +366,192 @@
     "material": "./materials/default_color.mat",
     "meshIndex": 107,
     "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13976731892897121160",
+    "entityName": "Player",
+    "parentID": 18182325637327988518
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 2.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": -4.371138828673793e-08,
+        "x": -0.0,
+        "y": 1.0,
+        "z": -0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13388241646489131447",
+    "entityName": "Node 0",
+    "parentID": 11045733911986247795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 2.200000047683716,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 0,
+    "nextIndex": 1
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1646124004834321562",
+    "entityName": "Node 1",
+    "parentID": 11045733911986247795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": -9.0,
+        "z": -65.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 1,
+    "nextIndex": 2
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "7535185147406585836",
+    "entityName": "Node 2",
+    "parentID": 11045733911986247795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 10.100000381469727,
+        "y": -10.5,
+        "z": -77.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 2,
+    "nextIndex": 3
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "504973434350977778",
+    "entityName": "Node 3",
+    "parentID": 11045733911986247795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 28.700000762939453,
+        "y": -14.699999809265137,
+        "z": -92.69999694824219
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 3,
+    "nextIndex": 4
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "124241696289328394",
+    "entityName": "Node 4",
+    "parentID": 11045733911986247795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 30.600000381469727,
+        "y": -25.299999237060547,
+        "z": -156.1999969482422
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 4,
+    "nextIndex": 0
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4107,4 +4380,37 @@
     "material": "./materials/default_color.mat",
     "meshIndex": 122,
     "model": "./\\models\\Level1.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "10045470129675329614",
+    "entityName": "Model",
+    "parentID": 13976731892897121160
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": -6.121564410932478e-08,
+        "x": -8.603294077147439e-09,
+        "y": 0.7986355423927307,
+        "z": 0.6018150448799133
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./\\materials\\squirrel.mat",
+    "meshIndex": 0,
+    "model": "./\\models\\squirrel_v3.fbx"
 }
