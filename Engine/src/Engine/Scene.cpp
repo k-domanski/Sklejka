@@ -54,6 +54,10 @@ namespace Engine {
     return _cameraSystem;
   }
 
+  auto Scene::RenderSystem() -> std::shared_ptr< Systems::Renderer > {
+    return _renderSystem;
+  }
+
   auto Scene::OnWindowResize(glm::vec2 windowSize) -> void {
     _renderSystem->OnWindowResize(windowSize);
     _GUISystem->OnWindowResize(windowSize);

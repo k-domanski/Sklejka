@@ -1,18 +1,6 @@
 #pragma once
 #include <Engine.h>
 
-
-#include "Renderer/Bar.h"
-#include "Renderer/Image.h"
-#include "Renderer/Text.h"
-
-struct BarData
-{
-  std::shared_ptr<Engine::Transform> transform;
-  std::shared_ptr<Engine::Renderer::Bar> bar;
-  std::shared_ptr<Engine::Renderer::Text> text;
-};
-
 class PlayerController : public Engine::Script {
 private:
   float _speed             = 2.0f;
@@ -20,7 +8,6 @@ private:
   float _seekSpeed         = 1.0f;
   glm::vec3 _moveVelocity = {0.0f, 0.0f, 1.0f};
   std::shared_ptr< Engine::Transform > _playerTransform;
-  std::shared_ptr< BarData > _bar;//TODO: test, put player bar here
   std::shared_ptr< Engine::NodeSystem > _nodeSystem;
   std::shared_ptr< Engine::Node > _currentNode;
   std::shared_ptr< Engine::Transform > _nodeTransform;

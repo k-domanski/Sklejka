@@ -10,25 +10,25 @@ PlayerController::PlayerController(const std::shared_ptr< Engine::Transform >& p
 }
 
 auto PlayerController::OnCreate() -> void {
-  _bar            = std::make_shared< BarData >();
+  /*_bar            = std::make_shared< BarData >();
   auto entity     = ECS::EntityManager::GetInstance().CreateEntity();
   auto renderer   = entity->AddComponent< Components::UIRenderer >();
   _bar->transform = entity->AddComponent< Transform >();
   _bar->bar       = std::make_shared< Renderer::Bar >();
-  renderer->GetElements().push_back(_bar->bar);
+  renderer->GetElements().push_back(_bar->bar);*/
 
-  _bar->bar->FillRatio(0.5f);
+  /*_bar->bar->FillRatio(0.5f);
   _bar->transform->Position(glm::vec3(400.0f, 200.0f, 0.0f));
   _bar->bar->BackgroundColor(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
   _bar->bar->FillColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));
   _bar->bar->Size(glm::vec2(300.0f, 100.0f));
-  _bar->bar->Padding(glm::vec2(5.0f, 5.0f));
-  _bar->text = std::make_shared< Renderer::Text >();
+  _bar->bar->Padding(glm::vec2(5.0f, 5.0f));*/
+  /*_bar->text = std::make_shared< Renderer::Text >();
   _bar->text->Color(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
   _bar->text->Size(1.0f);
   _bar->text->SetText("Example SHADOW bar");
 
-  renderer->GetElements().push_back(_bar->text);
+  renderer->GetElements().push_back(_bar->text);*/
 
 
   _nodeSystem    = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
@@ -41,11 +41,11 @@ auto PlayerController::Update(float deltaTime) -> void {
   // auto new_pos = _playerTransform->Position() + _playerTransform->Forward() * _speed * deltaTime;
   /* Replace it with Transform Right/Up/Forward once model gets the correct pivot */
 
-  time += deltaTime;
+  //time += deltaTime;
 
-  _bar->bar->FillRatio(sin(time));
-  if (time > 360.0f)
-    time -= 360.0f;
+  ////_bar->bar->FillRatio(sin(time));
+  //if (time > 360.0f)
+  //  time -= 360.0f;
 
   /* Seek target */
   SeekTarget(deltaTime);

@@ -4,6 +4,8 @@
 #include <Scripts/CameraController.h>
 #include <Scripts/PlayerController.h>
 
+#include "../ShadowTarget.h"
+
 using namespace Engine;
 GameLayer::GameLayer(): Engine::Layer("Game") {
 }
@@ -11,7 +13,7 @@ GameLayer::GameLayer(): Engine::Layer("Game") {
 auto GameLayer::OnAttach() -> void {
   LOG_TRACE("Current dir: {}", std::filesystem::current_path().string());
   auto scene = AssetManager::LoadScene("./scenes/_lvl1.scene");
-  //auto scene = AssetManager::LoadScene("./scenes/_the_map.scene");
+  // auto scene = AssetManager::LoadScene("./scenes/_the_map.scene");
   SceneManager::AddScene(scene);
   SceneManager::OpenScene(scene->GetID());
 
@@ -46,4 +48,7 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::ECS::Entity >& player) -> v
 
   native_script = player->AddComponent< Engine::NativeScript >();
   native_script->Attach(std::make_shared< PlayerController >(player_tr));
+  auto shadowTarget = std::make_shared< ShadowTarget >(player_tr);
+  native_script->Attach(shadowTarget);
+  scene->RenderSystem()->SetShadowChecker(shadowTarget);
 }

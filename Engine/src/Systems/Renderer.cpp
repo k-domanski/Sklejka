@@ -183,6 +183,8 @@ namespace Engine::Systems {
         _shadowMapShader->BindUniformBlock("u_Camera", 1);
         _shadowMapShader->BindUniformBlock("u_DirectionalLight", 2);
         for (auto& entityID : _entities) {
+          if (entityID == _playerShadowTarget->GetTargetID())
+            continue;
           auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
           auto material      = mesh_renderer->GetMaterial();
           auto model         = mesh_renderer->GetModel();
@@ -196,13 +198,34 @@ namespace Engine::Systems {
           _transformUniformBuffer.SetData(_transformUniformData);
           glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
         }
+
+        auto entityID      = _playerShadowTarget->GetTargetID();
+        auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
+        auto material      = mesh_renderer->GetMaterial();
+        auto model         = mesh_renderer->GetModel();
+        if (material != nullptr && model != nullptr) {
+          auto query = model->GetQuery();
+          query.Start(GL_SAMPLES_PASSED);
+          auto mesh = model->GetMesh(mesh_renderer->MeshIndex());
+          mesh->Use();
+          const auto transform        = ECS::EntityManager::GetComponent< Transform >(entityID);
+          _transformUniformData.model = transform->GetWorldMatrix();
+          _transformUniformBuffer.SetData(_transformUniformData);
+          glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+
+          auto res = query.SamplesPassed();
+          query.End();
+
+          _playerShadowTarget->SamplesPassed(res);
+        }
+
         const auto window_size = Window::Get().GetScreenSize();
         GL::Context::Viewport(0, 0, window_size.x, window_size.y);
         GL::Context::CullFace(Face::Back);
       }
     }
 
-    #if defined(_DEBUG)
+#if defined(_DEBUG)
     // Debug - remove later
     if (false) {
       GL::Context::BindFramebuffer(FramebufferTarget::ReadWrite, 0);
@@ -216,15 +239,15 @@ namespace Engine::Systems {
       GL::Context::DepthTest(true);
       return;
     }
-    #endif
+#endif
 
     // Geometry
     _pingPongBuffer->Bind(FramebufferTarget::ReadWrite);
     GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth);
     GL::Context::DepthTest(true);
     _shadowTexture->Bind(_shadowUniformSlot);
-    //for (auto& entityID : _visibleEntities) {
-       for (auto& entityID : _entities) {
+    // for (auto& entityID : _visibleEntities) {
+    for (auto& entityID : _entities) {
       auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
       auto material      = mesh_renderer->GetMaterial();
       auto model         = mesh_renderer->GetModel();
@@ -348,6 +371,10 @@ namespace Engine::Systems {
         std::make_shared< TextureAttachment >(size.x, size.y, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
     _renderTarget->AttachColor(0, _screenTexture);
     _renderTarget->AttachDepthStencil(std::make_shared< Renderbuffer >(size.x, size.y));*/
+  }
+
+  auto Renderer::SetShadowChecker(std::shared_ptr< ShadowTarget > target) -> void {
+    _playerShadowTarget = target;
   }
 
   auto Renderer::SortByMaterial() -> void {
