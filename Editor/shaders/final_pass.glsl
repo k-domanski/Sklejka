@@ -32,9 +32,10 @@ in ShaderData {
 fs_in;
 float gamma = 2.2f;
 float brightness = 0.1f;
-float contrast = 8.5f;
+float contrast = 1.2f;
 void main() {
-  vec3 texel = texture(u_MainTexture, fs_in.uv).rgb * contrast;
+  vec3 texel = texture(u_MainTexture, fs_in.uv).rgb;
+  texel = (texel - 0.5f) * contrast + 0.5f;
   texel = texel / (texel + vec3(1.0f));
   texel = texel + vec3(brightness);
   frag_color = vec4(GammaCompress(texel, gamma), 1.0f);
