@@ -19,6 +19,15 @@ namespace Engine {
   public:
     NativeScript();
     auto Attach(const std::shared_ptr< IScript >& script) -> void;
+    template< typename T, typename... Args >
+    auto Attach(Args&&... args) -> std::shared_ptr< T > {
+      auto script = std::make_shared< T >(std::forward< Args >(args)...);
+      script->Entity(Entity());
+      _scripts.insert(script);
+      script->OnCreate();
+
+      return script;
+    }
     auto Detach(const std::shared_ptr< IScript >& script) -> void;
     auto Update(float deltaTime) -> void;
 

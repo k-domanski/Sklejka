@@ -43,8 +43,7 @@ namespace Engine {
            * glm::scale(glm::mat4(1.0f), _scale);
   }
 
-  auto Transform::SetLocalMatrix(glm::mat4 matrix) -> void
-  {
+  auto Transform::SetLocalMatrix(glm::mat4 matrix) -> void {
     glm::vec3 scale;
     glm::quat rotation;
     glm::vec3 translation;
@@ -63,7 +62,7 @@ namespace Engine {
   auto Transform::Right() const noexcept -> glm::vec3 {
     // TODO: if dirty -> update
     return glm::normalize(static_cast< glm::mat3 >(_modelMatrix) * glm::vec3{1.0f, 0.0f, 0.0f});
-    // return _rotation * glm::vec3{1.0f, 0.0f, 0.0f};
+     //return _rotation * glm::vec3{1.0f, 0.0f, 0.0f};
   }
   auto Transform::Up() const noexcept -> glm::vec3 {
     // TODO: if dirty -> update

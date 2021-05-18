@@ -1,7 +1,7 @@
 #include "CameraController.h"
 
-CameraController::CameraController(const std::shared_ptr< Engine::Transform >& player_transform)
-    : _playerTransform(player_transform) {
+CameraController::CameraController(const std::shared_ptr< PlayerController >& player_controller)
+    : _playerController(player_controller) {
 }
 
 auto CameraController::OnCreate() -> void {
@@ -9,11 +9,13 @@ auto CameraController::OnCreate() -> void {
 }
 
 auto CameraController::Update(float deltaTime) -> void {
-  auto x        = _playerTransform->Right() * _offset.x;
-  auto y        = _playerTransform->Up() * _offset.y;
-  auto z        = _playerTransform->Forward() * _offset.z;
+  auto player_transform = _playerController->Transform();
+
+  auto x        = player_transform->Right() * _offset.x;
+  auto y        = player_transform->Up() * _offset.y;
+  auto z        = player_transform->Forward() * _offset.z;
   auto offset   = x + y + z;
-  auto position = _cameraTransform->Position(_playerTransform->Position() + offset);
-  auto look_dir = glm::normalize(_playerTransform->Position() - position);
+  auto position = _cameraTransform->Position(player_transform->WorldPosition() + offset);
+  auto look_dir = glm::normalize(player_transform->WorldPosition() - position);
   _cameraTransform->Forward(look_dir);
 }

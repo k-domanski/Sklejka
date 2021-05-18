@@ -4,6 +4,8 @@
 
 namespace Engine {
   class Script : public IScript {
+    friend class NativeScript;
+
   private:
     int _priority{0};
     std::shared_ptr< ECS::Entity > _entity{nullptr};

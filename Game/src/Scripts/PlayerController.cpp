@@ -6,14 +6,14 @@
 using namespace Engine;
 using namespace Engine::ECS;
 PlayerController::PlayerController(const std::shared_ptr< Engine::Transform >& player_transform)
-    : _playerTransform(player_transform) {
+    : _transform(player_transform) {
 }
 
 auto PlayerController::OnCreate() -> void {
   _bar            = std::make_shared< BarData >();
   auto entity     = ECS::EntityManager::GetInstance().CreateEntity();
   auto renderer   = entity->AddComponent< Components::UIRenderer >();
-  _bar->transform = entity->AddComponent< Transform >();
+  _bar->transform = entity->AddComponent< Engine::Transform >();
   _bar->bar       = std::make_shared< Renderer::Bar >();
   renderer->GetElements().push_back(_bar->bar);
 
@@ -30,10 +30,9 @@ auto PlayerController::OnCreate() -> void {
 
   renderer->GetElements().push_back(_bar->text);
 
-
   _nodeSystem    = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
   _currentNode   = _nodeSystem->GetNode(0);
-  _nodeTransform = EntityManager::GetComponent< Transform >(_currentNode->GetEntityID());
+  _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntityID());
   time           = 0.0f;
 }
 
@@ -47,6 +46,8 @@ auto PlayerController::Update(float deltaTime) -> void {
   if (time > 360.0f)
     time -= 360.0f;
 
+  return;
+
   /* Seek target */
   SeekTarget(deltaTime);
 
@@ -58,32 +59,37 @@ auto PlayerController::Update(float deltaTime) -> void {
       ((float)Engine::Input::IsKeyPressed(Key::E)) - ((float)Engine::Input::IsKeyPressed(Key::Q));
 
   auto move_delta = glm::vec3{0.0f};
-  move_delta += vertical_move * _playerTransform->Up();
-  move_delta += horizontal_move * _playerTransform->Right();
+  move_delta += vertical_move * _transform->Up();
+  move_delta += horizontal_move * _transform->Right();
 
   //_playerTransform->Position(_playerTransform->Position() + move_delta * _speed * deltaTime);
-  _playerTransform->Position(_playerTransform->Position()
-                             + (glm::normalize(_moveVelocity) + move_delta) * _speed * deltaTime);
-  _playerTransform->Rotate(roll * deltaTime, _playerTransform->Forward());
+  _transform->Position(_transform->Position()
+                       + (glm::normalize(_moveVelocity) + move_delta) * _speed * deltaTime);
+  _transform->Rotate(roll * deltaTime, _transform->Forward());
+}
+
+auto PlayerController::Transform() const noexcept -> std::shared_ptr< Engine::Transform > {
+  return _transform;
 }
 
 auto PlayerController::SeekTarget(float deltaTime) -> void {
   auto node = GetNode();
   auto desired_velocity =
-      glm::normalize(_nodeTransform->Position() - _playerTransform->Position()) * _speed;
+      glm::normalize(_nodeTransform->Position() - _transform->Position()) * _speed;
   auto velocity_delta = desired_velocity - _moveVelocity;
   auto new_velocity   = _moveVelocity + velocity_delta * _seekSpeed * deltaTime;
   _moveVelocity       = new_velocity;
-  _playerTransform->Forward(glm::normalize(new_velocity));
+  _transform->Forward(glm::normalize(new_velocity));
 }
 
 auto PlayerController::GetNode() -> std::shared_ptr< Engine::Node > {
-  const auto& node_tr   = EntityManager::GetComponent< Transform >(_currentNode->GetEntityID());
-  const auto delta      = node_tr->Position() - _playerTransform->Position();
+  const auto& node_tr =
+      EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntityID());
+  const auto delta      = node_tr->Position() - _transform->Position();
   const auto magnitude2 = glm::dot(delta, delta);
   if (magnitude2 <= (_minNodeDistance * _minNodeDistance)) {
     _currentNode   = _nodeSystem->GetNode(_currentNode->NextIndex());
-    _nodeTransform = EntityManager::GetComponent< Transform >(_currentNode->GetEntityID());
+    _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntityID());
   }
   return _currentNode;
 }

@@ -3,7 +3,8 @@
 
 class GameLayer : public Engine::Layer {
 private:
-  std::shared_ptr< Engine::ECS::Entity > _player = nullptr;
+  std::shared_ptr< Engine::ECS::Entity > _playerRect = nullptr;
+  std::shared_ptr< Engine::ECS::Entity > _player     = nullptr;
 
 public:
   GameLayer();
@@ -13,5 +14,5 @@ public:
   auto OnEvent(Engine::Event& event) -> void override;
 
 private:
-  auto SetupPlayer(std::shared_ptr< Engine::ECS::Entity >& player) -> void;
+  auto SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void;
 };
