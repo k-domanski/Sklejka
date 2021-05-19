@@ -3,6 +3,7 @@
 #include <Components/NativeScript.h>
 #include <Scripts/CameraController.h>
 #include <Scripts/PlayerController.h>
+#include <Scripts/PlayerRect.h>
 
 #include "Scripts/ShadowTarget.h"
 
@@ -17,11 +18,11 @@ auto GameLayer::OnAttach() -> void {
   SceneManager::AddScene(scene);
   SceneManager::OpenScene(scene->GetID());
 
+  //_playerRect = scene->FindEntity("Player_Rect");
   //_player = scene->FindEntity("Player");
-  _player = scene->FindEntity("Player_Rect");
-  LOG_TRACE("Player name: {}", _player->Name());
+  // LOG_TRACE("Player name: {}", _player->Name());
 
-  SetupPlayer(_player);
+  SetupPlayer(scene);
 }
 
 auto GameLayer::OnDetach() -> void {
@@ -35,20 +36,33 @@ auto GameLayer::OnUpdate(double deltaTime) -> void {
 auto GameLayer::OnEvent(Engine::Event& event) -> void {
 }
 
-auto GameLayer::SetupPlayer(std::shared_ptr< Engine::ECS::Entity >& player) -> void {
-  auto scene         = SceneManager::GetCurrentScene();
-  auto player_tr     = player->GetComponent< Transform >();
+auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
+  _playerRect = scene->FindEntity("Player_Rect");
+  _player     = scene->FindEntity("Player");
+  LOG_TRACE("Player name: {}", _player->Name());
+  // TODO: Uncomment later :)
+  // auto scene         = SceneManager::GetCurrentScene();
+  auto player_tr     = _player->GetComponent< Transform >();
   auto main_camera   = scene->CameraSystem()->MainCamera();
   auto camera_entity = ECS::EntityManager::GetInstance().GetEntity(main_camera->GetEntityID());
   auto camera_tr     = camera_entity->GetComponent< Transform >();
-  camera_tr->Position(player_tr->Position());
+  // camera_tr->Position(player_tr->Position());
 
-  auto native_script = camera_entity->AddComponent< Engine::NativeScript >();
-  native_script->Attach(std::make_shared< CameraController >(player_tr));
+  auto native_script = _player->AddComponent< Engine::NativeScript >();
+  // auto player_controller = native_script->Attach(std::make_shared< PlayerController
+  // >(player_tr));
+  auto player_controller = native_script->Attach< PlayerController >(player_tr);
+
+  native_script = _playerRect->AddComponent< Engine::NativeScript >();
+  native_script->Attach(std::make_shared< PlayerRect >(player_controller));
+
+  native_script = camera_entity->AddComponent< Engine::NativeScript >();
+  native_script->Attach(std::make_shared< CameraController >(player_controller));
 
   native_script = player->AddComponent< Engine::NativeScript >();
   native_script->Attach(std::make_shared< PlayerController >(player_tr));
   auto shadowTarget = std::make_shared< ShadowTarget >(player_tr);
   native_script->Attach(shadowTarget);
   scene->RenderSystem()->SetShadowChecker(shadowTarget);
+  glm::mat4(1.0f) * glm::vec4(1.0f);
 }
