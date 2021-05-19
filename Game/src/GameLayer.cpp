@@ -4,7 +4,7 @@
 #include <Scripts/CameraController.h>
 #include <Scripts/PlayerController.h>
 
-#include "../ShadowTarget.h"
+#include "Scripts/ShadowTarget.h"
 
 using namespace Engine;
 GameLayer::GameLayer(): Engine::Layer("Game") {

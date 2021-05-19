@@ -1,8 +1,10 @@
 #pragma once
-#include <Engine.h>
+//#include <Engine.h>
 
 #include "Renderer/Bar.h"
 //#include "Renderer/Image.h"
+#include "Components/Transform.h"
+#include "Engine/Script.h"
 #include "Renderer/Text.h"
 
 struct BarData {
@@ -19,7 +21,7 @@ public:
   auto GetTargetID() -> Engine::ECS::EntityID;
   auto GetQuery() -> Engine::GL::QueryObject&;
   auto ShadowRate() -> float;
-  auto ShadowRate(float shadowRate) -> float;
+  auto ShadowRate(float shadowRate) -> void;
   auto SamplesPassed(GLint samplesPassed) -> void;
 private:
   std::shared_ptr< Engine::Transform > _target;

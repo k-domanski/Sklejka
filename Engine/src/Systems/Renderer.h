@@ -10,7 +10,7 @@
 #include <Renderer/PingPongBuffer.h>
 #include <Systems/LightSystem.h>
 
-#include "../../../Game/ShadowTarget.h"
+#include "../../../Game/src/Scripts/ShadowTarget.h"
 
 namespace Engine::GL {
   class Cubemap;

@@ -1,9 +1,9 @@
 #include "ShadowTarget.h"
-
+#include "Engine.h"
 #include "Components/UIRenderer.h"
 
 ShadowTarget::ShadowTarget(std::shared_ptr< Engine::Transform > target)
-    : _shadowRate(0.0f), _bar(std::make_shared< BarData >()), _maxAmount(100.0f),
+    : Script(), _shadowRate(0.0f), _bar(std::make_shared< BarData >()), _maxAmount(100.0f),
       _currentAmount(0.0f), _fillSpeed(10.0f), _target(target), _maxSamplesPassed(0) {
   auto entity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   auto renderer   = entity->AddComponent< Engine::Components::UIRenderer >();
@@ -46,7 +46,7 @@ auto ShadowTarget::ShadowRate() -> float {
   return _shadowRate;
 }
 
-auto ShadowTarget::ShadowRate(float shadowRate) -> float {
+auto ShadowTarget::ShadowRate(float shadowRate) -> void {
   _shadowRate = shadowRate;
 }
 
