@@ -55,7 +55,7 @@ void Engine::Renderer::Image::Shader(const std::shared_ptr< GL::Shader >& shader
 
 Engine::Renderer::Image::Image() : UIElement() {
   _shader     = AssetManager::GetShader("./shaders/imageUI.glsl");
-  _texture    = AssetManager::GetTexture2D("./textures/pepo_sad.png");
+  _texture    = AssetManager::GetTexture2D("./textures/white.png");
   _mesh       = Mesh::GetPrimitive(MeshPrimitive::Plane);
   _ratio      = 1.0;
   _color      = glm::vec4(1.0f);

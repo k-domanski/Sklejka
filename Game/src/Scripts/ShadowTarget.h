@@ -15,16 +15,14 @@ struct BarData {
 
 class ShadowTarget : public Engine::Script {
 public:
-  ShadowTarget(std::shared_ptr< Engine::Transform > target);
+  ShadowTarget(Engine::ECS::EntityID target);
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
   auto GetTargetID() -> Engine::ECS::EntityID;
-  auto GetQuery() -> Engine::GL::QueryObject&;
   auto ShadowRate() -> float;
   auto ShadowRate(float shadowRate) -> void;
   auto SamplesPassed(GLint samplesPassed) -> void;
 private:
-  std::shared_ptr< Engine::Transform > _target;
   Engine::ECS::EntityID _targetID;
   float _shadowRate;
   float _maxAmount;
@@ -32,5 +30,4 @@ private:
   float _fillSpeed;
   GLint _maxSamplesPassed;
   std::shared_ptr< BarData > _bar;
-  Engine::GL::QueryObject _modelQuery;
 };

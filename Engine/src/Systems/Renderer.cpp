@@ -185,6 +185,7 @@ namespace Engine::Systems {
         for (auto& entityID : _entities) {
           if (entityID == _playerShadowTarget->GetTargetID())
             continue;
+
           auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
           auto material      = mesh_renderer->GetMaterial();
           auto model         = mesh_renderer->GetModel();
@@ -200,11 +201,12 @@ namespace Engine::Systems {
         }
 
         auto entityID      = _playerShadowTarget->GetTargetID();
+        auto trans         = ECS::EntityManager::GetComponent< Transform >(entityID);
         auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
         auto material      = mesh_renderer->GetMaterial();
         auto model         = mesh_renderer->GetModel();
         if (material != nullptr && model != nullptr) {
-          auto query = model->GetQuery();
+          auto& query = model->GetQuery();
           query.Start(GL_SAMPLES_PASSED);
           auto mesh = model->GetMesh(mesh_renderer->MeshIndex());
           mesh->Use();
@@ -213,8 +215,8 @@ namespace Engine::Systems {
           _transformUniformBuffer.SetData(_transformUniformData);
           glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
 
-          auto res = query.SamplesPassed();
           query.End();
+          auto res = query.SamplesPassed();
 
           _playerShadowTarget->SamplesPassed(res);
         }
