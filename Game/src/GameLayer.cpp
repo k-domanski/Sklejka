@@ -15,13 +15,8 @@ GameLayer::GameLayer(): Engine::Layer("Game") {
 auto GameLayer::OnAttach() -> void {
   LOG_TRACE("Current dir: {}", std::filesystem::current_path().string());
   auto scene = AssetManager::LoadScene("./scenes/_lvl1.scene");
-  // auto scene = AssetManager::LoadScene("./scenes/_the_map.scene");
   SceneManager::AddScene(scene);
   SceneManager::OpenScene(scene->GetID());
-
-  //_playerRect = scene->FindEntity("Player_Rect");
-  //_player = scene->FindEntity("Player");
-  // LOG_TRACE("Player name: {}", _player->Name());
 
   SetupPlayer(scene);
 }
@@ -66,5 +61,4 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   auto shadowTarget = std::make_shared< ShadowTarget >(model[0]);
   native_script->Attach(shadowTarget);
   //scene->RenderSystem()->SetShadowChecker(shadowTarget);
-  glm::mat4(1.0f) * glm::vec4(1.0f);
 }

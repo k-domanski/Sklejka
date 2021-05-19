@@ -4,9 +4,10 @@
 namespace Engine {
   class Timer {
   private:
-    double _last  = 0.0;
-    double _now   = 0.0;
-    double _delta = 0.0;
+    double _last     = 0.0;
+    double _now      = 0.0;
+    double _delta    = 0.0;
+    double _maxDelta = 0.33;
 
   public:
     auto Update() -> void {
@@ -16,7 +17,7 @@ namespace Engine {
       _now         = current;
     }
     auto DeltaTime() -> double {
-      return _delta;
+      return glm::clamp(_delta, 0.0, _maxDelta);
     }
   };
 }  // namespace Engine
