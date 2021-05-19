@@ -6,7 +6,8 @@
 #include <Scripts/PlayerRect.h>
 #include <Systems/SceneGraph.h>
 
-#include "Scripts/ShadowTarget.h"
+#include <Scripts/ShadowTarget.h>
+#include <Scripts/FlightTimer.h>
 
 using namespace Engine;
 GameLayer::GameLayer(): Engine::Layer("Game") {
@@ -65,6 +66,7 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script->Attach(std::make_shared< PlayerController >(player_tr));
   auto shadowTarget = std::make_shared< ShadowTarget >(model[0]);
   native_script->Attach(shadowTarget);
+  native_script->Attach(std::make_shared< FlightTimer >());
   //scene->RenderSystem()->SetShadowChecker(shadowTarget);
   glm::mat4(1.0f) * glm::vec4(1.0f);
 }
