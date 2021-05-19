@@ -183,9 +183,6 @@ namespace Engine::Systems {
         _shadowMapShader->BindUniformBlock("u_Camera", 1);
         _shadowMapShader->BindUniformBlock("u_DirectionalLight", 2);
         for (auto& entityID : _entities) {
-          if (entityID == _playerShadowTarget->GetTargetID())
-            continue;
-
           auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
           auto material      = mesh_renderer->GetMaterial();
           auto model         = mesh_renderer->GetModel();
@@ -199,7 +196,7 @@ namespace Engine::Systems {
           _transformUniformBuffer.SetData(_transformUniformData);
           glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
         }
-
+        /*GL::Context::CullFace(Face::Back);
         auto entityID      = _playerShadowTarget->GetTargetID();
         auto trans         = ECS::EntityManager::GetComponent< Transform >(entityID);
         auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
@@ -219,7 +216,7 @@ namespace Engine::Systems {
           auto res = query.SamplesPassed();
 
           _playerShadowTarget->SamplesPassed(res);
-        }
+        }*/
 
         const auto window_size = Window::Get().GetScreenSize();
         GL::Context::Viewport(0, 0, window_size.x, window_size.y);
@@ -375,9 +372,63 @@ namespace Engine::Systems {
     _renderTarget->AttachDepthStencil(std::make_shared< Renderbuffer >(size.x, size.y));*/
   }
 
-  auto Renderer::SetShadowChecker(std::shared_ptr< ShadowTarget > target) -> void {
-    _playerShadowTarget = target;
+  auto Renderer::ObjectInShadow(ECS::EntityID entity) -> GLint {
+    const auto camera = _cameraSystem->MainCamera();
+    if (camera == nullptr) {
+      return 0;
+    }
+    const auto camera_tr = ECS::EntityManager::GetComponent< Transform >(camera->GetEntityID());
+    GL::Context::DepthTest(true);
+    if (_lightSystem != nullptr) {
+      auto light = _lightSystem->Light();
+      if (light != nullptr && light->flags.GetAny(LightFlag::Dirty | LightFlag::NewData)) {
+        auto light_tr = ECS::EntityManager::GetComponent< Transform >(light->GetEntityID());
+        if (light_tr->flags.Get(TransformFlag::NewData)) {
+          const auto& fr  = light_tr->Forward();
+          const auto& pos = camera_tr->Position() + camera_tr->Forward() * 5.0f;
+          _shadowUniformData.lightSpaceMatrix =
+              _shadowProjection * glm::lookAt(pos, pos + fr, {0.0f, 1.0f, 0.0f});
+          _shadowUniformBuffer.SetData(_shadowUniformData);
+        }
+        _shadowTarget->Bind(FramebufferTarget::ReadWrite);
+        GL::Context::Viewport(0, 0, _shadowMapSize.x, _shadowMapSize.y);
+        // GL::Context::ClearBuffers(BufferBit::Depth);
+        GL::Context::FaceCulling(true);
+        GL::Context::CullFace(Face::Front);
+        _shadowMapShader->Use();
+        _shadowMapShader->BindUniformBlock("u_Transform", 0);
+        _shadowMapShader->BindUniformBlock("u_Camera", 1);
+        _shadowMapShader->BindUniformBlock("u_DirectionalLight", 2);
+        GL::Context::CullFace(Face::Back);
+        // auto entityID      = _playerShadowTarget->GetTargetID();
+        auto trans         = ECS::EntityManager::GetComponent< Transform >(entity);
+        auto mesh_renderer = ECS::EntityManager::GetComponent< Components::MeshRenderer >(entity);
+        auto material      = mesh_renderer->GetMaterial();
+        auto model         = mesh_renderer->GetModel();
+        if (material != nullptr && model != nullptr) {
+          auto& query = model->GetQuery();
+          query.Start(GL_SAMPLES_PASSED);
+          auto mesh = model->GetMesh(mesh_renderer->MeshIndex());
+          mesh->Use();
+          const auto transform        = ECS::EntityManager::GetComponent< Transform >(entity);
+          _transformUniformData.model = transform->GetWorldMatrix();
+          _transformUniformBuffer.SetData(_transformUniformData);
+          glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+
+          query.End();
+          auto res = query.SamplesPassed();
+
+          //_playerShadowTarget->SamplesPassed(res);
+          return res;
+        }
+        return 0;
+      }
+    }
   }
+
+  /*auto Renderer::SetShadowChecker(std::shared_ptr< ShadowTarget > target) -> void {
+    _playerShadowTarget = target;
+  }*/
 
   auto Renderer::SortByMaterial() -> void {
     using Engine::Components::MeshRenderer;

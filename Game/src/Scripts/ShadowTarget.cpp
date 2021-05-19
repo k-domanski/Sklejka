@@ -10,9 +10,13 @@ ShadowTarget::ShadowTarget(Engine::ECS::EntityID target)
   _bar->transform = entity->AddComponent< Engine::Transform >();
   _bar->bar       = std::make_shared< Engine::Renderer::Bar >();
   renderer->GetElements().push_back(_bar->bar);
+  _rendererSystem =
+      Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
 }
 
 auto ShadowTarget::OnCreate() -> void {
+  _rendererSystem =
+      Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
   _bar->bar->FillRatio(_currentAmount / _maxAmount);
   _bar->bar->Horizontal(false);
   _bar->transform->Position(glm::vec3(100.0f, 400.0f, 0.0f));
@@ -23,10 +27,12 @@ auto ShadowTarget::OnCreate() -> void {
 }
 
 auto ShadowTarget::Update(float deltaTime) -> void {
+  SamplesPassed(_rendererSystem->ObjectInShadow(_targetID));
   _bar->bar->FillRatio(_currentAmount / _maxAmount);
   _currentAmount += _fillSpeed * _shadowRate * deltaTime;
   if (_currentAmount > _maxAmount)
-    _currentAmount = _maxAmount;
+    // _currentAmount = _maxAmount;
+    _currentAmount = 0.0f;
 }
 
 auto ShadowTarget::GetTargetID() -> Engine::ECS::EntityID {
@@ -42,8 +48,11 @@ auto ShadowTarget::ShadowRate(float shadowRate) -> void {
 }
 
 auto ShadowTarget::SamplesPassed(GLint samplesPassed) -> void {
+  samplesPassed = std::clamp(samplesPassed, 0,
+                             1000);  // probably shold be a variable in game setting or somewhere
   if (samplesPassed > _maxSamplesPassed)
     _maxSamplesPassed = samplesPassed;
-
   _shadowRate = (float)samplesPassed / (float)_maxSamplesPassed;
+  _shadowRate = 1.0f - _shadowRate;
+  _shadowRate = std::clamp(_shadowRate, 0.0f, 1.0f);
 }

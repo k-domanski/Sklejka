@@ -1,11 +1,12 @@
 #pragma once
-//#include <Engine.h>
+#include <Engine.h>
 
 #include "Renderer/Bar.h"
 //#include "Renderer/Image.h"
 #include "Components/Transform.h"
 #include "Engine/Script.h"
 #include "Renderer/Text.h"
+#include "Systems/Renderer.h"
 
 struct BarData {
   std::shared_ptr< Engine::Transform > transform;
@@ -30,4 +31,5 @@ private:
   float _fillSpeed;
   GLint _maxSamplesPassed;
   std::shared_ptr< BarData > _bar;
+  std::shared_ptr< Engine::Systems::Renderer > _rendererSystem;
 };
