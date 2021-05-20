@@ -2,8 +2,9 @@
 #include <pch.h>
 #include "Settings/PlayerSettings.h"
 #include "Settings/GameSettings.h"
+#include <GUI/LoadingScreen.h>
 
-BETTER_ENUM(__SceneName, int, MainMenu, LVL_1);
+BETTER_ENUM(__SceneName, int, MainMenu, Loading, LVL_1);
 typedef __SceneName SceneName;
 
 class GameManager {
@@ -13,6 +14,7 @@ private:
 private:
   std::shared_ptr< GameSettings > _gameSettings;
   std::shared_ptr< PlayerSettings > _playerSettings;
+  LoadingScreen _loadingScreen;
   GameManager();
 
 public:
@@ -20,4 +22,5 @@ public:
   static auto GetGameSettings() noexcept -> std::shared_ptr< GameSettings >;
   static auto GetPlayerSettings() noexcept -> std::shared_ptr< PlayerSettings >;
   static auto SwitchScene(SceneName scene) -> void;
+  static auto ShowLoadingScreen() -> void;
 };

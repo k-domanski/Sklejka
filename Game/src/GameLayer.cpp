@@ -9,6 +9,8 @@
 #include <Scripts/ShadowTarget.h>
 #include <Scripts/FlightTimer.h>
 
+#include <GameManager.h>
+
 using namespace Engine;
 GameLayer::GameLayer(): Engine::Layer("Game") {
 }
@@ -20,12 +22,20 @@ auto GameLayer::OnAttach() -> void {
   SceneManager::OpenScene(scene->GetID());
 
   SetupPlayer(scene);
+
+  //GameManager::ShowLoadingScreen();
 }
 
 auto GameLayer::OnDetach() -> void {
 }
 
 auto GameLayer::OnUpdate(double deltaTime) -> void {
+  if (Input::IsKeyPressed(Key::D1)) {
+    GameManager::SwitchScene(SceneName::Loading);
+  } else if (Input::IsKeyPressed(Key::D2)) {
+    GameManager::SwitchScene(SceneName::LVL_1);
+  }
+
   SceneManager::GetCurrentScene()->Update(deltaTime);
   SceneManager::GetCurrentScene()->Draw();
 }
@@ -62,5 +72,5 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   auto shadowTarget = std::make_shared< ShadowTarget >(model[0]);
   native_script->Attach(shadowTarget);
   native_script->Attach(std::make_shared< FlightTimer >());
-  //scene->RenderSystem()->SetShadowChecker(shadowTarget);
+  // scene->RenderSystem()->SetShadowChecker(shadowTarget);
 }

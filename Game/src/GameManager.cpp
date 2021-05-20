@@ -1,5 +1,6 @@
 #include <pch.h>
 #include "GameManager.h"
+#include <Engine.h>
 
 GameManager::GameManager() {
   _gameSettings   = std::make_shared< GameSettings >();
@@ -21,5 +22,22 @@ auto GameManager::GetPlayerSettings() noexcept -> std::shared_ptr< PlayerSetting
 }
 
 auto GameManager::SwitchScene(SceneName scene) -> void {
-  //TODO
+  switch (scene) {
+    case SceneName::MainMenu: {
+      break;
+    }
+    case SceneName::Loading: {
+      ShowLoadingScreen();
+      break;
+    }
+    case SceneName::LVL_1: {
+      Engine::SceneManager::OpenScene(
+          Engine::AssetManager::LoadScene("./scenes/_lvl1.scene")->GetID());
+      break;
+    }
+  }
+}
+
+auto GameManager::ShowLoadingScreen() -> void {
+  Engine::SceneManager::OpenScene(_instance->_loadingScreen.Scene()->GetID());
 }

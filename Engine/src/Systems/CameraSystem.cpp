@@ -44,9 +44,10 @@ namespace Engine::Systems {
     if (_mainCamera == nullptr) {
       FindMainCamera();
     }
-
-    if (_mainCamera->flags.Get(CameraFlag::NewData)) {
-      _cameraUniformBuffer.SetData(_mainCamera->UniformData());
+    if (_mainCamera != nullptr) {
+      if (_mainCamera->flags.Get(CameraFlag::NewData)) {
+        _cameraUniformBuffer.SetData(_mainCamera->UniformData());
+      }
     }
     // Move to constructor?
     _cameraUniformBuffer.BindToSlot(_cameraUniformSlot);

@@ -2,6 +2,8 @@
 #include "UIElement.h"
 #include "GL/Shader.h"
 #include "GL/Texture2D.h"
+#include "GL/Buffer.h"
+#include "GL/VertexArray.h"
 #include "Utility/Utility.h"
 
 namespace Engine::Renderer {
@@ -23,8 +25,10 @@ namespace Engine::Renderer {
     glm::vec4 _color;
     float _size;
     std::shared_ptr< std::map< char, Utility::Character > > _characters;
-    unsigned int VAO;
-    unsigned int VBO;
+    GL::VertexBuffer _vbo;
+    GL::VertexArray _vao;
+    /*unsigned int VAO;
+    unsigned int VBO;*/
 
     auto RenderText(float x, float y,
                     float scale) -> void;
