@@ -1,6 +1,7 @@
 #pragma once
 #include <Engine.h>
 #include <Scripts/PlayerController.h>
+#include <Settings/PlayerSettings.h>
 
 class PlayerRect : public Engine::Script {
 private:
@@ -9,18 +10,20 @@ private:
   std::shared_ptr< Engine::NodeSystem > _nodeSystem;
   std::shared_ptr< Engine::Node > _currentNode;
   std::shared_ptr< Engine::Transform > _nodeTransform;
-  glm::vec2 _size{4, 4};
   glm::vec3 _moveVelocity{0};
+  std::shared_ptr< PlayerSettings > _playerSettings;
+
+  /*glm::vec2 _size{4, 4};
   float _speed           = 3.0f;
   float _seekSpeed       = 1.0f;
-  float _minNodeDistance = 0.2f;
+  float _minNodeDistance = 0.2f;*/
 
 public:
   PlayerRect(const std::shared_ptr< PlayerController >& player_controller);
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
-  auto Size() const noexcept -> glm::vec2;
-  auto Size(const glm::vec2& size) noexcept -> glm::vec2;
+  // auto Size() const noexcept -> glm::vec2;
+  // auto Size(const glm::vec2& size) noexcept -> glm::vec2;
 
 private:
   auto HandleInput(float& vertical, float& horizontal, float& roll) -> void;

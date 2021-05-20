@@ -1,5 +1,6 @@
 #include "PlayerRect.h"
 #include <Systems/NodeSystem.h>
+#include <GameManager.h>
 
 using namespace Engine;
 using namespace Engine::ECS;
@@ -9,10 +10,11 @@ PlayerRect::PlayerRect(const std::shared_ptr< PlayerController >& player_control
 }
 
 auto PlayerRect::OnCreate() -> void {
-  _transform     = Entity()->GetComponent< Engine::Transform >();
-  _nodeSystem    = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
-  _currentNode   = _nodeSystem->GetNode(0);
-  _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntityID());
+  _transform      = Entity()->GetComponent< Engine::Transform >();
+  _nodeSystem     = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
+  _currentNode    = _nodeSystem->GetNode(0);
+  _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntityID());
+  _playerSettings = GameManager::GetPlayerSettings();
 }
 
 auto PlayerRect::Update(float deltaTime) -> void {
@@ -24,13 +26,13 @@ auto PlayerRect::Update(float deltaTime) -> void {
   HandleRotation(roll, deltaTime);
 }
 
-auto PlayerRect::Size() const noexcept -> glm::vec2 {
-  return _size;
-}
-
-auto PlayerRect::Size(const glm::vec2& size) noexcept -> glm::vec2 {
-  return _size = size;
-}
+// auto PlayerRect::Size() const noexcept -> glm::vec2 {
+//  return _size;
+//}
+//
+// auto PlayerRect::Size(const glm::vec2& size) noexcept -> glm::vec2 {
+//  return _size = size;
+//}
 
 auto PlayerRect::HandleInput(float& vertical, float& horizontal, float& roll) -> void {
   vertical   = ((float)Input::IsKeyPressed(Key::W)) - ((float)Input::IsKeyPressed(Key::S));
@@ -48,11 +50,13 @@ auto PlayerRect::HandleInput(float& vertical, float& horizontal, float& roll) ->
 }
 
 auto PlayerRect::SeekTarget(float deltaTime) -> void {
-  auto node = GetNode();
+  auto forward_speed = _playerSettings->ForwardSpeed();
+  auto seek_speed    = _playerSettings->SeekSpeed();
+  auto node          = GetNode();
   auto desired_velocity =
-      glm::normalize(_nodeTransform->Position() - _transform->Position()) * _speed;
+      glm::normalize(_nodeTransform->Position() - _transform->Position()) * forward_speed;
   auto velocity_delta = desired_velocity - _moveVelocity;
-  auto new_velocity   = _moveVelocity + velocity_delta * _seekSpeed * deltaTime;
+  auto new_velocity   = _moveVelocity + velocity_delta * seek_speed * deltaTime;
   _moveVelocity       = new_velocity;
 
   //_transform->Forward(glm::normalize(new_velocity));
@@ -71,15 +75,17 @@ auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -
   // move_delta += horizontal * _transform->Right();
 
   // move_delta     = (glm::normalize(_moveVelocity) + move_delta) * _speed * deltaTime;
-  move_delta     = (move_delta)*_speed * deltaTime;
+  move_delta     = move_delta * _playerSettings->ControlSpeed() * deltaTime;
   auto pos       = _playerController->Transform()->Position();
   auto new_pos   = pos + move_delta;
-  auto half_size = glm::vec3(_size, 0.0f) * 0.5f;
+  auto half_size = glm::vec3(_playerSettings->RectSize(), 0.0f) * 0.5f;
 
   new_pos = glm::clamp(new_pos, -half_size, half_size);
   _playerController->Transform()->Position(new_pos);
 
-  _transform->Position(_transform->Position() + glm::normalize(_moveVelocity) * _speed * deltaTime);
+  _transform->Position(_transform->Position()
+                       + glm::normalize(_moveVelocity) * _playerSettings->ForwardSpeed()
+                             * deltaTime);
 }
 
 auto PlayerRect::HandleRotation(float roll, float deltaTime) -> void {
@@ -91,9 +97,8 @@ auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
       EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntityID());
   const auto delta      = node_tr->Position() - _transform->Position();
   const auto magnitude2 = glm::dot(delta, delta);
-  /*LOG_INFO("(magnitude2) {} <= (minNodeDistance2) {}", magnitude2,
-           _minNodeDistance * _minNodeDistance);*/
-  if (magnitude2 <= (_minNodeDistance * _minNodeDistance)) {
+  auto min_mag          = _playerSettings->MinNodeDistance();
+  if (magnitude2 <= (min_mag * min_mag)) {
     _currentNode   = _nodeSystem->GetNode(_currentNode->NextIndex());
     _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntityID());
   }
