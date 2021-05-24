@@ -62,6 +62,8 @@ namespace Engine::Systems {
   }
   auto CameraSystem::EditorView(bool enable) -> void {
     _editorView = enable;
+    _mainCamera = nullptr;
+    FindMainCamera();
   }
   auto CameraSystem::FindMainCamera() -> void {
     for (auto entityID : _entities) {
