@@ -18,7 +18,6 @@ GameLayer::GameLayer(): Engine::Layer("Game") {
 
 auto GameLayer::OnAttach() -> void {
   LOG_TRACE("Current dir: {}", std::filesystem::current_path().string());
-  GameManager::SwitchScene(SceneName::Loading);
   GameManager::SwitchScene(SceneName::LVL_1);
 
   auto scene = SceneManager::GetCurrentScene();
