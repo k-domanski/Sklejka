@@ -32,6 +32,14 @@ void EditorLayer::OnAttach() {
   m_EditorCamera.transform->Position({0.0f, 0.0f, 2.0f});
   m_EditorCamera.transform->Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
   /* ----------------------- */
+  //auto entity = ECS::EntityManager::GetInstance().CreateEntity();
+  //entity->AddComponent<Transform>();
+  //entity->GetComponent<Transform>()->Scale(glm::vec3(0.005f));
+  //auto model = AssetManager::GetModel("models/Pilot_LP_Animated.fbx");
+  ////auto model = AssetManager::GetModel("models/dancing_vampire.dae");
+  //auto material = AssetManager::GetMaterial("materials/anim_trooper.mat");
+  //entity->AddComponent<Components::MeshRenderer>(model, material);
+  //SceneManager::GetCurrentScene()->SceneGraph()->AddChild(0, entity->GetID());
 
   /* ---------Editor Panels--------- */
   m_SceneHierarchyPanel.SetScene(SceneManager::GetDisplayScene());
@@ -162,7 +170,7 @@ auto EditorLayer::UpdateEditorCamera() -> void {
 }
 
 auto EditorLayer::OpenModel() {
-  std::optional< std::string > filepath = FileDialog::OpenFile("Model (*.fbx, *.FBX)\0*.fbx\0");
+  std::optional< std::string > filepath = FileDialog::OpenFile("Model (*.fbx, *.fbx)\0*.fbx\0");
   if (filepath)
   {
     std::shared_ptr< Renderer::Model > model_ptr = std::make_shared< Renderer::Model >(filepath.value());

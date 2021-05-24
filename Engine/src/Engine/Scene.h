@@ -18,6 +18,7 @@ namespace Engine {
     class Physics;
     class LightSystem;
     class ScriptSystem;
+    class AnimationSystem;
   }  // namespace Systems
   class NodeSystem;
 
@@ -35,6 +36,7 @@ namespace Engine {
     std::shared_ptr< Systems::ScriptSystem > _scriptSystem;
     std::shared_ptr< Systems::GUISystem > _GUISystem;
     std::shared_ptr< NodeSystem > _nodeSystem;
+    std::shared_ptr<Systems::AnimationSystem> _animationSystem;
 
     size_t _id;
     std::vector< std::shared_ptr< ECS::Entity > > _entities;

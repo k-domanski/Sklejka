@@ -10,9 +10,9 @@ namespace Engine::Renderer {
                           reinterpret_cast< const void* >(offsetof(Vertex, normal)));
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
                           reinterpret_cast< const void* >(offsetof(Vertex, uv)));
-    glVertexAttribPointer(3, 4, GL_INT, GL_FALSE, sizeof(Vertex),
+    glVertexAttribIPointer(3, 4, GL_INT, sizeof(Vertex),
         reinterpret_cast<const void*>(offsetof(Vertex, jointIDs)));
-    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_TRUE, sizeof(Vertex),
         reinterpret_cast<const void*>(offsetof(Vertex, weights)));
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);

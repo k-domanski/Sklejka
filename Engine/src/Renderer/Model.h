@@ -7,6 +7,10 @@ namespace Engine::Renderer {
   typedef MeshPrimitive ModelPrimitive;
 #define NUM_JOINTS_PER_VERTEX 4
   class Material;
+  struct BoneInfo {
+      unsigned int boneId;
+      glm::mat4 inverseBindPose;
+  };
   class Model {
   public:
     Model() = default;
@@ -21,7 +25,10 @@ namespace Engine::Renderer {
     auto GetQuery() -> GL::QueryObject&;
     int GetMeshCount();
     std::shared_ptr< Mesh > GetMesh(int index);
-    glm::mat4 aiMat4ToGlmMat4(aiMatrix4x4 aiMat);
+    static glm::mat4 aiMat4ToGlmMat4(aiMatrix4x4 aiMat);
+    void GetJointsTransformArray(glm::mat4* array);
+    std::map<std::string, BoneInfo> GetBoneInfoMap() { return m_BoneMap; }
+    unsigned int GetBoneCount() { return m_NumberOfBones; }
 
   private:
     std::vector< std::shared_ptr< Mesh > > meshes;
@@ -36,6 +43,8 @@ namespace Engine::Renderer {
     float _radius;
     GL::QueryObject _query;
     std::shared_ptr< Mesh > _boundingBox;
+
+    /*Animation*/
     struct JointVertexData {
         std::string name;
         unsigned int BoneIDs[NUM_JOINTS_PER_VERTEX] = { 0 };
@@ -54,5 +63,9 @@ namespace Engine::Renderer {
             }
         }
     };
+    
+    std::map<std::string, BoneInfo> m_BoneMap;
+    unsigned int m_NumberOfBones;
+    /*--------------*/
   };
 }  // namespace Engine::Renderer

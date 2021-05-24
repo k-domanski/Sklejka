@@ -55,7 +55,7 @@ namespace Engine::Renderer {
   void Model::loadModel(std::string_view path) {
     Assimp::Importer importer;
     const aiScene* scene =
-        importer.ReadFile(path.data(), aiProcess_Triangulate | aiProcess_FlipUVs);
+        importer.ReadFile(path.data(), aiProcess_Triangulate /*| aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace*/ /*| aiProcess_FlipUVs*/);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
       CORE_ERROR("Failed to load model: {0}", importer.GetErrorString());
@@ -77,8 +77,7 @@ namespace Engine::Renderer {
           parentIndex));
 
       lastMesh = meshes.back();
-      std::cout << "\nPushing " << mesh->mName.C_Str() << " mesh to meshes vector with meshParent "
-                << parentIndex;
+      LOG_DEBUG("Pushing {} mesh to meshes vector with meshParent {}", mesh->mName.C_Str(), parentIndex);
     }
 
     // Repeat process for all the children
@@ -169,15 +168,8 @@ namespace Engine::Renderer {
     std::vector< Vertex > vertices;
     std::vector< GLuint > indices;
     std::vector<JointVertexData> joints;
-    std::map<std::string, unsigned int> boneMap;
-    unsigned int numberofBones = 0;
+    m_NumberOfBones = 0;
     joints.resize(mesh->mNumVertices);
-    struct TestStruct {
-        float weight;
-        unsigned int boneID;
-    };
-    std::vector<TestStruct> test;
-    test.resize(mesh->mNumVertices);
     /*--------------Animation--------------------*/
     if (mesh->HasBones())
     {
@@ -185,17 +177,18 @@ namespace Engine::Renderer {
         {
             unsigned int BoneIndex = 0;
             std::string BoneName(mesh->mBones[i]->mName.data);
-            if (boneMap.find(BoneName) == boneMap.end())
+            if (m_BoneMap.find(BoneName) == m_BoneMap.end())
             {
-                BoneIndex = numberofBones;
-                numberofBones++;
-                //boneMap[BoneName] = BoneIndex;
+                BoneIndex = m_NumberOfBones;
+                m_NumberOfBones++;
+                m_BoneMap[BoneName].inverseBindPose = aiMat4ToGlmMat4(mesh->mBones[i]->mOffsetMatrix);
             }
             else
             {
-                BoneIndex = boneMap[BoneName];
+                BoneIndex = m_BoneMap[BoneName].boneId;
             }
-            boneMap[BoneName] = BoneIndex;
+
+            m_BoneMap[BoneName].boneId = BoneIndex;
             for (int j = 0; j < mesh->mBones[i]->mNumWeights; j++)
             {
                 unsigned int id = mesh->mBones[i]->mWeights[j].mVertexId;
@@ -249,6 +242,8 @@ namespace Engine::Renderer {
 
       // Add the created vertex to the vector
       vertices.push_back(vertex);
+      if(vertex.jointIDs[0] >51 || vertex.jointIDs[1] > 51|| vertex.jointIDs[2]> 51 ||vertex.jointIDs[3]>51)
+        CORE_DEBUG("[{}][{}][{}][{}]", vertex.jointIDs[0], vertex.jointIDs[1], vertex.jointIDs[2], vertex.jointIDs[3]);
     }
 
     for (size_t i = 0; i < mesh->mNumFaces; i++) {
@@ -268,28 +263,38 @@ namespace Engine::Renderer {
 
   glm::mat4 Model::aiMat4ToGlmMat4(aiMatrix4x4 aiMat) {
     glm::mat4 output;
-
+    
     output[0][0] = aiMat[0][0];
     output[0][1] = aiMat[1][0];
     output[0][2] = aiMat[2][0];
     output[0][3] = aiMat[3][0];
-
+    
     output[1][0] = aiMat[0][1];
     output[1][1] = aiMat[1][1];
     output[1][2] = aiMat[2][1];
     output[1][3] = aiMat[3][1];
-
+    
     output[2][0] = aiMat[0][2];
     output[2][1] = aiMat[1][2];
     output[2][2] = aiMat[2][2];
     output[2][3] = aiMat[3][2];
-
+    
     output[3][0] = aiMat[0][3];
     output[3][1] = aiMat[1][3];
     output[3][2] = aiMat[2][3];
     output[3][3] = aiMat[3][3];
-
+    
     return output;
+  }
+
+  void Model::GetJointsTransformArray(glm::mat4* array)
+  {
+      int i = 0;
+      for (auto entry : m_BoneMap)
+      {
+          array[i] = entry.second.inverseBindPose;
+          i++;
+      }
   }
 
 

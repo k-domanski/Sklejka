@@ -10,6 +10,7 @@
 //#include <ECS/ECS.h>
 #include "ECS/EntityManager.h"
 #include "Systems/GUISystem.h"
+#include "Systems/AnimationSystem.h"
 
 namespace Engine {
   auto Scene::GetID() -> size_t {
@@ -25,6 +26,7 @@ namespace Engine {
     _scriptSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ScriptSystem >();
     _GUISystem     = ECS::EntityManager::GetInstance().RegisterSystem< Systems::GUISystem >();
     _nodeSystem    = ECS::EntityManager::GetInstance().RegisterSystem< Engine::NodeSystem >();
+    _animationSystem = ECS::EntityManager::GetInstance().RegisterSystem<Systems::AnimationSystem>();
   }
 
   auto Scene::Update(float deltaTime) -> void {
@@ -41,6 +43,7 @@ namespace Engine {
     // And after them scene graph again?
     _cameraSystem->Update(deltaTime);
     _lightSystem->Update(deltaTime);
+    _animationSystem->Update(deltaTime);
   }
   auto Scene::Draw() -> void {
     _renderSystem->Update(0.0f);
