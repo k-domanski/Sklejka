@@ -15,8 +15,9 @@ private:
 private:
   std::shared_ptr< GameSettings > _gameSettings;
   std::shared_ptr< PlayerSettings > _playerSettings;
-  LoadingScreen _loadingScreen;
+  std::shared_ptr< LoadingScreen > _loadingScreen;
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
+  SceneName _currentSceneName = SceneName::MainMenu;
   GameManager();
 
 public:
@@ -25,5 +26,6 @@ public:
   static auto GetPlayerSettings() noexcept -> std::shared_ptr< PlayerSettings >;
   static auto GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine >;
   static auto SwitchScene(SceneName scene) -> void;
+  static auto GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene >;
   static auto ShowLoadingScreen() -> void;
 };

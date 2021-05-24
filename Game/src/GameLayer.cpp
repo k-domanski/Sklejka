@@ -18,13 +18,13 @@ GameLayer::GameLayer(): Engine::Layer("Game") {
 
 auto GameLayer::OnAttach() -> void {
   LOG_TRACE("Current dir: {}", std::filesystem::current_path().string());
-  auto scene = AssetManager::LoadScene("./scenes/_lvl1.scene");
-  SceneManager::AddScene(scene);
-  SceneManager::OpenScene(scene->GetID());
+  GameManager::SwitchScene(SceneName::Loading);
+  GameManager::SwitchScene(SceneName::LVL_1);
 
+  auto scene = SceneManager::GetCurrentScene();
   SetupPlayer(scene);
 
-  //GameManager::ShowLoadingScreen();
+  // GameManager::ShowLoadingScreen();
 }
 
 auto GameLayer::OnDetach() -> void {
@@ -47,6 +47,10 @@ auto GameLayer::OnEvent(Engine::Event& event) -> void {
 auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   _playerRect = scene->FindEntity("Player_Rect");
   _player     = scene->FindEntity("Player");
+  if (_player == nullptr || _playerRect == nullptr) {
+    LOG_TRACE("No player entity found");
+    return;
+  }
   LOG_TRACE("Player name: {}", _player->Name());
   // TODO: Uncomment later :)
   // auto scene         = SceneManager::GetCurrentScene();
@@ -63,8 +67,10 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   // >(player_tr));
   auto player_controller = native_script->Attach< PlayerController >(player_tr);
 
-  native_script = _playerRect->AddComponent< Engine::NativeScript >();
-  auto player_rect = std::make_shared< PlayerRect >(player_controller); // Save it to variable, because I cannot retrive anything from attached scripts.......
+  native_script    = _playerRect->AddComponent< Engine::NativeScript >();
+  auto player_rect = std::make_shared< PlayerRect >(
+      player_controller);  // Save it to variable, because I cannot retrive anything from attached
+                           // scripts.......
   player_rect->CanMove(false);
   native_script->Attach(player_rect);
 
@@ -74,7 +80,9 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script->Attach(std::make_shared< PlayerController >(player_tr));
   auto shadowTarget = std::make_shared< ShadowTarget >(model[0]);
   native_script->Attach(shadowTarget);
-  auto flightTimer = std::make_shared< FlightTimer >(); // Save it to variable, because I cannot retrive anything from attached scripts.......
+  auto flightTimer =
+      std::make_shared< FlightTimer >();  // Save it to variable, because I cannot retrive anything
+                                          // from attached scripts.......
   flightTimer->CanCount(false);
   native_script->Attach(flightTimer);
 
