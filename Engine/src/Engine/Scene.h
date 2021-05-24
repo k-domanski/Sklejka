@@ -57,6 +57,8 @@ namespace Engine {
     auto CameraSystem() -> std::shared_ptr< Systems::CameraSystem >;
     auto RenderSystem() -> std::shared_ptr< Systems::Renderer >;
     auto OnWindowResize(glm::vec2 windowSize) -> void;
+    auto OnMousePressed(glm::vec2 position) -> void;
+    auto OnMouseReleased(glm::vec2 position) -> void;
     auto FindEntity(const std::string& name) -> std::shared_ptr< ECS::Entity >;
     auto NodeSystem() const -> std::shared_ptr< Engine::NodeSystem >;
   };

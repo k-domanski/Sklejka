@@ -31,6 +31,28 @@ auto GameLayer::OnUpdate(double deltaTime) -> void {
 }
 
 auto GameLayer::OnEvent(Engine::Event& event) -> void {
+  EventDispatcher dispatcher(event);
+  dispatcher.Dispatch< MouseButtonPressedEvent >(BIND_EVENT_FN(GameLayer::OnMouseButtonPress));
+  dispatcher.Dispatch< MouseButtonReleasedEvent >(BIND_EVENT_FN(GameLayer::OnMouseButtonRelease));
+}
+
+bool GameLayer::OnMouseButtonPress(MouseButtonPressedEvent& e) {
+  if (e.GetMouseButton() == MouseCode::ButtonLeft) {
+    auto mousePos = Input::GetMousePosition();
+    mousePos.y    = Window::Get().GetHeight() - mousePos.y;
+    SceneManager::GetCurrentScene()->OnMousePressed(mousePos);
+  }
+
+  return true;
+}
+
+bool GameLayer::OnMouseButtonRelease(MouseButtonReleasedEvent& e) {
+  if (e.GetMouseButton() == MouseCode::ButtonLeft) {
+    auto mousePos = Input::GetMousePosition();
+    mousePos.y    = Window::Get().GetHeight() - mousePos.y;
+    SceneManager::GetCurrentScene()->OnMouseReleased(mousePos);
+  }
+  return false;
 }
 
 auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
@@ -62,5 +84,5 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   auto shadowTarget = std::make_shared< ShadowTarget >(model[0]);
   native_script->Attach(shadowTarget);
   native_script->Attach(std::make_shared< FlightTimer >());
-  //scene->RenderSystem()->SetShadowChecker(shadowTarget);
+  // scene->RenderSystem()->SetShadowChecker(shadowTarget);
 }

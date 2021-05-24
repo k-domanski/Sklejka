@@ -12,6 +12,8 @@ public:
   auto OnDetach() -> void override;
   auto OnUpdate(double deltaTime) -> void override;
   auto OnEvent(Engine::Event& event) -> void override;
+  bool OnMouseButtonPress(Engine::MouseButtonPressedEvent& e);
+  bool OnMouseButtonRelease(Engine::MouseButtonReleasedEvent& e);
 
 private:
   auto SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void;
