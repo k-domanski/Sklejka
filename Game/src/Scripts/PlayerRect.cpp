@@ -20,10 +20,22 @@ auto PlayerRect::OnCreate() -> void {
 auto PlayerRect::Update(float deltaTime) -> void {
   float vertical_move, horizontal_move, roll;
 
-  HandleInput(vertical_move, horizontal_move, roll);
-  SeekTarget(deltaTime);
-  HandleMove(vertical_move, horizontal_move, deltaTime);
-  HandleRotation(roll, deltaTime);
+  if (_canMove) {
+    HandleInput(vertical_move, horizontal_move, roll);
+    SeekTarget(deltaTime);
+    HandleMove(vertical_move, horizontal_move, deltaTime);
+    HandleRotation(roll, deltaTime);
+  }
+}
+
+auto PlayerRect::CanMove() -> bool
+{
+  return _canMove;
+}
+
+auto PlayerRect::CanMove(bool value) -> void
+{
+  _canMove = value;
 }
 
 // auto PlayerRect::Size() const noexcept -> glm::vec2 {

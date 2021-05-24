@@ -53,7 +53,9 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   auto player_controller = native_script->Attach< PlayerController >(player_tr);
 
   native_script = _playerRect->AddComponent< Engine::NativeScript >();
-  native_script->Attach(std::make_shared< PlayerRect >(player_controller));
+  auto player_rect = std::make_shared< PlayerRect >(player_controller); // Save it to variable, because I cannot retrive anything from attached scripts.......
+  player_rect->CanMove(true);
+  native_script->Attach(player_rect);
 
   native_script = camera_entity->AddComponent< Engine::NativeScript >();
   native_script->Attach(std::make_shared< CameraController >(player_controller));
