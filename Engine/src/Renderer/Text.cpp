@@ -46,23 +46,25 @@ Engine::Renderer::Text::Text() {
   _text   = "New Text";
   _offset = glm::vec2(0.0f);
 
-  _vertexArray.Bind();
-  _vertexBuffer.SetData(sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-
   // glGenVertexArrays(1, &VAO);
   // glGenBuffers(1, &VBO);
   // glBindVertexArray(VAO);
+  _vao.Bind();
   // glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  _vbo.Bind();
   // glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+  _vbo.SetData(sizeof(float) * 6 * 4, NULL);
+
+  /* Enable Vertex Attrib and Attrib Pointer - OK, can leave it here */
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+
   // glBindBuffer(GL_ARRAY_BUFFER, 0);
   // glBindVertexArray(0);
 }
-
 Engine::Renderer::Text::Text(Text&& other) {
-  _vertexArray  = std::move(other._vertexArray);
-  _vertexBuffer = std::move(other._vertexBuffer);
+  _vao  = std::move(other._vao);
+  _vbo = std::move(other._vbo);
   _shader       = other._shader;
   _characters   = other._characters;
   _size         = other._size;
@@ -72,8 +74,8 @@ Engine::Renderer::Text::Text(Text&& other) {
 }
 
 auto Engine::Renderer::Text::operator=(Text&& other) noexcept -> Text& {
-  _vertexArray  = std::move(other._vertexArray);
-  _vertexBuffer = std::move(other._vertexBuffer);
+  _vao  = std::move(other._vao);
+  _vbo = std::move(other._vbo);
   _shader       = other._shader;
   _characters   = other._characters;
   _size         = other._size;
@@ -93,6 +95,7 @@ auto Engine::Renderer::Text::Draw(glm::mat4 model, glm::mat4 proj) -> void {
   glm::vec4 perspective;
   glm::decompose(model, scale, rotation, translation, skew, perspective);*/
 
+  // TODO: Move to GL::Context
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -109,9 +112,10 @@ auto Engine::Renderer::Text::RenderText(float x, float y, float scale) -> void {
   // glUniform3f(glGetUniformLocation(_shader->GetHandle(), "textColor"), color.x, color.y,
   // color.z);
   _shader->SetVector("u_Color", _color);
-  glActiveTexture(GL_TEXTURE0);
+  GL::Context::SetActiveTexture(0);
+  // glActiveTexture(GL_TEXTURE0);
+  _vao.Bind();
   // glBindVertexArray(VAO);
-  _vertexArray.Bind();
 
   // iterate through all characters
   std::string::const_iterator c;
@@ -135,14 +139,15 @@ auto Engine::Renderer::Text::RenderText(float x, float y, float scale) -> void {
     ch.Texture->Bind(0);
     // update content of VBO memory
     // glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    _vertexBuffer.Bind();
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-    //glBindBuffer(GL_ARRAY_BUFFER, 0);
+    _vbo.Bind();
+    _vbo.SetData(sizeof(vertices), vertices);
+    // glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
     // render quad
     glDrawArrays(GL_TRIANGLES, 0, 6);
     // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
     x += (ch.Advance >> 6) * scale;  // bitshift by 6 to get value in pixels (2^6 = 64)
   }
-  //glBindVertexArray(0);
-  glBindTexture(GL_TEXTURE_2D, 0);
+  // glBindVertexArray(0);
+  // glBindTexture(GL_TEXTURE_2D, 0);
 }

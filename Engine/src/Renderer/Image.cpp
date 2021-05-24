@@ -64,7 +64,7 @@ Engine::Renderer::Image::Image() : UIElement() {
 }
 
 auto Engine::Renderer::Image::Draw(glm::mat4 model, glm::mat4 proj) -> void {
-  model = glm::scale(model, glm::vec3(_size.x, _size.y, 1.0f));
+  model = glm::scale(model, glm::vec3(_size.x/2.0f, _size.y/2.0f, 1.0f));
   _shader->Use();
   _mesh->Use();
   _texture->Bind(0);

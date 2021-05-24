@@ -25,6 +25,7 @@ namespace Engine {
     _scriptSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ScriptSystem >();
     _GUISystem     = ECS::EntityManager::GetInstance().RegisterSystem< Systems::GUISystem >();
     _nodeSystem    = ECS::EntityManager::GetInstance().RegisterSystem< Engine::NodeSystem >();
+    _cameraSystem->FindMainCamera();
   }
 
   auto Scene::Update(float deltaTime) -> void {

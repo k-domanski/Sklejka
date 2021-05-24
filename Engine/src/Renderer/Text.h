@@ -31,11 +31,10 @@ namespace Engine::Renderer {
     float _size;
     glm::vec2 _offset;
     std::shared_ptr< std::map< char, Utility::Character > > _characters;
-    //unsigned int VAO;
-    //unsigned int VBO;
-
-    GL::VertexArray _vertexArray;
-    GL::VertexBuffer _vertexBuffer;
+    GL::VertexBuffer _vbo;
+    GL::VertexArray _vao;
+    /*unsigned int VAO;
+    unsigned int VBO;*/
 
     auto RenderText(float x, float y,
                     float scale) -> void;
