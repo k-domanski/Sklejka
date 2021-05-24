@@ -16,6 +16,8 @@ namespace Engine::Renderer
     void text(std::string text);
     void TextOffset(glm::vec2 offset);
     glm::vec2 TextOffset();
+    void TextColor(glm::vec4 color);
+    glm::vec4 TextColor();
     glm::vec2 HandleSize() const;
     void HandleSize(const glm::vec2& handle_size);
     glm::vec4 PressedColor() const;

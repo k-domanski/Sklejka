@@ -41,6 +41,14 @@ glm::vec2 Engine::Renderer::Button::TextOffset() {
   return _text.Offset();
 }
 
+void Engine::Renderer::Button::TextColor(glm::vec4 color) {
+  _text.Color(color);
+}
+
+glm::vec4 Engine::Renderer::Button::TextColor() {
+  return _text.Color();
+}
+
 // void Engine::Renderer::Button::text(Text& text) {
 //  _text = std::move(text);
 //}
