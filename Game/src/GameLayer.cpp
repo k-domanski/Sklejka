@@ -63,6 +63,8 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script->Attach(std::make_shared< PlayerController >(player_tr));
   auto shadowTarget = std::make_shared< ShadowTarget >(model[0]);
   native_script->Attach(shadowTarget);
-  native_script->Attach(std::make_shared< FlightTimer >());
+  auto flightTimer = std::make_shared< FlightTimer >(); // Save it to variable, because I cannot retrive anything from attached scripts.......
+  flightTimer->CanCount(true);
+  native_script->Attach(flightTimer);
   //scene->RenderSystem()->SetShadowChecker(shadowTarget);
 }

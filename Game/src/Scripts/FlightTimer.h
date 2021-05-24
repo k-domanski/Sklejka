@@ -9,8 +9,11 @@ public:
   FlightTimer();
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
+  auto CanCount() -> bool;
+  auto CanCount(bool value) -> void;
 
 private:
+  bool _canCount;
   float _time;
   std::shared_ptr< Engine::Renderer::Text > _text;
   std::shared_ptr< Engine::Transform > _textTransform;
