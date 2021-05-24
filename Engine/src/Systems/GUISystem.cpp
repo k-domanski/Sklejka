@@ -10,8 +10,8 @@ Engine::Systems::GUISystem::GUISystem(): System() {
   AddSignature< Engine::Components::UIRenderer >();
   AddSignature< Engine::Transform >();
 
-  auto size = Engine::Window::Get().GetScreenSize();
-  _camProj  = glm::ortho(0.0f, size.x, 0.0f, size.y, -1.0f, 0.0f);
+  auto size = Engine::Window::Get().GetScreenSize() * 0.5f;
+  _camProj  = glm::ortho(-size.x, size.x, -size.y, size.y, 0.0f, 1.0f);
 }
 
 void Engine::Systems::GUISystem::Update(float deltaTime) {

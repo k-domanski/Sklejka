@@ -5,6 +5,7 @@
 GameManager::GameManager() {
   _gameSettings   = std::make_shared< GameSettings >();
   _playerSettings = std::make_shared< PlayerSettings >();
+  _soundEngine    = std::shared_ptr<irrklang::ISoundEngine> (irrklang::createIrrKlangDevice());
 }
 
 auto GameManager::Initialize() -> void {
@@ -40,4 +41,9 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
 
 auto GameManager::ShowLoadingScreen() -> void {
   Engine::SceneManager::OpenScene(_instance->_loadingScreen.Scene()->GetID());
+}
+
+auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr<irrklang::ISoundEngine>
+{
+  return _instance->_soundEngine;
 }

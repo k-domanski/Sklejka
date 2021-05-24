@@ -20,10 +20,22 @@ auto PlayerRect::OnCreate() -> void {
 auto PlayerRect::Update(float deltaTime) -> void {
   float vertical_move, horizontal_move, roll;
 
-  HandleInput(vertical_move, horizontal_move, roll);
-  SeekTarget(deltaTime);
-  HandleMove(vertical_move, horizontal_move, deltaTime);
-  HandleRotation(roll, deltaTime);
+  if (_canMove) {
+    HandleInput(vertical_move, horizontal_move, roll);
+    SeekTarget(deltaTime);
+    HandleMove(vertical_move, horizontal_move, deltaTime);
+    HandleRotation(roll, deltaTime);
+  }
+}
+
+auto PlayerRect::CanMove() -> bool
+{
+  return _canMove;
+}
+
+auto PlayerRect::CanMove(bool value) -> void
+{
+  _canMove = value;
 }
 
 // auto PlayerRect::Size() const noexcept -> glm::vec2 {
@@ -47,6 +59,9 @@ auto PlayerRect::HandleInput(float& vertical, float& horizontal, float& roll) ->
   vertical   = glm::clamp(vertical, -1.0f, 1.0f);
   horizontal = glm::clamp(horizontal, -1.0f, 1.0f);
   roll       = glm::clamp(roll, -1.0f, 1.0f);
+
+  if(Input::IsKeyPressed(Key::X))
+    GameManager::GetSoundEngine()->play2D("./sounds/placeholderBeep.wav", false);
 }
 
 auto PlayerRect::SeekTarget(float deltaTime) -> void {

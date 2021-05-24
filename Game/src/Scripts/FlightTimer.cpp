@@ -20,9 +20,21 @@ auto FlightTimer::OnCreate() -> void {
 }
 
 auto FlightTimer::Update(float deltaTime) -> void {
-  _time += deltaTime;
-  
-  _stream << std::fixed << std::setprecision(_precision) << _time;
-  _text->SetText(_stream.str());
-  _stream.str(std::string());
+  if (_canCount) {
+    _time += deltaTime;
+
+    _stream << std::fixed << std::setprecision(_precision) << _time;
+    _text->SetText(_stream.str());
+    _stream.str(std::string());
+  }
+}
+
+auto FlightTimer::CanCount() -> bool
+{
+  return _canCount;
+}
+
+auto FlightTimer::CanCount(bool value) -> void
+{
+  _canCount = value;
 }

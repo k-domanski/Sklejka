@@ -10,13 +10,15 @@ LoadingScreen::LoadingScreen() {
   SceneManager::AddScene(_scene);
   SceneManager::OpenScene(_scene->GetID());
 
-  _image    = std::make_shared< Image >();
+  _image = std::make_shared< Image >();
+  _image->Texture(AssetManager::GetTexture2D("./textures/Loading.png"));
   auto size = Window::Get().GetScreenSize();
   _image->Size(size);
 
   _entity          = ECS::EntityManager::GetInstance().CreateEntity();
   auto ui_renderer = _entity->AddComponent< Components::UIRenderer >();
-  _entity->AddComponent< Transform >();
+  auto tr          = _entity->AddComponent< Transform >();
+  tr->Position({0.0f, 0.0f, 0.0f});
   ui_renderer->GetElements().push_back(_image);
 
   if (current_scene != nullptr) {
