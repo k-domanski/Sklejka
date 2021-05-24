@@ -9,6 +9,8 @@
 #include <Scripts/ShadowTarget.h>
 #include <Scripts/FlightTimer.h>
 
+#include "Scripts/StartTimer.h"
+
 using namespace Engine;
 GameLayer::GameLayer(): Engine::Layer("Game") {
 }
@@ -54,7 +56,7 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
 
   native_script = _playerRect->AddComponent< Engine::NativeScript >();
   auto player_rect = std::make_shared< PlayerRect >(player_controller); // Save it to variable, because I cannot retrive anything from attached scripts.......
-  player_rect->CanMove(true);
+  player_rect->CanMove(false);
   native_script->Attach(player_rect);
 
   native_script = camera_entity->AddComponent< Engine::NativeScript >();
@@ -64,7 +66,10 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   auto shadowTarget = std::make_shared< ShadowTarget >(model[0]);
   native_script->Attach(shadowTarget);
   auto flightTimer = std::make_shared< FlightTimer >(); // Save it to variable, because I cannot retrive anything from attached scripts.......
-  flightTimer->CanCount(true);
+  flightTimer->CanCount(false);
   native_script->Attach(flightTimer);
+
+  native_script->Attach(std::make_shared< StartTimer >(player_rect, flightTimer));
+
   //scene->RenderSystem()->SetShadowChecker(shadowTarget);
 }
