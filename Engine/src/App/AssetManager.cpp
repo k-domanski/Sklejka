@@ -200,7 +200,7 @@ namespace Engine {
   }
   auto AssetManager::LoadScene(std::string file) -> std::shared_ptr< Scene > {
     file = Utility::StripToRelativePath(file);
-    if (_loadedScenes.count(file) == 0) {
+   // if (_loadedScenes.count(file) == 0) {
       bool success = false;
       auto content = Utility::ReadTextFile(file, &success);
       if (!success) {
@@ -248,9 +248,11 @@ namespace Engine {
       if (current_scene != nullptr) {
         SceneManager::OpenScene(current_scene->GetID());
       }
+      //return std::make_shared<Scene>(*scene);
       return scene;
-    }
-    return _loadedScenes[file];
+    //}
+//    return std::make_shared< Scene > (*_loadedScenes[file]);
+    //return _loadedScenes[file];
   }
 
   auto AssetManager::GetCharacters(std::string file, int fontSize)

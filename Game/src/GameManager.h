@@ -13,12 +13,15 @@ private:
   inline static std::shared_ptr< GameManager > _instance = nullptr;
 
 private:
+  inline static std::shared_ptr< Engine::ECS::Entity > _playerRect = nullptr;
+  inline static std::shared_ptr< Engine::ECS::Entity > _player     = nullptr;
   std::shared_ptr< GameSettings > _gameSettings;
   std::shared_ptr< PlayerSettings > _playerSettings;
   std::shared_ptr< LoadingScreen > _loadingScreen;
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
   SceneName _currentSceneName = SceneName::MainMenu;
   GameManager();
+  static auto SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void;
 
 public:
   static auto Initialize() -> void;
