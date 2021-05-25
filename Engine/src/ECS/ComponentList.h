@@ -6,9 +6,10 @@ namespace Engine::ECS {
   public:
     IComponentList()                      = default;
     IComponentList(const IComponentList&) = delete;
-    auto operator=(const IComponentList&)          = delete;
-    virtual auto Remove(EntityID entityID) -> void = 0;
-    virtual auto Size() -> int                     = 0;
+    auto operator=(const IComponentList&)                     = delete;
+    virtual auto Remove(EntityID entityID) -> void            = 0;
+    virtual auto Size() -> int                                = 0;
+    virtual auto clone() -> std::shared_ptr< IComponentList > = 0;
   };
 
   template< typename T >
@@ -38,6 +39,14 @@ namespace Engine::ECS {
 
     auto Size() -> int override {
       return _components.size();
+    }
+    auto clone() -> std::shared_ptr< IComponentList > override {
+      auto copy = std::make_shared< ComponentList< T > >();
+      for (auto component : _components) {
+        copy->AddComponent(std::make_shared< T >(*component));
+      }
+
+      return copy;
     }
 
   private:

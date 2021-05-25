@@ -72,8 +72,8 @@ auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISound
 }
 
 auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
-  _playerRect = scene->FindEntity("Player_Rect");
-  _player     = scene->FindEntity("Player");
+  auto _playerRect = scene->FindEntity("Player_Rect");
+  auto _player     = scene->FindEntity("Player");
   if (_player == nullptr || _playerRect == nullptr) {
     LOG_TRACE("No player entity found");
     return;

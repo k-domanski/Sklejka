@@ -4,6 +4,7 @@
 //#include "ECS/EntityManager.h"
 //#include <pch.h>
 
+
 namespace Engine {
   namespace ECS {
     class Entity;
@@ -49,6 +50,10 @@ namespace Engine {
       _cameraSystem  = EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
       _physicsSystem = EntityManager::GetInstance().RegisterSystem< Systems::Physics >();*/
     }
+
+    Scene(const Scene& other);
+    //auto Clone() -> std::shared_ptr< Scene >;
+
     auto GetID() -> size_t;
     auto OpenScene() -> void;
     auto Update(float deltaTime) -> void;

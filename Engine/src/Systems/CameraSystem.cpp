@@ -79,4 +79,9 @@ namespace Engine::Systems {
       }
     }
   }
+
+  auto CameraSystem::ResetSystem() -> void {
+    System::ResetSystem();
+    _mainCamera = nullptr;
+  }
 }  // namespace Engine::Systems

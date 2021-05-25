@@ -8,6 +8,7 @@ namespace Engine::ECS {
 
   public:
     Entity() = default;
+    Entity(const Entity& entity);
     /*TODO: Entity(const std::string& name);
       lub overload CreateEntity w EntityManager*/
     ~Entity() = default;

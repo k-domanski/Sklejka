@@ -12,6 +12,71 @@
 #include "Systems/GUISystem.h"
 
 namespace Engine {
+  Scene::Scene(const Scene& other) {
+    _sceneGraph    = other._sceneGraph;
+    _renderSystem  = other._renderSystem;
+    _cameraSystem  = other._cameraSystem;
+    _physicsSystem = other._physicsSystem;
+    _lightSystem   = other._lightSystem;
+    _scriptSystem  = other._scriptSystem;
+    _GUISystem     = other._GUISystem;
+    _nodeSystem    = other._nodeSystem;
+
+    _id = other._id;
+
+    for (auto entity : other._entities) {
+      _entities.push_back(std::make_shared< ECS::Entity >(*entity));
+    }
+
+    for (auto [compType, list] : other._componentLists) {
+      _componentLists[compType] = list->clone();
+    }
+
+    _registeredSystems = other._registeredSystems;
+    //   reset systems here
+    for (auto [systemID, system] : _registeredSystems) {
+      system->ResetSystem();
+      for (auto entity : _entities) {
+        if (system->SignatureMatch(*entity->GetSignature()))
+          system->AddEntity(entity->GetID());
+      }
+    }
+  }
+
+  //auto Scene::Clone() -> std::shared_ptr< Scene > {
+  //  auto copy = std::make_shared< Scene >(_id);
+  //  copy->_sceneGraph = _sceneGraph;
+  //  copy->_renderSystem = _renderSystem;
+  //  copy->_cameraSystem = _cameraSystem;
+  //  copy->_physicsSystem = _physicsSystem;
+  //  copy->_lightSystem   = _lightSystem;
+  //  copy->_scriptSystem  = _scriptSystem;
+  //  copy->_GUISystem     = _GUISystem;
+  //  copy->_nodeSystem    = _nodeSystem;
+
+  //    copy->_id = _id;
+
+  //    for (auto entity : _entities) {
+  //      copy->_entities.push_back(std::make_shared< ECS::Entity >(*entity));
+  //    }
+
+  //    for (auto [compType, list] : _componentLists) {
+  //      copy->_componentLists[compType] = list->clone();
+  //    }
+
+  //    copy->_registeredSystems = _registeredSystems;
+  //    //   reset systems here
+  //    for (auto [systemID, system] : copy->_registeredSystems) {
+  //      system->ResetSystem();
+  //      for (auto entity : copy->_entities) {
+  //        if (system->SignatureMatch(*entity->GetSignature()))
+  //          system->AddEntity(entity->GetID());
+  //      }
+  //    }
+
+  //  return copy;
+  //}
+
   auto Scene::GetID() -> size_t {
     return _id;
   }
@@ -64,11 +129,11 @@ namespace Engine {
     _GUISystem->OnWindowResize(windowSize);
   }
 
-  auto Scene::OnMousePressed(glm::vec2 position)-> void {
+  auto Scene::OnMousePressed(glm::vec2 position) -> void {
     _GUISystem->HandleMousePressed(position);
   }
 
-  auto Scene::OnMouseReleased(glm::vec2 position)-> void {
+  auto Scene::OnMouseReleased(glm::vec2 position) -> void {
     _GUISystem->HandleMouseRelease(position);
   }
 

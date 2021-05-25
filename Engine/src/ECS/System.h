@@ -39,6 +39,7 @@ namespace Engine::ECS {
     virtual auto RemoveEntity(EntityID id) -> void;
 
     virtual void Update(float deltaTime) = 0;
+    virtual auto ResetSystem() -> void;
 
     virtual ~System() = default;
 

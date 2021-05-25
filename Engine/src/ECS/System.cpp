@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "System.h"
 #include "Component.h"
+#include "EntityManager.h"
 
 namespace Engine::ECS {
   auto System::ComponentsCount() -> int {
@@ -35,5 +36,12 @@ namespace Engine::ECS {
     if (auto it = std::find(_entities.begin(), _entities.end(), id); it != _entities.end()) {
       _entities.erase(it);
     }
+  }
+
+  auto System::ResetSystem() -> void {
+    /*for (auto entity : _entities) {
+      RemoveEntity(entity);
+    }*/
+    _entities.clear();
   }
 }  // namespace Engine::ECS

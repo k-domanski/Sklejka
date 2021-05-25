@@ -13,8 +13,8 @@ private:
   inline static std::shared_ptr< GameManager > _instance = nullptr;
 
 private:
-  inline static std::shared_ptr< Engine::ECS::Entity > _playerRect = nullptr;
-  inline static std::shared_ptr< Engine::ECS::Entity > _player     = nullptr;
+  //inline static std::shared_ptr< Engine::ECS::Entity > _playerRect = nullptr;
+  //inline static std::shared_ptr< Engine::ECS::Entity > _player     = nullptr;
   std::shared_ptr< GameSettings > _gameSettings;
   std::shared_ptr< PlayerSettings > _playerSettings;
   std::shared_ptr< LoadingScreen > _loadingScreen;

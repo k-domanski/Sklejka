@@ -24,5 +24,6 @@ namespace Engine::Systems {
     auto SwitchView() -> void;
     auto EditorView(bool enable) -> void;
     auto FindMainCamera() -> void;
+    auto ResetSystem() -> void override;
   };
 }  // namespace Engine::Systems

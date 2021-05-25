@@ -10,6 +10,12 @@
 #include "ECS/EntityManager.h"
 
 namespace Engine::ECS {
+  Entity::Entity(const Entity& other) {
+    _entityID  = other._entityID;
+    _name      = other._name;
+    _signature = std::make_shared< EntitySignature >(*other._signature);
+  }
+
   auto Entity::GetID() const -> EntityID {
     return _entityID;
   }
@@ -62,7 +68,8 @@ namespace Engine::ECS {
 
     std::string delimiter =
         "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137";  // TODO: Move to one place
-                                                                    // instead of declaring each time
+                                                                    // instead of declaring each
+                                                                    // time
 
     size_t pos = 0;
     std::string token;
@@ -113,7 +120,8 @@ namespace Engine::ECS {
     std::vector< std::string > separated_jsons;
     std::string delimiter =
         "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137";  // TODO: Move to one place
-                                                                    // instead of declaring each time
+                                                                    // instead of declaring each
+                                                                    // time
 
     size_t pos = 0;
     std::string token;
