@@ -108,8 +108,9 @@ auto Engine::Renderer::Button::OnReleaseHandle(glm::vec2 position) -> void {
 }
 
 auto Engine::Renderer::Button::OnPressHandle(glm::vec2 position) -> void {
-  if (_handleSize.x > position.x && -_handleSize.x < position.x && _handleSize.y > position.y
-      && -_handleSize.y < position.y) {
+  auto handle = _handleSize / 2.0f;
+  if (handle.x > position.x && -handle.x < position.x && handle.y > position.y
+      && -handle.y < position.y) {
     if (_onPress != nullptr)
       _onPress();
     _background.Color(_pressedColor);
