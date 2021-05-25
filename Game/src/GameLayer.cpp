@@ -8,6 +8,7 @@
 
 #include <Scripts/ShadowTarget.h>
 #include <Scripts/FlightTimer.h>
+#include <Scripts/CollisionDetector.h>
 
 #include <GameManager.h>
 #include "Scripts/StartTimer.h"
@@ -30,6 +31,8 @@ auto GameLayer::OnDetach() -> void {
 }
 
 auto GameLayer::OnUpdate(double deltaTime) -> void {
+  GameManager::Update(deltaTime);
+
   if (Input::IsKeyPressed(Key::D1)) {
     GameManager::SwitchScene(SceneName::Loading);
   } else if (Input::IsKeyPressed(Key::D2)) {
@@ -68,6 +71,7 @@ bool GameLayer::OnMouseButtonRelease(MouseButtonReleasedEvent& e) {
 auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   _playerRect = scene->FindEntity("Player_Rect");
   _player     = scene->FindEntity("Player");
+  _model      = scene->FindEntity("Model");
   if (_player == nullptr || _playerRect == nullptr) {
     LOG_TRACE("No player entity found");
     return;
@@ -77,7 +81,6 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   // auto scene         = SceneManager::GetCurrentScene();
   auto player_tr     = _player->GetComponent< Transform >();
   auto sceneGraph    = scene->SceneGraph();
-  auto model         = sceneGraph->GetChildren(_player->GetID());
   auto main_camera   = scene->CameraSystem()->MainCamera();
   auto camera_entity = ECS::EntityManager::GetInstance().GetEntity(main_camera->GetEntityID());
   auto camera_tr     = camera_entity->GetComponent< Transform >();
@@ -99,7 +102,7 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script->Attach(std::make_shared< CameraController >(player_controller));
 
   native_script->Attach(std::make_shared< PlayerController >(player_tr));
-  auto shadowTarget = std::make_shared< ShadowTarget >(model[0]);
+  auto shadowTarget = std::make_shared< ShadowTarget >(_model->GetID());
   native_script->Attach(shadowTarget);
   auto flightTimer =
       std::make_shared< FlightTimer >();  // Save it to variable, because I cannot retrive anything
@@ -110,6 +113,9 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   // native_script->Attach(std::make_shared< StartTimer >(player_rect, flightTimer));
   auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer);
   start_timer->CanCount(true);
+
+  native_script = _model->AddComponent< Engine::NativeScript >();
+  native_script->Attach< CollisionDetector >();
 
   // scene->RenderSystem()->SetShadowChecker(shadowTarget);
 }

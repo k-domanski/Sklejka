@@ -4,16 +4,21 @@
 namespace Engine::ECS {
   class Entity;
 }
+namespace Engine::Components {
+  class Collider;
+}
 
 namespace Engine {
   class IScript {
     friend class NativeScript;
 
   public:
-    ~IScript()                                                    = default;
-    auto virtual OnCreate() -> void                               = 0;
-    auto virtual Update(float deltaTime) -> void                  = 0;
-    auto virtual OnDestroy() -> void                              = 0;
+    ~IScript()                                   = default;
+    auto virtual OnCreate() -> void              = 0;
+    auto virtual Update(float deltaTime) -> void = 0;
+    auto virtual OnDestroy() -> void             = 0;
+    auto virtual OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider)
+        -> void                                                   = 0;
     auto virtual Priority() -> int                                = 0;
     auto virtual Entity() const -> std::shared_ptr< ECS::Entity > = 0;
 

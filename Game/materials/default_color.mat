@@ -2,10 +2,10 @@
     "assetID": "14126548041075956402",
     "diffuseFilepath": "",
     "mainColor": [
-        0.34285712242126465,
-        0.3357328176498413,
-        0.3357328176498413,
+        0.4652777910232544,
+        0.4652731418609619,
+        0.4652731418609619,
         1.0
     ],
-    "shaderFilepath": "./\\shaders\\color_light.glsl"
+    "shaderFilepath": "./\\shaders\\color_light_pbr.glsl"
 }

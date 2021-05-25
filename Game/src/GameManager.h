@@ -20,6 +20,9 @@ private:
   SceneName _currentSceneName = SceneName::MainMenu;
   GameManager();
 
+  /* Params */
+  float _speedUpDuration = 0.0f;
+
 public:
   static auto Initialize() -> void;
   static auto GetGameSettings() noexcept -> std::shared_ptr< GameSettings >;
@@ -28,4 +31,9 @@ public:
   static auto SwitchScene(SceneName scene) -> void;
   static auto GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene >;
   static auto ShowLoadingScreen() -> void;
+  static auto Update(float deltaTime) -> void;
+  static auto PlayerSpeedUp() -> void;
+
+private:
+  auto UpdateImpl(float deltaTime) -> void;
 };

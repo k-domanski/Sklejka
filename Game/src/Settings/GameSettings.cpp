@@ -39,3 +39,7 @@ auto GameSettings::PlayerTimeScale() const noexcept -> float {
 auto GameSettings::PlayerTimeScale(float scale) noexcept -> float {
   return _playerTimeScale = scale;
 }
+
+auto GameSettings::PlayerSpeedUpDuration() const noexcept -> float {
+  return _playerSpeedUpDuration;
+}

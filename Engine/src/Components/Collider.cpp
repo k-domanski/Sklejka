@@ -53,9 +53,8 @@ void Engine::Components::Collider::set_type(ColliderType type) {
   _type = type;
 }
 
-auto Engine::Components::Collider::LoadFromJson(std::string filePath) -> void
-{
-  //nlohmann::json json;
+auto Engine::Components::Collider::LoadFromJson(std::string filePath) -> void {
+  // nlohmann::json json;
   if (filePath[0] == '{' || filePath[0] == '\n') {  // HACK: Check if string is json
     nlohmann::json json = nlohmann::json::parse(filePath.begin(), filePath.end());
     _type               = json["colliderType"] == "Sphere" ? Type.Sphere : Type.Box;
@@ -63,9 +62,8 @@ auto Engine::Components::Collider::LoadFromJson(std::string filePath) -> void
     _static             = json["static"];
     _center             = glm::vec3(json["center"]["x"], json["center"]["y"], json["center"]["z"]);
     _size               = glm::vec3(json["size"]["x"], json["size"]["y"], json["size"]["z"]);
-  }
-  else {
-    auto content = Utility::ReadTextFile(filePath);
+  } else {
+    auto content        = Utility::ReadTextFile(filePath);
     nlohmann::json json = nlohmann::json::parse(content.begin(), content.end());
     _type               = json["colliderType"] == "Sphere" ? Type.Sphere : Type.Box;
     _trigger            = json["trigger"];
@@ -73,10 +71,9 @@ auto Engine::Components::Collider::LoadFromJson(std::string filePath) -> void
     _center             = glm::vec3(json["center"]["x"], json["center"]["y"], json["center"]["z"]);
     _size               = glm::vec3(json["size"]["x"], json["size"]["y"], json["size"]["z"]);
   }
-
 }
 
-//auto Engine::Components::Collider::LoadFromJsonString(std::string jsonString) -> void
+// auto Engine::Components::Collider::LoadFromJsonString(std::string jsonString) -> void
 //{
 //  nlohmann::json json = nlohmann::json::parse(jsonString.begin(), jsonString.end());
 //
@@ -87,9 +84,7 @@ auto Engine::Components::Collider::LoadFromJson(std::string filePath) -> void
 //  _size    = glm::vec3(json["size"]["x"], json["size"]["y"], json["size"]["z"]);
 //}
 
-std::string Engine::Components::Collider::SaveToJson(std::string filePath)
-{
-
+std::string Engine::Components::Collider::SaveToJson(std::string filePath) {
   std::ofstream ofstream;
   ofstream.open(filePath);
   ofstream << SaveToJson();
@@ -98,16 +93,14 @@ std::string Engine::Components::Collider::SaveToJson(std::string filePath)
   return SaveToJson();
 }
 
-std::string Engine::Components::Collider::SaveToJson()
-{
-  nlohmann::json json = nlohmann::json{
-      {"componentType", "collider"},
-      {"colliderType", _type._to_string()},
-      {"trigger", _trigger},
-      {"static", _static},
-      {"center", {{"x", _center.x}, {"y", _center.y}, {"z", _center.z}}},
-      {"size", {{"x", _size.x}, {"y", _size.y}, {"z", _size.z}}}
-  };
+std::string Engine::Components::Collider::SaveToJson() {
+  nlohmann::json json =
+      nlohmann::json{{"componentType", "collider"},
+                     {"colliderType", _type._to_string()},
+                     {"trigger", _trigger},
+                     {"static", _static},
+                     {"center", {{"x", _center.x}, {"y", _center.y}, {"z", _center.z}}},
+                     {"size", {{"x", _size.x}, {"y", _size.y}, {"z", _size.z}}}};
 
   return json.dump(4);
 }

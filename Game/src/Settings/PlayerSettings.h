@@ -3,15 +3,19 @@
 
 class PlayerSettings {
 private:
-  float _forwardSpeed    = 3.0f; /* Forward Speed (Player Rect) */
-  float _controlSpeed    = 1.0f; /* Left, Right, Up, Down Speed */
-  float _rollSpeed       = 1.0f; /* Roll speed */
-  float _seekSpeed       = 1.0f; /* Direction seek speed */
-  float _minNodeDistance = 0.2f; /* Min distance to the target node */
-  glm::vec2 _rectSize    = {4, 4};
+  float _forwardSpeedBase = 3.0f;
+  float _forwardSpeed     = 3.0f; /* Forward Speed (Player Rect) */
+  float _controlSpeedBase = 1.0f; /* Left, Right, Up, Down Speed */
+  float _controlSpeed     = 1.0f; /* Left, Right, Up, Down Speed */
+  float _rollSpeed        = 1.0f; /* Roll speed */
+  float _seekSpeed        = 1.0f; /* Direction seek speed */
+  float _minNodeDistance  = 0.2f; /* Min distance to the target node */
+  glm::vec2 _rectSize     = {4, 4};
 
 public:
   PlayerSettings() = default;
+  auto ForwardSpeedBase() const noexcept -> float;
+  auto ControlSpeedBase() const noexcept -> float;
   auto ForwardSpeed() const noexcept -> float;
   auto ForwardSpeed(float speed) noexcept -> float;
   auto ControlSpeed() const noexcept -> float;

@@ -10,6 +10,9 @@ private:
   float _gameTimeScale   = 1.0f;
   float _playerTimeScale = 1.0f;
 
+  /* Duration */
+  float _playerSpeedUpDuration = 3.0f;
+
 public:
   GameSettings() = default;
   /* Graphics */
@@ -24,4 +27,7 @@ public:
   auto GameTimeScale(float scale) noexcept -> float;
   auto PlayerTimeScale() const noexcept -> float;
   auto PlayerTimeScale(float scale) noexcept -> float;
+
+  /* Duration */
+  auto PlayerSpeedUpDuration() const noexcept -> float;
 };

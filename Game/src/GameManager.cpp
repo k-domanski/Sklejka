@@ -23,6 +23,10 @@ auto GameManager::GetPlayerSettings() noexcept -> std::shared_ptr< PlayerSetting
   return _instance->_playerSettings;
 }
 
+auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine > {
+  return _instance->_soundEngine;
+}
+
 auto GameManager::SwitchScene(SceneName scene) -> void {
   switch (scene) {
     case SceneName::MainMenu: {
@@ -56,6 +60,20 @@ auto GameManager::ShowLoadingScreen() -> void {
   Engine::SceneManager::OpenScene(_instance->_loadingScreen->Scene()->GetID());
 }
 
-auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine > {
-  return _instance->_soundEngine;
+auto GameManager::Update(float deltaTime) -> void {
+  _instance->UpdateImpl(deltaTime);
+}
+
+auto GameManager::PlayerSpeedUp() -> void {
+  _instance->_speedUpDuration = _instance->GetGameSettings()->PlayerSpeedUpDuration();
+  auto fast_speed             = _instance->GetPlayerSettings()->ForwardSpeedBase() * 1.5f;
+  _instance->GetPlayerSettings()->ForwardSpeed(fast_speed);
+}
+
+auto GameManager::UpdateImpl(float deltaTime) -> void {
+  if (_speedUpDuration > 0.0f) {
+    _speedUpDuration -= deltaTime;
+  } else {
+    GetPlayerSettings()->ForwardSpeed(GetPlayerSettings()->ForwardSpeedBase());
+  }
 }
