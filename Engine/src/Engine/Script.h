@@ -1,6 +1,7 @@
 #pragma once
 #include <Engine/IScript.h>
 #include <memory>
+#include <Components/Collider.h>
 
 namespace Engine {
   class Script : public IScript {
@@ -20,6 +21,8 @@ namespace Engine {
     auto Update(float deltaTime) -> void override {
     }
     auto OnDestroy() -> void override {
+    }
+    auto OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider) -> void {
     }
     auto Priority() -> int override {
       return _priority;

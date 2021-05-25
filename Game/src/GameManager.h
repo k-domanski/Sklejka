@@ -13,8 +13,6 @@ private:
   inline static std::shared_ptr< GameManager > _instance = nullptr;
 
 private:
-  inline static std::shared_ptr< Engine::ECS::Entity > _playerRect = nullptr;
-  inline static std::shared_ptr< Engine::ECS::Entity > _player     = nullptr;
   std::shared_ptr< GameSettings > _gameSettings;
   std::shared_ptr< PlayerSettings > _playerSettings;
   std::shared_ptr< LoadingScreen > _loadingScreen;
@@ -22,6 +20,13 @@ private:
   SceneName _currentSceneName = SceneName::MainMenu;
   GameManager();
   static auto SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void;
+
+  /* Params */
+  inline static std::shared_ptr< Engine::ECS::Entity > _playerRect = nullptr;
+  inline static std::shared_ptr< Engine::ECS::Entity > _player     = nullptr;
+  inline static std::shared_ptr< Engine::ECS::Entity > _model      = nullptr;
+
+  float _speedUpDuration = 0.0f;
 
 public:
   static auto Initialize() -> void;
@@ -31,4 +36,9 @@ public:
   static auto SwitchScene(SceneName scene) -> void;
   static auto GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene >;
   static auto ShowLoadingScreen() -> void;
+  static auto Update(float deltaTime) -> void;
+  static auto PlayerSpeedUp() -> void;
+
+private:
+  auto UpdateImpl(float deltaTime) -> void;
 };

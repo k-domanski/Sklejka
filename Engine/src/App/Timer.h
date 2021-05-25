@@ -13,8 +13,7 @@ namespace Engine {
     auto Update() -> void {
       auto current = glfwGetTime();
       _delta       = current - _last;
-      _last        = _now;
-      _now         = current;
+      _last        = current;
     }
     auto DeltaTime() -> double {
       return glm::clamp(_delta, 0.0, _maxDelta);

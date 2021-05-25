@@ -1,13 +1,7 @@
 #include <GameLayer.h>
 #include <filesystem>
-#include <Components/NativeScript.h>
-#include <Scripts/CameraController.h>
-#include <Scripts/PlayerController.h>
-#include <Scripts/PlayerRect.h>
 #include <Systems/SceneGraph.h>
 
-#include <Scripts/ShadowTarget.h>
-#include <Scripts/FlightTimer.h>
 
 #include <GameManager.h>
 #include "Scripts/StartTimer.h"
@@ -21,7 +15,7 @@ auto GameLayer::OnAttach() -> void {
   GameManager::SwitchScene(SceneName::LVL_1);
 
   auto scene = SceneManager::GetCurrentScene();
-  //SetupPlayer(scene);
+  // SetupPlayer(scene);
 
   // GameManager::ShowLoadingScreen();
 }
@@ -30,6 +24,8 @@ auto GameLayer::OnDetach() -> void {
 }
 
 auto GameLayer::OnUpdate(double deltaTime) -> void {
+  GameManager::Update(deltaTime);
+
   if (Input::IsKeyPressed(Key::D1)) {
     GameManager::SwitchScene(SceneName::Loading);
   } else if (Input::IsKeyPressed(Key::D2)) {

@@ -4,6 +4,7 @@
 class GameLayer : public Engine::Layer {
 private:
 
+  std::shared_ptr< Engine::ECS::Entity > _model      = nullptr;
 
 public:
   GameLayer();

@@ -1,0 +1,13 @@
+{
+    "assetID": "5671687025210346200",
+    "diffuseFilepath": "./\\textures\\bell.png",
+    "mainColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "metalness": 0.382999986410141,
+    "roughness": 0.32600000500679016,
+    "shaderFilepath": "./\\shaders\\directonal_light.glsl"
+}

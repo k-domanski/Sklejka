@@ -2,7 +2,6 @@
 #include "GameManager.h"
 #include <Engine.h>
 
-
 #include "Scripts/CameraController.h"
 #include "Scripts/FlightTimer.h"
 #include "Scripts/PlayerController.h"
@@ -10,7 +9,7 @@
 #include "Scripts/StartTimer.h"
 #include "Systems/SceneGraph.h"
 #include "Components/NativeScript.h"
-
+#include <Scripts/CollisionDetector.h>
 
 GameManager::GameManager() {
   _gameSettings   = std::make_shared< GameSettings >();
@@ -31,6 +30,10 @@ auto GameManager::GetGameSettings() noexcept -> std::shared_ptr< GameSettings > 
 
 auto GameManager::GetPlayerSettings() noexcept -> std::shared_ptr< PlayerSettings > {
   return _instance->_playerSettings;
+}
+
+auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine > {
+  return _instance->_soundEngine;
 }
 
 auto GameManager::SwitchScene(SceneName scene) -> void {
@@ -67,13 +70,30 @@ auto GameManager::ShowLoadingScreen() -> void {
   Engine::SceneManager::OpenScene(_instance->_loadingScreen->Scene()->GetID());
 }
 
-auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine > {
-  return _instance->_soundEngine;
+auto GameManager::Update(float deltaTime) -> void {
+  _instance->UpdateImpl(deltaTime);
+}
+
+auto GameManager::PlayerSpeedUp() -> void {
+  _instance->_speedUpDuration = _instance->GetGameSettings()->PlayerSpeedUpDuration();
+  auto fast_speed             = _instance->GetPlayerSettings()->ForwardSpeedBase()
+                    * _instance->GetPlayerSettings()->SpeedMultiplier();
+  _instance->GetPlayerSettings()->ForwardSpeed(fast_speed);
+}
+
+auto GameManager::UpdateImpl(float deltaTime) -> void {
+  if (_speedUpDuration > 0.0f) {
+    _speedUpDuration -= deltaTime;
+  } else {
+    GetPlayerSettings()->ForwardSpeed(GetPlayerSettings()->ForwardSpeedBase());
+  }
 }
 
 auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   _playerRect = scene->FindEntity("Player_Rect");
   _player     = scene->FindEntity("Player");
+  _model      = scene->FindEntity("Model");
+
   if (_player == nullptr || _playerRect == nullptr) {
     LOG_TRACE("No player entity found");
     return;
@@ -81,12 +101,12 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   LOG_TRACE("Player name: {}", _player->Name());
   // TODO: Uncomment later :)
   // auto scene         = SceneManager::GetCurrentScene();
-  auto player_tr     = _player->GetComponent< Engine::Transform >();
-  auto sceneGraph    = scene->SceneGraph();
-  auto model         = sceneGraph->GetChildren(_player->GetID());
-  auto main_camera   = scene->CameraSystem()->MainCamera();
-  auto camera_entity = Engine::ECS::EntityManager::GetInstance().GetEntity(main_camera->GetEntityID());
-  auto camera_tr     = camera_entity->GetComponent< Engine::Transform >();
+  auto player_tr   = _player->GetComponent< Engine::Transform >();
+  auto sceneGraph  = scene->SceneGraph();
+  auto main_camera = scene->CameraSystem()->MainCamera();
+  auto camera_entity =
+      Engine::ECS::EntityManager::GetInstance().GetEntity(main_camera->GetEntityID());
+  auto camera_tr = camera_entity->GetComponent< Engine::Transform >();
   // camera_tr->Position(player_tr->Position());
 
   auto native_script = _player->AddComponent< Engine::NativeScript >();
@@ -105,7 +125,7 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script->Attach(std::make_shared< CameraController >(player_controller));
 
   native_script->Attach(std::make_shared< PlayerController >(player_tr));
-  auto shadowTarget = std::make_shared< ShadowTarget >(model[0]);
+  auto shadowTarget = std::make_shared< ShadowTarget >(_model->GetID());
   native_script->Attach(shadowTarget);
   auto flightTimer =
       std::make_shared< FlightTimer >();  // Save it to variable, because I cannot retrive anything
@@ -116,6 +136,9 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   // native_script->Attach(std::make_shared< StartTimer >(player_rect, flightTimer));
   auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer);
   start_timer->CanCount(true);
+
+  native_script = _model->AddComponent< Engine::NativeScript >();
+  native_script->Attach< CollisionDetector >();
 
   // scene->RenderSystem()->SetShadowChecker(shadowTarget);
 }

@@ -1,5 +1,17 @@
 #include "PlayerSettings.h"
 
+auto PlayerSettings::SpeedMultiplier() const noexcept -> float {
+  return _speedMultiplier;
+}
+
+auto PlayerSettings::ForwardSpeedBase() const noexcept -> float {
+  return _forwardSpeedBase;
+}
+
+auto PlayerSettings::ControlSpeedBase() const noexcept -> float {
+  return _controlSpeedBase;
+}
+
 auto PlayerSettings::ForwardSpeed() const noexcept -> float {
   return _forwardSpeed;
 }

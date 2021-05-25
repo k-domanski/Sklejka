@@ -10,6 +10,10 @@ namespace Engine {
   };
 }  // namespace Engine
 
+namespace Engine::Components {
+  class Collider;
+}
+
 namespace Engine {
   class NativeScript : public ECS::Component {
   private:
@@ -30,6 +34,7 @@ namespace Engine {
     }
     auto Detach(const std::shared_ptr< IScript >& script) -> void;
     auto Update(float deltaTime) -> void;
+    auto OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider) -> void;
 
   private:
     auto Entity() -> std::shared_ptr< ECS::Entity >;

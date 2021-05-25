@@ -37,6 +37,13 @@ namespace Engine {
     }
   }
 
+  auto NativeScript::OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider)
+      -> void {
+    for (auto& script : _scripts) {
+      script->OnCollisionEnter(collider);
+    }
+  }
+
   auto NativeScript::Entity() -> std::shared_ptr< ECS::Entity > {
     if (_entity == nullptr) {
       _entity = ECS::EntityManager::GetInstance().GetEntity(GetEntityID());
