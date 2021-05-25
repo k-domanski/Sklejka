@@ -107,7 +107,9 @@ auto GameLayer::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   flightTimer->CanCount(false);
   native_script->Attach(flightTimer);
 
-  native_script->Attach(std::make_shared< StartTimer >(player_rect, flightTimer));
+  // native_script->Attach(std::make_shared< StartTimer >(player_rect, flightTimer));
+  auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer);
+  start_timer->CanCount(true);
 
   // scene->RenderSystem()->SetShadowChecker(shadowTarget);
 }
