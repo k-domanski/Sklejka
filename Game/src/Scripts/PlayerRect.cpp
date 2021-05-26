@@ -20,21 +20,17 @@ auto PlayerRect::OnCreate() -> void {
 auto PlayerRect::Update(float deltaTime) -> void {
   float vertical_move, horizontal_move, roll;
 
-  if (_canMove) {
-    HandleInput(vertical_move, horizontal_move, roll);
-    SeekTarget(deltaTime);
-    HandleMove(vertical_move, horizontal_move, deltaTime);
-    HandleRotation(roll, deltaTime);
-  }
+  HandleInput(vertical_move, horizontal_move, roll);
+  SeekTarget(deltaTime);
+  HandleMove(vertical_move, horizontal_move, deltaTime);
+  HandleRotation(roll, deltaTime);
 }
 
-auto PlayerRect::CanMove() -> bool
-{
+auto PlayerRect::CanMove() -> bool {
   return _canMove;
 }
 
-auto PlayerRect::CanMove(bool value) -> void
-{
+auto PlayerRect::CanMove(bool value) -> void {
   _canMove = value;
 }
 
@@ -60,7 +56,7 @@ auto PlayerRect::HandleInput(float& vertical, float& horizontal, float& roll) ->
   horizontal = glm::clamp(horizontal, -1.0f, 1.0f);
   roll       = glm::clamp(roll, -1.0f, 1.0f);
 
-  if(Input::IsKeyPressed(Key::X))
+  if (Input::IsKeyPressed(Key::X))
     GameManager::GetSoundEngine()->play2D("./sounds/placeholderBeep.wav", false);
 }
 
@@ -90,13 +86,15 @@ auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -
   // move_delta += horizontal * _transform->Right();
 
   // move_delta     = (glm::normalize(_moveVelocity) + move_delta) * _speed * deltaTime;
-  move_delta     = move_delta * _playerSettings->ControlSpeed() * deltaTime;
-  auto pos       = _playerController->Transform()->Position();
-  auto new_pos   = pos + move_delta;
-  auto half_size = glm::vec3(_playerSettings->RectSize(), 0.0f) * 0.5f;
+  if (_canMove) {
+    move_delta     = move_delta * _playerSettings->ControlSpeed() * deltaTime;
+    auto pos       = _playerController->Transform()->Position();
+    auto new_pos   = pos + move_delta;
+    auto half_size = glm::vec3(_playerSettings->RectSize(), 0.0f) * 0.5f;
 
-  new_pos = glm::clamp(new_pos, -half_size, half_size);
-  _playerController->Transform()->Position(new_pos);
+    new_pos = glm::clamp(new_pos, -half_size, half_size);
+    _playerController->Transform()->Position(new_pos);
+  }
 
   _transform->Position(_transform->Position()
                        + glm::normalize(_moveVelocity) * _playerSettings->ForwardSpeed()
@@ -104,7 +102,9 @@ auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -
 }
 
 auto PlayerRect::HandleRotation(float roll, float deltaTime) -> void {
-  _playerController->Transform()->Rotate(roll * deltaTime, {0.0f, 0.0f, -1.0f});
+  if (_canMove) {
+    _playerController->Transform()->Rotate(roll * deltaTime, {0.0f, 0.0f, -1.0f});
+  }
 }
 
 auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {

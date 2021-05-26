@@ -16,7 +16,7 @@ GameManager::GameManager() {
   _playerSettings = std::make_shared< PlayerSettings >();
   _soundEngine    = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
   _loadingScreen  = std::make_shared< LoadingScreen >();
-  _fishEyeShader     = Engine::AssetManager::GetShader("./shaders/fish_eye.glsl");
+  _fishEyeShader  = Engine::AssetManager::GetShader("./shaders/fish_eye.glsl");
 }
 
 auto GameManager::Initialize() -> void {
@@ -118,8 +118,7 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   // camera_tr->Position(player_tr->Position());
 
   auto native_script = _player->AddComponent< Engine::NativeScript >();
-  // auto player_controller = native_script->Attach(std::make_shared< PlayerController
-  // >(player_tr));
+  player_tr->Position(glm::vec3{0.0f});
   auto player_controller = native_script->Attach< PlayerController >(player_tr);
 
   native_script    = _playerRect->AddComponent< Engine::NativeScript >();
