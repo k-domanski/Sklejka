@@ -42,6 +42,36 @@ namespace Engine::Utility {
     value_t _state{0};
   };
 
+  template< typename T >
+  class TimeLerp {
+  private:
+    T _start, _end;
+    float _duration, _time{0.0f};
+
+  public:
+    TimeLerp() = default;
+    TimeLerp(T start, T end, float duration)
+        : _start(start), _end(end), _duration(duration), _time(0.0f) {
+    }
+    auto Set(T start, T end, float duration) {
+      _start    = start;
+      _end      = end;
+      _duration = duration;
+      _time     = 0.0f;
+    }
+    auto Update(float deltaTime) -> T {
+      auto t = glm::clamp(_time / _duration, 0.0f, 1.0f);
+      _time += deltaTime;
+      return (1.0f - t) * _start + t * _end;
+    }
+    auto Reset() -> void {
+      _time = 0.0f;
+    }
+    auto Finished() -> bool {
+      return (_duration - _time) <= 0.0f;
+    }
+  };
+
   struct ShaderParseResult {
     bool success = false;
     std::string version;

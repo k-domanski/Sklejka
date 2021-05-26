@@ -17,7 +17,7 @@ ShadowTarget::ShadowTarget(Engine::ECS::EntityID target)
 auto ShadowTarget::OnCreate() -> void {
   _rendererSystem =
       Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
-  _bar->bar->FillRatio(_currentAmount / _maxAmount);
+  _bar->bar->FillRatio(glm::min(1.0f, _currentAmount / _maxAmount));
   _bar->bar->Horizontal(false);
   _bar->transform->Position(glm::vec3(100.0f, 400.0f, 0.0f));
   _bar->bar->BackgroundColor(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
@@ -28,7 +28,7 @@ auto ShadowTarget::OnCreate() -> void {
 
 auto ShadowTarget::Update(float deltaTime) -> void {
   SamplesPassed(_rendererSystem->ObjectInShadow(_targetID));
-  _bar->bar->FillRatio(_currentAmount / _maxAmount);
+  _bar->bar->FillRatio(glm::min(1.0f, _currentAmount / _maxAmount));
   _currentAmount += _fillSpeed * _shadowRate * deltaTime;
   if (_currentAmount > _maxAmount)
     // _currentAmount = _maxAmount;

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Bar.h"
+#include "Engine.h"
 
 Engine::Renderer::Image Engine::Renderer::Bar::Background() const {
   return _background;
@@ -81,6 +82,7 @@ void Engine::Renderer::Bar::BackgroundTexture(std::shared_ptr< GL::Texture2D > t
 Engine::Renderer::Bar::Bar(): UIElement() {
   _background = Image();
   _fillArea   = Image();
+  _fillArea.Shader(Engine::AssetManager::GetShader("./shaders/bar.glsl"));
   _fillRatio  = 1.0f;
   _horizontal = true;
   _padding    = glm::vec2(0.0f);

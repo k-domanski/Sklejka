@@ -27,7 +27,7 @@ auto GameLayer::OnUpdate(double deltaTime) -> void {
   GameManager::Update(deltaTime);
 
   if (Input::IsKeyPressed(Key::D1)) {
-    GameManager::SwitchScene(SceneName::Loading);
+    GameManager::SwitchScene(SceneName::Cutscene);
   } else if (Input::IsKeyPressed(Key::D2)) {
     GameManager::SwitchScene(SceneName::LVL_1);
   }
