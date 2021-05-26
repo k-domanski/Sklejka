@@ -23,5 +23,6 @@ namespace Engine {
 		std::map<std::string, Renderer::BoneInfo> m_BoneInfoMap;
 		float m_CurrentTime;
 		float m_DeltaTime;
+		float m_AnimationSpeed = 5.0f;
 	};
 }

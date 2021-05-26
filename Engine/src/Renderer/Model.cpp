@@ -250,13 +250,7 @@ namespace Engine::Renderer {
         indices.push_back(face.mIndices[j]);
       }
     }
-<<<<<<< HEAD
-    
-
-    std::shared_ptr<Mesh> final_mesh = std::make_shared< Mesh >(vertices, indices);
-=======
     std::shared_ptr< Mesh > final_mesh = std::make_shared< Mesh >(vertices, indices);
->>>>>>> main
     final_mesh->SetName(mesh->mName.C_Str());
     final_mesh->SetModelMatrix(transformation);
     final_mesh->SetParentMesh(parentIndex);
@@ -288,8 +282,5 @@ namespace Engine::Renderer {
     
     return output;
   }
-<<<<<<< HEAD
-=======
 
->>>>>>> main
 }  // namespace Engine::Renderer

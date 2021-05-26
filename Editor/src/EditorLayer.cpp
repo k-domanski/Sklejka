@@ -34,16 +34,18 @@ void EditorLayer::OnAttach() {
   m_EditorCamera.transform->Position({0.0f, 0.0f, 2.0f});
   m_EditorCamera.transform->Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
   /* ----------------------- */
+  /*-------------------------Animation Test--------------------------*/
   auto entity = ECS::EntityManager::GetInstance().CreateEntity();
   entity->AddComponent<Transform>();
   entity->GetComponent<Transform>()->Scale(glm::vec3(0.005f));
   //auto model = AssetManager::GetModel("models/Pilot_LP_Animated.fbx");
   auto model = AssetManager::GetModel("models/animacja_test.fbx");
   //auto model = AssetManager::GetModel("models/silly_dancing.fbx");
-  auto material = AssetManager::GetMaterial("materials/anim_trooper.mat");
+  auto material = AssetManager::GetMaterial("materials/animation.mat");
   entity->AddComponent<Components::MeshRenderer>(model, material);
-  //entity->AddComponent<Animator>(model);
+  entity->AddComponent<Animator>(model);
   SceneManager::GetCurrentScene()->SceneGraph()->AddChild(0, entity->GetID());
+  /*-------------------------Animation Test--------------------------*/
 
   /* ---------Editor Panels--------- */
   m_SceneHierarchyPanel.SetScene(SceneManager::GetDisplayScene());

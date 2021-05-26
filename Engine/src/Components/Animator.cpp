@@ -31,7 +31,7 @@ namespace Engine {
 		m_DeltaTime = deltaTime;
 		if (m_CurrentAnimation != nullptr)
 		{
-			m_CurrentTime += m_CurrentAnimation->GetTicksPerSecond() * deltaTime;
+			m_CurrentTime += m_CurrentAnimation->GetTicksPerSecond() * deltaTime * m_AnimationSpeed;
 			m_CurrentTime = fmod(m_CurrentTime, m_CurrentAnimation->GetDuration());
 			CalculateBoneTransform(m_CurrentAnimation->GetRootNode(), glm::mat4(1.0f));
 		}
