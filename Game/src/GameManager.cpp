@@ -16,6 +16,7 @@ GameManager::GameManager() {
   _playerSettings = std::make_shared< PlayerSettings >();
   _soundEngine    = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
   _loadingScreen  = std::make_shared< LoadingScreen >();
+  _cutscene       = std::make_shared< Cutscene >();
   _fishEyeShader  = Engine::AssetManager::GetShader("./shaders/fish_eye.glsl");
 }
 
@@ -44,6 +45,10 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
     }
     case SceneName::Loading: {
       ShowLoadingScreen();
+      break;
+    }
+    case SceneName::Cutscene: {
+      _instance->PlayCutscene();
       break;
     }
     case SceneName::LVL_1: {
@@ -95,6 +100,11 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
 
   auto factor = (current_speed - base_speed) / max_speed;
   _fishEyeShader->SetValue("u_Factor", factor);
+}
+
+auto GameManager::PlayCutscene() -> void {
+  _cutscene->Reset();
+  Engine::SceneManager::OpenScene(_cutscene->Scene()->GetID());
 }
 
 auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
