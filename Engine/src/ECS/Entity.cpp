@@ -7,6 +7,7 @@
 #include "Components/Collider.h"
 #include "Components/DirectionalLight.h"
 #include "Components/Rigidbody.h"
+#include "Components/Animator.h"
 #include "ECS/EntityManager.h"
 
 namespace Engine::ECS {
@@ -93,19 +94,21 @@ namespace Engine::ECS {
 
       std::string component_type = component_json["componentType"];
       if (component_type == "transform")
-        AddComponent< Transform >()->LoadFromJson(separated_jsons[i]);
+          AddComponent< Transform >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "collider")
-        AddComponent< Components::Collider >()->LoadFromJson(separated_jsons[i]);
+          AddComponent< Components::Collider >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "meshRenderer")
-        AddComponent< Components::MeshRenderer >()->LoadFromJson(separated_jsons[i]);
+          AddComponent< Components::MeshRenderer >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "rigidbody")
-        AddComponent< Components::Rigidbody >()->LoadFromJson(separated_jsons[i]);
+          AddComponent< Components::Rigidbody >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "camera")
-        AddComponent< Camera >()->LoadFromJson(separated_jsons[i]);
+          AddComponent< Camera >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "directionalLight")
-        AddComponent< DirectionalLight >()->LoadFromJson(separated_jsons[i]);
+          AddComponent< DirectionalLight >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "node")
-        AddComponent< Node >()->LoadFromJson(separated_jsons[i]);
+          AddComponent< Node >()->LoadFromJson(separated_jsons[i]);
+      else if (component_type == "animator")
+          AddComponent<Animator>()->LoadFromJson(separated_jsons[i]);
     }
   }
 

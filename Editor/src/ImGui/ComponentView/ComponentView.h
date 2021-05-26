@@ -6,6 +6,7 @@
 #include "Components/Rigidbody.h"
 #include "Components/DirectionalLight.h"
 #include "Components/Node.h"
+#include "Components/Animator.h"
 #include <filesystem>
 
 namespace Editor {
@@ -294,5 +295,70 @@ namespace Editor {
         _component->NextIndex(next_index);
       }
     }
+  };
+
+  class AnimatorView : public ComponentView<Engine::Animator> {
+  private:
+      std::string modelPath;
+      std::filesystem::path _modelsFolder = std::filesystem::current_path().string() + "\\models\\";
+  public:
+      auto OnDraw() -> void override {
+          bool hasAnimation = _component->GetAnimation() != nullptr;
+          
+          modelPath =
+              hasAnimation
+              ? std::filesystem::path(_component->GetAnimation()->GetFilePath()).filename().string()
+              : "<None>";
+          ImGui::PushID("Animation");
+
+          ImGui::Columns(2);
+          ImGui::SetColumnWidth(0, 100);
+          ImGui::Text("Animation");
+          ImGui::NextColumn();
+          if (ImGui::BeginCombo("", modelPath.c_str())) {
+              for (auto& entry : std::filesystem::recursive_directory_iterator(_modelsFolder)) {
+                  const auto path = entry.path();
+                  const auto filename = path.filename().string();
+                  auto ext = path.extension().string();
+                  std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+                  if (!(ext == ".fbx" || ext == ".obj")) {
+                      continue;
+                  }
+                  if (ImGui::Selectable(filename.c_str())) {
+                      auto model = Engine::AssetManager::GetModel(path.string());
+                      _component->SetAnimation(model);
+                  }
+              }
+              ImGui::EndCombo();
+          }
+          if (ImGui::BeginPopupContextItem("component context menu")) {
+              if (ImGui::Selectable("Clear")) {
+                  _component->SetAnimation(nullptr);
+              }
+              ImGui::EndPopup();
+          }
+          if (ImGui::BeginDragDropTarget()) {
+              if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILE")) {
+                  auto payload_str = std::string(static_cast<char*>(payload->Data));
+                  LoadModel(payload_str);
+              }
+              ImGui::EndDragDropTarget();
+          }
+          ImGui::Columns(1);
+          ImGui::PopID();
+          ImGui::Separator();
+      }
+
+      void LoadModel(std::string& payload_str) {
+          auto filePath = std::filesystem::path(payload_str);
+          auto ext = filePath.extension().string();
+          std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+          if (!(ext == ".fbx" || ext == ".obj")) {
+              return;
+          }
+
+          auto model = Engine::AssetManager::GetModel(payload_str);
+          _component->SetAnimation(model);
+      }
   };
 }  // namespace Editor

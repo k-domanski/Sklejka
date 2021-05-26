@@ -26,7 +26,6 @@ namespace Engine::Renderer {
     int GetMeshCount();
     std::shared_ptr< Mesh > GetMesh(int index);
     static glm::mat4 aiMat4ToGlmMat4(aiMatrix4x4 aiMat);
-    void GetJointsTransformArray(glm::mat4* array);
     std::map<std::string, BoneInfo> GetBoneInfoMap() { return m_BoneMap; }
     unsigned int GetBoneCount() { return m_NumberOfBones; }
 

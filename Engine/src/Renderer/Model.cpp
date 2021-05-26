@@ -286,16 +286,4 @@ namespace Engine::Renderer {
     
     return output;
   }
-
-  void Model::GetJointsTransformArray(glm::mat4* array)
-  {
-      int i = 0;
-      for (auto entry : m_BoneMap)
-      {
-          array[i] = entry.second.inverseBindPose;
-          i++;
-      }
-  }
-
-
 }  // namespace Engine::Renderer

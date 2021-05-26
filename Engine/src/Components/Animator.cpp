@@ -1,10 +1,27 @@
 #include "pch.h"
 #include "Animator.h"
+#include <nlohmann/json.hpp>
+#include <Utility/Utility.h>
+#include <App/AssetManager.h>
 
 namespace Engine {
-	Animator::Animator(std::shared_ptr<Animation> animation)
-		:m_CurrentAnimation(animation), m_CurrentTime(0.0f), m_DeltaTime(0.0f)
+	Animator::Animator()
+		:Component("Animator")
 	{
+	}
+	Animator::Animator(std::shared_ptr<Animation> animation)
+		:Component("Animator"),m_CurrentAnimation(animation), m_CurrentTime(0.0f), m_DeltaTime(0.0f)
+	{
+		m_BoneInfoMap = m_CurrentAnimation->GetBoneIDMap();
+		m_FinalBoneMatrices.reserve(100);
+		for (int i = 0; i < 100; i++)
+			m_FinalBoneMatrices.push_back(glm::mat4(1.0f));
+	}
+	Animator::Animator(std::shared_ptr<Renderer::Model> model)
+		:Component("Animator"), m_CurrentTime(0.0f), m_DeltaTime(0.0f)
+	{
+		m_CurrentAnimation = std::make_shared<Animation>(model);
+		m_BoneInfoMap = m_CurrentAnimation->GetBoneIDMap();
 		m_FinalBoneMatrices.reserve(100);
 		for (int i = 0; i < 100; i++)
 			m_FinalBoneMatrices.push_back(glm::mat4(1.0f));
@@ -39,11 +56,10 @@ namespace Engine {
 
 		glm::mat4 globalTransformation = parentTransform * nodeTransform;
 
-		auto boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
-		if (boneInfoMap.find(nodeName) != boneInfoMap.end())
+		if (m_BoneInfoMap.find(nodeName) != m_BoneInfoMap.end())
 		{
-			int index = boneInfoMap[nodeName].boneId;
-			glm::mat4 offset = boneInfoMap[nodeName].inverseBindPose;
+			int index = m_BoneInfoMap[nodeName].boneId;
+			glm::mat4 offset = m_BoneInfoMap[nodeName].inverseBindPose;
 			m_FinalBoneMatrices[index] = globalTransformation * offset;
 		}
 
@@ -51,5 +67,47 @@ namespace Engine {
 		{
 			CalculateBoneTransform(node.children[i], globalTransformation);
 		}
+	}
+	std::string Animator::SaveToJson()
+	{
+		using namespace nlohmann;
+		json json = nlohmann::json{
+			{"componentType", "animator"},
+			{"model", Utility::StripToRelativePath(m_CurrentAnimation->GetFilePath())},
+		};
+		return json.dump(2);
+	}
+	void Animator::LoadFromJson(std::string filePath)
+	{
+		nlohmann::json json;
+		if (filePath[0] == '{' || filePath[0] == '\n')  // HACK: Check if string is json
+			json = nlohmann::json::parse(filePath.begin(), filePath.end());
+		else {
+			auto content = Utility::ReadTextFile(filePath);
+			json = nlohmann::json::parse(content.begin(), content.end());
+		}
+
+		auto model = AssetManager::GetModel(json["model"]);
+		m_CurrentAnimation = std::make_shared<Animation>(model);
+		m_BoneInfoMap = m_CurrentAnimation->GetBoneIDMap();
+		m_FinalBoneMatrices.reserve(100);
+		for (int i = 0; i < 100; i++)
+			m_FinalBoneMatrices.push_back(glm::mat4(1.0f));
+	}
+	void Animator::SetAnimation(std::shared_ptr<Renderer::Model> model)
+	{
+		if (model == nullptr)
+		{
+			m_CurrentAnimation = nullptr;
+			return;
+		}
+		m_CurrentTime = 0.0f;
+		m_DeltaTime = 0.0f;
+		m_CurrentAnimation = std::make_shared<Animation>(model);
+		m_BoneInfoMap = m_CurrentAnimation->GetBoneIDMap();
+		m_FinalBoneMatrices.reserve(100);
+		m_FinalBoneMatrices.clear();
+		for (int i = 0; i < 100; i++)
+			m_FinalBoneMatrices.push_back(glm::mat4(1.0f));
 	}
 }

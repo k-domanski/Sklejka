@@ -55,6 +55,9 @@ namespace Editor {
     if (_entity->HasComponent< Engine::Node >()) {
       _componentViews.push_back(std::make_shared< NodeView >());
     }
+    if (_entity->HasComponent<Engine::Animator>()) {
+        _componentViews.push_back(std::make_shared<AnimatorView>());
+    }
   }
 
   auto InspectorPanel::WrapViewInTreeNode(const std::shared_ptr< IComponentView >& view) -> void {
@@ -176,6 +179,16 @@ namespace Editor {
           APP_WARN("{} entity already has Node component!", _entity->Name());
         }
         ImGui::CloseCurrentPopup();
+      }
+      if (ImGui::MenuItem("Animator")) {
+          if (_entity->GetComponent< Animator >() == nullptr) {
+              _entity->AddComponent< Animator >();
+              ReattachEntity();
+          }
+          else {
+              APP_WARN("{} entity already has Node component!", _entity->Name());
+          }
+          ImGui::CloseCurrentPopup();
       }
       ReattachEntity();
       ImGui::EndPopup();

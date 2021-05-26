@@ -4,13 +4,14 @@
 #include "assimp/postprocess.h"
 
 namespace Engine {
-	Animation::Animation(const std::string& animationPath, std::shared_ptr<Renderer::Model> model)
+	Animation::Animation(std::shared_ptr<Renderer::Model> model)
 	{
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
+		const aiScene* scene = importer.ReadFile(model->GetFilepath(), aiProcess_Triangulate);
 		auto animation = scene->mAnimations[0];
 		m_Duration = animation->mDuration;
 		m_TicksPerSecond = animation->mTicksPerSecond;
+		m_ModelFilePath = model->GetFilepath();
 		ReadHierarchyData(m_RootNode, scene->mRootNode);
 		ReadMissingBones(animation, model);
 	}
