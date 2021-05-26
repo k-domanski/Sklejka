@@ -3,6 +3,7 @@
 
 Engine::GL::QueryObject::QueryObject() noexcept {
   glGenQueries(1, &_handle);
+  _queryType = GL_ANY_SAMPLES_PASSED;
   _started = false;
 }
 
@@ -15,12 +16,19 @@ auto Engine::GL::QueryObject::Release() -> void {
 }
 
 auto Engine::GL::QueryObject::Start() -> void {
-  glBeginQuery(GL_ANY_SAMPLES_PASSED, _handle);
+  glBeginQuery(_queryType, _handle);
+  _started = true;
+}
+
+auto Engine::GL::QueryObject::Start(GLint queryType) -> void
+{
+  _queryType = queryType;
+  glBeginQuery(_queryType, _handle);
   _started = true;
 }
 
 auto Engine::GL::QueryObject::End() -> void {
-  glEndQuery(GL_ANY_SAMPLES_PASSED);
+  glEndQuery(_queryType);
 }
 
 auto Engine::GL::QueryObject::AnySamplesPassed() -> GLboolean {
@@ -30,4 +38,14 @@ auto Engine::GL::QueryObject::AnySamplesPassed() -> GLboolean {
   glGetQueryObjectiv(_handle, GL_QUERY_RESULT, &res);
   //std::cout << res << std::endl;
   return res > 0 ? GL_TRUE : GL_FALSE;
+}
+
+auto Engine::GL::QueryObject::SamplesPassed() -> GLint
+{
+  GLint res;
+  if (!_started)
+    return 0;
+  glGetQueryObjectiv(_handle, GL_QUERY_RESULT, &res);
+  // std::cout << res << std::endl;
+  return res;
 }

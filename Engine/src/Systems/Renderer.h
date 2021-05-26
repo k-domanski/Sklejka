@@ -10,6 +10,8 @@
 #include <Renderer/PingPongBuffer.h>
 #include <Systems/LightSystem.h>
 
+#include "../../../Game/src/Scripts/ShadowTarget.h"
+
 namespace Engine::GL {
   class Cubemap;
 }
@@ -22,6 +24,8 @@ namespace Engine::Systems {
     void Update(float deltaTime) override;
     auto AddEntity(ECS::EntityID id) -> void override;
     auto OnWindowResize(glm::vec2 windowSize) -> void;
+    //auto SetShadowChecker(std::shared_ptr< ShadowTarget > target) -> void;
+    auto ObjectInShadow(ECS::EntityID entity) -> GLint;
 
   private:
     std::vector< ECS::EntityID > _visibleEntities;
@@ -36,6 +40,8 @@ namespace Engine::Systems {
 
     std::shared_ptr< Engine::Renderer::Mesh > _sphereCollider;
     std::shared_ptr< Engine::GL::Shader > _sphereColliderShader;
+
+    //std::shared_ptr< ShadowTarget > _playerShadowTarget;
 
     std::shared_ptr< CameraSystem > _cameraSystem;
     std::shared_ptr< LightSystem > _lightSystem;

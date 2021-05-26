@@ -1,0 +1,47 @@
+#pragma once
+#include <pch.h>
+#include "Settings/PlayerSettings.h"
+#include "Settings/GameSettings.h"
+#include <GUI/LoadingScreen.h>
+#include "irrKlang.h"
+
+BETTER_ENUM(__SceneName, int, MainMenu, Loading, LVL_1);
+typedef __SceneName SceneName;
+
+class GameManager {
+private:
+  inline static std::shared_ptr< GameManager > _instance = nullptr;
+
+private:
+  std::shared_ptr< GameSettings > _gameSettings;
+  std::shared_ptr< PlayerSettings > _playerSettings;
+  std::shared_ptr< LoadingScreen > _loadingScreen;
+  std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
+  SceneName _currentSceneName = SceneName::MainMenu;
+  GameManager();
+  static auto SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void;
+
+  /* Params */
+  inline static std::shared_ptr< Engine::ECS::Entity > _playerRect = nullptr;
+  inline static std::shared_ptr< Engine::ECS::Entity > _player     = nullptr;
+  inline static std::shared_ptr< Engine::ECS::Entity > _model      = nullptr;
+
+  float _speedUpDuration = 0.0f;
+  std::shared_ptr< Engine::GL::Shader > _fishEyeShader;
+  float _speedFactor = 1.0f;
+
+public:
+  static auto Initialize() -> void;
+  static auto GetGameSettings() noexcept -> std::shared_ptr< GameSettings >;
+  static auto GetPlayerSettings() noexcept -> std::shared_ptr< PlayerSettings >;
+  static auto GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine >;
+  static auto SwitchScene(SceneName scene) -> void;
+  static auto GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene >;
+  static auto ShowLoadingScreen() -> void;
+  static auto Update(float deltaTime) -> void;
+  static auto PlayerSpeedUp() -> void;
+
+private:
+  auto UpdateImpl(float deltaTime) -> void;
+
+};

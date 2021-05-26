@@ -3,7 +3,8 @@
 
 class GameLayer : public Engine::Layer {
 private:
-  std::shared_ptr< Engine::ECS::Entity > _player = nullptr;
+
+  std::shared_ptr< Engine::ECS::Entity > _model      = nullptr;
 
 public:
   GameLayer();
@@ -11,7 +12,9 @@ public:
   auto OnDetach() -> void override;
   auto OnUpdate(double deltaTime) -> void override;
   auto OnEvent(Engine::Event& event) -> void override;
+  bool OnMouseButtonPress(Engine::MouseButtonPressedEvent& e);
+  bool OnMouseButtonRelease(Engine::MouseButtonReleasedEvent& e);
+  
 
 private:
-  auto SetupPlayer(std::shared_ptr< Engine::ECS::Entity >& player) -> void;
 };

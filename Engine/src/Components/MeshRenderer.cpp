@@ -1,15 +1,19 @@
 #include "pch.h"
 #include "MeshRenderer.h"
-
-#include "../../../Editor/src/ImGui/Panels/FileSystemPanel.h"
+#include "Utility/Utility.h"
+#include "App/AssetManager.h"
 
 namespace Engine::Components {
   auto MeshRenderer::GetModel() -> std::shared_ptr< Renderer::Model > {
     return _model;
   }
 
-  auto MeshRenderer::GetMeshIndex() -> int {
+  auto MeshRenderer::MeshIndex() const noexcept -> int {
     return _meshIndex;
+  }
+
+  auto MeshRenderer::MeshIndex(unsigned index) noexcept -> int {
+    return _meshIndex = index;
   }
 
   auto MeshRenderer::SetModel(std::shared_ptr< Renderer::Model > model) -> void {

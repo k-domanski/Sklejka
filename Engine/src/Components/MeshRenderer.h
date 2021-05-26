@@ -24,7 +24,8 @@ namespace Engine::Components {
     ~MeshRenderer() override = default;
 
     auto GetModel() -> std::shared_ptr< Renderer::Model >;
-    auto GetMeshIndex() -> int;
+    auto MeshIndex() const noexcept -> int;
+    auto MeshIndex(unsigned index) noexcept -> int;
     auto SetModel(std::shared_ptr< Renderer::Model > mesh) -> void;
     auto GetMaterial() -> std::shared_ptr< Renderer::Material >;
     auto SetMaterial(std::shared_ptr< Renderer::Material > material) -> void;
@@ -38,7 +39,7 @@ namespace Engine::Components {
 
   private:
     std::shared_ptr< Renderer::Model > _model;
-    int _meshIndex;
+    int _meshIndex{0};
     std::shared_ptr< Renderer::Material > _material;
     bool _dirty;
   };

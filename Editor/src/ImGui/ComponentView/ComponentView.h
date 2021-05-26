@@ -106,8 +106,16 @@ namespace Editor {
           hasMaterial
               ? std::filesystem::path(_component->GetMaterial()->FilePath()).filename().string()
               : "<None>";
-      ImGui::PushID("Model");
 
+      if (hasModel) {
+        int mesh_index = _component->MeshIndex();
+        if (ImGui::InputInt("Mesh Index", &mesh_index)) {
+          mesh_index = glm::clamp(mesh_index, 0, _component->GetModel()->GetMeshCount() - 1);
+          _component->MeshIndex(mesh_index);
+        }
+      }
+
+      ImGui::PushID("Model");
       ImGui::Columns(2);
       ImGui::SetColumnWidth(0, 100);
       ImGui::Text("Model");

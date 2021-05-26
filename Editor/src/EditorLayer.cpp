@@ -174,16 +174,15 @@ auto EditorLayer::UpdateEditorCamera() -> void {
 }
 
 auto EditorLayer::OpenModel() {
-  std::optional< std::string > filepath = FileDialog::OpenFile("Model (*.fbx, *.fbx)\0*.fbx\0");
-  if (filepath)
-  {
-    std::shared_ptr< Renderer::Model > model_ptr = std::make_shared< Renderer::Model >(filepath.value());
+  std::optional< std::string > filepath = FileDialog::OpenFile("Model (*.fbx, *.FBX)\0*.fbx\0");
+  if (filepath) {
+    std::shared_ptr< Renderer::Model > model_ptr =
+        std::make_shared< Renderer::Model >(filepath.value());
     std::vector< ECS::EntityID > loadedMeshes_ids(100);
 
     ECS::EntityID rootID = AddObjectOnScene(model_ptr, 0, 0, &loadedMeshes_ids);
 
-    for (int i = 1; i < model_ptr->GetMeshCount(); i++)
-    {
+    for (int i = 1; i < model_ptr->GetMeshCount(); i++) {
       AddObjectOnScene(model_ptr, i, rootID, &loadedMeshes_ids);
     }
   }
@@ -234,17 +233,17 @@ auto EditorLayer::LoadScene() -> void {
     SceneManager::OpenScene(scene->GetID());
     m_SceneHierarchyPanel.SetScene(SceneManager::GetCurrentScene());
 
-    scene->CameraSystem()->EditorView(true);
-
     /* Force inject editor camera into the new scene */
     scene->SceneGraph()->AddChild(0, m_EditorCamera.entity->GetID());
     ECS::EntityManager::InjectEntity(m_EditorCamera.entity);
     ECS::EntityManager::InjectComponent< Transform >(m_EditorCamera.transform);
     ECS::EntityManager::InjectComponent< Camera >(m_EditorCamera.camera);
+    scene->CameraSystem()->EditorView(true);
   }
 }
 
-auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> ECS::EntityID {
+auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent)
+    -> ECS::EntityID {
   auto model = AssetManager::GetModel(path);
   if (model->GetRootMesh() == nullptr)
     return 0;
@@ -263,7 +262,8 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
 }
 
 auto EditorLayer::AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
-                                   Engine::ECS::EntityID parent, std::vector<ECS::EntityID>* loadedMeshes) -> ECS::EntityID {
+                                   Engine::ECS::EntityID parent,
+                                   std::vector< ECS::EntityID >* loadedMeshes) -> ECS::EntityID {
   if (model->GetRootMesh() == nullptr)
     return 0;
   using namespace Engine::ECS;

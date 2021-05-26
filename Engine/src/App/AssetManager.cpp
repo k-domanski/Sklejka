@@ -88,7 +88,7 @@ namespace Engine {
         return nullptr;
       }
       int x, y, n;
-      //auto pixel_data = stbi_loadf(file.data(), &x, &y, &n, 4);
+      // auto pixel_data = stbi_loadf(file.data(), &x, &y, &n, 4);
       auto pixel_data = stbi_load(file.data(), &x, &y, &n, 4);
       auto texture    = std::make_shared< GL::Texture2D >(x, y, pixel_data);
       texture->FilePath(file);
@@ -200,7 +200,7 @@ namespace Engine {
   }
   auto AssetManager::LoadScene(std::string file) -> std::shared_ptr< Scene > {
     file = Utility::StripToRelativePath(file);
-    if (_loadedScenes.count(file) == 0) {
+   // if (_loadedScenes.count(file) == 0) {
       bool success = false;
       auto content = Utility::ReadTextFile(file, &success);
       if (!success) {
@@ -242,22 +242,24 @@ namespace Engine {
         sg->AddChild(parentID, entity->GetID());
       }
 
+      scene->CameraSystem()->FindMainCamera();
+      _loadedScenes[file] = scene;
+
       if (current_scene != nullptr) {
         SceneManager::OpenScene(current_scene->GetID());
       }
-      scene->CameraSystem()->FindMainCamera();
-      _loadedScenes[file] = scene;
+      //return std::make_shared<Scene>(*scene);
       return scene;
-    }
-    return _loadedScenes[file];
+    //}
+//    return std::make_shared< Scene > (*_loadedScenes[file]);
+    //return _loadedScenes[file];
   }
 
   auto AssetManager::GetCharacters(std::string file, int fontSize)
-      -> std::shared_ptr<std::map< char, Utility::Character >> {
+      -> std::shared_ptr< std::map< char, Utility::Character > > {
     auto characters = std::make_shared< std::map< char, Utility::Character > >();
 
-    if (_loadedCharacters.count(file) == 0)
-    {
+    if (_loadedCharacters.count(file) == 0) {
       FT_Library ft;
       if (FT_Init_FreeType(&ft)) {
         std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
@@ -277,7 +279,7 @@ namespace Engine {
         return characters;
       }
 
-      glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);  // disable byte-alignment restriction
 
       for (unsigned char c = 0; c < 128; c++) {
         // load character glyph
@@ -294,8 +296,8 @@ namespace Engine {
         // unsigned int texture;
         // glGenTextures(1, &texture);
         // glBindTexture(GL_TEXTURE_2D, texture);
-        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows,
-        // 0,
+        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width,
+        // face->glyph->bitmap.rows, 0,
         //             GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
         //// set texture options
         // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

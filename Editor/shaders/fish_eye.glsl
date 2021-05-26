@@ -29,13 +29,13 @@ in ShaderData {
 }
 fs_in;
 
-float factor = 0.5f;
+uniform float u_Factor = 0.0f;
 
 void main() {
   vec2 ndc     = uv2ndc(fs_in.uv);
   float theta  = atan(ndc.y, ndc.x);
   float radius = length(ndc);
-  radius       = pow(radius, (1 - radius * factor));
+  radius       = pow(radius, (1 - radius * u_Factor));
   ndc.x        = radius * cos(theta);
   ndc.y        = radius * sin(theta);
   vec2 uv      = ndc2uv(ndc);

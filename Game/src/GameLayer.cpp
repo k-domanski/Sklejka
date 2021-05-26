@@ -1,8 +1,10 @@
 #include <GameLayer.h>
 #include <filesystem>
-#include <Components/NativeScript.h>
-#include <Scripts/CameraController.h>
-#include <Scripts/PlayerController.h>
+#include <Systems/SceneGraph.h>
+
+
+#include <GameManager.h>
+#include "Scripts/StartTimer.h"
 
 using namespace Engine;
 GameLayer::GameLayer(): Engine::Layer("Game") {
@@ -10,38 +12,51 @@ GameLayer::GameLayer(): Engine::Layer("Game") {
 
 auto GameLayer::OnAttach() -> void {
   LOG_TRACE("Current dir: {}", std::filesystem::current_path().string());
-  auto scene = AssetManager::LoadScene("./scenes/_the_map.scene");
-  SceneManager::AddScene(scene);
-  SceneManager::OpenScene(scene->GetID());
+  GameManager::SwitchScene(SceneName::LVL_1);
 
-  _player = scene->FindEntity("Player");
-  LOG_TRACE("Player name: {}", _player->Name());
+  auto scene = SceneManager::GetCurrentScene();
+  // SetupPlayer(scene);
 
-  SetupPlayer(_player);
+  // GameManager::ShowLoadingScreen();
 }
 
 auto GameLayer::OnDetach() -> void {
 }
 
 auto GameLayer::OnUpdate(double deltaTime) -> void {
+  GameManager::Update(deltaTime);
+
+  if (Input::IsKeyPressed(Key::D1)) {
+    GameManager::SwitchScene(SceneName::Loading);
+  } else if (Input::IsKeyPressed(Key::D2)) {
+    GameManager::SwitchScene(SceneName::LVL_1);
+  }
+
   SceneManager::GetCurrentScene()->Update(deltaTime);
   SceneManager::GetCurrentScene()->Draw();
 }
 
 auto GameLayer::OnEvent(Engine::Event& event) -> void {
+  EventDispatcher dispatcher(event);
+  dispatcher.Dispatch< MouseButtonPressedEvent >(BIND_EVENT_FN(GameLayer::OnMouseButtonPress));
+  dispatcher.Dispatch< MouseButtonReleasedEvent >(BIND_EVENT_FN(GameLayer::OnMouseButtonRelease));
 }
 
-auto GameLayer::SetupPlayer(std::shared_ptr< Engine::ECS::Entity >& player) -> void {
-  auto scene         = SceneManager::GetCurrentScene();
-  auto player_tr     = player->GetComponent< Transform >();
-  auto main_camera   = scene->CameraSystem()->MainCamera();
-  auto camera_entity = ECS::EntityManager::GetInstance().GetEntity(main_camera->GetEntityID());
-  auto camera_tr     = camera_entity->GetComponent< Transform >();
-  camera_tr->Position(player_tr->Position());
+bool GameLayer::OnMouseButtonPress(MouseButtonPressedEvent& e) {
+  if (e.GetMouseButton() == MouseCode::ButtonLeft) {
+    auto mousePos = Input::GetMousePosition();
+    mousePos.y    = Window::Get().GetHeight() - mousePos.y;
+    SceneManager::GetCurrentScene()->OnMousePressed(mousePos);
+  }
 
-  auto native_script = camera_entity->AddComponent< Engine::NativeScript >();
-  native_script->Attach(std::make_shared< CameraController >(player_tr));
+  return true;
+}
 
-  native_script = player->AddComponent< Engine::NativeScript >();
-  native_script->Attach(std::make_shared< PlayerController >(player_tr));
+bool GameLayer::OnMouseButtonRelease(MouseButtonReleasedEvent& e) {
+  if (e.GetMouseButton() == MouseCode::ButtonLeft) {
+    auto mousePos = Input::GetMousePosition();
+    mousePos.y    = Window::Get().GetHeight() - mousePos.y;
+    SceneManager::GetCurrentScene()->OnMouseReleased(mousePos);
+  }
+  return false;
 }

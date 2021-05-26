@@ -27,6 +27,7 @@ namespace Engine {
     _GUISystem     = ECS::EntityManager::GetInstance().RegisterSystem< Systems::GUISystem >();
     _nodeSystem    = ECS::EntityManager::GetInstance().RegisterSystem< Engine::NodeSystem >();
     _animationSystem = ECS::EntityManager::GetInstance().RegisterSystem<Systems::AnimationSystem>();
+    _cameraSystem->FindMainCamera();
   }
 
   auto Scene::Update(float deltaTime) -> void {
@@ -57,10 +58,23 @@ namespace Engine {
     return _cameraSystem;
   }
 
+  auto Scene::RenderSystem() -> std::shared_ptr< Systems::Renderer > {
+    return _renderSystem;
+  }
+
   auto Scene::OnWindowResize(glm::vec2 windowSize) -> void {
     _renderSystem->OnWindowResize(windowSize);
     _GUISystem->OnWindowResize(windowSize);
   }
+
+  auto Scene::OnMousePressed(glm::vec2 position)-> void {
+    _GUISystem->HandleMousePressed(position);
+  }
+
+  auto Scene::OnMouseReleased(glm::vec2 position)-> void {
+    _GUISystem->HandleMouseRelease(position);
+  }
+
   auto Scene::FindEntity(const std::string& name) -> std::shared_ptr< ECS::Entity > {
     auto it = std::find_if(_entities.begin(), _entities.end(),
                            [&name](const auto& entity) { return entity->Name() == name; });
