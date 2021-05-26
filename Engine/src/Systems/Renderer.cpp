@@ -597,7 +597,7 @@ namespace Engine::Systems {
     _quad->Use();
 
     /* Fish Eye */
-    if (false) {
+    if (true) {
       _fishEyeShader->Use();
       _fishEyeShader->SetValue("u_MainTexture", 0);
       _pingPongBuffer->Swap();

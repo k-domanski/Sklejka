@@ -27,6 +27,8 @@ private:
   inline static std::shared_ptr< Engine::ECS::Entity > _model      = nullptr;
 
   float _speedUpDuration = 0.0f;
+  std::shared_ptr< Engine::GL::Shader > _fishEyeShader;
+  float _speedFactor = 1.0f;
 
 public:
   static auto Initialize() -> void;
@@ -41,4 +43,5 @@ public:
 
 private:
   auto UpdateImpl(float deltaTime) -> void;
+
 };

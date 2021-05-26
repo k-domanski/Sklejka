@@ -16,6 +16,7 @@ GameManager::GameManager() {
   _playerSettings = std::make_shared< PlayerSettings >();
   _soundEngine    = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
   _loadingScreen  = std::make_shared< LoadingScreen >();
+  _fishEyeShader     = Engine::AssetManager::GetShader("./shaders/fish_eye.glsl");
 }
 
 auto GameManager::Initialize() -> void {
@@ -87,6 +88,13 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
   } else {
     GetPlayerSettings()->ForwardSpeed(GetPlayerSettings()->ForwardSpeedBase());
   }
+
+  auto base_speed    = GetPlayerSettings()->ForwardSpeedBase();
+  auto max_speed     = base_speed * GetPlayerSettings()->SpeedMultiplier();
+  auto current_speed = GetPlayerSettings()->ForwardSpeed();
+
+  auto factor = (current_speed - base_speed) / max_speed;
+  _fishEyeShader->SetValue("u_Factor", factor);
 }
 
 auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
