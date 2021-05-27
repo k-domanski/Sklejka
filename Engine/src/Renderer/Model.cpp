@@ -45,6 +45,15 @@ namespace Engine::Renderer {
     return meshes.size();
   }
 
+  int Model::GetNodeCount()
+  {
+    return nodes.size();
+  }
+
+  std::shared_ptr<aiNode> Model::GetNode(int index) {
+    return nodes[index];
+  }
+
   std::shared_ptr< Mesh > Model::GetMesh(int index) {
     return meshes[glm::clamp(index, 0, GetMeshCount() - 1)];
   }
@@ -66,6 +75,8 @@ namespace Engine::Renderer {
 
   void Model::processNode(aiNode* node, const aiScene* scene, std::shared_ptr< Mesh > parent) {
     std::shared_ptr< Mesh > lastMesh = nullptr;
+    LOG_DEBUG("Loading node {}", node->mName.C_Str());
+    nodes.push_back(std::shared_ptr<aiNode>(node));
     for (size_t i = 0; i < node->mNumMeshes; i++) {
       aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
       int parentIndex =
