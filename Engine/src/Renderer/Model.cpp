@@ -50,7 +50,7 @@ namespace Engine::Renderer {
     return nodes.size();
   }
 
-  std::shared_ptr<aiNode> Model::GetNode(int index) {
+  aiNode* Model::GetNode(int index) {
     return nodes[index];
   }
 
@@ -70,13 +70,17 @@ namespace Engine::Renderer {
 
     _filepath = path;
     meshes.reserve(scene->mNumMeshes);
+    int nodeCount = countNodes(scene->mRootNode);
+    LOG_DEBUG("Node count is {}", nodeCount);
+    nodes.reserve(nodeCount);
     processNode(scene->mRootNode, scene);
   }
 
   void Model::processNode(aiNode* node, const aiScene* scene, std::shared_ptr< Mesh > parent) {
     std::shared_ptr< Mesh > lastMesh = nullptr;
     LOG_DEBUG("Loading node {}", node->mName.C_Str());
-    nodes.push_back(std::shared_ptr<aiNode>(node));
+    nodes.push_back(node);
+
     for (size_t i = 0; i < node->mNumMeshes; i++) {
       aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
       int parentIndex =
@@ -92,6 +96,17 @@ namespace Engine::Renderer {
     for (size_t i = 0; i < node->mNumChildren; i++) {
       processNode(node->mChildren[i], scene, lastMesh);
     }
+  }
+
+  int Model::countNodes(aiNode* node)
+  {
+    int res = 1;
+    for (int i = 0; i < node->mNumChildren; i++)
+    {
+      res += countNodes(node->mChildren[i]);
+    }
+
+    return res;
   }
 
   void Model::CreateBoundingSphere() {
