@@ -36,14 +36,14 @@ void EditorLayer::OnAttach() {
   /* ----------------------- */
   /*-------------------------Animation Test--------------------------*/
   auto entity = ECS::EntityManager::GetInstance().CreateEntity();
-  entity->AddComponent<Transform>();
-  entity->GetComponent<Transform>()->Scale(glm::vec3(0.005f));
-  //auto model = AssetManager::GetModel("models/Pilot_LP_Animated.fbx");
+  entity->AddComponent< Transform >();
+  entity->GetComponent< Transform >()->Scale(glm::vec3(0.005f));
+  // auto model = AssetManager::GetModel("models/Pilot_LP_Animated.fbx");
   auto model = AssetManager::GetModel("models/animacja_test.fbx");
-  //auto model = AssetManager::GetModel("models/silly_dancing.fbx");
+  // auto model = AssetManager::GetModel("models/silly_dancing.fbx");
   auto material = AssetManager::GetMaterial("materials/animation.mat");
-  entity->AddComponent<Components::MeshRenderer>(model, material);
-  entity->AddComponent<Animator>(model);
+  entity->AddComponent< Components::MeshRenderer >(model, material);
+  entity->AddComponent< Animator >(model);
   SceneManager::GetCurrentScene()->SceneGraph()->AddChild(0, entity->GetID());
   /*-------------------------Animation Test--------------------------*/
 
@@ -244,25 +244,60 @@ auto EditorLayer::LoadScene() -> void {
   }
 }
 
-auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent)
-    -> ECS::EntityID {
-  auto model = AssetManager::GetModel(path);
-  if (model->GetRootMesh() == nullptr)
-    return 0;
+auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityID parent) -> void {
   using namespace Engine::ECS;
   using namespace Engine::Components;
-  auto entity = EntityManager::GetInstance().CreateEntity();
-  entity->Name(std::filesystem::path(path).filename().stem().string());
-  entity->AddComponent< Transform >();
-  /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
-  auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
-  auto mat = AssetManager::GetMaterial("./materials/default_color.mat");
-  entity->AddComponent< MeshRenderer >(model, mat);
 
-  SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, entity->GetID());
-  return entity->GetID();
+  auto model  = AssetManager::GetModel(path);
+  auto& nodes = model->Nodes();
+  auto mat    = AssetManager::GetMaterial("./materials/default_color.mat");
+  std::vector< EntityID > ids(nodes.size());
+
+  for (int node_index = 0; node_index < nodes.size(); ++node_index) {
+    auto& node = nodes[node_index];
+#define _SINGLE_MESH
+#if !defined(_SINGLE_MESH)
+    /* Setup node as parent for meshes */
+    auto node_entity = EntityManager::GetInstance().CreateEntity();
+    node_entity->Name(std::string("Model Node: ") + std::to_string(node_index));
+
+    auto transform = node_entity->AddComponent< Transform >();
+    transform->SetLocalMatrix(node.transform);
+
+    auto node_entity_id = node_entity->GetID();
+    ids[node_index]     = node_entity_id;
+    SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, node_entity_id);
+#endif
+    if (node.parent_node > -1) {
+      parent = ids[node.parent_node];
+    }
+
+    /* Add meshes to current node */
+    for (auto mesh_index : node.mesh_indexes) {
+      auto mesh = model->GetMesh(mesh_index);
+
+      auto mesh_entity = EntityManager::GetInstance().CreateEntity();
+      mesh_entity->Name(mesh->GetName());
+
+      /* Identity transform */
+      auto transform = mesh_entity->AddComponent< Transform >();
+#if defined(_SINGLE_MESH)
+      transform->SetLocalMatrix(node.transform);
+#endif
+
+      mesh_entity->AddComponent< MeshRenderer >(model, mesh_index, mat);
+      auto mesh_entity_id = mesh_entity->GetID();
+#if !defined(_SINGLE_MESH)
+      SceneManager::GetDisplayScene()->SceneGraph()->AddChild(node_entity_id, mesh_entity_id);
+#else
+      ids[node_index] = mesh_entity_id;
+      SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, mesh_entity_id);
+#endif
+    }
+  }
 }
 
+/* " O L D " */
 auto EditorLayer::AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
                                    Engine::ECS::EntityID parent,
                                    std::vector< ECS::EntityID >* loadedMeshes) -> ECS::EntityID {
