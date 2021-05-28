@@ -46,7 +46,7 @@ namespace Engine::GL {
   struct ShadowUniformData {
     glm::mat4 lightSpaceMatrix;
   };
-  struct JointMatrix {
+  struct JointUniformData {
 #define MAX_NUM_JOINTS 100
       glm::mat4 joints[MAX_NUM_JOINTS];
   };

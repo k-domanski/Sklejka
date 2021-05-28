@@ -16,6 +16,7 @@ namespace Engine::Systems {
 			{
 				auto mesh = EntityManager::GetComponent<MeshRenderer>(entityID);
 				m_MeshRenderer = mesh;
+				m_MeshRenderer->GetMaterial()->GetShader()->BindUniformBlock("u_JointData", 10);
 			}
 			
 		}
@@ -28,11 +29,6 @@ namespace Engine::Systems {
 		if (m_currentAnimator != nullptr)
 		{
 			m_currentAnimator->UpdateAnimation(deltaTime * 5.0f);
-			auto finalMatrices = m_currentAnimator->GetFinalBoneMatrices();
-			for (int i = 0; i < finalMatrices.size(); i++)
-			{
-				m_MeshRenderer->GetMaterial()->GetShader()->SetMatrix("u_Transforms[" + std::to_string(i) + "]", finalMatrices[i]);
-			}
 		}
 	}
 }
