@@ -5,6 +5,7 @@
 #include <GUI/LoadingScreen.h>
 #include <GUI/Cutscene.h>
 #include "irrKlang.h"
+#include "Scripts/MainMenu.h"
 
 BETTER_ENUM(__SceneName, int, MainMenu, Loading, Cutscene, LVL_1);
 typedef __SceneName SceneName;
@@ -18,6 +19,7 @@ private:
   std::shared_ptr< PlayerSettings > _playerSettings;
   std::shared_ptr< LoadingScreen > _loadingScreen;
   std::shared_ptr< Cutscene > _cutscene;
+  std::shared_ptr< MainMenu > _mainMenu;
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
   SceneName _currentSceneName = SceneName::MainMenu;
   GameManager();
