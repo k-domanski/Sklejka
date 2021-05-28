@@ -5,6 +5,7 @@
 #include "include/light_data.incl"
 #include "include/shadow_data.incl"
 //#include "include/vs_joint_data.incl"
+#include "include/bone_data.incl"
 
 out ShaderData {
   vec4 posWS;
@@ -14,22 +15,20 @@ out ShaderData {
   vec3 cameraPos;
 }
 vs_out;
-const int MAX_BONES = 100;
-const int MAX_BONE_INFLUENCE = 4;
-uniform mat4 u_Transforms[MAX_BONES];
+// const int MAX_BONES          = 100;
+// const int MAX_BONE_INFLUENCE = 4;
+// uniform mat4 u_Transforms[MAX_BONES];
 void main() {
-    mat4 jointTransform = u_Transforms[a_JointIDs[0]] * a_Weights[0];
-    jointTransform += u_Transforms[a_JointIDs[1]] * a_Weights[1];
-    jointTransform += u_Transforms[a_JointIDs[2]] * a_Weights[2];
-    jointTransform += u_Transforms[a_JointIDs[3]] * a_Weights[3];
-    vec4 PosL = jointTransform * vec4(a_Position, 1.0);
+  mat4 jointTransform = u_Transforms[a_JointIDs[0]] * a_Weights[0];
+  jointTransform += u_Transforms[a_JointIDs[1]] * a_Weights[1];
+  jointTransform += u_Transforms[a_JointIDs[2]] * a_Weights[2];
+  jointTransform += u_Transforms[a_JointIDs[3]] * a_Weights[3];
+  vec4 PosL            = jointTransform * vec4(a_Position, 1.0);
   vs_out.uv            = a_UV;
-  vs_out.normal        = mat3(transpose(inverse(u_Model))) * a_Normal;
-  vs_out.posWS         = u_Model * vec4(a_Position, 1.0f);
-  vs_out.lightSpacePos = u_LightSpaceMatrix * u_Model * vec4(a_Position, 1.0f);
-  // vs_out.cameraPos     = (u_View * vec4(0.0f, 0.0f, 0.0f, -1.0f)).xyz;
+  vs_out.normal        = mat3(transpose(inverse(u_Model))) * mat3(jointTransform) * a_Normal;
+  vs_out.posWS         = u_Model * PosL;
+  vs_out.lightSpacePos = u_LightSpaceMatrix * u_Model * PosL;
   gl_Position = u_ViewProjection * u_Model * PosL;
-  //gl_Position = u_ViewProjection * vs_out.posWS;
   /* Retreive camera pos */
   vec3 col4        = (u_View * vec4(0.0f, 0.0f, 0.0f, 1.0f)).xyz;
   vs_out.cameraPos = -(transpose(mat3(u_View)) * col4);

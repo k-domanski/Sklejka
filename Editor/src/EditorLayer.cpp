@@ -175,10 +175,12 @@ auto EditorLayer::UpdateEditorCamera() -> void {
   }
 }
 
-auto EditorLayer::OpenModel() {
+auto EditorLayer::OpenModel() -> void {
   std::optional< std::string > filepath = FileDialog::OpenFile("Model (*.fbx, *.FBX)\0*.fbx\0");
   if (filepath) {
-    std::shared_ptr< Renderer::Model > model_ptr =
+    AddObjectOnScene(filepath.value(), 0);
+
+    /*std::shared_ptr< Renderer::Model > model_ptr =
         std::make_shared< Renderer::Model >(filepath.value());
     std::vector< ECS::EntityID > loadedMeshes_ids(100);
 
@@ -186,7 +188,7 @@ auto EditorLayer::OpenModel() {
 
     for (int i = 1; i < model_ptr->GetMeshCount(); i++) {
       AddObjectOnScene(model_ptr, i, rootID, &loadedMeshes_ids);
-    }
+    }*/
   }
 }
 
@@ -277,7 +279,8 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
       auto mesh = model->GetMesh(mesh_index);
 
       auto mesh_entity = EntityManager::GetInstance().CreateEntity();
-      mesh_entity->Name(mesh->GetName());
+      // mesh_entity->Name(mesh->GetName());
+      mesh_entity->Name(node.name);
 
       /* Identity transform */
       auto transform = mesh_entity->AddComponent< Transform >();
@@ -301,6 +304,7 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, Engine::ECS::EntityI
 auto EditorLayer::AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
                                    Engine::ECS::EntityID parent,
                                    std::vector< ECS::EntityID >* loadedMeshes) -> ECS::EntityID {
+  return 0;
   if (model->GetRootMesh() == nullptr)
     return 0;
   using namespace Engine::ECS;

@@ -34,7 +34,7 @@ private:
   bool OnMouseButtonRelease(Engine::MouseButtonReleasedEvent& e);
   bool OnKeyPress(Engine::KeyPressedEvent& e);
   auto UpdateEditorCamera() -> void;
-  auto OpenModel();
+  auto OpenModel() -> void;
   auto DrawMenuBar() -> void;
   auto SaveScene() -> void;
   auto LoadScene() -> void;

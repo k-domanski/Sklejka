@@ -72,7 +72,7 @@ namespace Engine::Renderer {
     }
 
     _filepath = path;
-    //meshes.reserve(scene->mNumMeshes);
+    // meshes.reserve(scene->mNumMeshes);
     processNode(scene->mRootNode, scene);
   }
 
@@ -375,6 +375,7 @@ namespace Engine::Renderer {
   auto Model::ProcessNode(aiNode* node, const aiScene* scene, int parent_node) -> void {
     Node s_node;
     s_node.parent_node = parent_node;
+    s_node.name        = node->mName.data;
     /* Local transform */
     s_node.transform = aiMat4ToGlmMat4(node->mTransformation);
 
@@ -394,7 +395,6 @@ namespace Engine::Renderer {
 
   glm::mat4 Model::aiMat4ToGlmMat4(aiMatrix4x4 aiMat) {
     glm::mat4 output;
-
     output[0][0] = aiMat[0][0];
     output[0][1] = aiMat[1][0];
     output[0][2] = aiMat[2][0];

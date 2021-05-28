@@ -60,6 +60,7 @@ namespace Engine::Systems {
     GL::ShadowUniformBuffer _shadowUniformBuffer;
     GL::ShadowUniformData _shadowUniformData;
     std::shared_ptr< GL::Shader > _shadowMapShader;
+    std::shared_ptr< GL::Shader > _shadowMapAnimShader;
     glm::vec2 _shadowMapSize;
     glm::mat4 _shadowProjection;
     std::shared_ptr< GL::RenderTarget > _shadowTarget;

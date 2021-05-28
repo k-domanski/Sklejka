@@ -17,6 +17,7 @@ namespace Engine::Renderer {
     int parent_node     = 0;
     glm::mat4 transform = glm::mat4(1.0f);
     std::vector< int > mesh_indexes;
+    std::string name = "";
   };
 
   class Model {
@@ -45,7 +46,7 @@ namespace Engine::Renderer {
     auto Nodes() const -> const std::vector< Node >&;
 
   private:
-    //std::vector< std::shared_ptr< Mesh > > meshes;
+    // std::vector< std::shared_ptr< Mesh > > meshes;
     void loadModel(std::string_view path);
     void processNode(aiNode* node, const aiScene* scene, std::shared_ptr< Mesh > parent = nullptr);
     void CreateBoundingSphere();

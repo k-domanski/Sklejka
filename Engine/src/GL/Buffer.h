@@ -98,5 +98,5 @@ namespace Engine::GL {
   typedef UniformBuffer< TransformUniformData > TransformUniformBuffer;
   typedef UniformBuffer< DirectionalLightUniformData > DirectionalLightUniformBuffer;
   typedef UniformBuffer< ShadowUniformData > ShadowUniformBuffer;
-  typedef UniformBuffer<JointMatrix> JointsUniformBuffer;
+  typedef UniformBuffer< JointUniformData > JointsUniformBuffer;
 }  // namespace Engine::GL
