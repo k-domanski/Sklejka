@@ -12,7 +12,7 @@ auto CutscenePlayer::OnCreate() -> void {
     5 panels + 2 full
   */
   _duration = 20.0f;
-  _stopTime = 1.0f;
+  _stopTime = 2.0f;
 
   using v2     = glm::vec2;
   _transitions = {

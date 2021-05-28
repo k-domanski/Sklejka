@@ -193,10 +193,11 @@ namespace Engine::Renderer {
     std::vector< GLuint > indices;
     std::vector<JointVertexData> joints;
     m_NumberOfBones = 0;
-    joints.resize(mesh->mNumVertices);
+    
     /*--------------Animation--------------------*/
     if (mesh->HasBones())
     {
+        joints.resize(mesh->mNumVertices);
         for (int i = 0; i < mesh->mNumBones; i++)
         {
             unsigned int BoneIndex = 0;
@@ -238,17 +239,27 @@ namespace Engine::Renderer {
       vec.z         = mesh->mNormals[i].z;
       vertex.normal = vec;
       
-      boneID.x = joints[i].BoneIDs[0];
-      boneID.y = joints[i].BoneIDs[1];
-      boneID.z = joints[i].BoneIDs[2];
-      boneID.w = joints[i].BoneIDs[3];
-      vertex.jointIDs = boneID;
-      
-      weights.x = joints[i].weights[0];
-      weights.y = joints[i].weights[1];
-      weights.z = joints[i].weights[2];
-      weights.w = joints[i].weights[3];
-      vertex.weights = weights;
+      if (mesh->HasBones())
+      {
+          boneID.x = joints[i].BoneIDs[0];
+          boneID.y = joints[i].BoneIDs[1];
+          boneID.z = joints[i].BoneIDs[2];
+          boneID.w = joints[i].BoneIDs[3];
+          vertex.jointIDs = boneID;
+
+          weights.x = joints[i].weights[0];
+          weights.y = joints[i].weights[1];
+          weights.z = joints[i].weights[2];
+          weights.w = joints[i].weights[3];
+          vertex.weights = weights;
+      }
+      else {
+          boneID = glm::vec4(0);
+          vertex.jointIDs = boneID;
+
+          weights = glm::vec4(0.0f);
+          vertex.weights = weights;
+      }
 
 
       /* uv.x      = mesh->mTextureCoords[0][i].x;
