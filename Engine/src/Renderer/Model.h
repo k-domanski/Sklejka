@@ -24,6 +24,8 @@ namespace Engine::Renderer {
     std::shared_ptr<Mesh> GetBoundingBox();
     auto GetQuery() -> GL::QueryObject&;
     int GetMeshCount();
+    int GetNodeCount();
+    aiNode* GetNode(int index);
     std::shared_ptr< Mesh > GetMesh(int index);
     static glm::mat4 aiMat4ToGlmMat4(aiMatrix4x4 aiMat);
     std::map<std::string, BoneInfo> GetBoneInfoMap() { return m_BoneMap; }
@@ -31,8 +33,10 @@ namespace Engine::Renderer {
 
   private:
     std::vector< std::shared_ptr< Mesh > > meshes;
+    std::vector< aiNode* > nodes;
     void loadModel(std::string_view path);
     void processNode(aiNode* node, const aiScene* scene, std::shared_ptr< Mesh > parent = nullptr);
+    int countNodes(aiNode* node);
     void CreateBoundingSphere();
     void CreateBoundingBox();
     std::shared_ptr< Mesh > processMesh(aiMesh* mesh, const aiScene* scene,

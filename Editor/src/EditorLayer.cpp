@@ -180,7 +180,7 @@ auto EditorLayer::OpenModel() {
   if (filepath) {
     std::shared_ptr< Renderer::Model > model_ptr =
         std::make_shared< Renderer::Model >(filepath.value());
-    std::vector< ECS::EntityID > loadedMeshes_ids(100);
+    std::vector< ECS::EntityID > loadedMeshes_ids(3000);
 
     ECS::EntityID rootID = AddObjectOnScene(model_ptr, 0, 0, &loadedMeshes_ids);
 
