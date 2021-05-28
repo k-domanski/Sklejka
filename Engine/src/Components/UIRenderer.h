@@ -10,6 +10,10 @@ namespace Engine::Components
     UIRenderer();
     std::vector< std::shared_ptr< Engine::Renderer::UIElement > >& GetElements();
     std::vector< std::shared_ptr< Engine::Renderer::Button > >& GetButtons();
+    auto AddButton(std::shared_ptr<Renderer::Button> button) -> void;
+    auto RemoveButton(std::shared_ptr<Renderer::Button> button) -> void;
+    auto AddElement(std::shared_ptr<Renderer::UIElement> element) -> void;
+    auto RemoveElement(std::shared_ptr<Renderer::UIElement> element) -> void;
 
   private:
     std::vector< std::shared_ptr< Engine::Renderer::UIElement > > _elements;

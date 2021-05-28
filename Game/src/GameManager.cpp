@@ -40,6 +40,8 @@ auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISound
 }
 
 auto GameManager::SwitchScene(SceneName scene) -> void {
+  if (_instance->_pauseMenu != nullptr)
+    _instance->_pauseMenu = nullptr;
   switch (scene) {
     case SceneName::MainMenu: {
       Engine::SceneManager::OpenScene(_instance->_mainMenu->Scene()->GetID());
@@ -80,6 +82,11 @@ auto GameManager::ShowLoadingScreen() -> void {
 
 auto GameManager::Update(float deltaTime) -> void {
   _instance->UpdateImpl(deltaTime);
+
+  // test pause menu:
+  if (Engine::Input::IsKeyPressed(GLFW_KEY_P)) {
+    _instance->_pauseMenu->Show();
+  }
 }
 
 auto GameManager::PlayerSpeedUp() -> void {
@@ -159,5 +166,6 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script = _model->AddComponent< Engine::NativeScript >();
   native_script->Attach< CollisionDetector >();
 
+  _instance->_pauseMenu = std::make_shared< PauseMenu >();
   // scene->RenderSystem()->SetShadowChecker(shadowTarget);
 }

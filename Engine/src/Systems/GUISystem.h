@@ -11,10 +11,11 @@ namespace Engine::Systems
     auto OnWindowResize(glm::vec2 windowSize) -> void;
     auto HandleMousePressed(glm::vec2 mousePosition) -> void;
     auto HandleMouseRelease(glm::vec2 mousePosition) -> void;
-
+    auto BreakChecking(bool breakChecking) -> void;
   private:
     std::shared_ptr< Engine::GL::Shader > _textShader;
     std::shared_ptr< Engine::GL::Shader > _imageShader;
     glm::mat4 _camProj;
+    bool _breakChecking;
   };
 }
