@@ -156,7 +156,7 @@ namespace Engine {
   auto AssetManager::SaveScene(const std::shared_ptr< Scene >& scene, std::string file) -> void {
     const std::string separator = "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";
     auto sg                     = scene->SceneGraph();
-    auto entities_ids           = sg->GetChildren(0);
+    auto entities               = sg->GetChildren(0);
 
     using namespace nlohmann;
     json json = nlohmann::json{
@@ -165,17 +165,14 @@ namespace Engine {
 
     std::string fileContent = json.dump(4);
 
-    for (int i = 0; i < entities_ids.size(); i++) {
-      auto id = entities_ids[i];
-      std::cout << "\nSaving entity " << id;
-      auto children = sg->GetChildren(id);
+    for (int i = 0; i < entities.size(); i++) {
+      auto& entity  = entities[i];
+      auto children = sg->GetChildren(entity);
 
       for (auto child : children) {
-        entities_ids.push_back(child);  // Add each child to list of entities to serialize
-        std::cout << "\nadding child " << child << " to entities list";
+        entities.push_back(child);  // Add each child to list of entities to serialize
       }
 
-      const auto& entity = ECS::EntityManager::GetInstance().GetEntity(id);
       if (entity == nullptr) {
         continue;
       }
@@ -188,7 +185,7 @@ namespace Engine {
       }
       fileContent.append("\n" + separator + "\n");
 
-      auto entity_json = entity->SaveToJson(sg->GetParent(entity->GetID()));
+      auto entity_json = entity->SaveToJson(sg->GetParent(entity)->GetID());
 
       fileContent.append(entity_json);
     }
@@ -200,59 +197,59 @@ namespace Engine {
   }
   auto AssetManager::LoadScene(std::string file) -> std::shared_ptr< Scene > {
     file = Utility::StripToRelativePath(file);
-   // if (_loadedScenes.count(file) == 0) {
-      bool success = false;
-      auto content = Utility::ReadTextFile(file, &success);
-      if (!success) {
-        LOG_ERROR("Failed to load scene: {}", file);
-        return nullptr;
-      }
-      std::vector< std::string > separated_jsons;
+    // if (_loadedScenes.count(file) == 0) {
+    bool success = false;
+    auto content = Utility::ReadTextFile(file, &success);
+    if (!success) {
+      LOG_ERROR("Failed to load scene: {}", file);
+      return nullptr;
+    }
+    std::vector< std::string > separated_jsons;
 
-      std::string delimiter =
-          "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";  // TODO: Move to one place
-                                                                   // instead of declaring each time
-      size_t pos = 0;
-      std::string token;
-      while ((pos = content.find(delimiter)) != std::string::npos) {
-        token = content.substr(0, pos);
-        separated_jsons.push_back(token);
-        content.erase(0, pos + delimiter.length());
-      }
+    std::string delimiter =
+        "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";  // TODO: Move to one place
+                                                                 // instead of declaring each time
+    size_t pos = 0;
+    std::string token;
+    while ((pos = content.find(delimiter)) != std::string::npos) {
+      token = content.substr(0, pos);
+      separated_jsons.push_back(token);
+      content.erase(0, pos + delimiter.length());
+    }
 
-      separated_jsons.push_back(content);
+    separated_jsons.push_back(content);
 
-      nlohmann::json sceneJson =
-          nlohmann::json::parse(separated_jsons[0].begin(), separated_jsons[0].end());
+    nlohmann::json sceneJson =
+        nlohmann::json::parse(separated_jsons[0].begin(), separated_jsons[0].end());
 
-      size_t sceneID = sceneJson["sceneID"];
+    size_t sceneID = sceneJson["sceneID"];
 
-      auto current_scene = SceneManager::GetCurrentScene();
-      auto scene         = std::make_shared< Scene >(sceneID);
-      SceneManager::AddScene(scene);
-      SceneManager::OpenScene(scene->GetID());
+    auto current_scene = SceneManager::GetCurrentScene();
+    auto scene         = std::make_shared< Scene >(sceneID);
+    SceneManager::AddScene(scene);
+    SceneManager::OpenScene(scene->GetID());
 
-      auto sg = scene->SceneGraph();
+    auto sg = scene->SceneGraph();
 
-      for (int i = 1; i < separated_jsons.size(); i++) {
-        auto entity = ECS::EntityManager::GetInstance().CreateEntity();
-        entity->LoadFromJson(separated_jsons[i]);
-        auto parentID = entity->GetParentFromJson(separated_jsons[i]);
-        // Removed 'Has Editor Camera' check - editor camera should not be serialized
-        sg->AddChild(parentID, entity->GetID());
-      }
+    for (int i = 1; i < separated_jsons.size(); i++) {
+      auto entity = ECS::EntityManager::GetInstance().CreateEntity();
+      entity->LoadFromJson(separated_jsons[i]);
+      auto parentID = entity->GetParentFromJson(separated_jsons[i]);
+      //TODO: May fail if parent is not deserialized yet
+      sg->AddChild(ECS::EntityManager::GetInstance().GetEntity(parentID), entity);
+    }
 
-      scene->CameraSystem()->FindMainCamera();
-      _loadedScenes[file] = scene;
+    scene->CameraSystem()->FindMainCamera();
+    _loadedScenes[file] = scene;
 
-      if (current_scene != nullptr) {
-        SceneManager::OpenScene(current_scene->GetID());
-      }
-      //return std::make_shared<Scene>(*scene);
-      return scene;
+    if (current_scene != nullptr) {
+      SceneManager::OpenScene(current_scene->GetID());
+    }
+    // return std::make_shared<Scene>(*scene);
+    return scene;
     //}
-//    return std::make_shared< Scene > (*_loadedScenes[file]);
-    //return _loadedScenes[file];
+    //    return std::make_shared< Scene > (*_loadedScenes[file]);
+    // return _loadedScenes[file];
   }
 
   auto AssetManager::GetCharacters(std::string file, int fontSize)

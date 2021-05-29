@@ -22,13 +22,12 @@ namespace Engine::Systems {
     Renderer();
     ~Renderer() override = default;
     void Update(float deltaTime) override;
-    auto AddEntity(ECS::EntityID id) -> void override;
     auto OnWindowResize(glm::vec2 windowSize) -> void;
-    //auto SetShadowChecker(std::shared_ptr< ShadowTarget > target) -> void;
-    auto ObjectInShadow(ECS::EntityID entity) -> GLint;
+    // auto SetShadowChecker(std::shared_ptr< ShadowTarget > target) -> void;
+    auto ObjectInShadow(const std::shared_ptr< ECS::Entity >& entity) -> GLint;
 
   private:
-    std::vector< ECS::EntityID > _visibleEntities;
+    std::vector< std::shared_ptr< ECS::Entity > > _visibleEntities;
     std::shared_ptr< Engine::Renderer::PingPongBuffer > _pingPongBuffer;
     std::shared_ptr< Engine::Renderer::Mesh > _quad;
     std::shared_ptr< Engine::GL::Shader > _blurShader;
@@ -41,7 +40,7 @@ namespace Engine::Systems {
     std::shared_ptr< Engine::Renderer::Mesh > _sphereCollider;
     std::shared_ptr< Engine::GL::Shader > _sphereColliderShader;
 
-    //std::shared_ptr< ShadowTarget > _playerShadowTarget;
+    // std::shared_ptr< ShadowTarget > _playerShadowTarget;
 
     std::shared_ptr< CameraSystem > _cameraSystem;
     std::shared_ptr< LightSystem > _lightSystem;

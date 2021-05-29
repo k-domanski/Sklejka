@@ -32,52 +32,58 @@ namespace Engine::ECS {
     }
 
     template< typename T, typename... Args >
-    auto AddComponent(EntityID entityID, Args&&... args) -> std::shared_ptr< T > {
+    auto AddComponent(std::shared_ptr< Entity >& entity, Args&&... args) -> std::shared_ptr< T > {
       auto compTypeID = GetComponentTypeID< T >();
-      auto entity     = GetEntity(entityID);
       auto it         = entity->_signature->find(compTypeID);
       assert(it == entity->_signature->end());
       entity->_signature->insert(compTypeID);
 
       // TODO: Create Component Instance
       auto component       = std::make_shared< T >(std::forward< Args >(args)...);
-      component->_entityID = entityID;
+      component->_entityID = entity->GetID();
+      component->_entity   = entity;
       auto list            = GetComponentList< T >();
       list->AddComponent(component);
+
+      entity->_componentCache[compTypeID] = component;
 
       UpdateEntity(entity);
       return component;
     }
 
     template< class T >
-    auto GetComponentImpl(EntityID entityID) -> std::shared_ptr< T > {
+    auto GetComponentImpl(const std::shared_ptr< Entity >& entity) -> std::shared_ptr< T > {
+      if (entity == nullptr) {
+        return nullptr;
+      }
       auto compTypeID = GetComponentTypeID< T >();
       auto list       = GetComponentList< T >();
-      /*for (auto element : *list) {
-        if (element.GetEntityID() == entityID)
-          return element;
-      }*/
-      return list->GetComponent(entityID);
 
-      // return nullptr;
+      if (entity->_componentCache.count(compTypeID) != 0) {
+        return std::static_pointer_cast< T >(entity->_componentCache[compTypeID]);
+      }
+
+      auto comp                           = list->GetComponent(entity->GetID());
+      entity->_componentCache[compTypeID] = comp;
+      return comp;
     }
     template< class T >
-    static auto GetComponent(EntityID entityID) -> std::shared_ptr< T > {
-      return GetInstance().GetComponentImpl< T >(entityID);
+    static auto GetComponent(const std::shared_ptr< Entity >& entity) -> std::shared_ptr< T > {
+      return GetInstance().GetComponentImpl< T >(entity);
     }
 
     template< class T >
-    auto RemoveComponent(EntityID entityID) -> void {
+    auto RemoveComponent(const std::shared_ptr< Entity >& entity) -> void {
       auto compTypeID = GetComponentTypeID< T >();
-
-      auto entity = GetEntity(entityID);
-      auto it     = entity->_signature->find(compTypeID);
+      auto it         = entity->_signature->find(compTypeID);
       if (it == entity->_signature->end())
         return;
+
       entity->_signature->erase(it);
 
       auto list = GetComponentList< T >();
-      list->Remove(entityID);
+      list->Remove(entity->GetID());
+      entity->_componentCache.erase(compTypeID);
     }
 
     template< class T >
@@ -108,15 +114,15 @@ namespace Engine::ECS {
     auto UpdateSystem(SystemTypeID systemID) -> void;
     auto UpdateEntity(std::shared_ptr< Entity > entity) -> void;
 
-    auto BelongsToSystem(SystemTypeID systemID, EntityID entityID) -> bool;
+    auto BelongsToSystem(SystemTypeID systemID, const std::shared_ptr< Entity >& entity) -> bool;
 
-    auto AddToSystem(SystemTypeID systemID, EntityID entityID) -> void;
-    auto RemoveFromSystem(SystemTypeID systemID, EntityID entityID) -> void;
+    auto AddToSystem(SystemTypeID systemID, const std::shared_ptr< Entity >& entity) -> void;
+    auto RemoveFromSystem(SystemTypeID systemID, const std::shared_ptr< Entity >& entity) -> void;
 
     auto CreateEntity() -> std::shared_ptr< Entity >;
     auto CreateEntity(EntityID id) -> std::shared_ptr< Entity >;
     auto GetEntity(EntityID) -> std::shared_ptr< Entity >;
-    auto RemoveEntity(EntityID id) -> void;
+    auto RemoveEntity(const std::shared_ptr< Entity >& entity) -> void;
     auto GetAllComponents(EntityID id) -> std::vector< std::shared_ptr< Component > >;
     auto Update(float deltaTime) -> void;
     auto Clear() -> void;

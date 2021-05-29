@@ -12,6 +12,9 @@ namespace Engine::ECS {
     EntityID _entityID;
     std::string _name;
 
+  protected:
+    std::shared_ptr< Entity > _entity;
+
   public:
     Component(const std::string& name) noexcept: _name(name){};
     virtual ~Component() = default;
@@ -21,10 +24,14 @@ namespace Engine::ECS {
     virtual std::string SaveToJson(std::string filePath) {
       return "";
     }
-    virtual auto LoadFromJson(std::string filePath) -> void { }
-    //virtual auto LoadFromJsonString(std::string jsonString) -> void { }
+    virtual auto LoadFromJson(std::string filePath) -> void {
+    }
+    // virtual auto LoadFromJsonString(std::string jsonString) -> void { }
     auto GetEntityID() const -> EntityID {
       return _entityID;
+    }
+    auto GetEntity() const -> std::shared_ptr< Entity > {
+      return _entity;
     }
     auto Name() const noexcept -> std::string {
       return _name;

@@ -151,7 +151,7 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script->Attach(std::make_shared< CameraController >(player_controller));
 
   native_script->Attach(std::make_shared< PlayerController >(player_tr));
-  auto shadowTarget = std::make_shared< ShadowTarget >(_model->GetID());
+  auto shadowTarget = std::make_shared< ShadowTarget >(_model);
   native_script->Attach(shadowTarget);
   auto flightTimer =
       std::make_shared< FlightTimer >();  // Save it to variable, because I cannot retrive anything

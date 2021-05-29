@@ -77,7 +77,7 @@ namespace Engine::Systems {
     if (camera == nullptr) {
       return;
     }
-    const auto camera_tr = ECS::EntityManager::GetComponent< Transform >(camera->GetEntityID());
+    const auto camera_tr = ECS::EntityManager::GetComponent< Transform >(camera->GetEntity());
     /* CULLING */
     if (false) {
       SortByDistance(camera);
@@ -90,8 +90,8 @@ namespace Engine::Systems {
       // calculate frustum culling and occlusion
       _debugMaterial->Use();
       auto debugShader = _debugMaterial->GetShader();
-      for (auto& entityID : _entities) {
-        auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
+      for (auto& entity : _entities) {
+        auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entity);
         auto model         = mesh_renderer->GetModel();
         std::shared_ptr< Mesh > mesh;
         // If there is no mesh, there is nothing to show
@@ -99,7 +99,7 @@ namespace Engine::Systems {
           continue;
         }
 
-        const auto transform = ECS::EntityManager::GetComponent< Transform >(entityID);
+        const auto transform = ECS::EntityManager::GetComponent< Transform >(entity);
 
         _transformUniformData.model     = transform->GetWorldMatrix();
         _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
@@ -153,7 +153,7 @@ namespace Engine::Systems {
 
         auto res = query.AnySamplesPassed();
         if (res)
-          _visibleEntities.push_back(entityID);
+          _visibleEntities.push_back(entity);
         else
           j++;
       }
@@ -168,7 +168,7 @@ namespace Engine::Systems {
     if (_lightSystem != nullptr) {
       auto light = _lightSystem->Light();
       if (light != nullptr && light->flags.GetAny(LightFlag::Dirty | LightFlag::NewData)) {
-        auto light_tr = ECS::EntityManager::GetComponent< Transform >(light->GetEntityID());
+        auto light_tr = ECS::EntityManager::GetComponent< Transform >(light->GetEntity());
         if (light_tr->flags.Get(TransformFlag::NewData)) {
           const auto& fr  = light_tr->Forward();
           const auto& pos = camera_tr->Position() + camera_tr->Forward() * 5.0f;
@@ -188,10 +188,9 @@ namespace Engine::Systems {
         _shadowMapShader->BindUniformBlock("u_Transform", 0);
         _shadowMapShader->BindUniformBlock("u_Camera", 1);
         _shadowMapShader->BindUniformBlock("u_DirectionalLight", 2);
-        for (auto& entityID : _entities) {
-          auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
-          auto has_animator =
-              ECS::EntityManager::GetInstance().GetEntity(entityID)->HasComponent< Animator >();
+        for (auto& entity : _entities) {
+          auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entity);
+          auto has_animator  = entity->HasComponent< Animator >();
           if (has_animator) {
             _shadowMapAnimShader->Use();
             _shadowMapAnimShader->BindUniformBlock("u_Transform", 0);
@@ -206,7 +205,7 @@ namespace Engine::Systems {
           }
           auto mesh = model->GetMesh(mesh_renderer->MeshIndex());
           mesh->Use();
-          const auto transform        = ECS::EntityManager::GetComponent< Transform >(entityID);
+          const auto transform        = ECS::EntityManager::GetComponent< Transform >(entity);
           _transformUniformData.model = transform->GetWorldMatrix();
           _transformUniformBuffer.SetData(_transformUniformData);
           glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
@@ -372,10 +371,6 @@ namespace Engine::Systems {
     _visibleEntities.clear();
   }
 
-  auto Renderer::AddEntity(ECS::EntityID id) -> void {
-    System::AddEntity(id);
-  }
-
   auto Renderer::OnWindowResize(glm::vec2 windowSize) -> void {
     using namespace GL;
     auto size       = windowSize;
@@ -390,17 +385,17 @@ namespace Engine::Systems {
     _renderTarget->AttachDepthStencil(std::make_shared< Renderbuffer >(size.x, size.y));*/
   }
 
-  auto Renderer::ObjectInShadow(ECS::EntityID entity) -> GLint {
+  auto Renderer::ObjectInShadow(const std::shared_ptr< ECS::Entity >& entity) -> GLint {
     const auto camera = _cameraSystem->MainCamera();
     if (camera == nullptr) {
       return 0;
     }
-    const auto camera_tr = ECS::EntityManager::GetComponent< Transform >(camera->GetEntityID());
+    const auto camera_tr = ECS::EntityManager::GetComponent< Transform >(camera->GetEntity());
     GL::Context::DepthTest(true);
     if (_lightSystem != nullptr) {
       auto light = _lightSystem->Light();
       if (light != nullptr && light->flags.GetAny(LightFlag::Dirty | LightFlag::NewData)) {
-        auto light_tr = ECS::EntityManager::GetComponent< Transform >(light->GetEntityID());
+        auto light_tr = ECS::EntityManager::GetComponent< Transform >(light->GetEntity());
         if (light_tr->flags.Get(TransformFlag::NewData)) {
           const auto& fr  = light_tr->Forward();
           const auto& pos = camera_tr->Position() + camera_tr->Forward() * 5.0f;
@@ -452,7 +447,8 @@ namespace Engine::Systems {
     using Engine::Components::MeshRenderer;
     using Engine::ECS::EntityID;
     using Engine::Renderer::Material;
-    const auto OrderFunction = [](const EntityID lhs, const EntityID rhs) {
+    const auto OrderFunction = [](const std::shared_ptr< ECS::Entity >& lhs,
+                                  const std::shared_ptr< ECS::Entity >& rhs) {
       auto lmr  = ECS::EntityManager::GetComponent< MeshRenderer >(lhs);
       auto rmr  = ECS::EntityManager::GetComponent< MeshRenderer >(rhs);
       auto lmat = lmr->GetMaterial();
@@ -512,10 +508,11 @@ namespace Engine::Systems {
     using Engine::ECS::EntityID;
     using Engine::Renderer::Material;
 
-    auto camTrans = ECS::EntityManager::GetComponent< Transform >(cam->GetEntityID());
+    auto camTrans = ECS::EntityManager::GetComponent< Transform >(cam->GetEntity());
     auto camPos   = camTrans->WorldPosition();
 
-    const auto OrderFunction = [camPos](const EntityID lhs, const EntityID rhs) {
+    const auto OrderFunction = [camPos](const std::shared_ptr< ECS::Entity >& lhs,
+                                        const std::shared_ptr< ECS::Entity >& rhs) {
       auto ltr  = ECS::EntityManager::GetComponent< Transform >(lhs);
       auto rtr  = ECS::EntityManager::GetComponent< Transform >(rhs);
       auto lpos = ltr->WorldPosition();

@@ -12,7 +12,7 @@ uniform vec2 u_Offset = vec2(0.0f, 0.0f);
 
 void main() {
   v_uv        = (a_UV * u_Tiling) + u_Offset;
-  gl_Position = projection * model * vec4(a_Position, 1.0f);
+  gl_Position = projection * model * vec4(a_Position.xy, 0.0f, 1.0f);
 }
 #endshader
 
@@ -21,9 +21,21 @@ void main() {
 
 in vec2 v_uv;
 out vec4 out_color;
+uniform float ratio;
+uniform bool horizontal;
 
 void main() {
+  float alpha = 1.0f;
+  if (horizontal) {
+    if (v_uv.x > ratio) {
+      alpha = 0.0f;
+    }
+  } else {
+    if (v_uv.y > ratio) {
+      alpha = 0.0f;
+    }
+  }
   vec4 texel = texture(u_MainTexture, v_uv);
-  out_color  = texel * u_Color;
+  out_color  = vec4(u_Color.xyz, alpha) * texel;
 }
 #endshader

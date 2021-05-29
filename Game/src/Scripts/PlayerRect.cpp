@@ -13,7 +13,7 @@ auto PlayerRect::OnCreate() -> void {
   _transform      = Entity()->GetComponent< Engine::Transform >();
   _nodeSystem     = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
   _currentNode    = _nodeSystem->GetNode(0);
-  _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntityID());
+  _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   _playerSettings = GameManager::GetPlayerSettings();
 }
 
@@ -109,13 +109,13 @@ auto PlayerRect::HandleRotation(float roll, float deltaTime) -> void {
 
 auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
   const auto& node_tr =
-      EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntityID());
+      EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   const auto delta      = node_tr->Position() - _transform->Position();
   const auto magnitude2 = glm::dot(delta, delta);
   auto min_mag          = _playerSettings->MinNodeDistance();
   if (magnitude2 <= (min_mag * min_mag)) {
     _currentNode   = _nodeSystem->GetNode(_currentNode->NextIndex());
-    _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntityID());
+    _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   }
   return _currentNode;
 }

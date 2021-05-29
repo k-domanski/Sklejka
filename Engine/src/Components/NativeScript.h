@@ -17,7 +17,6 @@ namespace Engine::Components {
 namespace Engine {
   class NativeScript : public ECS::Component {
   private:
-    std::shared_ptr< ECS::Entity > _entity{nullptr};
     std::multiset< std::shared_ptr< IScript >, ScriptOrderOperator > _scripts;
 
   public:

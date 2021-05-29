@@ -36,8 +36,8 @@ void Engine::Systems::Physics::Update(float deltaTime) {
                             !rigidbody2->IsKinematic());
         }
         using Engine::ECS::EntityManager;
-        auto ns1 = EntityManager::GetComponent< NativeScript >(collider->GetEntityID());
-        auto ns2 = EntityManager::GetComponent< NativeScript >(collider2->GetEntityID());
+        auto ns1 = EntityManager::GetComponent< NativeScript >(collider->GetEntity());
+        auto ns2 = EntityManager::GetComponent< NativeScript >(collider2->GetEntity());
         if(ns1){
           ns1->OnCollisionEnter(collider);
         }

@@ -33,10 +33,10 @@ namespace Engine::ECS {
 
     auto ContainsSignature(ComponentTypeID componentID) -> bool;
     auto SignatureMatch(const EntitySignature& entitySignature) -> bool;
-    auto Entities() const -> std::vector< EntityID >;
+    auto Entities() const -> std::vector< std::shared_ptr< Entity > >;
 
-    virtual auto AddEntity(EntityID id) -> void;
-    virtual auto RemoveEntity(EntityID id) -> void;
+    virtual auto AddEntity(const std::shared_ptr< Entity >& entity) -> void;
+    virtual auto RemoveEntity(const std::shared_ptr< Entity >& entity) -> void;
 
     virtual void Update(float deltaTime) = 0;
 
@@ -47,7 +47,8 @@ namespace Engine::ECS {
     SystemSignature _signatures;
 
   protected:
-    std::vector< EntityID > _entities;
+    //std::vector< EntityID > _entities;
+    std::vector< std::shared_ptr<Entity> > _entities;
   };
 
 }  // namespace Engine::ECS

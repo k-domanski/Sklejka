@@ -1,0 +1,5 @@
+const int MAX_JOINTS = 100;
+
+layout(std140) uniform u_Joints {
+	mat4 u_Transforms[MAX_JOINTS];
+};

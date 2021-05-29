@@ -13,8 +13,8 @@ namespace Engine {
   void NodeSystem::Update(float deltaTime) {
   }
 
-  auto NodeSystem::AddEntity(ECS::EntityID id) -> void {
-    ECS::System::AddEntity(id);
+  auto NodeSystem::AddEntity(const std::shared_ptr< ECS::Entity >& entity) -> void {
+    ECS::System::AddEntity(entity);
     std::sort(_entities.begin(), _entities.end(), [](auto lhs, auto rhs) {
       auto ln = ECS::EntityManager::GetComponent< Node >(lhs);
       auto rn = ECS::EntityManager::GetComponent< Node >(rhs);

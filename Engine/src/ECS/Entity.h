@@ -1,5 +1,5 @@
 #pragma once
-//#include "pch.h"
+#include <pch.h>
 #include "Types.h"
 
 namespace Engine::ECS {
@@ -11,24 +11,23 @@ namespace Engine::ECS {
     /*TODO: Entity(const std::string& name);
       lub overload CreateEntity w EntityManager*/
     ~Entity() = default;
-
     [[nodiscard]] auto GetID() const -> EntityID;
     [[nodiscard]] auto GetSignature() const -> std::shared_ptr< EntitySignature >;
 
     template< class T, typename... Args >
     auto AddComponent(Args&&... args) -> std::shared_ptr< T > {
-      return EntityManager::GetInstance().AddComponent< T >(_entityID,
+      return EntityManager::GetInstance().AddComponent< T >(_entity.lock(),
                                                             std::forward< Args >(args)...);
     }
 
     template< class T >
     auto RemoveComponent() {
-      return EntityManager::GetInstance().RemoveComponent< T >(_entityID);
+      return EntityManager::GetInstance().RemoveComponent< T >(_entity.lock());
     }
 
     template< class T >
     std::shared_ptr< T > GetComponent() {
-      return EntityManager::GetInstance().GetComponent< T >(_entityID);
+      return EntityManager::GetInstance().GetComponent< T >(_entity.lock());
     }
 
     auto GetAllComponents() -> std::vector< std::shared_ptr< class Component > >;
@@ -53,7 +52,9 @@ namespace Engine::ECS {
 
   private:
     EntityID _entityID{0};
+    std::weak_ptr< Entity > _entity;
     std::string _name{"Entity"};
     std::shared_ptr< EntitySignature > _signature{std::make_shared< EntitySignature >()};
+    std::unordered_map< ComponentTypeID, std::shared_ptr< Component > > _componentCache;
   };
 }  // namespace Engine::ECS

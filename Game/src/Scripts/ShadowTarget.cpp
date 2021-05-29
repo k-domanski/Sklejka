@@ -2,9 +2,9 @@
 #include "Engine.h"
 #include "Components/UIRenderer.h"
 
-ShadowTarget::ShadowTarget(Engine::ECS::EntityID target)
+ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
     : Script(), _shadowRate(0.0f), _bar(std::make_shared< BarData >()), _maxAmount(100.0f),
-      _currentAmount(0.0f), _fillSpeed(10.0f), _targetID(target), _maxSamplesPassed(0) {
+      _currentAmount(0.0f), _fillSpeed(10.0f), _target(target), _maxSamplesPassed(0) {
   auto entity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   auto renderer   = entity->AddComponent< Engine::Components::UIRenderer >();
   _bar->transform = entity->AddComponent< Engine::Transform >();
@@ -27,7 +27,7 @@ auto ShadowTarget::OnCreate() -> void {
 }
 
 auto ShadowTarget::Update(float deltaTime) -> void {
-  SamplesPassed(_rendererSystem->ObjectInShadow(_targetID));
+  SamplesPassed(_rendererSystem->ObjectInShadow(_target));
   _bar->bar->FillRatio(glm::min(1.0f, _currentAmount / _maxAmount));
   _currentAmount += _fillSpeed * _shadowRate * deltaTime;
   if (_currentAmount > _maxAmount)
@@ -35,8 +35,8 @@ auto ShadowTarget::Update(float deltaTime) -> void {
     _currentAmount = 0.0f;
 }
 
-auto ShadowTarget::GetTargetID() -> Engine::ECS::EntityID {
-  return _targetID;
+auto ShadowTarget::GetTarget() -> std::shared_ptr< Engine::ECS::Entity > {
+  return _target;
 }
 
 auto ShadowTarget::ShadowRate() -> float {

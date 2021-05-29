@@ -112,7 +112,7 @@ auto PauseMenu::Hide() -> void {
 }
 
 PauseMenu::~PauseMenu() {
-  Engine::ECS::EntityManager::GetInstance().RemoveEntity(_backroundRenderer->GetEntityID());
-  Engine::ECS::EntityManager::GetInstance().RemoveEntity(_resumeButtonRenderer->GetEntityID());
-  Engine::ECS::EntityManager::GetInstance().RemoveEntity(_mainMenuButtonRenderer->GetEntityID());
+  Engine::ECS::EntityManager::GetInstance().RemoveEntity(_backroundRenderer->GetEntity());
+  Engine::ECS::EntityManager::GetInstance().RemoveEntity(_resumeButtonRenderer->GetEntity());
+  Engine::ECS::EntityManager::GetInstance().RemoveEntity(_mainMenuButtonRenderer->GetEntity());
 }
