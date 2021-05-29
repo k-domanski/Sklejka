@@ -27,7 +27,7 @@ namespace Editor {
 
   private:
     void DrawEntity(std::shared_ptr< Engine::ECS::Entity > entity);
-    auto RecursiveRemoveEntity(Engine::ECS::EntityID entityID) -> void;
+    auto RecursiveRemoveEntity(std::shared_ptr< Engine::ECS::Entity > entity) -> void;
 
   private:
     EditorLayer* _editorLayer;

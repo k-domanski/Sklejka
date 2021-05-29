@@ -20,19 +20,23 @@ namespace Engine::ECS {
     return true;
   }
 
-  auto System::Entities() const -> std::vector< EntityID > {
+  auto System::Entities() const -> std::vector< std::shared_ptr< Entity > > {
     return _entities;
   }
 
-  auto System::AddEntity(EntityID id) -> void {
-    if (auto it = std::find(_entities.begin(), _entities.end(), id); it != _entities.end()) {
+  auto System::AddEntity(const std::shared_ptr< Entity >& entity) -> void {
+    auto it = std::find_if(_entities.begin(), _entities.end(),
+                           [&entity](auto& item) { return item->GetID() == entity->GetID(); });
+    if (it != _entities.end()) {
       return;
     }
-    _entities.push_back(id);
+    _entities.push_back(entity);
   }
 
-  auto System::RemoveEntity(EntityID id) -> void {
-    if (auto it = std::find(_entities.begin(), _entities.end(), id); it != _entities.end()) {
+  auto System::RemoveEntity(const std::shared_ptr< Entity >& entity) -> void {
+    auto it = std::find_if(_entities.begin(), _entities.end(),
+                           [&entity](auto& item) { return item->GetID() == entity->GetID(); });
+    if (it != _entities.end()) {
       _entities.erase(it);
     }
   }

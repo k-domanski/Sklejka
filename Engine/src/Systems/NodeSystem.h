@@ -7,7 +7,7 @@ namespace Engine {
   public:
     NodeSystem();
     void Update(float deltaTime) override;
-    auto AddEntity(ECS::EntityID id) -> void override;
+    auto AddEntity(const std::shared_ptr< ECS::Entity >& entity) -> void override;
     auto GetNode(int index) -> std::shared_ptr< Node >;
   };
 }  // namespace Engine

@@ -7,7 +7,7 @@ namespace Engine::ECS {
     IComponentList()                      = default;
     IComponentList(const IComponentList&) = delete;
     auto operator=(const IComponentList&)          = delete;
-    virtual auto Remove(EntityID entityID) -> void = 0;
+    virtual auto Remove(const std::shared_ptr< Entity >& entity) -> void = 0;
     virtual auto Size() -> int                     = 0;
   };
 
@@ -30,8 +30,8 @@ namespace Engine::ECS {
       }
       _components.push_back(component);
     }
-    auto Remove(EntityID entityID) -> void override {
-      auto it = FindIterator(entityID);
+    auto Remove(const std::shared_ptr< Entity >& entity) -> void override {
+      auto it = FindIterator(entity->GetID());
       if (it != _components.end())
         _components.erase(it);
     }

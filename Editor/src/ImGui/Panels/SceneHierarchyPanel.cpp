@@ -44,7 +44,7 @@ namespace Editor {
         auto ent = ECS::EntityManager::GetInstance().CreateEntity();
         ent->AddComponent< Transform >();
         ent->Name("New Entity");
-        m_Scene->SceneGraph()->AddChild(0, ent->GetID());
+        m_Scene->SceneGraph()->AddChild(nullptr, ent);
         ImGui::CloseCurrentPopup();
       }
       ImGui::EndPopup();
@@ -62,7 +62,7 @@ namespace Editor {
 
     auto id                = entity->GetID();
     auto tag               = entity->Name();
-    const auto& children   = m_Scene->SceneGraph()->GetChildren(id);
+    const auto& children   = m_Scene->SceneGraph()->GetChildren(entity);
     const auto panel_width = ImGui::GetWindowContentRegionWidth();
 
     ImGuiTreeNodeFlags flags = ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0)
@@ -77,7 +77,7 @@ namespace Editor {
     if (ImGui::BeginPopupContextItem("item context menu")) {
       if (ImGui::Selectable("Remove")) {
         LOG_INFO("Removing {}", entity->Name());
-        RecursiveRemoveEntity(entity->GetID());
+        RecursiveRemoveEntity(entity);
       }
       ImGui::EndPopup();
     }
@@ -89,24 +89,25 @@ namespace Editor {
       if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Scene_Hierarchy")) {
         IM_ASSERT(payload->DataSize == sizeof(ECS::EntityID));
         ECS::EntityID payload_n = *(const ECS::EntityID*)payload->Data;
-        m_Scene->SceneGraph()->SetParent(payload_n, id);
+        m_Scene->SceneGraph()->SetParent(ECS::EntityManager::GetInstance().GetEntity(payload_n),
+                                         entity);
       }
       ImGui::EndDragDropTarget();
     }
     if (open) {
       for (auto& child : children) {
-        DrawEntity(ECS::EntityManager::GetInstance().GetEntity(child));
+        DrawEntity(child);
       }
       ImGui::TreePop();
     }
   }
 
-  auto SceneHierarchyPanel::RecursiveRemoveEntity(Engine::ECS::EntityID entityID) -> void {
+  auto SceneHierarchyPanel::RecursiveRemoveEntity(std::shared_ptr<Engine::ECS::Entity> entity) -> void {
     const auto sg = m_Scene->SceneGraph();
-    for (auto& child : sg->GetChildren(entityID)) {
+    for (auto& child : sg->GetChildren(entity)) {
       RecursiveRemoveEntity(child);
     }
-    Engine::ECS::EntityManager::GetInstance().RemoveEntity(entityID);
+    Engine::ECS::EntityManager::GetInstance().RemoveEntity(entity);
   }
 
 }  // namespace Editor
