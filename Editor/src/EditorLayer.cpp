@@ -254,11 +254,11 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
   auto model  = AssetManager::GetModel(path);
   auto& nodes = model->Nodes();
   auto mat    = AssetManager::GetMaterial("./materials/default_color.mat");
-  std::vector< std::shared_ptr<Entity> > ids(nodes.size());
+  std::vector< std::shared_ptr< Entity > > ids(nodes.size());
 
   for (int node_index = 0; node_index < nodes.size(); ++node_index) {
     auto& node = nodes[node_index];
-#define _SINGLE_MESH
+//#define _SINGLE_MESH
 #if !defined(_SINGLE_MESH)
     /* Setup node as parent for meshes */
     auto node_entity = EntityManager::GetInstance().CreateEntity();
@@ -267,9 +267,8 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
     auto transform = node_entity->AddComponent< Transform >();
     transform->SetLocalMatrix(node.transform);
 
-    auto node_entity_id = node_entity->GetID();
-    ids[node_index]     = node_entity_id;
-    SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, node_entity_id);
+    ids[node_index] = node_entity;
+    SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, node_entity);
 #endif
     if (node.parent_node > -1) {
       parent = ids[node.parent_node];
@@ -280,8 +279,11 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
       auto mesh = model->GetMesh(mesh_index);
 
       auto mesh_entity = EntityManager::GetInstance().CreateEntity();
-      // mesh_entity->Name(mesh->GetName());
+#if defined(_SINGLE_MESH)
       mesh_entity->Name(node.name);
+#else
+      mesh_entity->Name(mesh->GetName());
+#endif
 
       /* Identity transform */
       auto transform = mesh_entity->AddComponent< Transform >();
@@ -291,7 +293,7 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
 
       mesh_entity->AddComponent< MeshRenderer >(model, mesh_index, mat);
 #if !defined(_SINGLE_MESH)
-      SceneManager::GetDisplayScene()->SceneGraph()->AddChild(node_entity_id, mesh_entity_id);
+      SceneManager::GetDisplayScene()->SceneGraph()->AddChild(node_entity, mesh_entity);
 #else
       ids[node_index] = mesh_entity;
       SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, mesh_entity);
@@ -301,7 +303,7 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
 }
 
 /* " O L D " */
-//auto EditorLayer::AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
+// auto EditorLayer::AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
 //                                   Engine::ECS::EntityID parent,
 //                                   std::vector< ECS::EntityID >* loadedMeshes) -> ECS::EntityID {
 //  return 0;
@@ -312,7 +314,8 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
 //  auto entity = EntityManager::GetInstance().CreateEntity();
 //  entity->Name(model->GetMesh(meshIndex)->GetName());
 //  entity->AddComponent< Transform >();
-//  entity->GetComponent< Transform >()->SetLocalMatrix(model->GetMesh(meshIndex)->GetModelMatrix());
+//  entity->GetComponent< Transform
+//  >()->SetLocalMatrix(model->GetMesh(meshIndex)->GetModelMatrix());
 //  /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
 //  auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
 //  auto mat = AssetManager::GetMaterial("./materials/default_color.mat");
