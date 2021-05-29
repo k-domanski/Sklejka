@@ -2,7 +2,6 @@
 #include <filesystem>
 #include <Systems/SceneGraph.h>
 
-
 #include <GameManager.h>
 #include "Scripts/StartTimer.h"
 
@@ -30,8 +29,9 @@ auto GameLayer::OnUpdate(double deltaTime) -> void {
     GameManager::SwitchScene(SceneName::Cutscene);
   } else if (Input::IsKeyPressed(Key::D2)) {
     GameManager::SwitchScene(SceneName::LVL_1);
+  } else if (Input::IsKeyPressed(Key::D3)) {
+    GameManager::SwitchScene(SceneName::MainMenu);
   }
-
   SceneManager::GetCurrentScene()->Update(deltaTime);
   SceneManager::GetCurrentScene()->Draw();
 }

@@ -9,6 +9,7 @@
 #include "Components/Collider.h"
 #include "GL/Cubemap.h"
 #include <Systems/NodeSystem.h>
+#include "Components/Animator.h"
 
 namespace Engine::Systems {
   using namespace GL;
@@ -54,8 +55,10 @@ namespace Engine::Systems {
     glReadBuffer(GL_NONE);
     _shadowProjection = glm::ortho(-30.0f, 30.0f, -30.0f, 30.0f, -30.0f, 30.0f);
     _shadowUniformBuffer.BindToSlot(_shadowUniformSlot);
-    _shadowMapShader = AssetManager::GetShader("./shaders/shadow_map.glsl");
+    _shadowMapShader     = AssetManager::GetShader("./shaders/shadow_map.glsl");
+    _shadowMapAnimShader = AssetManager::GetShader("./shaders/shadow_map_anim.glsl");
     _shadowMapShader->BindUniformBlock("u_ShadowData", _shadowUniformSlot);
+    _shadowMapAnimShader->BindUniformBlock("u_ShadowData", _shadowUniformSlot);
 
     cubemap = std::make_shared< Cubemap >("./skyboxes/forest");
   }
@@ -178,14 +181,26 @@ namespace Engine::Systems {
         GL::Context::ClearBuffers(BufferBit::Depth);
         GL::Context::FaceCulling(true);
         GL::Context::CullFace(Face::Front);
+        _shadowMapAnimShader->BindUniformBlock("u_Transform", 0);
+        _shadowMapAnimShader->BindUniformBlock("u_Camera", 1);
+        _shadowMapAnimShader->BindUniformBlock("u_DirectionalLight", 2);
         _shadowMapShader->Use();
         _shadowMapShader->BindUniformBlock("u_Transform", 0);
         _shadowMapShader->BindUniformBlock("u_Camera", 1);
         _shadowMapShader->BindUniformBlock("u_DirectionalLight", 2);
         for (auto& entityID : _entities) {
           auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
-          auto material      = mesh_renderer->GetMaterial();
-          auto model         = mesh_renderer->GetModel();
+          auto has_animator =
+              ECS::EntityManager::GetInstance().GetEntity(entityID)->HasComponent< Animator >();
+          if (has_animator) {
+            _shadowMapAnimShader->Use();
+            _shadowMapAnimShader->BindUniformBlock("u_Transform", 0);
+            _shadowMapAnimShader->BindUniformBlock("u_Camera", 1);
+            _shadowMapAnimShader->BindUniformBlock("u_DirectionalLight", 2);
+            _shadowMapAnimShader->BindUniformBlock("u_JointData", 10);
+          }
+          auto material = mesh_renderer->GetMaterial();
+          auto model    = mesh_renderer->GetModel();
           if (material == nullptr || model == nullptr) {
             continue;
           }
@@ -195,6 +210,9 @@ namespace Engine::Systems {
           _transformUniformData.model = transform->GetWorldMatrix();
           _transformUniformBuffer.SetData(_transformUniformData);
           glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+          if (has_animator) {
+            _shadowMapShader->Use();
+          }
         }
         /*GL::Context::CullFace(Face::Back);
         auto entityID      = _playerShadowTarget->GetTargetID();
