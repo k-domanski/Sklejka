@@ -92,10 +92,10 @@ namespace Engine {
     }
   }
   auto Animator::SendUniformData() -> void {
-    m_JointBuffer.BindToSlot(10);
     m_JointBuffer.SetData(m_JointUniformData);
   }
   auto Animator::Init() -> void {
+    m_JointBuffer.BindToSlot(GL::UniformBlock::JointData);
     m_BoneInfoMap = m_CurrentAnimation->GetBoneIDMap();
     for (int i = 0; i < MAX_NUM_JOINTS; i++) {
       m_JointUniformData.joints[i] = glm::mat4(1.0f);

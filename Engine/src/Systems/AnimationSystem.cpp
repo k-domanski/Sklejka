@@ -16,7 +16,6 @@ namespace Engine::Systems {
 			{
 				auto mesh = EntityManager::GetComponent<MeshRenderer>(entityID);
 				m_MeshRenderer = mesh;
-				m_MeshRenderer->GetMaterial()->GetShader()->BindUniformBlock("u_JointData", 10);
 			}
 			
 		}

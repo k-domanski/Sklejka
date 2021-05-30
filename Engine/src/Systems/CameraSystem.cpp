@@ -12,6 +12,8 @@ namespace Engine::Systems {
     AddSignature< Transform >();
 
     _editorView = false;
+    _cameraUniformBuffer.BindToSlot(GL::UniformBlock::CameraData);
+
     /*auto size      = Window::Get().GetScreenSize();
     _renderTexture = std::make_shared< RenderTarget >(size.x, size.y);
     _renderTexture->AttachColor(0, std::make_shared< TextureAttachment >(
@@ -49,8 +51,6 @@ namespace Engine::Systems {
         _cameraUniformBuffer.SetData(_mainCamera->UniformData());
       }
     }
-    // Move to constructor?
-    _cameraUniformBuffer.BindToSlot(_cameraUniformSlot);
   }
   auto CameraSystem::MainCamera() const noexcept -> std::shared_ptr< Camera > {
     return _mainCamera;

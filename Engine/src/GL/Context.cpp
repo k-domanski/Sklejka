@@ -44,7 +44,7 @@ namespace Engine::GL {
     return VertexArray::GetCurrentHandle();
   }
   auto Context::Shader() noexcept -> GLuint {
-    return Shader::GetCurrentHandle();
+    return Engine::GL::Shader::GetCurrentHandle();
   }
   auto Context::GetClearColor() noexcept -> glm::vec4 {
     return _clearColor;
@@ -195,5 +195,12 @@ namespace Engine::GL {
     }
     glViewport(x, y, width, height);
     _viewport = {x, y, width, height};
+  }
+  auto Context::BindUniformBlocks(const std::shared_ptr< Engine::GL::Shader >& shader) -> void {
+    shader->BindUniformBlock("u_Transform", UniformBlock::TransformData);
+    shader->BindUniformBlock("u_Camera", UniformBlock::CameraData);
+    shader->BindUniformBlock("u_DirectionalLight", UniformBlock::LightData);
+    shader->BindUniformBlock("u_ShadowData", UniformBlock::ShadowData);
+    shader->BindUniformBlock("u_JointData", UniformBlock::JointData);
   }
 }  // namespace Engine::GL

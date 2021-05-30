@@ -57,6 +57,7 @@ namespace Engine {
         return nullptr;
       }
       _loadedShaders[file] = shader;
+      GL::Context::BindUniformBlocks(shader);
       return shader;
     }
     return _loadedShaders[file];
@@ -166,7 +167,7 @@ namespace Engine {
     std::string fileContent = json.dump(4);
 
     for (int i = 0; i < entities.size(); i++) {
-      auto entity  = entities[i];
+      auto entity   = entities[i];
       auto children = sg->GetChildren(entity);
 
       for (auto child : children) {
