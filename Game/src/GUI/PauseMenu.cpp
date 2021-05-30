@@ -73,6 +73,7 @@ auto PauseMenu::Show() -> void {
   if (_isVisible)
     return;
   // GameManager::GetGameSettings()->GameTimeScale(0.0f);
+  _playerTimeScaleBeforePausing = GameManager::GetGameSettings()->PlayerTimeScale();
   GameManager::GetGameSettings()->PlayerTimeScale(0.0f);
 
   _background->SetActive(true);
@@ -94,7 +95,7 @@ auto PauseMenu::Hide() -> void {
   if (!_isVisible)
     return;
   // GameManager::GetGameSettings()->GameTimeScale(1.0f);
-  GameManager::GetGameSettings()->PlayerTimeScale(1.0f);
+  GameManager::GetGameSettings()->PlayerTimeScale(_playerTimeScaleBeforePausing);
 
   _background->SetActive(false);
   _text->SetActive(false);

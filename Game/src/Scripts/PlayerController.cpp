@@ -34,6 +34,9 @@ auto PlayerController::OnCreate() -> void {
 auto PlayerController::Update(float deltaTime) -> void {
 }
 
+auto PlayerController::OnKeyPressed(Engine::Key key) -> void{
+}
+
 auto PlayerController::Transform() const noexcept -> std::shared_ptr< Engine::Transform > {
   return _transform;
 }

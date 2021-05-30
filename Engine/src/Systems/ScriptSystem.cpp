@@ -14,4 +14,13 @@ namespace Engine::Systems {
       native_script->Update(deltaTime);
     }
   }
+
+  auto ScriptSystem::OnKeyPressed(Key key) -> void
+  {
+    for (auto id : _entities)
+    {
+      auto native_script = ECS::EntityManager::GetComponent< NativeScript >(id);
+      native_script->OnKeyPressed(key);
+    }
+  }
 }  // namespace Engine::Systems

@@ -53,6 +53,9 @@ auto CutscenePlayer::Update(float deltaTime) -> void {
   }
 }
 
+auto CutscenePlayer::OnKeyPressed(Engine::Key key) -> void{
+}
+
 auto CutscenePlayer::Reset() -> void {
   _phase = 0;
   _time  = 0.0f;

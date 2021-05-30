@@ -22,5 +22,6 @@ private:
   std::shared_ptr< Engine::Components::UIRenderer > _backroundRenderer;
   std::shared_ptr< Engine::Components::UIRenderer > _mainMenuButtonRenderer;
   std::shared_ptr< Engine::Components::UIRenderer > _resumeButtonRenderer;
+  float _playerTimeScaleBeforePausing = 1.f;
   bool _isVisible;
 };

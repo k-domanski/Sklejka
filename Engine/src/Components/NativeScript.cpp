@@ -37,6 +37,13 @@ namespace Engine {
     }
   }
 
+  auto NativeScript::OnKeyPressed(Key key) -> void
+  {
+    for (auto& script : _scripts) {
+      script->OnKeyPressed(key);
+    }
+  }
+
   auto NativeScript::OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider)
       -> void {
     for (auto& script : _scripts) {

@@ -19,3 +19,6 @@ auto CameraController::Update(float deltaTime) -> void {
   auto look_dir = glm::normalize(player_transform->WorldPosition() - position);
   _cameraTransform->Forward(look_dir);
 }
+
+auto CameraController::OnKeyPressed(Engine::Key key) -> void{
+}

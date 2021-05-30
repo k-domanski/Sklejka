@@ -15,6 +15,7 @@ auto PlayerRect::OnCreate() -> void {
   _currentNode    = _nodeSystem->GetNode(0);
   _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   _playerSettings = GameManager::GetPlayerSettings();
+  _gameSettings   = GameManager::GetGameSettings();
 }
 
 auto PlayerRect::Update(float deltaTime) -> void {
@@ -24,6 +25,9 @@ auto PlayerRect::Update(float deltaTime) -> void {
   SeekTarget(deltaTime);
   HandleMove(vertical_move, horizontal_move, deltaTime);
   HandleRotation(roll, deltaTime);
+}
+
+auto PlayerRect::OnKeyPressed(Engine::Key key) -> void{
 }
 
 auto PlayerRect::CanMove() -> bool {
@@ -58,6 +62,7 @@ auto PlayerRect::HandleInput(float& vertical, float& horizontal, float& roll) ->
 
   if (Input::IsKeyPressed(Key::X))
     GameManager::GetSoundEngine()->play2D("./sounds/placeholderBeep.wav", false);
+
 }
 
 auto PlayerRect::SeekTarget(float deltaTime) -> void {
@@ -98,7 +103,7 @@ auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -
 
   _transform->Position(_transform->Position()
                        + glm::normalize(_moveVelocity) * _playerSettings->ForwardSpeed()
-                             * deltaTime);
+                             * deltaTime * _gameSettings->PlayerTimeScale());
 }
 
 auto PlayerRect::HandleRotation(float roll, float deltaTime) -> void {

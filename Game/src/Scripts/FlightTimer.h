@@ -10,6 +10,7 @@ public:
   FlightTimer();
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
+  auto OnKeyPressed(Engine::Key key) -> void override;
   auto CanCount() -> bool;
   auto CanCount(bool value) -> void;
   auto ResetTimer() -> void;

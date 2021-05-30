@@ -3,6 +3,7 @@
 #include <ECS/Component.h>
 
 namespace Engine {
+  enum Key : unsigned short;
   class IScript;
   struct ScriptOrderOperator {
     auto operator()(const std::shared_ptr< IScript >& lhs,
@@ -33,6 +34,7 @@ namespace Engine {
     }
     auto Detach(const std::shared_ptr< IScript >& script) -> void;
     auto Update(float deltaTime) -> void;
+    auto OnKeyPressed(Key key) -> void;
     auto OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider) -> void;
 
   private:

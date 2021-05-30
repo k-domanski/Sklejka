@@ -3,6 +3,7 @@
 #include <iomanip>
 
 #include "Engine.h"
+#include "GameManager.h"
 #include "Components/UIRenderer.h"
 
 FlightTimer::FlightTimer(): Script(), _time(0.0f), _precision(2) {
@@ -37,12 +38,15 @@ auto FlightTimer::OnCreate() -> void {
 
 auto FlightTimer::Update(float deltaTime) -> void {
   if (_canCount) {
-    _time += deltaTime;
+    _time += deltaTime * GameManager::GetGameSettings()->PlayerTimeScale();
 
     _stream << std::fixed << std::setprecision(_precision) << _time;
     _text->SetText(_stream.str());
     _stream.str(std::string());
   }
+}
+
+auto FlightTimer::OnKeyPressed(Engine::Key key) -> void{
 }
 
 auto FlightTimer::CanCount() -> bool {
