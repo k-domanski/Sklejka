@@ -9,16 +9,12 @@
 namespace Engine::Renderer {
   Model::Model(const std::shared_ptr< Mesh >& mesh) noexcept {
     _filepath = "";
+    mesh->CreateBoundingBox();
+    mesh->CreateBoundingSphere();
     _meshes.push_back(mesh);
-    CreateBoundingSphere();
-    CreateBoundingBox();
-    _query = GL::QueryObject();
   }
   Model::Model(std::string_view path) {
     LoadModel(path);
-    CreateBoundingSphere();
-    CreateBoundingBox();
-    _query = GL::QueryObject();
   }
 
   std::shared_ptr< Mesh > Model::GetRootMesh() {
@@ -30,18 +26,6 @@ namespace Engine::Renderer {
 
   std::string Model::GetFilepath() {
     return _filepath;
-  }
-
-  std::pair< glm::vec3, float > Model::GetBoundingSphere() {
-    return std::make_pair(_sphereCenter, _radius);
-  }
-
-  std::shared_ptr< Mesh > Model::GetBoundingBox() {
-    return _boundingBox;
-  }
-
-  auto Model::GetQuery() -> GL::QueryObject& {
-    return _query;
   }
 
   int Model::GetMeshCount() {
@@ -122,83 +106,7 @@ namespace Engine::Renderer {
     return res;
   }
 
-  void Model::CreateBoundingSphere() {
-    const auto mesh = GetRootMesh();
-
-    _sphereCenter     = glm::vec3(0.0f);  // for now its enough latter maybe average vertex?
-    float maxDistance = 0;
-
-    for (auto vertex : mesh->GetVertices()) {
-      _sphereCenter += vertex.position;
-    }
-    _sphereCenter /= mesh->GetVertices().size();
-
-    for (auto vertex : mesh->GetVertices()) {
-      float distance = glm::distance(vertex.position, _sphereCenter);
-      if (distance > maxDistance)
-        maxDistance = distance;
-    }
-
-    _radius = maxDistance;
-  }
-
-  void Model::CreateBoundingBox() {
-    const auto mesh = GetRootMesh();
-
-    glm::vec3 min(INFINITY);
-    glm::vec3 max(-INFINITY);
-
-    for (auto& vertex : mesh->GetVertices()) {
-      if (vertex.position.x > max.x)
-        max.x = vertex.position.x;
-      if (vertex.position.y > max.y)
-        max.y = vertex.position.y;
-      if (vertex.position.z > max.z)
-        max.z = vertex.position.z;
-      if (vertex.position.x < min.x)
-        min.x = vertex.position.x;
-      if (vertex.position.y < min.y)
-        min.y = vertex.position.y;
-      if (vertex.position.z < min.z)
-        min.z = vertex.position.z;
-    }
-
-    const std::vector< Vertex > verts{{// Vert 0
-                                       {min.x, min.y, min.z},
-                                       {0.0f, 0.0f, 0.0f},
-                                       {0.0f, 0.0f}},
-                                      {// Vert 1
-                                       {min.x, max.y, min.z},
-                                       {0.0f, 0.0f, 0.0f},
-                                       {0.0f, 0.0f}},
-                                      {// Vert 2
-                                       {min.x, max.y, max.z},
-                                       {0.0f, 0.0f, 0.0f},
-                                       {0.0f, 0.0f}},
-                                      {// Vert 3
-                                       {min.x, min.y, max.z},
-                                       {0.0f, 0.0f, 0.0f},
-                                       {0.0f, 0.0f}},
-                                      {// Vert 4
-                                       {max.x, min.y, min.z},
-                                       {0.0f, 0.0f, 0.0f},
-                                       {0.0f, 0.0f}},
-                                      {// Vert 5
-                                       {max.x, max.y, min.z},
-                                       {0.0f, 0.0f, 0.0f},
-                                       {0.0f, 0.0f}},
-                                      {// Vert 6
-                                       {max.x, max.y, max.z},
-                                       {0.0f, 0.0f, 0.0f},
-                                       {0.0f, 0.0f}},
-                                      {// Vert 7
-                                       {max.x, min.y, max.z},
-                                       {0.0f, 0.0f, 0.0f},
-                                       {0.0f, 0.0f}}};
-    const std::vector< GLuint > inds{0, 3, 2, 2, 1, 0, 3, 7, 6, 6, 2, 3, 7, 4, 5, 5, 6, 7,
-                                     4, 0, 1, 1, 5, 4, 1, 2, 6, 6, 5, 1, 4, 7, 3, 3, 0, 4};
-    _boundingBox = std::make_shared< Mesh >(verts, inds);
-  }
+ 
 
   std::shared_ptr< Mesh > Model::processMesh(aiMesh* mesh, const aiScene* scene,
                                              glm::mat4 transformation, int parentIndex) {
@@ -318,6 +226,8 @@ namespace Engine::Renderer {
     for (int i = 0; i < scene->mNumMeshes; ++i) {
       // Load mesh and place it in the `_meshes`
       _meshes[i] = LoadMesh(scene->mMeshes[i]);
+      _meshes[i]->CreateBoundingBox();
+      _meshes[i]->CreateBoundingSphere();
     }
     // Load hierarchy and transforms
     ProcessNode(scene->mRootNode, scene, -1);

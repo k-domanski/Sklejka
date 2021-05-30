@@ -19,7 +19,8 @@ namespace Engine::Renderer {
   Mesh::Mesh(Mesh&& other) noexcept
       : _vertexArray(std::move(other._vertexArray)), _vertexBuffer(std::move(other._vertexBuffer)),
         _indiceBuffer(std::move(other._indiceBuffer)), _vertexData(std::move(other._vertexData)),
-        _indiceData(std::move(other._indiceData)), _primitive(other._primitive), _parent(other._parent) {
+        _indiceData(std::move(other._indiceData)), _primitive(other._primitive),
+        _parent(other._parent) {
   }
   auto Mesh::operator=(Mesh&& other) -> Mesh& {
     if (&other == this)
@@ -30,7 +31,7 @@ namespace Engine::Renderer {
     _vertexData   = std::move(other._vertexData);
     _indiceData   = std::move(other._indiceData);
     _primitive    = other._primitive;
-    _parent = other._parent;
+    _parent       = other._parent;
     return *this;
   }
   auto Mesh::Use() noexcept -> void {
@@ -49,36 +50,115 @@ namespace Engine::Renderer {
     return _vertexData;
   }
 
-  auto Mesh::GetName() -> std::string
-  {
+  auto Mesh::GetName() -> std::string {
     return _name;
   }
 
-  auto Mesh::SetName(std::string name) -> void
-  {
+  auto Mesh::SetName(std::string name) -> void {
     _name = name;
   }
 
-  auto Mesh::GetParentMesh() -> int
-  {
+  auto Mesh::GetParentMesh() -> int {
     return _parent;
   }
 
-  auto Mesh::SetParentMesh(int parentMeshIndex) -> void
-  {
+  auto Mesh::SetParentMesh(int parentMeshIndex) -> void {
     _parent = parentMeshIndex;
   }
 
-  auto Mesh::GetModelMatrix() -> glm::mat4
-  {
+  auto Mesh::GetModelMatrix() -> glm::mat4 {
     return _modelMatrix;
   }
 
-  auto Mesh::SetModelMatrix(glm::mat4 matrix) -> void
-  {
+  auto Mesh::SetModelMatrix(glm::mat4 matrix) -> void {
     _modelMatrix = matrix;
   }
 
+  void Mesh::CreateBoundingSphere() {
+    _sphereCenter     = glm::vec3(0.0f);  // for now its enough latter maybe average vertex?
+    float maxDistance = 0;
+
+    for (auto vertex : _vertexData) {
+      _sphereCenter += vertex.position;
+    }
+    _sphereCenter /= _vertexData.size();
+
+    for (auto vertex : _vertexData) {
+      float distance = glm::distance(vertex.position, _sphereCenter);
+      if (distance > maxDistance)
+        maxDistance = distance;
+    }
+
+    _radius = maxDistance;
+  }
+
+  void Mesh::CreateBoundingBox() {
+    glm::vec3 min(INFINITY);
+    glm::vec3 max(-INFINITY);
+
+    for (auto& vertex : _vertexData) {
+      if (vertex.position.x > max.x)
+        max.x = vertex.position.x;
+      if (vertex.position.y > max.y)
+        max.y = vertex.position.y;
+      if (vertex.position.z > max.z)
+        max.z = vertex.position.z;
+      if (vertex.position.x < min.x)
+        min.x = vertex.position.x;
+      if (vertex.position.y < min.y)
+        min.y = vertex.position.y;
+      if (vertex.position.z < min.z)
+        min.z = vertex.position.z;
+    }
+
+    const std::vector< Vertex > verts{{// Vert 0
+                                       {min.x, min.y, min.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 1
+                                       {min.x, max.y, min.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 2
+                                       {min.x, max.y, max.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 3
+                                       {min.x, min.y, max.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 4
+                                       {max.x, min.y, min.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 5
+                                       {max.x, max.y, min.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 6
+                                       {max.x, max.y, max.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}},
+                                      {// Vert 7
+                                       {max.x, min.y, max.z},
+                                       {0.0f, 0.0f, 0.0f},
+                                       {0.0f, 0.0f}}};
+    const std::vector< GLuint > inds{0, 3, 2, 2, 1, 0, 3, 7, 6, 6, 2, 3, 7, 4, 5, 5, 6, 7,
+                                     4, 0, 1, 1, 5, 4, 1, 2, 6, 6, 5, 1, 4, 7, 3, 3, 0, 4};
+    _boundingBox = std::make_shared< Mesh >(verts, inds);
+  }
+
+  std::pair< glm::vec3, float > Mesh::GetBoundingSphere() {
+    return std::make_pair(_sphereCenter, _radius);
+  }
+
+  std::shared_ptr< Mesh > Mesh::GetBoundingBox() {
+    return _boundingBox;
+  }
+
+  auto Mesh::GetQuery() -> GL::QueryObject& {
+    return _query;
+  }
 
   auto Mesh::SendDataToBuffers() noexcept -> void {
     _vertexArray.Bind();
