@@ -64,7 +64,8 @@ namespace Engine::Systems {
       return;
     }
     auto parent       = _childParentMap[entity->GetID()];
-    auto& parent_list = _parentChildMap[parent->GetID()];
+    auto parent_id    = parent != nullptr ? parent->GetID() : 0;
+    auto& parent_list = _parentChildMap[parent_id];
     auto it           = std::find_if(parent_list.begin(), parent_list.end(),
                            [&entity](auto& item) { return entity->GetID() == item->GetID(); });
     assert(("Child had registered parent, but parent did not have this child registered.",
@@ -78,7 +79,8 @@ namespace Engine::Systems {
   }
   auto SceneGraph::GetChildren(const std::shared_ptr< ECS::Entity >& entity)
       -> std::vector< std::shared_ptr< ECS::Entity > >& {
-    return _parentChildMap[entity->GetID()];
+    auto id = entity != nullptr ? entity->GetID() : 0;
+    return _parentChildMap[id];
   }
 
   auto SceneGraph::GetParent(const std::shared_ptr< ECS::Entity >& entity)

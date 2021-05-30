@@ -3,6 +3,8 @@
 #include <GL/GLEnum.h>
 
 namespace Engine::GL {
+  class Shader;
+
   class Context {
   private:
     /* Textures */
@@ -57,5 +59,8 @@ namespace Engine::GL {
     static auto CullFace(Face face) noexcept -> void;
     static auto Viewport() noexcept -> glm::vec4;
     static auto Viewport(int x, int y, unsigned width, unsigned height) noexcept -> void;
+
+    /* Helpers */
+    static auto BindUniformBlocks(const std::shared_ptr< Engine::GL::Shader >& shader) -> void;
   };
 }  // namespace Engine::GL

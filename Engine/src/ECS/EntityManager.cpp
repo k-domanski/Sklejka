@@ -110,6 +110,9 @@ namespace Engine::ECS {
   auto EntityManager::GetAllComponents(EntityID id) -> std::vector< std::shared_ptr< Component > > {
     std::vector< std::shared_ptr< Component > > res;
     auto entity = GetEntity(id);
+    if (entity == nullptr) {
+      return res;
+    }
     for (auto signature : *entity->_signature) {
       auto list = SceneManager::GetCurrentScene()->_componentLists[signature];
       // Hack: need to get every component somehow for serialization

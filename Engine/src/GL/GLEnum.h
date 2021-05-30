@@ -40,4 +40,9 @@ namespace Engine::GL {
 
   BETTER_ENUM(__Face, GLenum, Front = GL_FRONT, Back = GL_BACK);
   typedef __Face Face;
+
+  BETTER_ENUM(__UniformBlock, GLint, TransformData = 0, CameraData = 1, LightData = 2,
+              ShadowData = 3, JointData = 4);
+  typedef __UniformBlock UniformBlock;
+
 }  // namespace Engine::GL

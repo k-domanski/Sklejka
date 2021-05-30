@@ -55,7 +55,7 @@ namespace Engine::Systems {
     float _frustum[6][4];
     std::shared_ptr< GL::RenderTarget > _depthTarget;
 
-    uint32_t _shadowUniformSlot{6u};
+    uint32_t _shadowMapSlot{6u};
     GL::ShadowUniformBuffer _shadowUniformBuffer;
     GL::ShadowUniformData _shadowUniformData;
     std::shared_ptr< GL::Shader > _shadowMapShader;
