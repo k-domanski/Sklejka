@@ -41,7 +41,8 @@ auto ShadowTarget::Update(float deltaTime) -> void {
   if (_currentAmount <= 0)
   {
     _currentAmount = 0;
-    SetTimeSlowed(false);
+    if (_timeSlowed)
+      SetTimeSlowed(false);
   }
 
   _bar->bar->FillRatio(glm::min(1.0f, _currentAmount / _maxAmount));
