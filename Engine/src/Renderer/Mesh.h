@@ -24,6 +24,10 @@ namespace Engine::Renderer {
     std::string _name;
     glm::mat4 _modelMatrix;
     int _parent; // meshIndex of parentMesh in model root if -1
+    glm::vec3 _sphereCenter;
+    float _radius;
+    GL::QueryObject _query;
+    std::shared_ptr< Mesh > _boundingBox;
 
   public:
     Mesh(const std::vector< Vertex >& vertices, const std::vector< GLuint >& indices) noexcept;
@@ -45,7 +49,11 @@ namespace Engine::Renderer {
 
     auto GetModelMatrix() -> glm::mat4;
     auto SetModelMatrix(glm::mat4 matrix) -> void;
-
+    void CreateBoundingSphere();
+    void CreateBoundingBox();
+    std::pair< glm::vec3, float > GetBoundingSphere();
+    std::shared_ptr< Mesh > GetBoundingBox();
+    auto GetQuery() -> GL::QueryObject&;
   private:
     auto SendDataToBuffers() noexcept -> void;
     static auto CreatePrimitive(MeshPrimitive primitive) noexcept -> std::shared_ptr< Mesh >;
