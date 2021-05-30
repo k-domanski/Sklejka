@@ -258,11 +258,11 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
 
   for (int node_index = 0; node_index < nodes.size(); ++node_index) {
     auto& node = nodes[node_index];
-//#define _SINGLE_MESH
+#define _SINGLE_MESH
 #if !defined(_SINGLE_MESH)
     /* Setup node as parent for meshes */
     auto node_entity = EntityManager::GetInstance().CreateEntity();
-    node_entity->Name(std::string("Model Node: ") + std::to_string(node_index));
+    node_entity->Name(node.name);
 
     auto transform = node_entity->AddComponent< Transform >();
     transform->SetLocalMatrix(node.transform);

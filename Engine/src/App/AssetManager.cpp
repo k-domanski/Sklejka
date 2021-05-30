@@ -156,7 +156,7 @@ namespace Engine {
   auto AssetManager::SaveScene(const std::shared_ptr< Scene >& scene, std::string file) -> void {
     const std::string separator = "42091169692137SUPERJSONENTITYSEPARATOR42091169692137";
     auto sg                     = scene->SceneGraph();
-    auto entities               = sg->GetChildren(0);
+    auto entities               = sg->GetChildren(nullptr);
 
     using namespace nlohmann;
     json json = nlohmann::json{
@@ -166,7 +166,7 @@ namespace Engine {
     std::string fileContent = json.dump(4);
 
     for (int i = 0; i < entities.size(); i++) {
-      auto& entity  = entities[i];
+      auto entity  = entities[i];
       auto children = sg->GetChildren(entity);
 
       for (auto child : children) {
@@ -184,8 +184,9 @@ namespace Engine {
         }
       }
       fileContent.append("\n" + separator + "\n");
-
-      auto entity_json = entity->SaveToJson(sg->GetParent(entity)->GetID());
+      auto parent      = sg->GetParent(entity);
+      auto parent_id   = parent != nullptr ? parent->GetID() : 0;
+      auto entity_json = entity->SaveToJson(parent_id);
 
       fileContent.append(entity_json);
     }
@@ -235,7 +236,7 @@ namespace Engine {
       auto entity = ECS::EntityManager::GetInstance().CreateEntity();
       entity->LoadFromJson(separated_jsons[i]);
       auto parentID = entity->GetParentFromJson(separated_jsons[i]);
-      //TODO: May fail if parent is not deserialized yet
+      // TODO: May fail if parent is not deserialized yet
       sg->AddChild(ECS::EntityManager::GetInstance().GetEntity(parentID), entity);
     }
 
