@@ -42,28 +42,37 @@ EndLevelMenu::EndLevelMenu() {
   _nextLevelButton->TextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   _nextLevelButton->TextOffset(glm::vec2(-50.0f, -20.0f));
   transform2->Position(glm::vec3(windowSize.x / 2.0f, windowSize.y / 2.0f - 100.0f ,0.0f));
+  _imageRenderer->AddElement(_image);
+  _imageRenderer->AddElement(_timeText);
+  _tryAgainRenderer->AddElement(_tryAgainButton);
+  _tryAgainRenderer->AddButton(_tryAgainButton);
+  _nextLevelRenderer->AddButton(_nextLevelButton);
+  _nextLevelRenderer->AddElement(_nextLevelButton);
+  Hide();
 }
 
 auto EndLevelMenu::Show(std::string text) -> void {
-  _imageRenderer->AddElement(_image);
-  _imageRenderer->AddElement(_timeText);
   _timeText->SetText(text);
 
-  _tryAgainRenderer->AddElement(_tryAgainButton);
-  _tryAgainRenderer->AddButton(_tryAgainButton);
-
-  _nextLevelRenderer->AddButton(_nextLevelButton);
-  _nextLevelRenderer->AddElement(_nextLevelButton);
+  _image->SetActive(true);
+  _timeText->SetActive(true);
+  _tryAgainButton->SetActive(true);
+  _nextLevelButton->SetActive(true);
 }
 
 auto EndLevelMenu::Hide() -> void {
-  _imageRenderer->RemoveElement(_image);
-  _imageRenderer->RemoveElement(_timeText);
+ // _imageRenderer->RemoveElement(_image);
+ // _imageRenderer->RemoveElement(_timeText);
   _timeText->SetText("");
 
-  _tryAgainRenderer->RemoveElement(_tryAgainButton);
-  _tryAgainRenderer->RemoveButton(_tryAgainButton);
+  //_tryAgainRenderer->RemoveElement(_tryAgainButton);
+  //_tryAgainRenderer->RemoveButton(_tryAgainButton);
 
-  _nextLevelRenderer->RemoveButton(_nextLevelButton);
-  _nextLevelRenderer->RemoveElement(_nextLevelButton);
+  //_nextLevelRenderer->RemoveButton(_nextLevelButton);
+  //_nextLevelRenderer->RemoveElement(_nextLevelButton);
+
+  _image->SetActive(false);
+  _timeText->SetActive(false);
+  _tryAgainButton->SetActive(false);
+  _nextLevelButton->SetActive(false);
 }

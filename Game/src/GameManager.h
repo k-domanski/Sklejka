@@ -5,6 +5,7 @@
 #include <GUI/LoadingScreen.h>
 #include <GUI/Cutscene.h>
 #include "irrKlang.h"
+#include "GUI/EndLevelMenu.h"
 #include "GUI/MainMenu.h"
 #include "GUI/PauseMenu.h"
 
@@ -22,6 +23,7 @@ private:
   std::shared_ptr< Cutscene > _cutscene;
   std::shared_ptr< MainMenu > _mainMenu;
   std::shared_ptr< PauseMenu > _pauseMenu;
+  std::shared_ptr< EndLevelMenu > _endLevelMenu;
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
   SceneName _currentSceneName = SceneName::MainMenu;
   GameManager();
@@ -46,6 +48,7 @@ public:
   static auto ShowLoadingScreen() -> void;
   static auto Update(float deltaTime) -> void;
   static auto PlayerSpeedUp() -> void;
+  static auto ShowLevelSumUp(float time, bool win) -> void;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;

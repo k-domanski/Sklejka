@@ -27,7 +27,7 @@ auto PlayerRect::Update(float deltaTime) -> void {
   HandleRotation(roll, deltaTime);
 }
 
-auto PlayerRect::OnKeyPressed(Engine::Key key) -> void{
+auto PlayerRect::OnKeyPressed(Engine::Key key) -> void {
 }
 
 auto PlayerRect::CanMove() -> bool {
@@ -62,7 +62,6 @@ auto PlayerRect::HandleInput(float& vertical, float& horizontal, float& roll) ->
 
   if (Input::IsKeyPressed(Key::X))
     GameManager::GetSoundEngine()->play2D("./sounds/placeholderBeep.wav", false);
-
 }
 
 auto PlayerRect::SeekTarget(float deltaTime) -> void {
@@ -102,8 +101,8 @@ auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -
   }
 
   _transform->Position(_transform->Position()
-                       + glm::normalize(_moveVelocity) * _playerSettings->ForwardSpeed()
-                             * deltaTime * _gameSettings->PlayerTimeScale());
+                       + glm::normalize(_moveVelocity) * _playerSettings->ForwardSpeed() * deltaTime
+                             * _gameSettings->PlayerTimeScale());
 }
 
 auto PlayerRect::HandleRotation(float roll, float deltaTime) -> void {
@@ -113,12 +112,13 @@ auto PlayerRect::HandleRotation(float roll, float deltaTime) -> void {
 }
 
 auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
-  const auto& node_tr =
-      EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
-  const auto delta      = node_tr->Position() - _transform->Position();
+  const auto& node_tr = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
+  const auto delta    = node_tr->Position() - _transform->Position();
   const auto magnitude2 = glm::dot(delta, delta);
   auto min_mag          = _playerSettings->MinNodeDistance();
   if (magnitude2 <= (min_mag * min_mag)) {
+    if (_currentNode->NextIndex() == 0)
+      GameManager::ShowLevelSumUp(10.0f, true);
     _currentNode   = _nodeSystem->GetNode(_currentNode->NextIndex());
     _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   }
