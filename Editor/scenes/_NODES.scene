@@ -1,0 +1,2901 @@
+{
+    "sceneID": 4595597701949867903
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11919350946308852050",
+    "entityName": "RootNode",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2057494575254557343",
+    "entityName": "Light",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 0.7983636260032654,
+        "x": 0.5076347589492798,
+        "y": -0.1738022267818451,
+        "z": -0.27334097027778625
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "ambient": {
+        "x": 0.019607843831181526,
+        "y": 0.019607843831181526,
+        "z": 0.019607843831181526
+    },
+    "componentType": "directionalLight",
+    "diffuse": {
+        "x": 1.0,
+        "y": 0.9999899864196777,
+        "z": 0.9999899864196777
+    },
+    "flags": 3,
+    "intensity": 1.0,
+    "shadowBias": 0.0,
+    "specular": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "10068260344842746890",
+    "entityName": "LEVEL1_NODE_TEST",
+    "parentID": 11919350946308852050
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 0.7071067094802856,
+        "x": -0.7071068286895752,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 0,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "888521531926947795",
+    "entityName": "Plane.008",
+    "parentID": 10068260344842746890
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 1,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6789562481616022282",
+    "entityName": "Plane.009",
+    "parentID": 10068260344842746890
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 19.712465286254883,
+        "z": -3.566545248031616
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 9,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9872219344458081089",
+    "entityName": "Plane.010",
+    "parentID": 10068260344842746890
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 39.62895965576172,
+        "z": -6.843533515930176
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 11,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5818641261795691091",
+    "entityName": "Plane.013",
+    "parentID": 10068260344842746890
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 11.946054458618164,
+        "y": 62.57246017456055,
+        "z": -10.322521209716797
+    },
+    "localRotation": {
+        "w": 0.9238795638084412,
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.3826834559440613
+    },
+    "localScale": {
+        "x": 0.9999999403953552,
+        "y": 0.9999999403953552,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 11,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9684562297156084582",
+    "entityName": "NODES",
+    "parentID": 10068260344842746890
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 13,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6886901164237576629",
+    "entityName": "Ground.098",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 8.880401611328125,
+        "z": -1.3910000324249268
+    },
+    "localRotation": {
+        "w": 0.9961947202682495,
+        "x": -0.0871557891368866,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 5.0,
+        "y": 10.0,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 2,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "12350845713878598438",
+    "entityName": "skalka pionowa 1.095",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.901741027832031,
+        "y": 6.088859558105469,
+        "z": -1.7779358625411987
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 3,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5509584641594116749",
+    "entityName": "skalka pionowa 2.182",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.864545822143555,
+        "y": 15.293867111206055,
+        "z": -3.2545664310455322
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 4,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "10241494359648932647",
+    "entityName": "skalka pionowa XL 1.187",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.353847026824951,
+        "y": 9.148500442504883,
+        "z": -1.7595642805099487
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 5,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5878043644923154480",
+    "entityName": "skalka pionowa XL 2.345",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -5.035415172576904,
+        "y": 3.668508529663086,
+        "z": -0.760780930519104
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11457500767070639361",
+    "entityName": "skalka pionowa XL 2.344",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.588603973388672,
+        "y": 6.269231796264648,
+        "z": -1.7205880880355835
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "17300044437651734884",
+    "entityName": "skalka pionowa XL 2.037",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.527271270751953,
+        "y": 17.092018127441406,
+        "z": -3.1089959144592285
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "16808566854121151144",
+    "entityName": "TALL 1.571",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055155277252197,
+        "y": 15.223441123962402,
+        "z": -2.7386324405670166
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13920410920509276206",
+    "entityName": "TALL 1.570",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055155277252197,
+        "y": 3.459916114807129,
+        "z": -0.5988759994506836
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "17496413475265121697",
+    "entityName": "TALL 1.568",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.012341499328613,
+        "y": 12.284807205200195,
+        "z": -2.223212242126465
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14904694272502638915",
+    "entityName": "TALL 1.563",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -3.741429090499878,
+        "y": 17.247024536132813,
+        "z": -3.1343283653259277
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "16733409734532711735",
+    "entityName": "TALL 1.067",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.172252178192139,
+        "y": 9.39394474029541,
+        "z": -1.6972326040267944
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "29485441486410843",
+    "entityName": "TALL 2.206",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.642195224761963,
+        "y": 0.5539426803588867,
+        "z": -0.24197980761528015
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 8,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9876703654044667726",
+    "entityName": "TALL 2.023",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.642195224761963,
+        "y": 12.382790565490723,
+        "z": -2.2573325634002686
+    },
+    "localRotation": {
+        "w": -0.0003524010244291276,
+        "x": -0.0003524010244291276,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 8,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "7151142668467401277",
+    "entityName": "TALL 1.577",
+    "parentID": 888521531926947795
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.012340545654297,
+        "y": 0.5539445877075195,
+        "z": -0.16388773918151855
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13336453540868266758",
+    "entityName": "Ground.099",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 8.84626579284668,
+        "z": -1.2958996295928955
+    },
+    "localRotation": {
+        "w": 0.9961947202682495,
+        "x": -0.0871557742357254,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 5.0,
+        "y": 10.0,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 10,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "12837697890602227387",
+    "entityName": "skalka pionowa 2.184",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.867774486541748,
+        "y": 1.3707942962646484,
+        "z": -1.5713255405426025
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 4,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14919326695994030894",
+    "entityName": "TALL 1.578",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.577335834503174,
+        "y": 5.020593643188477,
+        "z": -0.8559696674346924
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "16842818418359791035",
+    "entityName": "TALL 1.574",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.44035530090332,
+        "y": 7.923074722290039,
+        "z": -1.3776423931121826
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4295236016277160469",
+    "entityName": "TALL 1.575",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.322438716888428,
+        "y": 17.48280143737793,
+        "z": -3.0651819705963135
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2560897075595685819",
+    "entityName": "TALL 1.567",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.055155277252197,
+        "y": 15.238431930541992,
+        "z": -2.6333677768707275
+    },
+    "localRotation": {
+        "w": -0.0003522324259392917,
+        "x": -0.0003522324259392917,
+        "y": 0.7071067094802856,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3348323512142619227",
+    "entityName": "skalka pionowa XL 2.350",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.692786693572998,
+        "y": 17.037221908569336,
+        "z": -3.1573402881622314
+    },
+    "localRotation": {
+        "w": -2.219724279939328e-07,
+        "x": -2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "494730041166790124",
+    "entityName": "skalka pionowa XL 2.346",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.628100395202637,
+        "y": 15.414491653442383,
+        "z": -2.584955930709839
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3962241722555019883",
+    "entityName": "skalka pionowa XL 2.349",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.8094682693481445,
+        "y": 4.466547012329102,
+        "z": -1.0342223644256592
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14084473296914858082",
+    "entityName": "skalka pionowa XL 2.348",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.852785110473633,
+        "y": 12.242788314819336,
+        "z": -2.2177631855010986
+    },
+    "localRotation": {
+        "w": -2.219724279939328e-07,
+        "x": -2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3575679008097545640",
+    "entityName": "skalka pionowa 1.098",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.7532267570495605,
+        "y": 11.680633544921875,
+        "z": -2.1509649753570557
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.003452656092122197,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 3,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4922227497939031457",
+    "entityName": "skalka pionowa 1.097",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.1905975341796875,
+        "y": 8.174467086791992,
+        "z": -1.6828339099884033
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 3,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1220417271280799979",
+    "entityName": "skalka pionowa XL 1.189",
+    "parentID": 6789562481616022282
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.184528827667236,
+        "y": 0.8712902069091797,
+        "z": -0.6205117702484131
+    },
+    "localRotation": {
+        "w": -0.0034526248928159475,
+        "x": -0.0034526248928159475,
+        "y": 0.7070983648300171,
+        "z": 0.7070983052253723
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 5,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6438069065940492236",
+    "entityName": "Ground.100",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -6.302305221557617,
+        "y": 8.621906280517578,
+        "z": -1.4895811080932617
+    },
+    "localRotation": {
+        "w": 0.9961947202682495,
+        "x": -0.08715574443340302,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 5.0,
+        "y": 10.0,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 12,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3923919643828794056",
+    "entityName": "TALL 1.583_SOURCE",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.458391189575195,
+        "y": 0.09299087524414063,
+        "z": -0.12095355987548828
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "15728381648827444340",
+    "entityName": "TALL 1.583_SOURCE.001",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.509309768676758,
+        "y": 6.511936187744141,
+        "z": -0.828089714050293
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.0003520722675602883,
+        "z": 0.0003520722675602883
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1707331451258577794",
+    "entityName": "TALL 1.583_SOURCE.002",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.105579853057861,
+        "y": 9.30527114868164,
+        "z": -1.0443334579467773
+    },
+    "localRotation": {
+        "w": 0.702880859375,
+        "x": 0.702880859375,
+        "y": -0.07719133049249649,
+        "z": -0.0771913230419159
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4154035115399805244",
+    "entityName": "TALL 1.583_SOURCE.003",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -0.20079827308654785,
+        "y": 18.31700897216797,
+        "z": -2.3316850662231445
+    },
+    "localRotation": {
+        "w": 0.6871069669723511,
+        "x": 0.6871070861816406,
+        "y": -0.16698488593101501,
+        "z": -0.16698484122753143
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9960358436466135586",
+    "entityName": "TALL 1.583_SOURCE.004",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 9.937249183654785,
+        "y": 15.7008056640625,
+        "z": -2.7554845809936523
+    },
+    "localRotation": {
+        "w": 0.2579408288002014,
+        "x": 0.2579409182071686,
+        "y": 0.6583818793296814,
+        "z": 0.6583815813064575
+    },
+    "localScale": {
+        "x": 0.010922876186668873,
+        "y": 0.010922875255346298,
+        "z": 0.010922876186668873
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "2394937254742141445",
+    "entityName": "TALL 2.210_SOURCE",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 1.0271859169006348,
+        "y": 20.574462890625,
+        "z": -2.469639778137207
+    },
+    "localRotation": {
+        "w": 0.6664348244667053,
+        "x": 0.6664349436759949,
+        "y": -0.23635675013065338,
+        "z": -0.2363566905260086
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 8,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1259335629698795358",
+    "entityName": "TALL 2.210_SOURCE.001",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 13.69161319732666,
+        "y": 17.650131225585938,
+        "z": -3.3120193481445313
+    },
+    "localRotation": {
+        "w": 0.28815698623657227,
+        "x": 0.28815707564353943,
+        "y": 0.6457287669181824,
+        "z": 0.6457286477088928
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 8,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3661212375827153734",
+    "entityName": "TALL 2.210_SOURCE.002",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.083186149597168,
+        "y": 7.475101470947266,
+        "z": -1.3553895950317383
+    },
+    "localRotation": {
+        "w": 0.0418085977435112,
+        "x": 0.0418085977435112,
+        "y": 0.705869734287262,
+        "z": 0.7058696746826172
+    },
+    "localScale": {
+        "x": 0.009999998845160007,
+        "y": 0.009999999776482582,
+        "z": 0.009999998845160007
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 8,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "159976964274832168",
+    "entityName": "skalka pionowa XL 2.353_SOURCE",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.043738842010498,
+        "y": 4.201686859130859,
+        "z": -1.0649604797363281
+    },
+    "localRotation": {
+        "w": 0.01658036559820175,
+        "x": 0.0165803674608469,
+        "y": 0.7069123983383179,
+        "z": 0.7069123387336731
+    },
+    "localScale": {
+        "x": 0.0051825400441884995,
+        "y": 0.005182540509849787,
+        "z": 0.0051825400441884995
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1318393589537724681",
+    "entityName": "skalka pionowa XL 2.353_SOURCE.001",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 3.221111297607422,
+        "y": 22.66899871826172,
+        "z": -3.05020809173584
+    },
+    "localRotation": {
+        "w": 0.6545714139938354,
+        "x": 0.654571533203125,
+        "y": -0.2674625813961029,
+        "z": -0.26746246218681335
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6650104682542317398",
+    "entityName": "skalka pionowa XL 2.353_SOURCE.002",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -5.372472763061523,
+        "y": 3.2106475830078125,
+        "z": -0.43259572982788086
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526558592915535,
+        "z": 0.003452656092122197
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13872548365543044962",
+    "entityName": "skalka pionowa XL 1.192_SOURCE",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 6.112623691558838,
+        "y": 10.32696533203125,
+        "z": -1.9541873931884766
+    },
+    "localRotation": {
+        "w": 0.08458132296800613,
+        "x": 0.08458134531974792,
+        "y": 0.7020300030708313,
+        "z": 0.702029824256897
+    },
+    "localScale": {
+        "x": 0.005182539112865925,
+        "y": 0.005182540509849787,
+        "z": 0.005182539112865925
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 5,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3496836961505188218",
+    "entityName": "skalka pionowa XL 1.192_SOURCE.001",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.723222732543945,
+        "y": 0.6519699096679688,
+        "z": -0.46458959579467773
+    },
+    "localRotation": {
+        "w": 2.219724279939328e-07,
+        "x": 2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 5,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "7400368403779219623",
+    "entityName": "skalka pionowa XL 1.192_SOURCE.002",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 6.110269069671631,
+        "y": 24.68225860595703,
+        "z": -3.4571123123168945
+    },
+    "localRotation": {
+        "w": 0.6414600610733032,
+        "x": 0.6414600610733032,
+        "y": -0.29753825068473816,
+        "z": -0.2975381910800934
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 5,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5522987680750918430",
+    "entityName": "skalka pionowa 2_SOURCE",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 8.13221549987793,
+        "y": 12.561393737792969,
+        "z": -2.9350976943969727
+    },
+    "localRotation": {
+        "w": 0.23015008866786957,
+        "x": 0.23015017807483673,
+        "y": 0.668603777885437,
+        "z": 0.6686035990715027
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 4,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "18156683398698208194",
+    "entityName": "skalka pionowa 2_SOURCE.001",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -2.2773749828338623,
+        "y": 16.244613647460938,
+        "z": -3.0539474487304688
+    },
+    "localRotation": {
+        "w": 0.6904892921447754,
+        "x": 0.6904894113540649,
+        "y": -0.15239572525024414,
+        "z": -0.15239568054676056
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 4,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4380138742156550897",
+    "entityName": "skalka pionowa 2_SOURCE.002",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -3.7305498123168945,
+        "y": 12.783653259277344,
+        "z": -3.940402030944824
+    },
+    "localRotation": {
+        "w": 0.6960419416427612,
+        "x": 0.696042001247406,
+        "y": -0.12460161745548248,
+        "z": -0.1246015876531601
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 4,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "10401633493235019499",
+    "entityName": "skalka pionowa XL 2.353_SOURCE.003",
+    "parentID": 9872219344458081089
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 11.99778938293457,
+        "y": 17.60205078125,
+        "z": -3.3972692489624023
+    },
+    "localRotation": {
+        "w": 0.29527369141578674,
+        "x": 0.29527372121810913,
+        "y": 0.6425057053565979,
+        "z": 0.6425054669380188
+    },
+    "localScale": {
+        "x": 0.005182539112865925,
+        "y": 0.005182540509849787,
+        "z": 0.005182539112865925
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6720881192715142580",
+    "entityName": "Ground.102",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -6.302303314208984,
+        "y": 8.621902465820313,
+        "z": -1.4895811080932617
+    },
+    "localRotation": {
+        "w": 0.9961947202682495,
+        "x": -0.08715575933456421,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 5.000000476837158,
+        "y": 10.0,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 12,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4030806727843325361",
+    "entityName": "TALL 1.583_SOURCE.005",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.4583892822265625,
+        "y": 0.09298324584960938,
+        "z": -0.12095355987548828
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.00035208091139793396,
+        "z": 0.00035208091139793396
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "7364701010340760088",
+    "entityName": "TALL 1.583_SOURCE.006",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.509307861328125,
+        "y": 6.511936187744141,
+        "z": -0.828089714050293
+    },
+    "localRotation": {
+        "w": 0.7071066498756409,
+        "x": 0.7071067094802856,
+        "y": 0.00035208091139793396,
+        "z": 0.00035208091139793396
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3040873386649549846",
+    "entityName": "TALL 1.583_SOURCE.007",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.105579376220703,
+        "y": 9.305267333984375,
+        "z": -1.0443334579467773
+    },
+    "localRotation": {
+        "w": 0.702880859375,
+        "x": 0.702880859375,
+        "y": -0.07719133049249649,
+        "z": -0.0771913230419159
+    },
+    "localScale": {
+        "x": 0.010922876186668873,
+        "y": 0.010922875255346298,
+        "z": 0.010922876186668873
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1238292454177478883",
+    "entityName": "TALL 1.583_SOURCE.008",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -0.20079803466796875,
+        "y": 18.317005157470703,
+        "z": -2.331686019897461
+    },
+    "localRotation": {
+        "w": 0.6871069669723511,
+        "x": 0.6871070861816406,
+        "y": -0.16698488593101501,
+        "z": -0.16698484122753143
+    },
+    "localScale": {
+        "x": 0.010922875255346298,
+        "y": 0.010922875255346298,
+        "z": 0.010922875255346298
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "12632127776280404339",
+    "entityName": "TALL 1.583_SOURCE.009",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 9.937250137329102,
+        "y": 15.700801849365234,
+        "z": -2.7554845809936523
+    },
+    "localRotation": {
+        "w": 0.2579408288002014,
+        "x": 0.2579409182071686,
+        "y": 0.6583818793296814,
+        "z": 0.6583815813064575
+    },
+    "localScale": {
+        "x": 0.010922877117991447,
+        "y": 0.010922875255346298,
+        "z": 0.010922877117991447
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 7,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6566542667559189599",
+    "entityName": "TALL 2.210_SOURCE.003",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 1.027191162109375,
+        "y": 20.574459075927734,
+        "z": -2.4696407318115234
+    },
+    "localRotation": {
+        "w": 0.6664348244667053,
+        "x": 0.6664349436759949,
+        "y": -0.23635675013065338,
+        "z": -0.2363566905260086
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 8,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3640056375598864702",
+    "entityName": "TALL 2.210_SOURCE.004",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 13.69161605834961,
+        "y": 17.650127410888672,
+        "z": -3.3120193481445313
+    },
+    "localRotation": {
+        "w": 0.28815698623657227,
+        "x": 0.28815707564353943,
+        "y": 0.6457287669181824,
+        "z": 0.6457286477088928
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 8,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "8950794989772533035",
+    "entityName": "TALL 2.210_SOURCE.005",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.083187103271484,
+        "y": 7.47509765625,
+        "z": -1.3553895950317383
+    },
+    "localRotation": {
+        "w": 0.0418085977435112,
+        "x": 0.0418085977435112,
+        "y": 0.705869734287262,
+        "z": 0.7058696746826172
+    },
+    "localScale": {
+        "x": 0.009999998845160007,
+        "y": 0.009999999776482582,
+        "z": 0.009999998845160007
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 8,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "15811845506684334659",
+    "entityName": "skalka pionowa XL 2.353_SOURCE.004",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 5.043743133544922,
+        "y": 4.201683044433594,
+        "z": -1.0649604797363281
+    },
+    "localRotation": {
+        "w": 0.01658036559820175,
+        "x": 0.0165803711861372,
+        "y": 0.7069124579429626,
+        "z": 0.7069122791290283
+    },
+    "localScale": {
+        "x": 0.005182540509849787,
+        "y": 0.005182540509849787,
+        "z": 0.005182540509849787
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "15889534054979525415",
+    "entityName": "skalka pionowa XL 2.353_SOURCE.005",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 3.2211151123046875,
+        "y": 22.668994903564453,
+        "z": -3.0502071380615234
+    },
+    "localRotation": {
+        "w": 0.6545714139938354,
+        "x": 0.654571533203125,
+        "y": -0.26746249198913574,
+        "z": -0.26746243238449097
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4486451178107786493",
+    "entityName": "skalka pionowa XL 2.353_SOURCE.006",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -5.372467041015625,
+        "y": 3.210643768310547,
+        "z": -0.43259620666503906
+    },
+    "localRotation": {
+        "w": 0.7070983052253723,
+        "x": 0.7070983648300171,
+        "y": 0.0034526402596384287,
+        "z": 0.0034526402596384287
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14698971380109661491",
+    "entityName": "skalka pionowa XL 1.192_SOURCE.003",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 6.112627029418945,
+        "y": 10.326961517333984,
+        "z": -1.9541873931884766
+    },
+    "localRotation": {
+        "w": 0.08458132296800613,
+        "x": 0.08458133786916733,
+        "y": 0.7020300030708313,
+        "z": 0.7020297646522522
+    },
+    "localScale": {
+        "x": 0.0051825400441884995,
+        "y": 0.005182540509849787,
+        "z": 0.0051825400441884995
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 5,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4423978225343732424",
+    "entityName": "skalka pionowa XL 1.192_SOURCE.004",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 4.723226547241211,
+        "y": 0.6519660949707031,
+        "z": -0.46459007263183594
+    },
+    "localRotation": {
+        "w": 2.219724279939328e-07,
+        "x": 2.2197247062649694e-07,
+        "y": 0.70710688829422,
+        "z": 0.7071066498756409
+    },
+    "localScale": {
+        "x": 0.0051825400441884995,
+        "y": 0.005182540509849787,
+        "z": 0.0051825400441884995
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 5,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3645410866177473432",
+    "entityName": "skalka pionowa XL 1.192_SOURCE.005",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 6.110271453857422,
+        "y": 24.682262420654297,
+        "z": -3.4571123123168945
+    },
+    "localRotation": {
+        "w": 0.6414600610733032,
+        "x": 0.6414600610733032,
+        "y": -0.29753825068473816,
+        "z": -0.2975381910800934
+    },
+    "localScale": {
+        "x": 0.005182539578527212,
+        "y": 0.005182540509849787,
+        "z": 0.005182539578527212
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 5,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "17929866995817485988",
+    "entityName": "skalka pionowa 2_SOURCE.006",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 8.132219314575195,
+        "y": 12.561389923095703,
+        "z": -2.9350976943969727
+    },
+    "localRotation": {
+        "w": 0.23015008866786957,
+        "x": 0.23015017807483673,
+        "y": 0.668603777885437,
+        "z": 0.6686035990715027
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 4,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "10527982941171211797",
+    "entityName": "skalka pionowa 2_SOURCE.007",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -2.2773780822753906,
+        "y": 16.244617462158203,
+        "z": -3.0539474487304688
+    },
+    "localRotation": {
+        "w": 0.6904892921447754,
+        "x": 0.6904894113540649,
+        "y": -0.15239572525024414,
+        "z": -0.15239568054676056
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 4,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "9093025721577189095",
+    "entityName": "skalka pionowa 2_SOURCE.008",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -3.7305450439453125,
+        "y": 12.783649444580078,
+        "z": -3.9404029846191406
+    },
+    "localRotation": {
+        "w": 0.6960419416427612,
+        "x": 0.696042001247406,
+        "y": -0.12460161745548248,
+        "z": -0.1246015876531601
+    },
+    "localScale": {
+        "x": 0.009999999776482582,
+        "y": 0.009999999776482582,
+        "z": 0.009999999776482582
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 4,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13873199233491039215",
+    "entityName": "skalka pionowa XL 2.353_SOURCE.007",
+    "parentID": 5818641261795691091
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 11.997795104980469,
+        "y": 17.602046966552734,
+        "z": -3.3972692489624023
+    },
+    "localRotation": {
+        "w": 0.29527369141578674,
+        "x": 0.29527372121810913,
+        "y": 0.6425057053565979,
+        "z": 0.6425054669380188
+    },
+    "localScale": {
+        "x": 0.005182539112865925,
+        "y": 0.005182540509849787,
+        "z": 0.005182539112865925
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./materials/default_color.mat",
+    "meshIndex": 6,
+    "model": "./\\models\\AAAALevel1_NODE.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "6669761677290104950",
+    "entityName": "Node_0_1",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 3.0,
+        "z": 2.0551769733428955
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 0,
+    "nextIndex": 1
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "11525830062860151528",
+    "entityName": "Node_1_2",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 15.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 1,
+    "nextIndex": 2
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "5829929660829164185",
+    "entityName": "Node_2_3",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 22.712465286254883,
+        "z": -1.5665452480316162
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 2,
+    "nextIndex": 3
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "4221258446187699531",
+    "entityName": "Node_3_4",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 34.71246337890625,
+        "z": -3.566545248031616
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 3,
+    "nextIndex": 4
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14291842150720469206",
+    "entityName": "Node_4_5",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 41.38632583618164,
+        "z": -4.562963008880615
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 4,
+    "nextIndex": 5
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "15638852825075079600",
+    "entityName": "Node_5_6",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.052721038460731506,
+        "y": 46.851741790771484,
+        "z": -5.065972328186035
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 5,
+    "nextIndex": 6
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "770360629882162735",
+    "entityName": "Node_6_7",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 1.3707469701766968,
+        "y": 51.438472747802734,
+        "z": -5.875844955444336
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 6,
+    "nextIndex": 7
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "10837897391533065969",
+    "entityName": "Node_7_8",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 3.4268674850463867,
+        "y": 54.918060302734375,
+        "z": -6.408933639526367
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 7,
+    "nextIndex": 8
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "18195314041273634866",
+    "entityName": "Node_8_9",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 7.802713394165039,
+        "y": 59.87384033203125,
+        "z": -6.843533515930176
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 8,
+    "nextIndex": 9
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "17515906630315242597",
+    "entityName": "Node_9_10",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 13.188701629638672,
+        "y": 63.81510543823242,
+        "z": -8.041950225830078
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 9,
+    "nextIndex": 10
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "14475851071838306107",
+    "entityName": "Node_10_11",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 17.090612411499023,
+        "y": 67.6424560546875,
+        "z": -8.544960021972656
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 10,
+    "nextIndex": 11
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "3977569398134339661",
+    "entityName": "Node_11_12",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 21.265905380249023,
+        "y": 69.95378112792969,
+        "z": -9.354832649230957
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 11,
+    "nextIndex": 12
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "12686626439953778184",
+    "entityName": "Node_12_13",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 25.18024444580078,
+        "y": 70.9603271484375,
+        "z": -9.887921333312988
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 12,
+    "nextIndex": 13
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "625191999246815681",
+    "entityName": "Node_13_0",
+    "parentID": 9684562297156084582
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 31.778697967529297,
+        "y": 71.37039947509766,
+        "z": -10.322521209716797
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 0.10000000149011612
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "node",
+    "index": 13,
+    "nextIndex": 0
+}

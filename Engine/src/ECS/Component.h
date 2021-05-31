@@ -10,13 +10,14 @@ namespace Engine::ECS {
 
   private:
     EntityID _entityID;
+    ComponentTypeID _typeID;
     std::string _name;
 
   protected:
     std::shared_ptr< Entity > _entity;
 
   public:
-    Component(const std::string& name) noexcept: _name(name){};
+    Component(const std::string& name, ComponentTypeID id) noexcept: _name(name), _typeID(id){};
     virtual ~Component() = default;
     virtual std::string SaveToJson() {
       return "";
@@ -35,6 +36,9 @@ namespace Engine::ECS {
     }
     auto Name() const noexcept -> std::string {
       return _name;
+    }
+    auto TypeID() const noexcept -> ComponentTypeID {
+      return _typeID;
     }
   };
 }  // namespace Engine::ECS

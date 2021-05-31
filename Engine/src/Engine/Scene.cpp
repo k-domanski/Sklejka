@@ -26,7 +26,8 @@ namespace Engine {
     _scriptSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ScriptSystem >();
     _GUISystem     = ECS::EntityManager::GetInstance().RegisterSystem< Systems::GUISystem >();
     _nodeSystem    = ECS::EntityManager::GetInstance().RegisterSystem< Engine::NodeSystem >();
-    _animationSystem = ECS::EntityManager::GetInstance().RegisterSystem<Systems::AnimationSystem>();
+    _animationSystem =
+        ECS::EntityManager::GetInstance().RegisterSystem< Systems::AnimationSystem >();
     _cameraSystem->FindMainCamera();
   }
 
@@ -67,16 +68,15 @@ namespace Engine {
     _GUISystem->OnWindowResize(windowSize);
   }
 
-  auto Scene::OnMousePressed(glm::vec2 position)-> void {
+  auto Scene::OnMousePressed(glm::vec2 position) -> void {
     _GUISystem->HandleMousePressed(position);
   }
 
-  auto Scene::OnMouseReleased(glm::vec2 position)-> void {
+  auto Scene::OnMouseReleased(glm::vec2 position) -> void {
     _GUISystem->HandleMouseRelease(position);
   }
 
-  auto Scene::OnKeyPressed(Key key) -> void
-  {
+  auto Scene::OnKeyPressed(Key key) -> void {
     _scriptSystem->OnKeyPressed(key);
   }
 
@@ -90,5 +90,8 @@ namespace Engine {
   }
   auto Scene::NodeSystem() const -> std::shared_ptr< Engine::NodeSystem > {
     return _nodeSystem;
+  }
+  auto Scene::Entities() -> std::vector< std::shared_ptr< ECS::Entity > > {
+    return _entities;
   }
 }  // namespace Engine

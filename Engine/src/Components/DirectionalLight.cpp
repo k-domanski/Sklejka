@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "DirectionalLight.h"
 #include <nlohmann/json.hpp>
+#include <ECS/Types.h>
 
 namespace Engine {
-  DirectionalLight::DirectionalLight(): Component("DirectionalLight") {
+  DirectionalLight::DirectionalLight()
+      : Component("DirectionalLight", ECS::GetComponentTypeID< DirectionalLight >()) {
     m_Data.direction = glm::vec3(0);
     m_Data.ambient   = glm::vec3(0);
     m_Data.diffuse   = glm::vec3(0);

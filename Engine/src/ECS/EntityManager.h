@@ -30,6 +30,12 @@ namespace Engine::ECS {
           SceneManager::GetCurrentScene()->_componentLists[compTypeID]);
       // return static_cast< ComponentList< T > >(*_componentLists[compTypeID]);
     }
+    auto GetComponentList(ComponentTypeID componentType) -> std::shared_ptr< IComponentList > {
+      if (SceneManager::GetCurrentScene()->_componentLists.count(componentType) != 0) {
+        return SceneManager::GetCurrentScene()->_componentLists[componentType];
+      }
+      return nullptr;
+    }
 
     template< typename T, typename... Args >
     auto AddComponent(std::shared_ptr< Entity >& entity, Args&&... args) -> std::shared_ptr< T > {
@@ -76,14 +82,30 @@ namespace Engine::ECS {
     auto RemoveComponent(const std::shared_ptr< Entity >& entity) -> void {
       auto compTypeID = GetComponentTypeID< T >();
       auto it         = entity->_signature->find(compTypeID);
-      if (it == entity->_signature->end())
+      if (it == entity->_signature->end()) {
         return;
+      }
 
       entity->_signature->erase(it);
 
       auto list = GetComponentList< T >();
-      list->Remove(entity->GetID());
+      list->Remove(entity);
       entity->_componentCache.erase(compTypeID);
+      UpdateEntity(entity);
+    }
+
+    auto RemoveComponent(const std::shared_ptr< Entity >& entity, ComponentTypeID componentType) {
+      auto it = entity->_signature->find(componentType);
+      if (it == entity->_signature->end()) {
+        return;
+      }
+
+      entity->_signature->erase(it);
+
+      auto list = GetComponentList(componentType);
+      list->Remove(entity);
+      entity->_componentCache.erase(componentType);
+      UpdateEntity(entity);
     }
 
     template< class T >

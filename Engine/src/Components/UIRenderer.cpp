@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "UIRenderer.h"
+#include <ECS/Types.h>
 
 std::vector< std::shared_ptr< Engine::Renderer::UIElement > >&
     Engine::Components::UIRenderer::GetElements() {
@@ -32,5 +33,6 @@ auto Engine::Components::UIRenderer::RemoveElement(std::shared_ptr< Renderer::UI
   _elements.erase(it);
 }
 
-Engine::Components::UIRenderer::UIRenderer(): Component("UIRenderer") {
+Engine::Components::UIRenderer::UIRenderer()
+    : Component("UIRenderer", ECS::GetComponentTypeID< UIRenderer >()) {
 }

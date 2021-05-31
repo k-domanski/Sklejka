@@ -7,6 +7,7 @@
 #include "ImGui/Panels/InspectorPanel.h"
 #include "ImGui/Panels/FileSystemPanel.h"
 #include "ImGui/Panels/MaterialPanel.h"
+#include "ImGui/Panels/NodesUtilityPanel.h"
 
 template< typename T >
 using ptr_t = std::shared_ptr< T >;
@@ -56,4 +57,5 @@ private:
   Editor::InspectorPanel m_InspectorPanel;
   Editor::FileSystemPanel m_FileSystemPanel;
   Editor::MaterialPanel m_MaterialPanel;
+  Editor::NodesUtilityPanel m_NodeUtilityPanel;
 };

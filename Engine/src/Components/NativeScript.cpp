@@ -9,7 +9,8 @@ auto Engine::ScriptOrderOperator::operator()(const std::shared_ptr< IScript >& l
 }
 
 namespace Engine {
-  NativeScript::NativeScript(): ECS::Component("Native Script") {
+  NativeScript::NativeScript()
+      : ECS::Component("Native Script", ECS::GetComponentTypeID< NativeScript >()) {
   }
   auto NativeScript::Attach(const std::shared_ptr< IScript >& script) -> void {
     if (script == nullptr) {
@@ -37,8 +38,7 @@ namespace Engine {
     }
   }
 
-  auto NativeScript::OnKeyPressed(Key key) -> void
-  {
+  auto NativeScript::OnKeyPressed(Key key) -> void {
     for (auto& script : _scripts) {
       script->OnKeyPressed(key);
     }

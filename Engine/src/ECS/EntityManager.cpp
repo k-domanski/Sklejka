@@ -33,13 +33,15 @@ namespace Engine::ECS {
       int correctSignatures        = 0;
       const auto& entitySignatures = entity->GetSignature();
       for (auto signature : *entitySignatures) {
-        if (system->ContainsSignature(signature))
+        if (system->ContainsSignature(signature)) {
           correctSignatures++;
+        }
       }
-      if (correctSignatures == system->_signatures.size())
+      if (correctSignatures == system->_signatures.size()) {
         AddToSystem(systemID, entity);
-      else
+      } else {
         RemoveFromSystem(systemID, entity);
+      }
     }
   }
 
