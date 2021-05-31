@@ -5,6 +5,8 @@
 //#include <pch.h>
 
 namespace Engine {
+  enum Key : unsigned short;
+
   namespace ECS {
     class Entity;
     class IComponentList;
@@ -61,6 +63,7 @@ namespace Engine {
     auto OnWindowResize(glm::vec2 windowSize) -> void;
     auto OnMousePressed(glm::vec2 position) -> void;
     auto OnMouseReleased(glm::vec2 position) -> void;
+    auto OnKeyPressed(Key key) -> void;
     auto FindEntity(const std::string& name) -> std::shared_ptr< ECS::Entity >;
     auto NodeSystem() const -> std::shared_ptr< Engine::NodeSystem >;
   };

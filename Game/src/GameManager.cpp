@@ -84,7 +84,7 @@ auto GameManager::Update(float deltaTime) -> void {
   _instance->UpdateImpl(deltaTime);
 
   // test pause menu:
-  if (Engine::Input::IsKeyPressed(GLFW_KEY_P)) {
+  if (Engine::Input::IsKeyPressed(Engine::Key::ESCAPE)) {
     _instance->_pauseMenu->Show();
   }
 }
@@ -94,6 +94,10 @@ auto GameManager::PlayerSpeedUp() -> void {
   auto fast_speed             = _instance->GetPlayerSettings()->ForwardSpeedBase()
                     * _instance->GetPlayerSettings()->SpeedMultiplier();
   _instance->GetPlayerSettings()->ForwardSpeed(fast_speed);
+}
+
+auto GameManager::ShowLevelSumUp(float time, bool win) -> void {
+  _instance->_endLevelMenu->Show("You win. \n Your time was: " + std::to_string(time));
 }
 
 auto GameManager::UpdateImpl(float deltaTime) -> void {
@@ -166,6 +170,7 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script = _model->AddComponent< Engine::NativeScript >();
   native_script->Attach< CollisionDetector >();
 
-  _instance->_pauseMenu = std::make_shared< PauseMenu >();
+  _instance->_pauseMenu    = std::make_shared< PauseMenu >();
+  _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();
   // scene->RenderSystem()->SetShadowChecker(shadowTarget);
 }

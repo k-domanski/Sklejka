@@ -68,8 +68,8 @@ namespace Engine::Systems {
     using Engine::Renderer::Mesh;
     // Hack: for now here to repair bug, consider OnStart in systems
 
-    int i = 0;
-    int j = 0;
+    // int i = 0;
+    // int j = 0;
 
     const auto camera = _cameraSystem->MainCamera();
     if (camera == nullptr) {
@@ -106,18 +106,18 @@ namespace Engine::Systems {
 
         // frustum culling
         CalculateFrustrum(_transformUniformData.modelViewProjection);
-        auto sphere = model->GetBoundingSphere();
+        auto sphere = mesh->GetBoundingSphere();
         if (!SphereInFrustum(sphere.first, sphere.second)) {
-          i++;
+          // i++;
           continue;
         }
 
-        auto& query = model->GetQuery();
+        auto& query = mesh->GetQuery();
         // auto lastFrameRes = query.AnySamplesPassed();
 
         query.Start();
 
-        auto boundingMesh = model->GetBoundingBox();
+        auto boundingMesh = mesh->GetBoundingBox();
         boundingMesh->Use();
         _transformUniformBuffer.SetData(_transformUniformData);
 
@@ -150,8 +150,8 @@ namespace Engine::Systems {
         auto res = query.AnySamplesPassed();
         if (res)
           _visibleEntities.push_back(entity);
-        else
-          j++;
+        // else
+        // j++;
       }
       glDepthMask(GL_TRUE);
       glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -273,13 +273,13 @@ namespace Engine::Systems {
       _transformUniformData.modelViewProjection =
           camera->ProjectionMatrix() * _transformUniformData.modelView;
 
-      //// frustum culling
-      // CalculateFrustrum(_transformUniformData.modelViewProjection);
-      // auto sphere = model->GetBoundingSphere();
-      // if (!SphereInFrustum(sphere.first, sphere.second)) {
-      //  i++;
-      //  continue;
-      //}
+      // frustum culling
+      CalculateFrustrum(_transformUniformData.modelViewProjection);
+      auto sphere = mesh->GetBoundingSphere();
+      if (!SphereInFrustum(sphere.first, sphere.second)) {
+        // i++;
+        continue;
+      }
 
       material->Use();
       mesh->Use();
@@ -400,9 +400,9 @@ namespace Engine::Systems {
         auto material      = mesh_renderer->GetMaterial();
         auto model         = mesh_renderer->GetModel();
         if (material != nullptr && model != nullptr) {
-          auto& query = model->GetQuery();
+          auto mesh   = model->GetMesh(mesh_renderer->MeshIndex());
+          auto& query = mesh->GetQuery();
           query.Start(GL_SAMPLES_PASSED);
-          auto mesh = model->GetMesh(mesh_renderer->MeshIndex());
           mesh->Use();
           const auto transform        = ECS::EntityManager::GetComponent< Transform >(entity);
           _transformUniformData.model = transform->GetWorldMatrix();

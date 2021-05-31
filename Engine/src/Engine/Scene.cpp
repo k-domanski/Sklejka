@@ -75,6 +75,11 @@ namespace Engine {
     _GUISystem->HandleMouseRelease(position);
   }
 
+  auto Scene::OnKeyPressed(Key key) -> void
+  {
+    _scriptSystem->OnKeyPressed(key);
+  }
+
   auto Scene::FindEntity(const std::string& name) -> std::shared_ptr< ECS::Entity > {
     auto it = std::find_if(_entities.begin(), _entities.end(),
                            [&name](const auto& entity) { return entity->Name() == name; });

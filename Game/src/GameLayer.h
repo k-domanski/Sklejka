@@ -14,6 +14,7 @@ public:
   auto OnEvent(Engine::Event& event) -> void override;
   bool OnMouseButtonPress(Engine::MouseButtonPressedEvent& e);
   bool OnMouseButtonRelease(Engine::MouseButtonReleasedEvent& e);
+  bool OnKeyPress(Engine::KeyPressedEvent& e);
   
 
 private:

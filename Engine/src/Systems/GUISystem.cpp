@@ -57,9 +57,9 @@ auto Engine::Systems::GUISystem::HandleMousePressed(glm::vec2 mousePosition) -> 
     auto transform = Engine::ECS::EntityManager::GetComponent< Engine::Transform >(entityID);
     auto renderer =
         Engine::ECS::EntityManager::GetComponent< Engine::Components::UIRenderer >(entityID);
-    auto& buttons = renderer->GetButtons();
+    if (renderer != nullptr) {
+      auto& buttons = renderer->GetButtons();
 
-    if (!buttons.empty())
       for (auto button : buttons) {
         if (button->IsActive())
           button->OnPressHandle(transform->WorldPosition() - glm::vec3(mousePosition, 0.0f));
@@ -68,6 +68,7 @@ auto Engine::Systems::GUISystem::HandleMousePressed(glm::vec2 mousePosition) -> 
           break;
         }
       }
+    }
     if (_breakChecking) {
       LOG_DEBUG("Checking was broken");
       break;

@@ -19,16 +19,20 @@ public:
   ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target);
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
+  auto OnKeyPressed(Engine::Key key) -> void override;
   auto GetTarget() -> std::shared_ptr< Engine::ECS::Entity >;
   auto ShadowRate() -> float;
   auto ShadowRate(float shadowRate) -> void;
   auto SamplesPassed(GLint samplesPassed) -> void;
+  auto SetTimeSlowed(bool value) -> void;
+
 private:
   std::shared_ptr<Engine::ECS::Entity> _target;
   float _shadowRate;
   float _maxAmount;
   float _currentAmount;
   float _fillSpeed;
+  bool _timeSlowed;
   GLint _maxSamplesPassed;
   std::shared_ptr< BarData > _bar;
   std::shared_ptr< Engine::Systems::Renderer > _rendererSystem;

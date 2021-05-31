@@ -40,6 +40,7 @@ auto GameLayer::OnEvent(Engine::Event& event) -> void {
   EventDispatcher dispatcher(event);
   dispatcher.Dispatch< MouseButtonPressedEvent >(BIND_EVENT_FN(GameLayer::OnMouseButtonPress));
   dispatcher.Dispatch< MouseButtonReleasedEvent >(BIND_EVENT_FN(GameLayer::OnMouseButtonRelease));
+  dispatcher.Dispatch< KeyPressedEvent >(BIND_EVENT_FN(GameLayer::OnKeyPress));
 }
 
 bool GameLayer::OnMouseButtonPress(MouseButtonPressedEvent& e) {
@@ -59,4 +60,10 @@ bool GameLayer::OnMouseButtonRelease(MouseButtonReleasedEvent& e) {
     SceneManager::GetCurrentScene()->OnMouseReleased(mousePos);
   }
   return false;
+}
+
+bool GameLayer::OnKeyPress(Engine::KeyPressedEvent& e)
+{
+  SceneManager::GetCurrentScene()->OnKeyPressed((Key)e.GetKeyCode());
+  return true;
 }

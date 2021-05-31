@@ -15,6 +15,7 @@ auto PlayerRect::OnCreate() -> void {
   _currentNode    = _nodeSystem->GetNode(0);
   _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   _playerSettings = GameManager::GetPlayerSettings();
+  _gameSettings   = GameManager::GetGameSettings();
 }
 
 auto PlayerRect::Update(float deltaTime) -> void {
@@ -24,6 +25,9 @@ auto PlayerRect::Update(float deltaTime) -> void {
   SeekTarget(deltaTime);
   HandleMove(vertical_move, horizontal_move, deltaTime);
   HandleRotation(roll, deltaTime);
+}
+
+auto PlayerRect::OnKeyPressed(Engine::Key key) -> void {
 }
 
 auto PlayerRect::CanMove() -> bool {
@@ -97,8 +101,8 @@ auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -
   }
 
   _transform->Position(_transform->Position()
-                       + glm::normalize(_moveVelocity) * _playerSettings->ForwardSpeed()
-                             * deltaTime);
+                       + glm::normalize(_moveVelocity) * _playerSettings->ForwardSpeed() * deltaTime
+                             * _gameSettings->PlayerTimeScale());
 }
 
 auto PlayerRect::HandleRotation(float roll, float deltaTime) -> void {
@@ -108,12 +112,13 @@ auto PlayerRect::HandleRotation(float roll, float deltaTime) -> void {
 }
 
 auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
-  const auto& node_tr =
-      EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
-  const auto delta      = node_tr->Position() - _transform->Position();
+  const auto& node_tr = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
+  const auto delta    = node_tr->Position() - _transform->Position();
   const auto magnitude2 = glm::dot(delta, delta);
   auto min_mag          = _playerSettings->MinNodeDistance();
   if (magnitude2 <= (min_mag * min_mag)) {
+    if (_currentNode->NextIndex() == 0)
+      GameManager::ShowLevelSumUp(10.0f, true);
     _currentNode   = _nodeSystem->GetNode(_currentNode->NextIndex());
     _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   }

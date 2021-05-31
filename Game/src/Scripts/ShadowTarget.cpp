@@ -1,5 +1,6 @@
 #include "ShadowTarget.h"
 #include "Engine.h"
+#include "GameManager.h"
 #include "Components/UIRenderer.h"
 
 ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
@@ -27,12 +28,38 @@ auto ShadowTarget::OnCreate() -> void {
 }
 
 auto ShadowTarget::Update(float deltaTime) -> void {
-  SamplesPassed(_rendererSystem->ObjectInShadow(_target));
+  if (!_timeSlowed) {
+    SamplesPassed(_rendererSystem->ObjectInShadow(_target));
+    _currentAmount +=
+        _fillSpeed * _shadowRate * deltaTime * GameManager::GetGameSettings()->PlayerTimeScale();
+  }
+  else
+  {
+    _currentAmount -= 10 * deltaTime * GameManager::GetGameSettings()->PlayerTimeScale();
+  }
+
+  if (_currentAmount <= 0)
+  {
+    _currentAmount = 0;
+    if (_timeSlowed)
+      SetTimeSlowed(false);
+  }
+
   _bar->bar->FillRatio(glm::min(1.0f, _currentAmount / _maxAmount));
-  _currentAmount += _fillSpeed * _shadowRate * deltaTime;
-  if (_currentAmount > _maxAmount)
-    // _currentAmount = _maxAmount;
-    _currentAmount = 0.0f;
+}
+
+auto ShadowTarget::OnKeyPressed(Engine::Key key) -> void
+{
+  if (key == Engine::Key::Z)
+  {
+    if (_timeSlowed) {
+      SetTimeSlowed(false);
+    }
+    else if (_currentAmount > 0)
+    {
+      SetTimeSlowed(true);
+    }
+  }
 }
 
 auto ShadowTarget::GetTarget() -> std::shared_ptr< Engine::ECS::Entity > {
@@ -55,4 +82,10 @@ auto ShadowTarget::SamplesPassed(GLint samplesPassed) -> void {
   _shadowRate = (float)samplesPassed / (float)_maxSamplesPassed;
   _shadowRate = 1.0f - _shadowRate;
   _shadowRate = std::clamp(_shadowRate, 0.0f, 1.0f);
+}
+
+auto ShadowTarget::SetTimeSlowed(bool value) -> void
+{
+  _timeSlowed = value;
+  GameManager::GetGameSettings()->PlayerTimeScale(value ? 0.25f : 1.f);
 }

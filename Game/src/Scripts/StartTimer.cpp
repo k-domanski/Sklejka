@@ -47,6 +47,9 @@ auto StartTimer::Update(float deltaTime) -> void {
   }
 }
 
+auto StartTimer::OnKeyPressed(Engine::Key key) -> void{
+}
+
 auto StartTimer::CanCount() -> bool {
   return _canCount;
 }

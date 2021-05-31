@@ -9,6 +9,9 @@ auto CollisionDetector::Update(float deltaTime) -> void {
   }
 }
 
+auto CollisionDetector::OnKeyPressed(Engine::Key key) -> void{
+}
+
 auto CollisionDetector::OnCollisionEnter(const std::shared_ptr< Collider >& collider) -> void {
   auto entity = Engine::ECS::EntityManager::GetInstance().GetEntity(collider->GetEntityID());
   if (entity->Name() == "Bell") {

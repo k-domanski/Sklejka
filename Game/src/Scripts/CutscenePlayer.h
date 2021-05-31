@@ -20,6 +20,7 @@ public:
   CutscenePlayer(const std::shared_ptr< Engine::GL::Shader >& shader);
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
+  auto OnKeyPressed(Engine::Key key) -> void override;
   auto Reset() -> void;
 
 private:

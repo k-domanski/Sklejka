@@ -12,6 +12,7 @@ public:
   StartTimer(std::shared_ptr< PlayerRect > playerRect, std::shared_ptr< FlightTimer > flightTimer);
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
+  auto OnKeyPressed(Engine::Key key) -> void override;
   auto CanCount() -> bool;
   auto CanCount(bool value) -> void;
 

@@ -16,6 +16,7 @@ namespace Engine {
     ~IScript()                                   = default;
     auto virtual OnCreate() -> void              = 0;
     auto virtual Update(float deltaTime) -> void = 0;
+    auto virtual OnKeyPressed(Key key) -> void   = 0;
     auto virtual OnDestroy() -> void             = 0;
     auto virtual OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider)
         -> void                                                   = 0;

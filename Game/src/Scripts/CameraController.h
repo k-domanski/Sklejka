@@ -13,4 +13,5 @@ public:
   CameraController(const std::shared_ptr< PlayerController >& player_controller);
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
+  auto OnKeyPressed(Engine::Key key) -> void override;
 };

@@ -3,6 +3,8 @@
 #include <Scripts/PlayerController.h>
 #include <Settings/PlayerSettings.h>
 
+#include "Settings/GameSettings.h"
+
 class PlayerRect : public Engine::Script {
 private:
   std::shared_ptr< Engine::Transform > _transform;
@@ -12,6 +14,7 @@ private:
   std::shared_ptr< Engine::Transform > _nodeTransform;
   glm::vec3 _moveVelocity{0};
   std::shared_ptr< PlayerSettings > _playerSettings;
+  std::shared_ptr< GameSettings > _gameSettings;
   bool _canMove;
 
   /*glm::vec2 _size{4, 4};
@@ -23,6 +26,7 @@ public:
   PlayerRect(const std::shared_ptr< PlayerController >& player_controller);
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
+  auto OnKeyPressed(Engine::Key key) -> void override;
   auto CanMove() -> bool;
   auto CanMove(bool value) -> void;
   // auto Size() const noexcept -> glm::vec2;
