@@ -11,6 +11,10 @@
 #include "ECS/EntityManager.h"
 
 namespace Engine::ECS {
+  auto Entity::RemoveComponent(ComponentTypeID componentType) -> void {
+    EntityManager::GetInstance().RemoveComponent(_entity.lock(), componentType);
+  }
+
   auto Entity::GetID() const -> EntityID {
     return _entityID;
   }
@@ -63,7 +67,8 @@ namespace Engine::ECS {
 
     std::string delimiter =
         "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137";  // TODO: Move to one place
-                                                                    // instead of declaring each time
+                                                                    // instead of declaring each
+                                                                    // time
 
     size_t pos = 0;
     std::string token;
@@ -94,21 +99,21 @@ namespace Engine::ECS {
 
       std::string component_type = component_json["componentType"];
       if (component_type == "transform")
-          AddComponent< Transform >()->LoadFromJson(separated_jsons[i]);
+        AddComponent< Transform >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "collider")
-          AddComponent< Components::Collider >()->LoadFromJson(separated_jsons[i]);
+        AddComponent< Components::Collider >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "meshRenderer")
-          AddComponent< Components::MeshRenderer >()->LoadFromJson(separated_jsons[i]);
+        AddComponent< Components::MeshRenderer >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "rigidbody")
-          AddComponent< Components::Rigidbody >()->LoadFromJson(separated_jsons[i]);
+        AddComponent< Components::Rigidbody >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "camera")
-          AddComponent< Camera >()->LoadFromJson(separated_jsons[i]);
+        AddComponent< Camera >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "directionalLight")
-          AddComponent< DirectionalLight >()->LoadFromJson(separated_jsons[i]);
+        AddComponent< DirectionalLight >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "node")
-          AddComponent< Node >()->LoadFromJson(separated_jsons[i]);
+        AddComponent< Node >()->LoadFromJson(separated_jsons[i]);
       else if (component_type == "animator")
-          AddComponent<Animator>()->LoadFromJson(separated_jsons[i]);
+        AddComponent< Animator >()->LoadFromJson(separated_jsons[i]);
     }
   }
 
@@ -116,7 +121,8 @@ namespace Engine::ECS {
     std::vector< std::string > separated_jsons;
     std::string delimiter =
         "42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137";  // TODO: Move to one place
-                                                                    // instead of declaring each time
+                                                                    // instead of declaring each
+                                                                    // time
 
     size_t pos = 0;
     std::string token;

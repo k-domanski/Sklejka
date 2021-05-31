@@ -1,11 +1,12 @@
 #pragma once
 #include "ECS/Component.h"
+#include <ECS/Types.h>
 
 namespace Engine::Components
 {
   class Rigidbody : public Engine::ECS::Component {
   public:
-    Rigidbody(): Component("Rigidbody") {
+    Rigidbody(): Component("Rigidbody", ECS::GetComponentTypeID<Rigidbody>()) {
       _velocity   = glm::vec3(0.0f);
       _useGravity = true;
     }

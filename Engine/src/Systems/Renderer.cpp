@@ -292,6 +292,7 @@ namespace Engine::Systems {
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
 
       // collider
+#if defined(_DEBUG)
       std::shared_ptr< Components::Collider > collider;
       if ((collider = ECS::EntityManager::GetComponent< Components::Collider >(entityID))
           != nullptr) {
@@ -343,6 +344,7 @@ namespace Engine::Systems {
           glDisable(GL_PRIMITIVE_RESTART);
         }
       }
+#endif
     }
     cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
 
@@ -644,8 +646,8 @@ namespace Engine::Systems {
 
     mesh->Use();
     _debugMaterial->Use();
-    for (auto id : node_system->Entities()) {
-      const auto& transform = ECS::EntityManager::GetComponent< Transform >(id);
+    for (auto entity : node_system->Entities()) {
+      const auto& transform = ECS::EntityManager::GetComponent< Transform >(entity);
       transform->Scale(glm::vec3(0.1f));
       _transformUniformData.model     = transform->GetWorldMatrix();
       _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;

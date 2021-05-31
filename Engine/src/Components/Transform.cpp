@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Transform.h"
-
+#include <ECS/Types.h>
 #include <nlohmann/json.hpp>
 
 #include "glm/gtx/matrix_decompose.hpp"
 
 namespace Engine {
   Transform::Transform()
-      : Component("Transform"), _position(0.0f), _rotation(1.0f, 0.0f, 0.0f, 0.0f), _scale(1.0f),
-        _modelMatrix(glm::mat4(1.0f)) {
+      : Component("Transform", ECS::GetComponentTypeID< Transform >()), _position(0.0f),
+        _rotation(1.0f, 0.0f, 0.0f, 0.0f), _scale(1.0f), _modelMatrix(glm::mat4(1.0f)) {
     flags.Set(TransformFlag::Dirty);
   }
   auto Transform::Position() const noexcept -> glm::vec3 {
@@ -44,12 +44,15 @@ namespace Engine {
   }
 
   auto Transform::SetLocalMatrix(glm::mat4 matrix) -> void {
-    glm::vec3 scale;
-    glm::quat rotation;
-    glm::vec3 translation;
+    glm::vec3 scale{1.0f};
+    glm::quat rotation{1.0f, 0.0f, 0.0f, 0.0f};
+    glm::vec3 translation{0.0f};
     glm::vec3 skew;
     glm::vec4 perspective;
-    glm::decompose(matrix, scale, rotation, translation, skew, perspective);
+    if (!glm::decompose(matrix, scale, rotation, translation, skew, perspective)) {
+      translation = matrix[3];
+      rotation = {1.0f, 0.0f, 0.0f, 0.0f};
+    }
 
     Position(translation);
     Rotation(rotation);
@@ -62,7 +65,7 @@ namespace Engine {
   auto Transform::Right() const noexcept -> glm::vec3 {
     // TODO: if dirty -> update
     return glm::normalize(static_cast< glm::mat3 >(_modelMatrix) * glm::vec3{1.0f, 0.0f, 0.0f});
-     //return _rotation * glm::vec3{1.0f, 0.0f, 0.0f};
+    // return _rotation * glm::vec3{1.0f, 0.0f, 0.0f};
   }
   auto Transform::Up() const noexcept -> glm::vec3 {
     // TODO: if dirty -> update

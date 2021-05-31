@@ -3,17 +3,19 @@
 #include <nlohmann/json.hpp>
 #include <Utility/Utility.h>
 #include <App/AssetManager.h>
+#include <ECS/EntityManager.h>
 
 namespace Engine {
-  Animator::Animator(): Component("Animator") {
+  Animator::Animator(): Component("Animator", ECS::GetComponentTypeID< Animator >()) {
   }
   Animator::Animator(std::shared_ptr< Animation > animation)
-      : Component("Animator"), m_CurrentAnimation(animation), m_CurrentTime(0.0f),
-        m_DeltaTime(0.0f) {
+      : Component("Animator", ECS::GetComponentTypeID< Animator >()), m_CurrentAnimation(animation),
+        m_CurrentTime(0.0f), m_DeltaTime(0.0f) {
     Init();
   }
   Animator::Animator(std::shared_ptr< Renderer::Model > model)
-      : Component("Animator"), m_CurrentTime(0.0f), m_DeltaTime(0.0f) {
+      : Component("Animator", ECS::GetComponentTypeID< Animator >()), m_CurrentTime(0.0f),
+        m_DeltaTime(0.0f) {
     m_CurrentAnimation = std::make_shared< Animation >(model);
     Init();
   }

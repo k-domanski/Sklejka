@@ -35,16 +35,16 @@ void EditorLayer::OnAttach() {
   m_EditorCamera.transform->Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
   /* ----------------------- */
   /*-------------------------Animation Test--------------------------*/
-  auto entity = ECS::EntityManager::GetInstance().CreateEntity();
-  entity->AddComponent< Transform >();
-  //entity->GetComponent< Transform >()->Scale(glm::vec3(0.005f));
-  // auto model = AssetManager::GetModel("models/Pilot_LP_Animated.fbx");
-  auto model = AssetManager::GetModel("models/animacja_test.fbx");
-  // auto model = AssetManager::GetModel("models/silly_dancing.fbx");
-  auto material = AssetManager::GetMaterial("materials/animation.mat");
-  entity->AddComponent< Components::MeshRenderer >(model, material);
-  entity->AddComponent< Animator >(model);
-  SceneManager::GetCurrentScene()->SceneGraph()->AddChild(nullptr, entity);
+  // auto entity = ECS::EntityManager::GetInstance().CreateEntity();
+  // entity->AddComponent< Transform >();
+  ////entity->GetComponent< Transform >()->Scale(glm::vec3(0.005f));
+  //// auto model = AssetManager::GetModel("models/Pilot_LP_Animated.fbx");
+  // auto model = AssetManager::GetModel("models/animacja_test.fbx");
+  //// auto model = AssetManager::GetModel("models/silly_dancing.fbx");
+  // auto material = AssetManager::GetMaterial("materials/animation.mat");
+  // entity->AddComponent< Components::MeshRenderer >(model, material);
+  // entity->AddComponent< Animator >(model);
+  // SceneManager::GetCurrentScene()->SceneGraph()->AddChild(nullptr, entity);
   /*-------------------------Animation Test--------------------------*/
 
   /* ---------Editor Panels--------- */
@@ -54,6 +54,8 @@ void EditorLayer::OnAttach() {
       [this](auto& entity) { m_InspectorPanel.AttachEntity(entity); });
   m_FileSystemPanel.SetScene(SceneManager::GetDisplayScene());
   m_FileSystemPanel.SetEditorLayer(this);
+  m_NodeUtilityPanel.SetScene(SceneManager::GetCurrentScene());
+  m_NodeUtilityPanel.SetEditorLayer(this);
   /*---------------------------------*/
 
   /* -----------------------Start scene---------------------------- */
@@ -97,6 +99,7 @@ void EditorLayer::OnImGuiRender() {
   m_SceneHierarchyPanel.OnImGuiRender();
   m_InspectorPanel.OnImGuiRender();
   m_MaterialPanel.OnImGuiRender();
+  m_NodeUtilityPanel.OnImGuiRender();
 }
 
 bool EditorLayer::OnWindowResize(Engine::WindowResizeEvent& e) {
@@ -236,6 +239,7 @@ auto EditorLayer::LoadScene() -> void {
     SceneManager::AddScene(scene);
     SceneManager::OpenScene(scene->GetID());
     m_SceneHierarchyPanel.SetScene(SceneManager::GetCurrentScene());
+    m_NodeUtilityPanel.SetScene(SceneManager::GetCurrentScene());
 
     /* Force inject editor camera into the new scene */
     scene->SceneGraph()->AddChild(0, m_EditorCamera.entity);
@@ -257,19 +261,36 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
   std::vector< std::shared_ptr< Entity > > ids(nodes.size());
 
   for (int node_index = 0; node_index < nodes.size(); ++node_index) {
-    auto& node = nodes[node_index];
+    auto& node        = nodes[node_index];
+    auto& scene_graph = SceneManager::GetDisplayScene()->SceneGraph();
 #define _SINGLE_MESH
-#if !defined(_SINGLE_MESH)
-    /* Setup node as parent for meshes */
-    auto node_entity = EntityManager::GetInstance().CreateEntity();
-    node_entity->Name(node.name);
+    //#if !defined(_SINGLE_MESH)
+    //    /* Setup node as parent for meshes */
+    //    auto node_entity = EntityManager::GetInstance().CreateEntity();
+    //    node_entity->Name(node.name);
+    //
+    //    auto transform = node_entity->AddComponent< Transform >();
+    //    transform->SetLocalMatrix(node.transform);
+    //
+    //    ids[node_index] = node_entity;
+    //    scene_graph->AddChild(parent, node_entity);
+    //#endif
 
-    auto transform = node_entity->AddComponent< Transform >();
-    transform->SetLocalMatrix(node.transform);
-
-    ids[node_index] = node_entity;
-    SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, node_entity);
+#if defined(_SINGLE_MESH)
+    if (node.mesh_indexes.size() == 0) {
 #endif
+      auto node_entity = EntityManager::GetInstance().CreateEntity();
+      node_entity->Name(node.name);
+
+      auto transform = node_entity->AddComponent< Transform >();
+      transform->SetLocalMatrix(node.transform);
+
+      ids[node_index] = node_entity;
+      scene_graph->AddChild(parent, node_entity);
+#if defined(_SINGLE_MESH)
+    }
+#endif
+
     if (node.parent_node > -1) {
       parent = ids[node.parent_node];
     }
@@ -281,6 +302,7 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
       auto mesh_entity = EntityManager::GetInstance().CreateEntity();
 #if defined(_SINGLE_MESH)
       mesh_entity->Name(node.name);
+
 #else
       mesh_entity->Name(mesh->GetName());
 #endif
@@ -296,34 +318,8 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
       SceneManager::GetDisplayScene()->SceneGraph()->AddChild(node_entity, mesh_entity);
 #else
       ids[node_index] = mesh_entity;
-      SceneManager::GetDisplayScene()->SceneGraph()->AddChild(parent, mesh_entity);
+      scene_graph->AddChild(parent, mesh_entity);
 #endif
     }
   }
 }
-
-/* " O L D " */
-// auto EditorLayer::AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
-//                                   Engine::ECS::EntityID parent,
-//                                   std::vector< ECS::EntityID >* loadedMeshes) -> ECS::EntityID {
-//  return 0;
-//  if (model->GetRootMesh() == nullptr)
-//    return 0;
-//  using namespace Engine::ECS;
-//  using namespace Engine::Components;
-//  auto entity = EntityManager::GetInstance().CreateEntity();
-//  entity->Name(model->GetMesh(meshIndex)->GetName());
-//  entity->AddComponent< Transform >();
-//  entity->GetComponent< Transform
-//  >()->SetLocalMatrix(model->GetMesh(meshIndex)->GetModelMatrix());
-//  /*auto shader = AssetManager::GetShader("./shaders/default.glsl");
-//  auto mat    = AssetManager::GetMaterial(shader, nullptr);*/
-//  auto mat = AssetManager::GetMaterial("./materials/default_color.mat");
-//  entity->AddComponent< MeshRenderer >(model, meshIndex, mat);
-//
-//  int parentMeshIndex = model->GetMesh(meshIndex)->GetParentMesh();
-//  SceneManager::GetDisplayScene()->SceneGraph()->AddChild(
-//      parentMeshIndex != -1 ? (*loadedMeshes)[parentMeshIndex] : 0, entity->GetID());
-//  loadedMeshes->insert(loadedMeshes->begin() + meshIndex, entity->GetID());
-//  return entity->GetID();
-//}

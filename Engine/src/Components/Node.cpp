@@ -2,10 +2,11 @@
 #include "Node.h"
 #include <nlohmann/json.hpp>
 #include <Utility/Utility.h>
+#include <ECS/Types.h>
 
 namespace Engine {
 
-  Node::Node(): ECS::Component("Node"), _index(0), _nextIndex(0) {
+  Node::Node(): ECS::Component("Node", ECS::GetComponentTypeID<Node>()), _index(0), _nextIndex(0) {
   }
   auto Node::Index() const noexcept -> int {
     return _index;

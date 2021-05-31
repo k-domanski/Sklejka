@@ -1,12 +1,12 @@
 #pragma once
 #include "ECS/Component.h"
+#include <ECS/Types.h>
 
 namespace Engine::Components {
   class BoxCollider : public ECS::Component {
   public:
-    BoxCollider(): Component("Box Collider") {
+    BoxCollider(): Component("Box Collider", ECS::GetComponentTypeID<BoxCollider>()) {
     }
-    BoxCollider(std::string filePath);
     ~BoxCollider() override = default;
     auto GetSize() -> glm::vec3;
     auto SetSize(glm::vec3 size) -> void;

@@ -98,6 +98,7 @@ namespace Editor {
 
     if (removeComponent) {
       /*TODO:: Entity->RemoveComponent<>();*/
+      _entity->RemoveComponent(view->Component()->TypeID());
       LOG_DEBUG("Removed {}", view->Component()->Name());
     }
   }

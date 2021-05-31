@@ -2,6 +2,7 @@
 #include <pch.h>
 #include "ECS/Component.h"
 #include "Utility/GJK.h"
+#include <ECS/Types.h>
 
 namespace Engine::Components {
   // enum ColliderType { Sphere, Box };
@@ -32,12 +33,12 @@ namespace Engine::Components {
     // auto LoadFromJsonString(std::string jsonString) -> void override;
 
     Collider(const glm::vec3 size, bool trigger, bool static_, ColliderType type)
-        : Component("Collider"), _size(size), _center(glm::vec3(0.0f)), _trigger(trigger),
-          _static(static_), _type(type) {
+        : Component("Collider", ECS::GetComponentTypeID< Collider >()), _size(size),
+          _center(glm::vec3(0.0f)), _trigger(trigger), _static(static_), _type(type) {
     }
     Collider()
-        : Component("Collider"), _size(glm::vec3(1.0f)), _center(glm::vec3(0.0f)), _trigger(false),
-          _static(true), _type(ColliderType::Box) {
+        : Component("Collider", ECS::GetComponentTypeID< Collider >()), _size(glm::vec3(1.0f)),
+          _center(glm::vec3(0.0f)), _trigger(false), _static(true), _type(ColliderType::Box) {
     }
     ~Collider() override = default;
     std::string SaveToJson(std::string filePath) override;

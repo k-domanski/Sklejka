@@ -66,5 +66,6 @@ namespace Engine {
     auto OnKeyPressed(Key key) -> void;
     auto FindEntity(const std::string& name) -> std::shared_ptr< ECS::Entity >;
     auto NodeSystem() const -> std::shared_ptr< Engine::NodeSystem >;
+    auto Entities() -> std::vector< std::shared_ptr< ECS::Entity > >;
   };
 }  // namespace Engine

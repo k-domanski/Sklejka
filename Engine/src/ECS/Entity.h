@@ -22,8 +22,10 @@ namespace Engine::ECS {
 
     template< class T >
     auto RemoveComponent() {
-      return EntityManager::GetInstance().RemoveComponent< T >(_entity.lock());
+      EntityManager::GetInstance().RemoveComponent< T >(_entity.lock());
     }
+
+    auto RemoveComponent(ComponentTypeID componentType) -> void;
 
     template< class T >
     std::shared_ptr< T > GetComponent() {
