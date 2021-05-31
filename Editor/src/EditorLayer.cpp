@@ -39,6 +39,7 @@ void EditorLayer::OnAttach() {
   entity->AddComponent< Transform >();
   //entity->GetComponent< Transform >()->Scale(glm::vec3(0.005f));
   // auto model = AssetManager::GetModel("models/Pilot_LP_Animated.fbx");
+  //auto model = AssetManager::GetModel("models/animacja_lasica_idle.fbx");
   auto model = AssetManager::GetModel("models/animacja_test.fbx");
   // auto model = AssetManager::GetModel("models/silly_dancing.fbx");
   auto material = AssetManager::GetMaterial("materials/animation.mat");
