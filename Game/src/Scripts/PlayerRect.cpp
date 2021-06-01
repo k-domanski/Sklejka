@@ -69,7 +69,7 @@ auto PlayerRect::SeekTarget(float deltaTime) -> void {
   auto seek_speed    = _playerSettings->SeekSpeed();
   auto node          = GetNode();
   auto desired_velocity =
-      glm::normalize(_nodeTransform->Position() - _transform->Position()) * forward_speed;
+      glm::normalize(_nodeTransform->WorldPosition() - _transform->Position()) * forward_speed;
   auto velocity_delta = desired_velocity - _moveVelocity;
   auto new_velocity   = _moveVelocity + velocity_delta * seek_speed * deltaTime;
   _moveVelocity       = new_velocity;
@@ -113,7 +113,7 @@ auto PlayerRect::HandleRotation(float roll, float deltaTime) -> void {
 
 auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
   const auto& node_tr = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
-  const auto delta    = node_tr->Position() - _transform->Position();
+  const auto delta    = node_tr->WorldPosition() - _transform->Position();
   const auto magnitude2 = glm::dot(delta, delta);
   auto min_mag          = _playerSettings->MinNodeDistance();
   if (magnitude2 <= (min_mag * min_mag)) {

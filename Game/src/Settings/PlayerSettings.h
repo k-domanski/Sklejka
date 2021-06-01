@@ -10,7 +10,7 @@ private:
   float _controlSpeed     = 2.0f; /* Left, Right, Up, Down Speed */
   float _rollSpeed        = 2.0f; /* Roll speed */
   float _seekSpeed        = 2.0f; /* Direction seek speed */
-  float _minNodeDistance  = 0.2f; /* Min distance to the target node */
+  float _minNodeDistance  = 4.0f; /* Min distance to the target node */
   glm::vec2 _rectSize     = {4, 4};
 
 public:

@@ -23,14 +23,11 @@ auto BellThrower::Update(float deltaTime) -> void {
 
 auto BellThrower::OnKeyPressed(Engine::Key key) -> void {
   if (key == Engine::Key::T && _currentTimeout <= 0.f) {
-    LOG_DEBUG("KURWA THROW");
     for (auto bell : _bells) {
-      LOG_DEBUG("I JEST KURWA BELL");
       auto bellTransform = bell->GetComponent< Engine::Transform >();
       auto distance =
           glm::distance(_playerTransform->WorldPosition(), bellTransform->WorldPosition());
       if (distance <= _maxDistance) {
-        LOG_DEBUG("I JESTEM KURWA BLISKO");
         LOG_DEBUG("Found bell that is close enough");
         auto acorn = Engine::ECS::EntityManager::GetInstance().CreateEntity();
         acorn->LoadFromJson("./prefabs/acorn.prefab");
@@ -43,7 +40,6 @@ auto BellThrower::OnKeyPressed(Engine::Key key) -> void {
         _currentTimeout = _timeout;
         // GameManager::PlayerSpeedUp();
       } else {
-        LOG_DEBUG("ALE JESTEM KURWA ZA DALEKO, DYSTANS: {}", distance);
       }
     }
   }

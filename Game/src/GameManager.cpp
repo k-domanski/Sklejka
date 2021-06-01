@@ -62,7 +62,8 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
       break;
     }
     case SceneName::LVL_1: {
-      auto scene = Engine::AssetManager::LoadScene("./scenes/_lvl1.scene");
+      // auto scene = Engine::AssetManager::LoadScene("./scenes/_lvl1.scene");
+      auto scene = Engine::AssetManager::LoadScene("./scenes/LEVEL_1.scene");
       Engine::SceneManager::AddScene(scene);
       Engine::SceneManager::OpenScene(scene->GetID());
       _instance->CreatePlayer();
@@ -148,6 +149,8 @@ auto GameManager::CreatePlayer() -> void {
   player->Name("Player");
   auto player_model = entity_manager.CreateEntity();
   player_model->Name("Player_Model");
+  auto main_camera = entity_manager.CreateEntity();
+  main_camera->Name("Main_Camera");
   /* -=-=-=-=-=-=-=-=- */
 
   /* Components Setup */
@@ -163,12 +166,12 @@ auto GameManager::CreatePlayer() -> void {
   { /* Player */
     auto transform = player->AddComponent< Transform >();
     transform->Position({0.0f, 2.0f, 0.0f});
-    transform->Euler({180.0f, 0.0f, 180.0f});
+    transform->Euler(glm::radians(glm::vec3{180.0f, 0.0f, 180.0f}));
   }
 
   { /* Player Model */
     auto transform = player_model->AddComponent< Transform >();
-    transform->Euler({-20.0f, 0.0f, 0.0f});
+    transform->Euler(glm::radians(glm::vec3{-20.0f, 0.0f, 0.0f}));
     auto mesh_renderer = player_model->AddComponent< MeshRenderer >();
     mesh_renderer->SetModel(AssetManager::GetModel("./models/squirrel_anim_idle.fbx"));
     mesh_renderer->SetMaterial(AssetManager::GetMaterial("./materials/animation.mat"));
@@ -182,6 +185,15 @@ auto GameManager::CreatePlayer() -> void {
     rigidbody->SetGravity(false);
     auto animator = player_model->AddComponent< Animator >();
     animator->SetAnimation(AssetManager::GetModel("./models/squirrel_anim_idle.fbx"));
+  }
+
+  { /* Camera */
+    auto transform = main_camera->AddComponent< Transform >();
+    auto camera    = main_camera->AddComponent< Camera >();
+    camera->Fov(70.0f);
+    camera->flags.Set(CameraFlag::MainCamera);
+    camera->NearPlane(0.01f);
+    camera->FarPlane(1000.0f);
   }
   /* -=-=-=-=-=-=-=-=- */
 
@@ -197,6 +209,8 @@ auto GameManager::CreatePlayer() -> void {
   _player     = player;
   _playerRect = player_rect;
   _model      = player_model;
+
+  SceneManager::GetCurrentScene()->CameraSystem()->FindMainCamera();
   SetupScripts();
   /* -=-=-=-=- */
 }
