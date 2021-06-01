@@ -53,4 +53,6 @@ public:
 private:
   auto UpdateImpl(float deltaTime) -> void;
   auto PlayCutscene() -> void;
+  auto CreatePlayer() -> void;
+  auto SetupScripts() -> void;
 };

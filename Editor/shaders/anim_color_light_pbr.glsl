@@ -15,9 +15,7 @@ out ShaderData {
   vec3 cameraPos;
 }
 vs_out;
-// const int MAX_BONES          = 100;
-// const int MAX_BONE_INFLUENCE = 4;
-// uniform mat4 u_Transforms[MAX_BONES];
+
 void main() {
   mat4 jointTransform = u_Transforms[a_JointIDs[0]] * a_Weights[0];
   jointTransform += u_Transforms[a_JointIDs[1]] * a_Weights[1];

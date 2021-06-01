@@ -22,14 +22,15 @@ namespace Engine {
       return m_CurrentAnimation;
     }
     void SetAnimation(std::shared_ptr< Renderer::Model > model);
-    auto SendUniformData() -> void;
+    //auto SendUniformData() -> void;
+    auto GetJointData() -> GL::JointUniformData;
 
   private:
     auto Init() -> void;
 
   private:
     GL::JointUniformData m_JointUniformData;
-    GL::JointsUniformBuffer m_JointBuffer;
+    //GL::JointsUniformBuffer m_JointBuffer;
     // std::vector< glm::mat4 > m_FinalBoneMatrices;
     std::shared_ptr< Animation > m_CurrentAnimation;
     std::map< std::string, Renderer::BoneInfo > m_BoneInfoMap;
