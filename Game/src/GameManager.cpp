@@ -107,6 +107,10 @@ auto GameManager::ShowLevelSumUp(float time, bool win) -> void {
   _instance->_endLevelMenu->Show("You win. \n Your time was: " + std::to_string(time));
 }
 
+auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
+  return _player;
+}
+
 auto GameManager::UpdateImpl(float deltaTime) -> void {
   if (_speedUpDuration > 0.0f) {
     _speedUpDuration -= deltaTime;
@@ -245,6 +249,8 @@ auto GameManager::SetupScripts() -> void {
   native_script = _model->AddComponent< Engine::NativeScript >();
   native_script->Attach< CollisionDetector >();
 
+  native_script->Attach< BellThrower >();
+
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();
   // scene->RenderSystem()->SetShadowChecker(shadowTarget);
@@ -302,7 +308,7 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script = _model->AddComponent< Engine::NativeScript >();
   native_script->Attach< CollisionDetector >();
 
-  native_script->Attach<BellThrower>();
+  native_script->Attach< BellThrower >();
 
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();

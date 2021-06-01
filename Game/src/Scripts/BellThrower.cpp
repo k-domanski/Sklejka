@@ -1,41 +1,36 @@
 #include "BellThrower.h"
 
-
 #include "CollisionDetector.h"
 #include "GameManager.h"
 #include "Systems/SceneGraph.h"
 #include "Components/NativeScript.h"
 #include "Components/Rigidbody.h"
 
-auto BellThrower::OnCreate() -> void
-{
-  auto scene = Engine::SceneManager::GetCurrentScene();
+auto BellThrower::OnCreate() -> void {
+  auto scene       = Engine::SceneManager::GetCurrentScene();
   auto sg          = scene->SceneGraph();
   auto bell_parent = scene->FindEntity("Bells");
-  _bells       = sg->GetChildren(bell_parent);
-  _playerTransform = scene->FindEntity("Player")->GetComponent< Engine::Transform >();
-  _maxDistance = 15; //TODO: Move to settings
+  _bells           = sg->GetChildren(bell_parent);
+  _playerTransform = GameManager::GetCurrentPlayer()->GetComponent< Engine::Transform >();
+  _maxDistance     = 15;  // TODO: Move to settings
 }
 
-auto BellThrower::Update(float deltaTime) -> void
-{
-  if (_currentTimeout >= 0.f)
-  {
+auto BellThrower::Update(float deltaTime) -> void {
+  if (_currentTimeout >= 0.f) {
     _currentTimeout -= deltaTime;
   }
 }
 
-
-auto BellThrower::OnKeyPressed(Engine::Key key) -> void
-{
-  if (key == Engine::Key::T && _currentTimeout <= 0.f)
-  {
-    for (auto bell : _bells)
-    {
+auto BellThrower::OnKeyPressed(Engine::Key key) -> void {
+  if (key == Engine::Key::T && _currentTimeout <= 0.f) {
+    LOG_DEBUG("KURWA THROW");
+    for (auto bell : _bells) {
+      LOG_DEBUG("I JEST KURWA BELL");
       auto bellTransform = bell->GetComponent< Engine::Transform >();
-      auto distance = glm::distance(_playerTransform->WorldPosition(), bellTransform->WorldPosition());
-      if (distance <= _maxDistance)
-      {
+      auto distance =
+          glm::distance(_playerTransform->WorldPosition(), bellTransform->WorldPosition());
+      if (distance <= _maxDistance) {
+        LOG_DEBUG("I JESTEM KURWA BLISKO");
         LOG_DEBUG("Found bell that is close enough");
         auto acorn = Engine::ECS::EntityManager::GetInstance().CreateEntity();
         acorn->LoadFromJson("./prefabs/acorn.prefab");
@@ -46,8 +41,9 @@ auto BellThrower::OnKeyPressed(Engine::Key key) -> void
         acorn_rb->SetVelocity((bellTransform->WorldPosition() - _playerTransform->WorldPosition())
                               * 10.f);
         _currentTimeout = _timeout;
-        //GameManager::PlayerSpeedUp();
-        return;
+        // GameManager::PlayerSpeedUp();
+      } else {
+        LOG_DEBUG("ALE JESTEM KURWA ZA DALEKO, DYSTANS: {}", distance);
       }
     }
   }

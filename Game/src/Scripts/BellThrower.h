@@ -5,7 +5,7 @@ class BellThrower : public Engine::Script
 private:
   float _maxDistance;
   float _timeout = 3.f;
-  float _currentTimeout;
+  float _currentTimeout = 0.0f;
   std::vector< std::shared_ptr< Engine::ECS::Entity > > _bells;
   std::shared_ptr< Engine::Transform > _playerTransform;
   std::shared_ptr< Engine::Systems::SceneGraph > _sg;

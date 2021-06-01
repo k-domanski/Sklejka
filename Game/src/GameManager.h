@@ -49,6 +49,7 @@ public:
   static auto Update(float deltaTime) -> void;
   static auto PlayerSpeedUp() -> void;
   static auto ShowLevelSumUp(float time, bool win) -> void;
+  static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;
