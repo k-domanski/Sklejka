@@ -47,6 +47,10 @@ namespace Engine {
       return false;
     int count;
     const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &count);
-    return axes[axis];
+    auto value        = axes[axis];
+    if (glm::abs(value) < _deadZoneValue) {
+      return 0;
+    }
+    return value;
   }
 }  // namespace Engine

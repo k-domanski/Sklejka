@@ -2,6 +2,8 @@
 
 namespace Engine {
   class Input {
+  private:
+    static inline float _deadZoneValue = 0.2f;
   public:
     static bool IsKeyPressed(int keycode);
     static bool IsMouseButtonPressed(int keycode);
