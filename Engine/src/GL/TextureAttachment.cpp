@@ -59,6 +59,27 @@ namespace Engine::GL {
   auto TextureAttachment::Type() const noexcept -> AttachmentType {
     return AttachmentType::Texture;
   }
+  auto TextureAttachment::BorderColor(glm::vec3 color) -> void {
+    auto current_texture = GL::Context::GetBoundTexture();
+    auto current_slot    = GL::Context::GetActiveTexture();
+    auto current_target  = GL::Context::GetTextureTarget(current_slot);
+
+    Bind(current_slot);
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, &color[0]);
+
+    GL::Context::BindTexture(current_target, current_texture, current_slot);
+  }
+  auto TextureAttachment::WrappingMode(TextureWrapping wrapping) -> void {
+    auto current_texture = GL::Context::GetBoundTexture();
+    auto current_slot    = GL::Context::GetActiveTexture();
+    auto current_target  = GL::Context::GetTextureTarget(current_slot);
+
+    Bind(current_slot);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapping);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapping);
+
+    GL::Context::BindTexture(current_target, current_texture, current_slot);
+  }
   auto TextureAttachment::Release() -> void {
     if (IsValid()) {
       glDeleteTextures(1, &_handle);

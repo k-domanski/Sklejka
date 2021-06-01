@@ -47,8 +47,12 @@ namespace Engine::Systems {
     /* Shadow map setup */
     _shadowMapSize = glm::vec2(1024.0f, 1024.0f) * 3.0f;
     _shadowTarget  = std::make_shared< GL::RenderTarget >(_shadowMapSize.x, _shadowMapSize.y);
+
     _shadowTexture = std::make_shared< GL::TextureAttachment >(
         _shadowMapSize.x, _shadowMapSize.y, GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT, GL_FLOAT);
+    _shadowTexture->WrappingMode(GL::TextureWrapping::ClampToBorder);
+    _shadowTexture->BorderColor(glm::vec3(1.0f));
+
     _shadowTarget->AttachDepth(_shadowTexture);
     _shadowTarget->Bind(FramebufferTarget::ReadWrite);
     glDrawBuffer(GL_NONE);
