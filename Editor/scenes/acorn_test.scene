@@ -1,0 +1,64 @@
+{
+    "sceneID": 10217679068121527608
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "18199893111962970731",
+    "entityName": "Acorn",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 0.7071067690849304,
+        "x": 0.7071067690849304,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.029999999329447746,
+        "y": 0.029999999329447746,
+        "z": 0.029999999329447746
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "./\\materials\\default_color.mat",
+    "meshIndex": 0,
+    "model": "./\\models\\acorn.FBX"
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "center": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "colliderType": "Box",
+    "componentType": "collider",
+    "size": {
+        "x": 50.70000076293945,
+        "y": 34.599998474121094,
+        "z": 25.600000381469727
+    },
+    "static": true,
+    "trigger": false
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "rigidbody",
+    "kinematic": true,
+    "useGravity": false,
+    "velocity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}

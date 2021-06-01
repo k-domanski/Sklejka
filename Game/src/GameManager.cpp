@@ -7,6 +7,7 @@
 #include "Scripts/PlayerController.h"
 #include "Scripts/PlayerRect.h"
 #include "Scripts/StartTimer.h"
+#include "Scripts/BellThrower.h"
 #include "Systems/SceneGraph.h"
 #include "Components/NativeScript.h"
 #include <Scripts/CollisionDetector.h>
@@ -169,6 +170,8 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
 
   native_script = _model->AddComponent< Engine::NativeScript >();
   native_script->Attach< CollisionDetector >();
+
+  native_script->Attach<BellThrower>();
 
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();
