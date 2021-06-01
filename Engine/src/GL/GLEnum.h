@@ -41,6 +41,10 @@ namespace Engine::GL {
   BETTER_ENUM(__Face, GLenum, Front = GL_FRONT, Back = GL_BACK);
   typedef __Face Face;
 
+  BETTER_ENUM(__TextureWrapping, GLenum, Repeat = GL_REPEAT, MirrorRepeat = GL_MIRRORED_REPEAT,
+              ClampToEdge = GL_CLAMP_TO_EDGE, ClampToBorder = GL_CLAMP_TO_BORDER);
+  typedef __TextureWrapping TextureWrapping;
+
   BETTER_ENUM(__UniformBlock, GLint, TransformData = 0, CameraData = 1, LightData = 2,
               ShadowData = 3, JointData = 4);
   typedef __UniformBlock UniformBlock;

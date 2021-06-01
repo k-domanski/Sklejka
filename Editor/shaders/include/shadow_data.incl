@@ -3,3 +3,4 @@ layout(std140) uniform u_ShadowData {
 };
 
 uniform sampler2D u_ShadowDepthTexture;
+uniform float u_ShadowIntensity = 0.5f;

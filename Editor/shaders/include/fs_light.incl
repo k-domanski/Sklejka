@@ -22,7 +22,7 @@ float calculateShadow(vec3 lightSpacePosUV, sampler2D shadowMap, float bias) {
       shadow += ((currentDepth - bias) > depth ? 1.0 : 0.0);
     }
   }
-  return shadow / 9.0f;
+  return (shadow / 9.0f) * u_ShadowIntensity;
 }
 
 vec3 calculateDirectionalLight(vec3 normal, vec2 uv, float shadow) {  //, vec3 viewDirection) {

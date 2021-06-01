@@ -1,6 +1,7 @@
 #pragma once
 #include <pch.h>
 #include <GL/IFramebufferAttachment.h>
+#include <GL/GLEnum.h>
 
 namespace Engine::GL {
   class TextureAttachment : public IFramebufferAttachment {
@@ -25,6 +26,8 @@ namespace Engine::GL {
     auto AttachToFramebuffer(GLenum target, GLenum attachment) noexcept -> void override;
     auto DetachFromFramebuffer(GLenum target, GLenum attachment) noexcept -> void override;
     auto Type() const noexcept -> AttachmentType override;
+    auto BorderColor(glm::vec3 color) -> void;
+    auto WrappingMode(TextureWrapping wrapping) -> void;
 
   private:
     auto Release() -> void;
