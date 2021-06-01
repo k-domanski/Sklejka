@@ -12,7 +12,7 @@ PlayerRect::PlayerRect(const std::shared_ptr< PlayerController >& player_control
 auto PlayerRect::OnCreate() -> void {
   _transform      = Entity()->GetComponent< Engine::Transform >();
   _nodeSystem     = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
-  _currentNode    = _nodeSystem->GetNode(0);
+  _currentNode    = _nodeSystem->GetNode(1);
   _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   _playerSettings = GameManager::GetPlayerSettings();
   _gameSettings   = GameManager::GetGameSettings();

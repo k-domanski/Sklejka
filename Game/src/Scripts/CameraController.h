@@ -7,7 +7,7 @@ private:
   //std::shared_ptr< Engine::Transform > _playerTransform;
   std::shared_ptr< Engine::Transform > _cameraTransform;
   std::shared_ptr< PlayerController > _playerController;
-  glm::vec3 _offset{0.0f, 0.5f, -5.0f};
+  glm::vec3 _offset;
 
 public:
   CameraController(const std::shared_ptr< PlayerController >& player_controller);

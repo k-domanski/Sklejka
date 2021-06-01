@@ -6,6 +6,7 @@ CameraController::CameraController(const std::shared_ptr< PlayerController >& pl
 
 auto CameraController::OnCreate() -> void {
   _cameraTransform = Entity()->GetComponent< Engine::Transform >();
+  _offset          = {0.0f, 0.5f, -5.0f};
 }
 
 auto CameraController::Update(float deltaTime) -> void {
@@ -20,5 +21,5 @@ auto CameraController::Update(float deltaTime) -> void {
   _cameraTransform->Forward(look_dir);
 }
 
-auto CameraController::OnKeyPressed(Engine::Key key) -> void{
+auto CameraController::OnKeyPressed(Engine::Key key) -> void {
 }

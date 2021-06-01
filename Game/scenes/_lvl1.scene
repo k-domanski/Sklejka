@@ -408,10 +408,10 @@
         "z": 0.0
     },
     "localRotation": {
-        "w": -4.371138473402425e-08,
-        "x": -4.371139183945161e-08,
+        "w": 1.910685465164705e-15,
+        "x": -4.371138828673793e-08,
         "y": 1.0,
-        "z": -4.371139183945161e-08
+        "z": -4.371138828673793e-08
     },
     "localScale": {
         "x": 1.0,
@@ -4483,10 +4483,10 @@
         "z": 0.0
     },
     "localRotation": {
-        "w": -6.121567253103422e-08,
-        "x": -8.603272760865366e-09,
-        "y": 0.7986355423927307,
-        "z": 0.6018150448799133
+        "w": 0.9848077297210693,
+        "x": -0.1736481785774231,
+        "y": 0.0,
+        "z": 0.0
     },
     "localScale": {
         "x": 1.0,
@@ -4497,23 +4497,23 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./\\materials\\squirrel.mat",
+    "material": "./\\materials\\animation.mat",
     "meshIndex": 0,
-    "model": "./\\models\\squirrel_v3.fbx"
+    "model": "./\\models\\squirrel_anim_idle.fbx"
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "center": {
         "x": 0.0,
         "y": 0.0,
-        "z": 0.05000000074505806
+        "z": -0.3499999940395355
     },
     "colliderType": "Box",
     "componentType": "collider",
     "size": {
-        "x": 0.800000011920929,
-        "y": 0.8999999761581421,
-        "z": 0.30000001192092896
+        "x": 1.2000000476837158,
+        "y": 0.5,
+        "z": 1.899999976158142
     },
     "static": true,
     "trigger": true
@@ -4528,4 +4528,9 @@
         "y": 0.0,
         "z": 0.0
     }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+  "componentType": "animator",
+  "model": "./\\models\\squirrel_anim_idle.fbx"
 }

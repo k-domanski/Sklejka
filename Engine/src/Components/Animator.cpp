@@ -26,7 +26,7 @@ namespace Engine {
       m_CurrentTime = fmod(m_CurrentTime, m_CurrentAnimation->GetDuration());
       CalculateBoneTransform(m_CurrentAnimation->GetRootNode(), glm::mat4(1.0f));
     }
-    SendUniformData();
+    //SendUniformData();
   }
   void Animator::PlayAnimation(std::shared_ptr< Animation > animation) {
     m_CurrentAnimation = animation;
@@ -93,11 +93,14 @@ namespace Engine {
       m_JointUniformData.joints[i] = glm::mat4(1.0f);
     }
   }
-  auto Animator::SendUniformData() -> void {
-    m_JointBuffer.SetData(m_JointUniformData);
+  //auto Animator::SendUniformData() -> void {
+  //  m_JointBuffer.SetData(m_JointUniformData);
+  //}
+  auto Animator::GetJointData() -> GL::JointUniformData {
+    return m_JointUniformData;
   }
   auto Animator::Init() -> void {
-    m_JointBuffer.BindToSlot(GL::UniformBlock::JointData);
+    //m_JointBuffer.BindToSlot(GL::UniformBlock::JointData);
     m_BoneInfoMap = m_CurrentAnimation->GetBoneIDMap();
     for (int i = 0; i < MAX_NUM_JOINTS; i++) {
       m_JointUniformData.joints[i] = glm::mat4(1.0f);

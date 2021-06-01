@@ -29,7 +29,7 @@ namespace Engine {
     return glm::eulerAngles(_rotation);
   }
   auto Transform::Euler(const glm::vec3 angles) noexcept -> glm::quat {
-    return _rotation = glm::quat(angles);
+    return _rotation = glm::quat(glm::radians(angles));
   }
   auto Transform::Scale() const noexcept -> glm::vec3 {
     return _scale;
