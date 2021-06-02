@@ -13,7 +13,6 @@ EditorLayer::EditorLayer(const std::string& name): Layer(name) {
   // Scene manager test
   size_t sceneID = AssetManager::GenerateAssetID();
   SceneManager::AddScene(std::make_shared< Scene >(sceneID));
-  std::cout << "sceneID: " << sceneID << "\n";
   SceneManager::OpenScene(sceneID);
 }
 void EditorLayer::OnAttach() {
@@ -34,18 +33,6 @@ void EditorLayer::OnAttach() {
   m_EditorCamera.transform->Position({0.0f, 0.0f, 2.0f});
   m_EditorCamera.transform->Rotate(glm::radians(180.0f), {0.0f, 1.0f, 0.0f});
   /* ----------------------- */
-  /*-------------------------Animation Test--------------------------*/
-  // auto entity = ECS::EntityManager::GetInstance().CreateEntity();
-  // entity->AddComponent< Transform >();
-  ////entity->GetComponent< Transform >()->Scale(glm::vec3(0.005f));
-  //// auto model = AssetManager::GetModel("models/Pilot_LP_Animated.fbx");
-  //auto model = AssetManager::GetModel("models/animacja_lasica_idle.fbx");
-  //// auto model = AssetManager::GetModel("models/silly_dancing.fbx");
-  // auto material = AssetManager::GetMaterial("materials/animation.mat");
-  // entity->AddComponent< Components::MeshRenderer >(model, material);
-  // entity->AddComponent< Animator >(model);
-  // SceneManager::GetCurrentScene()->SceneGraph()->AddChild(nullptr, entity);
-  /*-------------------------Animation Test--------------------------*/
 
   /* ---------Editor Panels--------- */
   m_SceneHierarchyPanel.SetScene(SceneManager::GetDisplayScene());
@@ -56,21 +43,7 @@ void EditorLayer::OnAttach() {
   m_FileSystemPanel.SetEditorLayer(this);
   m_NodeUtilityPanel.SetScene(SceneManager::GetCurrentScene());
   m_NodeUtilityPanel.SetEditorLayer(this);
-  /*---------------------------------*/
 
-  /* -----------------------Start scene---------------------------- */
-  // auto scene = AssetManager::LoadScene("./\\scenes\\dzielo_sztuki_with_no_cam.scene");
-  //
-  // SceneManager::AddScene(scene);
-  // SceneManager::OpenScene(scene->GetID());
-  // m_SceneHierarchyPanel.SetScene(SceneManager::GetCurrentScene());
-  //
-  ///* Force inject editor camera into the scene */
-  // scene->SceneGraph()->AddChild(0, m_EditorCamera.entity->GetID());
-  // ECS::EntityManager::InjectEntity(m_EditorCamera.entity);
-  // ECS::EntityManager::InjectComponent< Transform >(m_EditorCamera.transform);
-  // ECS::EntityManager::InjectComponent< Camera >(m_EditorCamera.camera);
-  /* ---------------------------------------------------------------- */
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {

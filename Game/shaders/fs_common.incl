@@ -1,7 +1,0 @@
-uniform sampler2D u_MainTexture;
-uniform sampler2D u_NormalMap;
-uniform vec4 u_Color;
-
-vec4 gamma2linear(vec4 color) {
-  return vec4(pow(color.rgb, vec3(2.2)), color.a);
-}

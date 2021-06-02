@@ -91,8 +91,6 @@ namespace Engine::ECS {
     _entityID = entityID;
     _name     = entity_json["entityName"];
 
-    std::cout << "Loading entity with ID " << entityID_string << "\n";
-
     for (int i = 1; i < separated_jsons.size(); i++) {
       nlohmann::json component_json =
           nlohmann::json::parse(separated_jsons[i].begin(), separated_jsons[i].end());

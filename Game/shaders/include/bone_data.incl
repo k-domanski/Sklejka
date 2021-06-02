@@ -1,6 +1,0 @@
-const int MAX_BONES          = 100;
-const int MAX_BONE_INFLUENCE = 4;
-
-layout(std140) uniform u_JointData {
-  mat4 u_Transforms[MAX_BONES];
-};

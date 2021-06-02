@@ -62,7 +62,7 @@ namespace Engine::Systems {
     _shadowMapShader     = AssetManager::GetShader("./shaders/shadow_map.glsl");
     _shadowMapAnimShader = AssetManager::GetShader("./shaders/shadow_map_anim.glsl");
 
-    cubemap = std::make_shared< Cubemap >("./skyboxes/forest");
+    cubemap = std::make_shared< Cubemap >("./Assets/skyboxes/forest");
     _transformUniformBuffer.BindToSlot(GL::UniformBlock::TransformData);
   }
   void Renderer::Update(float deltaTime) {

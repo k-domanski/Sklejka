@@ -17,11 +17,23 @@ namespace fs = std::filesystem;
 using namespace Engine::Utility;
 
 auto FileExists(const std::string& path) -> bool {
+  if (fs::exists(path) && !fs::is_regular_file(path)) {
+    LOG_WARN("No file in this path: {}", path);
+    return false;
+  }
   if (!fs::exists(path)) {
     LOG_WARN("File does not exist: {}", path);
     return false;
   }
   return true;
+}
+
+auto PreparePath(const std::string& path) -> std::string {
+  const std::string assets = ("Assets");
+  auto pos                 = path.find(assets);
+  if (pos == std::string::npos)
+    return assets + "/" + path;
+  return path;
 }
 
 namespace Engine {
@@ -37,6 +49,7 @@ namespace Engine {
 
   auto AssetManager::GetShader(std::string file) -> std::shared_ptr< GL::Shader > {
     file = StripToRelativePath(file);
+    file = PreparePath(file);
     if (_loadedShaders.count(file) == 0) {
       if (!FileExists(file)) {
         return nullptr;
@@ -64,6 +77,7 @@ namespace Engine {
   }
   auto AssetManager::GetModel(std::string file) -> std::shared_ptr< Renderer::Model > {
     file = StripToRelativePath(file);
+    file = PreparePath(file);
     if (_loadedModels.count(file) == 0) {
       if (!FileExists(file)) {
         return nullptr;
@@ -84,6 +98,7 @@ namespace Engine {
   }
   auto AssetManager::GetTexture2D(std::string file) -> std::shared_ptr< GL::Texture2D > {
     file = StripToRelativePath(file);
+    file = PreparePath(file);
     if (_loadedTextures2D.count(file) == 0) {
       if (!FileExists(file)) {
         return nullptr;
@@ -107,6 +122,7 @@ namespace Engine {
   }
   auto AssetManager::CreateMaterial(std::string filePath) -> std::shared_ptr< Renderer::Material > {
     filePath                  = StripToRelativePath(filePath);
+    filePath                  = PreparePath(filePath);
     auto assetID              = GenerateAssetID();
     auto material             = std::make_shared< Renderer::Material >(assetID);
     _loadedMaterials[assetID] = material;
@@ -116,6 +132,7 @@ namespace Engine {
   auto AssetManager::GetMaterial(std::string file) -> std::shared_ptr< Renderer::Material > {
     /* Check if material from this file is already loaded */
     file    = StripToRelativePath(file);
+    file    = PreparePath(file);
     auto it = std::find_if(_loadedMaterials.begin(), _loadedMaterials.end(),
                            [file](const auto& kv) { return kv.second->FilePath() == file; });
     /* If not loaded, load and return */
@@ -199,6 +216,7 @@ namespace Engine {
   }
   auto AssetManager::LoadScene(std::string file) -> std::shared_ptr< Scene > {
     file = Utility::StripToRelativePath(file);
+    file = PreparePath(file);
     // if (_loadedScenes.count(file) == 0) {
     bool success = false;
     auto content = Utility::ReadTextFile(file, &success);
@@ -256,9 +274,14 @@ namespace Engine {
 
   auto AssetManager::GetCharacters(std::string file, int fontSize)
       -> std::shared_ptr< std::map< char, Utility::Character > > {
+    file            = StripToRelativePath(file);
+    file            = PreparePath(file);
     auto characters = std::make_shared< std::map< char, Utility::Character > >();
 
     if (_loadedCharacters.count(file) == 0) {
+      if (!FileExists(file)) {
+        return nullptr;
+      }
       FT_Library ft;
       if (FT_Init_FreeType(&ft)) {
         std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;

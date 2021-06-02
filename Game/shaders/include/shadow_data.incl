@@ -1,6 +1,0 @@
-layout(std140) uniform u_ShadowData {
-  mat4 u_LightSpaceMatrix;
-};
-
-uniform sampler2D u_ShadowDepthTexture;
-uniform float u_ShadowIntensity = 0.5f;

@@ -1,8 +1,0 @@
-layout(std140) uniform u_DirectionalLight {
-  vec3 u_LightDirection;
-  vec3 u_Ambient;
-  vec3 u_Diffuse;
-  vec3 u_Specular;
-  float u_Intensity;
-  float u_ShadowBias;
-};

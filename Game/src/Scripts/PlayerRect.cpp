@@ -61,7 +61,7 @@ auto PlayerRect::HandleInput(float& vertical, float& horizontal, float& roll) ->
   roll       = glm::clamp(roll, -1.0f, 1.0f);
 
   if (Input::IsKeyPressed(Key::X))
-    GameManager::GetSoundEngine()->play2D("./sounds/placeholderBeep.wav", false);
+    GameManager::GetSoundEngine()->play2D("./Assets/sounds/placeholderBeep.wav", false);
 }
 
 auto PlayerRect::SeekTarget(float deltaTime) -> void {

@@ -28,12 +28,9 @@ auto Engine::SceneManager::SaveScene(size_t id) -> void {
 }
 
 auto Engine::SceneManager::OpenScene(size_t id) -> void {
-  //if (_currentScene != nullptr)
-    //if (_currentScene->GetID() == id)
-    //  return;
+
   _openingScene = true;
 
-  // lets say loading scene may take some time here
   _currentScene = _loadedScenes[id];
   _currentScene->OpenScene();
 

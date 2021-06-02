@@ -3,6 +3,7 @@ project "Game"
     language "C++"
     cppdialect "C++17"
     staticruntime "on"
+    debugdir "%{wks.location}/SquirrelNinja"
     
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -45,8 +46,9 @@ project "Game"
 
     postbuildcommands
     {
-        ("copy \"%{wks.location}lib\" \"%{cfg.buildtarget.directory}\"")
+        "copy \"%{wks.location}lib\" \"%{cfg.buildtarget.directory}\""
     }
+
 
     filter "system.windows"
         systemversion "latest"
