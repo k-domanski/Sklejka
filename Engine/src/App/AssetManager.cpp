@@ -37,6 +37,21 @@ auto PreparePath(const std::string& path) -> std::string {
 }
 
 namespace Engine {
+  FolderPaths AssetManager::_folderPahts{
+      "./Assets/fonts",      //
+      "./Assets/materials",  //
+      "./Assets/models",     //
+      "./Assets/resources",  //
+      "./Assets/scenes",     //
+      "./Assets/shaders",    //
+      "./Assets/skyboxes",   //
+      "./Assets/sounds",     //
+      "./Assets/textures",   //
+  };
+
+  auto AssetManager::GetAssetsFolders() -> FolderPaths {
+    return _folderPahts;
+  }
   auto AssetManager::GenerateAssetID() -> size_t {
     std::random_device dv;
     std::mt19937_64 mt(dv());

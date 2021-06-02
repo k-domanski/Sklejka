@@ -8,6 +8,18 @@
 namespace Engine {
   class Scene;
 
+  struct FolderPaths {
+    std::string fonts;
+    std::string materials;
+    std::string models;
+    std::string resources;
+    std::string scenes;
+    std::string shaders;
+    std::string skyboxes;
+    std::string sounds;
+    std::string textures;
+  };
+
   class AssetManager {
   private:
     static inline std::unordered_map< std::string, std::shared_ptr< GL::Shader > > _loadedShaders;
@@ -23,8 +35,10 @@ namespace Engine {
     static inline std::unordered_map< std::string, std::shared_ptr< Scene > > _loadedScenes;
     static inline std::unordered_map< std::string, std::shared_ptr<std::map< char, Utility::Character >> >
         _loadedCharacters;
+    static FolderPaths _folderPahts;
 
   public:
+    static auto GetAssetsFolders() -> FolderPaths;
     static auto GenerateAssetID() -> size_t;
     static auto GetWoringDir() -> std::string;
     static auto GetShader(std::string file) -> std::shared_ptr< GL::Shader >;

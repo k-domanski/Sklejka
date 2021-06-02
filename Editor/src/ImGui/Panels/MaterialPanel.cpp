@@ -8,9 +8,10 @@ namespace fs = std::filesystem;
 namespace Editor {
   MaterialPanel::MaterialPanel(): _editorLayer(nullptr) {
     _rootFolder      = fs::current_path();
-    _materialsFolder = fs::current_path().string() + "\\materials\\";
-    _shadersFolder   = fs::current_path().string() + "\\shaders\\";
-    _texturesFolder  = fs::current_path().string() + "\\textures\\";
+    auto asset_paths = AssetManager::GetAssetsFolders();
+    _materialsFolder = fs::current_path().string() + asset_paths.materials;
+    _shadersFolder   = fs::current_path().string() + asset_paths.shaders;
+    _texturesFolder  = fs::current_path().string() + asset_paths.textures;
   }
   auto MaterialPanel::OnImGuiRender() -> void {
     ImGui::Begin("Material Editor");
