@@ -46,7 +46,8 @@ project "Game"
 
     postbuildcommands
     {
-        "copy \"%{wks.location}lib\" \"%{cfg.buildtarget.directory}\""
+        "copy \"%{wks.location}lib\" \"%{cfg.buildtarget.directory}\"",
+        "{COPY} \"%{wks.location}SquirrelNinja/Assets\" \"%{cfg.buildtarget.directory}Assets\""
     }
 
 
