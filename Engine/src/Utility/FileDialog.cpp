@@ -5,10 +5,12 @@
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 #include <App/Window.h>
+#include "App/AssetManager.h"
 
 namespace Engine {
   namespace FileDialog {
     std::optional< std::string > OpenFile(const char* filter) {
+      auto scene_folder = AssetManager::GetAssetsFolders().scenes;
       OPENFILENAMEA ofn;
       CHAR file[260]       = {0};
       CHAR currentDir[256] = {0};
@@ -17,11 +19,12 @@ namespace Engine {
       ofn.hwndOwner   = glfwGetWin32Window((GLFWwindow*)Window::Get().GetNativeWindow());
       ofn.lpstrFile   = file;
       ofn.nMaxFile    = sizeof(file);
-      if (GetCurrentDirectoryA(256, currentDir))
-        ofn.lpstrInitialDir = currentDir;
-      ofn.lpstrFilter  = filter;
-      ofn.nFilterIndex = 1;
-      ofn.Flags        = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+      /*if (GetCurrentDirectoryA(256, currentDir))
+        ofn.lpstrInitialDir = currentDir;*/
+      ofn.lpstrInitialDir = scene_folder.c_str();
+      ofn.lpstrFilter     = filter;
+      ofn.nFilterIndex    = 1;
+      ofn.Flags           = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 
       if (GetOpenFileNameA(&ofn) == TRUE)
         return ofn.lpstrFile;
@@ -29,6 +32,7 @@ namespace Engine {
     }
 
     std::optional< std::string > SaveFile(const char* filter) {
+      auto scene_folder = AssetManager::GetAssetsFolders().scenes;
       OPENFILENAMEA ofn;
       CHAR file[260]       = {0};
       CHAR currentDir[256] = {0};
@@ -37,8 +41,9 @@ namespace Engine {
       ofn.hwndOwner   = glfwGetWin32Window((GLFWwindow*)Window::Get().GetNativeWindow());
       ofn.lpstrFile   = file;
       ofn.nMaxFile    = sizeof(file);
-      if (GetCurrentDirectoryA(256, currentDir))
-        ofn.lpstrInitialDir = currentDir;
+      /*if (GetCurrentDirectoryA(256, currentDir))
+        ofn.lpstrInitialDir = currentDir;*/
+      ofn.lpstrInitialDir = scene_folder.c_str();
       ofn.lpstrFilter  = filter;
       ofn.nFilterIndex = 1;
       ofn.Flags        = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;

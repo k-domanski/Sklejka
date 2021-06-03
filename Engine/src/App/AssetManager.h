@@ -9,6 +9,7 @@ namespace Engine {
   class Scene;
 
   struct FolderPaths {
+    std::string assets;
     std::string fonts;
     std::string materials;
     std::string models;

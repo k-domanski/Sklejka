@@ -1,11 +1,13 @@
 {
     "assetID": "4916179018773794124",
-    "diffuseFilepath": "./\\textures\\pepo_sad.png",
+    "diffuseFilepath": "",
     "mainColor": [
-        0.07063773274421692,
-        0.8102564215660095,
-        0.3664851188659668,
+        0.9999899864196777,
+        1.0,
+        0.9999940395355225,
         1.0
     ],
-    "shaderFilepath": "./shaders\\default.glsl"
+    "metalness": 0.0,
+    "roughness": 0.0,
+    "shaderFilepath": "././Assets/shaders/default.glsl"
 }

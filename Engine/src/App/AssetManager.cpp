@@ -36,8 +36,18 @@ auto PreparePath(const std::string& path) -> std::string {
   return path;
 }
 
+#define FORMAT_PATH(path)                                                                          \
+  {                                                                                                \
+    path = StripToRelativePath(path);                                                              \
+    path = PreparePath(path);                                                                      \
+    if (FileExists(path)) {                                                                        \
+      path = fs::relative(fs::canonical(path)).generic_string();                                   \
+    }                                                                                              \
+  }
+
 namespace Engine {
   FolderPaths AssetManager::_folderPahts{
+      "./Assets",            //
       "./Assets/fonts",      //
       "./Assets/materials",  //
       "./Assets/models",     //
@@ -63,8 +73,7 @@ namespace Engine {
   }
 
   auto AssetManager::GetShader(std::string file) -> std::shared_ptr< GL::Shader > {
-    file = StripToRelativePath(file);
-    file = PreparePath(file);
+    FORMAT_PATH(file);
     if (_loadedShaders.count(file) == 0) {
       if (!FileExists(file)) {
         return nullptr;
@@ -91,8 +100,7 @@ namespace Engine {
     return _loadedShaders[file];
   }
   auto AssetManager::GetModel(std::string file) -> std::shared_ptr< Renderer::Model > {
-    file = StripToRelativePath(file);
-    file = PreparePath(file);
+    FORMAT_PATH(file);
     if (_loadedModels.count(file) == 0) {
       if (!FileExists(file)) {
         return nullptr;
@@ -112,8 +120,7 @@ namespace Engine {
     return _primitiveModels[primitive];
   }
   auto AssetManager::GetTexture2D(std::string file) -> std::shared_ptr< GL::Texture2D > {
-    file = StripToRelativePath(file);
-    file = PreparePath(file);
+    FORMAT_PATH(file);
     if (_loadedTextures2D.count(file) == 0) {
       if (!FileExists(file)) {
         return nullptr;
@@ -136,8 +143,7 @@ namespace Engine {
     return material;
   }
   auto AssetManager::CreateMaterial(std::string filePath) -> std::shared_ptr< Renderer::Material > {
-    filePath                  = StripToRelativePath(filePath);
-    filePath                  = PreparePath(filePath);
+    FORMAT_PATH(filePath);
     auto assetID              = GenerateAssetID();
     auto material             = std::make_shared< Renderer::Material >(assetID);
     _loadedMaterials[assetID] = material;
@@ -146,8 +152,7 @@ namespace Engine {
   }
   auto AssetManager::GetMaterial(std::string file) -> std::shared_ptr< Renderer::Material > {
     /* Check if material from this file is already loaded */
-    file    = StripToRelativePath(file);
-    file    = PreparePath(file);
+    FORMAT_PATH(file);
     auto it = std::find_if(_loadedMaterials.begin(), _loadedMaterials.end(),
                            [file](const auto& kv) { return kv.second->FilePath() == file; });
     /* If not loaded, load and return */
@@ -173,6 +178,8 @@ namespace Engine {
       }
       material->Roughness(READ_VALUE(json, "roughness", 0));
       material->Metalness(READ_VALUE(json, "metalness", 0));
+      material->RoughnessMap(GetTexture2D(READ_VALUE(json, "roughnessMap", "")));
+      material->MetalnessMap(GetTexture2D(READ_VALUE(json, "metalnessMap", "")));
       _loadedMaterials[assetID] = material;
       material->FilePath(file);
       return material;
@@ -230,8 +237,7 @@ namespace Engine {
     ofstream.close();
   }
   auto AssetManager::LoadScene(std::string file) -> std::shared_ptr< Scene > {
-    file = Utility::StripToRelativePath(file);
-    file = PreparePath(file);
+    FORMAT_PATH(file);
     // if (_loadedScenes.count(file) == 0) {
     bool success = false;
     auto content = Utility::ReadTextFile(file, &success);
@@ -289,8 +295,7 @@ namespace Engine {
 
   auto AssetManager::GetCharacters(std::string file, int fontSize)
       -> std::shared_ptr< std::map< char, Utility::Character > > {
-    file            = StripToRelativePath(file);
-    file            = PreparePath(file);
+    FORMAT_PATH(file);
     auto characters = std::make_shared< std::map< char, Utility::Character > >();
 
     if (_loadedCharacters.count(file) == 0) {

@@ -22,6 +22,20 @@ namespace Engine::Renderer {
   std::shared_ptr< GL::Texture2D > Material::GetMainTexture() {
     return _mainTexture;
   }
+  auto Material::RoughnessMap() const noexcept -> std::shared_ptr< GL::Texture2D > {
+    return _roughnessMap;
+  }
+  auto Material::RoughnessMap(const std::shared_ptr< GL::Texture2D >& map) noexcept
+      -> std::shared_ptr< GL::Texture2D > {
+    return _roughnessMap = map;
+  }
+  auto Material::MetalnessMap() const noexcept -> std::shared_ptr< GL::Texture2D > {
+    return _metalnessMap;
+  }
+  auto Material::MetalnessMap(const std::shared_ptr< GL::Texture2D >& map) noexcept
+      -> std::shared_ptr< GL::Texture2D > {
+    return _metalnessMap = map;
+  }
   auto Material::MainColor() const noexcept -> glm::vec4 {
     return _mainColor;
   }
@@ -58,6 +72,8 @@ namespace Engine::Renderer {
         {"assetID", std::to_string(_assetID)},
         {"shaderFilepath", (_shader != nullptr ? _shader->FilePath() : "")},
         {"diffuseFilepath", (_mainTexture != nullptr ? _mainTexture->FilePath() : "")},
+        {"roughnessMap", (_roughnessMap != nullptr ? _roughnessMap->FilePath() : "")},
+        {"metalnessMap", (_metalnessMap != nullptr ? _metalnessMap->FilePath() : "")},
         {"mainColor", json::array({_mainColor.r, _mainColor.g, _mainColor.b, _mainColor.a})},
         {"roughness", _roughness},
         {"metalness", _metalness}};
@@ -71,16 +87,36 @@ namespace Engine::Renderer {
     return _filePath = filePath;
   }
   auto Material::Use() noexcept -> void {
+    if (_assetID == s_currentMaterial) {
+      return;
+    }
+    auto white_texture = AssetManager::GetTexture2D("./textures/white.png");
     if (_mainTexture != nullptr) {
       _mainTexture->Bind(0);
+    } else {
+      white_texture->Bind(0);
+    }
+    if (_roughnessMap != nullptr) {
+      _roughnessMap->Bind(1);
+    } else {
+      white_texture->Bind(1);
+    }
+    if (_metalnessMap != nullptr) {
+      _metalnessMap->Bind(2);
+    } else {
+      white_texture->Bind(2);
     }
     if (_shader != nullptr) {
       SetShaderData();
     }
+    s_currentMaterial = _assetID;
   }
   auto Material::SetShaderData() noexcept -> void {
     _shader->Use();
     _shader->SetValue("u_MainTexture", 0);
+    _shader->SetValue("u_RoughnessMap", 1);
+    _shader->SetValue("u_MetalnessMap", 2);
+
     // TODO: Use uniform buffer if we have a lot of data
     _shader->SetVector("u_Color", _mainColor);
     _shader->SetValue("u_Roughness", _roughness);
