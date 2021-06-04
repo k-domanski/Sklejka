@@ -77,6 +77,67 @@
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
+    "entityID": "13831128884117252117",
+    "entityName": "Main_Camera",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -4.371142381387472e-08,
+        "y": -0.35703015327453613,
+        "z": -28.766359329223633
+    },
+    "localRotation": {
+        "w": 0.1435617357492447,
+        "x": 0.9896411299705505,
+        "y": 1.6056134199970984e-09,
+        "z": 4.163695166425896e-09
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "aspect": 1.7699999809265137,
+    "componentType": "camera",
+    "farPlane": 1000.0,
+    "flags": 6,
+    "fov": 70.0,
+    "nearPlane": 0.009999999776482582
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "8133976209427380116",
+    "entityName": "Player_Rect",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": -2.979022264480591,
+        "z": -33.4885139465332
+    },
+    "localRotation": {
+        "w": 0.9954761266708374,
+        "x": -0.09501160681247711,
+        "y": -0.0,
+        "z": -0.0
+    },
+    "localScale": {
+        "x": 0.8999999761581421,
+        "y": 0.8999999761581421,
+        "z": 0.8999999761581421
+    }
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
     "entityID": "13097236610161235680",
     "entityName": "LEVEL1_ROOT",
     "parentID": 4588649328608014795
@@ -107,6 +168,32 @@
     "material": "Assets/materials/default.mat",
     "meshIndex": 0,
     "model": "Assets/models/AA_Level1_FINISH.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13658057148798831749",
+    "entityName": "Player",
+    "parentID": 8133976209427380116
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 1.3176538944244385,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.910685465164705e-15,
+        "x": -4.371138828673793e-08,
+        "y": 1.0,
+        "z": -4.371138828673793e-08
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2186,6 +2273,72 @@
     "material": "Assets/materials/default.mat",
     "meshIndex": 9,
     "model": "Assets/models/AA_Level1_FINISH.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "13863284517206251404",
+    "entityName": "Player_Model",
+    "parentID": 13658057148798831749
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 0.9848077297210693,
+        "x": -0.1736481785774231,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 2.0,
+        "y": 2.0,
+        "z": 2.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "Assets/materials/animation.mat",
+    "meshIndex": 0,
+    "model": "Assets/models/squirrel_anim_idle.fbx"
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "center": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.3499999940395355
+    },
+    "colliderType": "Box",
+    "componentType": "collider",
+    "size": {
+        "x": 1.2000000476837158,
+        "y": 0.3499999940395355,
+        "z": 1.899999976158142
+    },
+    "static": true,
+    "trigger": true
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "rigidbody",
+    "kinematic": true,
+    "useGravity": false,
+    "velocity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+  "componentType": "animator",
+  "model": "Assets/models/squirrel_anim_idle.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {

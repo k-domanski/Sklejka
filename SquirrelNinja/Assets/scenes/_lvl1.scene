@@ -30,9 +30,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 0,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -49,10 +49,10 @@
         "z": 0.0
     },
     "localRotation": {
-        "w": 0.3640288710594177,
-        "x": 0.13973765075206757,
-        "y": 0.8596832752227783,
-        "z": -0.330001562833786
+        "w": -0.3640288710594177,
+        "x": -0.1397375613451004,
+        "y": -0.8596832752227783,
+        "z": 0.33000150322914124
     },
     "localScale": {
         "x": 1.0,
@@ -70,8 +70,8 @@
     "componentType": "directionalLight",
     "diffuse": {
         "x": 1.0,
-        "y": 0.9734783172607422,
-        "z": 0.7524752616882324
+        "y": 0.9999989867210388,
+        "z": 0.9999899864196777
     },
     "flags": 3,
     "intensity": 1.0,
@@ -129,7 +129,7 @@
     "localPosition": {
         "x": 0.0,
         "y": 0.0,
-        "z": 8.0
+        "z": -4.400000095367432
     },
     "localRotation": {
         "w": 1.0,
@@ -224,9 +224,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 1,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -257,9 +257,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 17,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -290,9 +290,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 35,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -323,9 +323,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 62,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -356,9 +356,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 89,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -389,9 +389,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 107,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -608,9 +608,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./\\materials\\Bell.mat",
+    "material": "Assets/materials/Bell.mat",
     "meshIndex": 0,
-    "model": "./\\models\\dzwon\\bell.fbx"
+    "model": "Assets/models/dzwon/bell.fbx"
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
@@ -669,9 +669,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 2,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -702,9 +702,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 3,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -735,9 +735,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 4,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -768,9 +768,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 5,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -801,9 +801,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 6,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -834,9 +834,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 7,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -867,9 +867,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 8,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -900,9 +900,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 9,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -933,9 +933,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 10,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -966,9 +966,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 11,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -999,9 +999,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 12,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1032,9 +1032,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 13,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1065,9 +1065,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 14,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1098,9 +1098,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 15,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1131,9 +1131,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 16,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1164,9 +1164,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 18,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1197,9 +1197,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 19,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1230,9 +1230,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 20,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1263,9 +1263,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 21,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1296,9 +1296,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 22,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1329,9 +1329,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 23,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1362,9 +1362,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 24,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1395,9 +1395,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 25,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1428,9 +1428,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 26,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1461,9 +1461,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 27,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1494,9 +1494,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 28,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1527,9 +1527,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 29,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1560,9 +1560,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 30,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1593,9 +1593,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 31,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1626,9 +1626,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 32,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1659,9 +1659,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 33,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1692,9 +1692,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 34,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1725,9 +1725,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 36,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1758,9 +1758,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 37,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1791,9 +1791,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 38,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1824,9 +1824,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 39,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1857,9 +1857,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 40,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1890,9 +1890,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 41,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1923,9 +1923,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 42,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1956,9 +1956,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 43,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -1989,9 +1989,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 44,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2022,9 +2022,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 45,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2055,9 +2055,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 46,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2088,9 +2088,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 47,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2121,9 +2121,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 48,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2154,9 +2154,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 49,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2187,9 +2187,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 50,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2220,9 +2220,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 51,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2253,9 +2253,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 52,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2286,9 +2286,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 53,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2319,9 +2319,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 54,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2352,9 +2352,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 55,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2385,9 +2385,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 56,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2418,9 +2418,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 57,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2451,9 +2451,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 58,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2484,9 +2484,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 59,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2517,9 +2517,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 60,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2550,9 +2550,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 61,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2583,9 +2583,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 63,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2616,9 +2616,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 64,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2649,9 +2649,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 65,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2682,9 +2682,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 66,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2715,9 +2715,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 67,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2748,9 +2748,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 68,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2781,9 +2781,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 69,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2814,9 +2814,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 70,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2847,9 +2847,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 71,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2880,9 +2880,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 72,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2913,9 +2913,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 73,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2946,9 +2946,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 74,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -2979,9 +2979,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 75,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3012,9 +3012,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 76,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3045,9 +3045,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 77,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3078,9 +3078,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 78,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3111,9 +3111,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 79,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3144,9 +3144,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 80,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3177,9 +3177,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 81,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3210,9 +3210,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 82,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3243,9 +3243,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 83,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3276,9 +3276,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 84,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3309,9 +3309,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 85,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3342,9 +3342,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 86,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3375,9 +3375,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 87,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3408,9 +3408,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 88,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3441,9 +3441,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 90,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3474,9 +3474,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 91,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3507,9 +3507,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 92,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3540,9 +3540,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 93,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3573,9 +3573,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 94,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3606,9 +3606,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 95,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3639,9 +3639,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 96,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3672,9 +3672,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 97,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3705,9 +3705,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 98,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3738,9 +3738,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 99,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3771,9 +3771,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 100,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3804,9 +3804,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 101,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3837,9 +3837,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 102,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3870,9 +3870,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 103,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3903,9 +3903,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 104,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3936,9 +3936,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 105,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -3969,9 +3969,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 106,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4002,9 +4002,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 108,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4035,9 +4035,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 109,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4068,9 +4068,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 110,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4101,9 +4101,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 111,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4134,9 +4134,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 112,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4167,9 +4167,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 113,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4200,9 +4200,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 114,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4233,9 +4233,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 115,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4266,9 +4266,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 116,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4299,9 +4299,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 117,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4332,9 +4332,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 118,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4365,9 +4365,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 119,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4398,9 +4398,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 120,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4431,9 +4431,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 121,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4464,9 +4464,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./materials/default_color.mat",
+    "material": "Assets/materials/default.mat",
     "meshIndex": 122,
-    "model": "./\\models\\Level1.fbx"
+    "model": "Assets/models/Level1.fbx"
 }
 42091169692137SUPERJSONENTITYSEPARATOR42091169692137
 {
@@ -4497,9 +4497,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./\\materials\\animation.mat",
+    "material": "Assets/materials/animation.mat",
     "meshIndex": 0,
-    "model": "./\\models\\squirrel_anim_idle.fbx"
+    "model": "Assets/models/squirrel_anim_idle.fbx"
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
@@ -4532,5 +4532,5 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
   "componentType": "animator",
-  "model": "./\\models\\squirrel_anim_idle.fbx"
+  "model": "Assets/models/squirrel_anim_idle.fbx"
 }

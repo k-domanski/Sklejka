@@ -117,6 +117,12 @@ auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
 }
 
 auto GameManager::UpdateImpl(float deltaTime) -> void {
+#if defined(_DEBUG)
+  if (Input::IsKeyPressed(Key::K)) {
+    auto folder = AssetManager::GetAssetsFolders().scenes;
+    AssetManager::SaveScene(SceneManager::GetCurrentScene(), folder + "__LEVEL__DUMP__.scene");
+  }
+#endif
   if (_speedUpDuration > 0.0f) {
     _speedUpDuration -= deltaTime;
   } else {
@@ -203,6 +209,7 @@ auto GameManager::CreatePlayer() -> void {
 
   /* Scene Graph */
   {
+    scene_graph->SetParent(main_camera, nullptr);
     scene_graph->SetParent(player_rect, nullptr);
     scene_graph->SetParent(player, player_rect);
     scene_graph->SetParent(player_model, player);

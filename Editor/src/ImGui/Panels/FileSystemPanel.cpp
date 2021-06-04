@@ -22,7 +22,7 @@ auto operator<(const EntryPair& lhs, const EntryPair& rhs) -> bool {
 using namespace Engine;
 namespace Editor {
   FileSystemPanel::FileSystemPanel() {
-    _rootPath          = fs::current_path();
+    _rootPath          = AssetManager::GetAssetsFolders().assets;
     _currentPath       = _rootPath;
     _selectedDirectory = _rootPath;
     _selectedFile      = _rootPath;

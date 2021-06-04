@@ -3,6 +3,7 @@
 #shader vertex
 #include "vs_common.incl"
 #include "include/shadow_data.incl"
+#include "include/bone_data.incl"
 
 out ShaderData {
   vec4 posWS;
@@ -14,10 +15,23 @@ out ShaderData {
 vs_out;
 
 void main() {
-  vs_out.uv            = a_UV;
-  vs_out.normal        = mat3(transpose(inverse(u_Model))) * a_Normal;
-  vs_out.posWS         = u_Model * vec4(a_Position, 1.0f);
-  vs_out.lightSpacePos = u_LightSpaceMatrix * u_Model * vec4(a_Position, 1.0f);
+  vec4 PosL  = vec4(0.0f);
+  vec3 NormL = vec3(0.0f);
+  // mat4 jointTransform = mat4(0.0f);
+  for (int i = 0; i < 4; ++i) {
+    // jointTransform += u_Transforms[a_JointIDs[i]] * a_Weights[i];
+    vec4 localPos = u_Transforms[a_JointIDs[i]] * vec4(a_Position, 1.0f);
+    PosL += localPos * a_Weights[i];
+    vec3 localNorm = mat3(u_Transforms[a_JointIDs[i]]) * a_Normal;
+    NormL += localNorm * a_Weights[i];
+  }
+  // vec4 PosL = jointTransform * vec4(a_Position, 1.0);
+
+  vs_out.uv = a_UV;
+  // vs_out.normal        = mat3(transpose(inverse(u_Model))) * mat3(jointTransform) * a_Normal;
+  vs_out.normal        = mat3(transpose(inverse(u_Model))) * NormL;
+  vs_out.posWS         = u_Model * PosL;
+  vs_out.lightSpacePos = u_LightSpaceMatrix * u_Model * PosL;
   gl_Position          = u_ViewProjection * vs_out.posWS;
   /* Retrieve camera pos */
   vec3 col4        = (u_View * vec4(0.0f, 0.0f, 0.0f, 1.0f)).xyz;
@@ -38,6 +52,7 @@ in ShaderData {
 }
 fs_in;
 out vec4 out_color;
+
 void main() {
   vec3 texel_color = gamma2linear(texture(u_MainTexture, fs_in.uv)).rgb * u_Color.rgb;
   float metalness  = texture(u_MetalnessMap, fs_in.uv).r * u_Metalness;

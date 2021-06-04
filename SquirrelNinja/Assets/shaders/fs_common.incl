@@ -1,5 +1,7 @@
 uniform sampler2D u_MainTexture;
 uniform sampler2D u_NormalMap;
+uniform sampler2D u_RoughnessMap;
+uniform sampler2D u_MetalnessMap;
 uniform vec4 u_Color;
 
 vec4 gamma2linear(vec4 color) {

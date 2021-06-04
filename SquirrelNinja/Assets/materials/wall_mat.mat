@@ -9,5 +9,5 @@
     ],
     "metalness": 0.0,
     "roughness": 0.38600000739097595,
-    "shaderFilepath": "./\\shaders\\color_light_pbr.glsl"
+    "shaderFilepath": "shaders/color_light_pbr.glsl"
 }

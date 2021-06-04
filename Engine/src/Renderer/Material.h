@@ -6,11 +6,15 @@
 namespace Engine::Renderer {
   class Material {
   private:
+    static inline std::size_t s_currentMaterial{0};
+
     std::size_t _assetID;
     std::string _filePath;
     uint32_t _queue{1000};
     std::shared_ptr< GL::Shader > _shader;
     std::shared_ptr< GL::Texture2D > _mainTexture;
+    std::shared_ptr< GL::Texture2D > _roughnessMap;
+    std::shared_ptr< GL::Texture2D > _metalnessMap;
     glm::vec4 _mainColor{1.0f, 1.0f, 1.0f, 1.0f};
     float _roughness = 0.0f;
     float _metalness = 0.0f;
@@ -22,6 +26,12 @@ namespace Engine::Renderer {
 
     auto GetShader() -> std::shared_ptr< GL::Shader >;
     auto GetMainTexture() -> std::shared_ptr< GL::Texture2D >;
+    auto RoughnessMap() const noexcept -> std::shared_ptr< GL::Texture2D >;
+    auto RoughnessMap(const std::shared_ptr< GL::Texture2D >& map) noexcept
+        -> std::shared_ptr< GL::Texture2D >;
+    auto MetalnessMap() const noexcept -> std::shared_ptr< GL::Texture2D >;
+    auto MetalnessMap(const std::shared_ptr< GL::Texture2D >& map) noexcept
+        -> std::shared_ptr< GL::Texture2D >;
     auto MainColor() const noexcept -> glm::vec4;
     auto MainColor(const glm::vec4& color) noexcept -> glm::vec4;
     auto Roughness() const noexcept -> float;

@@ -7,5 +7,5 @@
         0.4652731418609619,
         1.0
     ],
-    "shaderFilepath": "./\\shaders\\color_light_pbr.glsl"
+    "shaderFilepath": "shaders/color_light_pbr.glsl"
 }

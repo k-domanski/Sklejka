@@ -39,6 +39,9 @@ namespace Engine::ECS {
     std::string fileContent = json.dump(4);
 
     for (std::shared_ptr< Component > component : components) {
+      if (component->Name() == "Native Script") {
+        continue;
+      }
       fileContent.append("\n" + separator);
       fileContent.append("\n" + component->SaveToJson());
     }

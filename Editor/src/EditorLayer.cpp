@@ -230,7 +230,7 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
 
   auto model  = AssetManager::GetModel(path);
   auto& nodes = model->Nodes();
-  auto mat    = AssetManager::GetMaterial("./materials/default_color.mat");
+  auto mat    = AssetManager::GetMaterial("./materials/default.mat");
   std::vector< std::shared_ptr< Entity > > ids(nodes.size());
 
   for (int node_index = 0; node_index < nodes.size(); ++node_index) {

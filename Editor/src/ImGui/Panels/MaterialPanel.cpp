@@ -118,7 +118,8 @@ namespace Editor {
           continue;
         if (ImGui::Selectable(filename.c_str(),
                               (has_material && fs::path(_selectedMaterial->FilePath()) == path))) {
-          LoadMaterial(path.string());
+          // LoadMaterial(path.string());
+          _selectedMaterial = AssetManager::GetMaterial(path.string());
         }
       }
       ImGui::EndCombo();
@@ -146,10 +147,48 @@ namespace Editor {
     }
   }
   auto MaterialPanel::TextureSelection() -> void {
-    const auto& texture    = _selectedMaterial->GetMainTexture();
-    const auto has_texture = texture != nullptr;
+    const auto& main_texture  = _selectedMaterial->GetMainTexture();
+    const auto& roughness_map = _selectedMaterial->RoughnessMap();
+    const auto& metalness_map = _selectedMaterial->MetalnessMap();
+
+    auto DrawCombo = [&](auto texture, std::string label, auto set_function) -> void {
+      const auto has_texture = texture != nullptr;
+      const std::string preview =
+          (has_texture ? fs::path(texture->FilePath()).filename().string() : "< None >");
+      if (ImGui::BeginCombo(label.c_str(), preview.c_str())) {
+        /* Select none */
+        if (ImGui::Selectable("< None >", !has_texture)) {
+          set_function(nullptr);
+          //_selectedMaterial->SetMainTexture(AssetManager::GetTexture2D(path.string()));
+          SetDirty();
+        }
+        for (auto& entry : fs::recursive_directory_iterator(_texturesFolder)) {
+          const auto path     = entry.path();
+          const auto ext      = path.extension().string();
+          const auto filename = path.filename().string();
+          const auto exts     = {".png", ".jpg"};
+          if (!std::any_of(exts.begin(), exts.end(), [ext](const auto& e) { return ext == e; }))
+            continue;
+          if (ImGui::Selectable(filename.c_str(),
+                                (has_texture && fs::path(texture->FilePath()) == path))) {
+            set_function(AssetManager::GetTexture2D(path.string()));
+            //_selectedMaterial->SetMainTexture(AssetManager::GetTexture2D(path.string()));
+            SetDirty();
+          }
+        }
+        ImGui::EndCombo();
+      }
+    };
+    DrawCombo(main_texture, "Main Texture",
+              [&](auto texture) { _selectedMaterial->SetMainTexture(texture); });
+    DrawCombo(roughness_map, "Roughness Map",
+              [&](auto texture) { _selectedMaterial->RoughnessMap(texture); });
+    DrawCombo(metalness_map, "Metalness Map",
+              [&](auto texture) { _selectedMaterial->MetalnessMap(texture); });
+
+    /*const auto has_texture = main_texture != nullptr;
     const std::string preview =
-        (has_texture ? fs::path(texture->FilePath()).filename().string() : "< None >");
+        (has_texture ? fs::path(main_texture->FilePath()).filename().string() : "< None >");
     if (ImGui::BeginCombo("Texture", preview.c_str())) {
       for (auto& entry : fs::recursive_directory_iterator(_texturesFolder)) {
         const auto path     = entry.path();
@@ -159,13 +198,13 @@ namespace Editor {
         if (!std::any_of(exts.begin(), exts.end(), [ext](const auto& e) { return ext == e; }))
           continue;
         if (ImGui::Selectable(filename.c_str(),
-                              (has_texture && fs::path(texture->FilePath()) == path))) {
+                              (has_texture && fs::path(main_texture->FilePath()) == path))) {
           _selectedMaterial->SetMainTexture(AssetManager::GetTexture2D(path.string()));
           SetDirty();
         }
       }
       ImGui::EndCombo();
-    }
+    }*/
   }
   auto MaterialPanel::PBRParams() -> void {
     auto roughness = _selectedMaterial->Roughness();
@@ -178,8 +217,10 @@ namespace Editor {
     }
   }
   auto MaterialPanel::ColorSelection() -> void {
+    auto main_color = _selectedMaterial->MainColor();
     if (ImGui::CollapsingHeader("Main Color##h")) {
-      ImGui::ColorPicker4("Main Color##p", _selectedMaterial->MainColorPtr());
+      ImGui::ColorPicker4("Main Color##p", &main_color[0]);
+      _selectedMaterial->MainColor(main_color);
     }
   }
   auto MaterialPanel::SaveMaterial(const std::shared_ptr< Renderer::Material >& material) -> void {

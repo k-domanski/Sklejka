@@ -1,13 +1,15 @@
 {
     "assetID": "3554629179663661456",
-    "diffuseFilepath": "./textures\\squ.png",
+    "diffuseFilepath": "Assets/textures/squ.png",
     "mainColor": [
         0.9999899864196777,
         0.9999995827674866,
         1.0,
         1.0
     ],
-    "metalness": 0.14800000190734863,
-    "roughness": 0.8259999752044678,
-    "shaderFilepath": "./\\shaders\\directonal_light.glsl"
+    "metalness": 1.0,
+    "metalnessMap": "Assets/textures/squ_Metallic.png",
+    "roughness": 1.0,
+    "roughnessMap": "Assets/textures/squ_Roughness.png",
+    "shaderFilepath": "Assets/shaders/default.glsl"
 }
