@@ -18,16 +18,16 @@ MainMenu::MainMenu() {
   auto transform3  = entity3->AddComponent< Engine::Transform >();
   _image           = std::make_shared< Engine::Renderer::Image >();
   _image->Size(glm::vec2(window_size));
-  _image->Texture(Engine::AssetManager::GetTexture2D("./textures/cutscene.png"));
+  _image->Texture(Engine::AssetManager::GetTexture2D("./textures/squirrelNinja.png"));
   transform3->Position(glm::vec3(window_size * 0.5f, 0.0f));
-  uiRenderer3->GetElements().push_back(_image);
+  uiRenderer3->AddElement(_image);
 
   auto entity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   auto uiRenderer = entity->AddComponent< Engine::Components::UIRenderer >();
   auto transform  = entity->AddComponent< Engine::Transform >();
   _exitButton     = std::make_shared< Engine::Renderer::Button >();
-  uiRenderer->GetButtons().push_back(_exitButton);
-  uiRenderer->GetElements().push_back(_exitButton);
+  uiRenderer->AddButton(_exitButton);
+  uiRenderer->AddElement(_exitButton);
   _exitButton->Color(glm::vec4(1.0f));
   _exitButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   _exitButton->OnPress([]() { std::exit(0); });
@@ -44,14 +44,14 @@ MainMenu::MainMenu() {
   _startButton     = std::make_shared< Engine::Renderer::Button >();
   _startButton->Color(glm::vec4(1.0f));
   _startButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-  _startButton->OnPress([]() { GameManager::SwitchScene(SceneName::Cutscene); });
+  _startButton->OnPress([]() { GameManager::SwitchScene(SceneName::LevelSelection); });
   _startButton->text("Start");
   _startButton->TextColor(glm::vec4(0, 0, 0, 1));
   _startButton->TextOffset(glm::vec2(-50.0f, -20.0f));
   _startButton->Size(glm::vec2(300.0f, 100.0f));
   _startButton->HandleSize(glm::vec2(300.0f, 100.0f));
-  uiRenderer2->GetButtons().push_back(_startButton);
-  uiRenderer2->GetElements().push_back(_startButton);
+  uiRenderer2->AddButton(_startButton);
+  uiRenderer2->AddElement(_startButton);
   transform2->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f + 50.0f, 0.0f));
 
   if (current_scene != nullptr) {

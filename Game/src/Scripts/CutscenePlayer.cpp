@@ -1,5 +1,7 @@
 #include "CutscenePlayer.h"
 
+#include "GameManager.h"
+
 CutscenePlayer::CutscenePlayer(const std::shared_ptr< Engine::GL::Shader >& shader)
     : _shader(shader), _duration(0), _stopTime(0), _time(0), _transitionTime(0) {
 }
@@ -50,10 +52,11 @@ auto CutscenePlayer::Update(float deltaTime) -> void {
 
   if (_time > _duration + _stopTime) {
     LOG_INFO("Finished cutscene");
+    GameManager::SwitchScene(SceneName::LVL_1);
   }
 }
 
-auto CutscenePlayer::OnKeyPressed(Engine::Key key) -> void{
+auto CutscenePlayer::OnKeyPressed(Engine::Key key) -> void {
 }
 
 auto CutscenePlayer::Reset() -> void {

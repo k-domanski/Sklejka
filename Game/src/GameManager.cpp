@@ -24,6 +24,7 @@ GameManager::GameManager() {
   _loadingScreen  = std::make_shared< LoadingScreen >();
   _cutscene       = std::make_shared< Cutscene >();
   _mainMenu       = std::make_shared< MainMenu >();
+  _levelSelection = std::make_shared< LevelSelection >();
   _fishEyeShader  = Engine::AssetManager::GetShader("./shaders/fish_eye.glsl");
 }
 
@@ -70,6 +71,9 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
       // SetupPlayer(scene);
       break;
     }
+    case SceneName::LevelSelection:
+      Engine::SceneManager::OpenScene(_instance->_levelSelection->Scene()->GetID());
+      break;
   }
 }
 

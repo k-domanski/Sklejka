@@ -26,6 +26,7 @@ namespace Engine::Renderer
     void Color(const glm::vec4& color);
     std::function<void()> OnPress() const;
     void OnPress(const std::function<void()>& on_press);
+    void Background(std::shared_ptr< GL::Texture2D > texture);
     //void(* on_press() const)();
     //void on_press(void(* on_press)());
     Button();

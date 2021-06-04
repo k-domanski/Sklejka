@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Button.h"
 
+#include "App/AssetManager.h"
+
 // void (*Engine::Renderer::Button::on_press() const)() {
 //  return OnPress;
 //}
@@ -86,11 +88,16 @@ void Engine::Renderer::Button::OnPress(const std::function< void() >& on_press) 
   _onPress = on_press;
 }
 
+void Engine::Renderer::Button::Background(std::shared_ptr< GL::Texture2D > texture) {
+  _background.Texture(texture);
+}
+
 Engine::Renderer::Button::Button()
     : UIElement(), _handleSize(glm::vec2(100, 50)), _color(glm::vec4(1.0f)),
       _pressedColor(glm::vec4(0.0f)) {
   _background = Image();
-  _text       = Text();
+  _background.Texture(AssetManager::GetTexture2D("./textures/button_default.png"));
+  _text = Text();
   _text.Size(1);
 }
 

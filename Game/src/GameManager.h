@@ -6,10 +6,11 @@
 #include <GUI/Cutscene.h>
 #include "irrKlang.h"
 #include "GUI/EndLevelMenu.h"
+#include "GUI/LevelSelection.h"
 #include "GUI/MainMenu.h"
 #include "GUI/PauseMenu.h"
 
-BETTER_ENUM(__SceneName, int, MainMenu, Loading, Cutscene, LVL_1);
+BETTER_ENUM(__SceneName, int, MainMenu, Loading, Cutscene, LevelSelection, LVL_1);
 typedef __SceneName SceneName;
 
 class GameManager {
@@ -22,6 +23,7 @@ private:
   std::shared_ptr< LoadingScreen > _loadingScreen;
   std::shared_ptr< Cutscene > _cutscene;
   std::shared_ptr< MainMenu > _mainMenu;
+  std::shared_ptr< LevelSelection > _levelSelection;
   std::shared_ptr< PauseMenu > _pauseMenu;
   std::shared_ptr< EndLevelMenu > _endLevelMenu;
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
