@@ -177,13 +177,10 @@ auto GameManager::CreatePlayer() -> void {
 
   { /* Player Model */
     auto transform = player_model->AddComponent< Transform >();
-    // transform->Euler(glm::radians(glm::vec3{-110.0f, 0.0f, 0.0f})); // No Anim
     transform->Euler(glm::radians(glm::vec3{-20.0f, 0.0f, 0.0f}));
-    transform->Scale({2.0f, 2.0f, 2.0f});
     auto mesh_renderer = player_model->AddComponent< MeshRenderer >();
     mesh_renderer->SetModel(AssetManager::GetModel("./models/squirrel_anim_idle.fbx"));
     mesh_renderer->SetMaterial(AssetManager::GetMaterial("./materials/animation.mat"));
-    // mesh_renderer->SetMaterial(AssetManager::GetMaterial("./materials/squirrel.mat")); // No Anim
     auto collider       = player_model->AddComponent< Collider >();
     collider->Size      = {1.2f, 0.35f, 1.9f};
     collider->Center    = {0.0f, 0.0f, -0.35f};
