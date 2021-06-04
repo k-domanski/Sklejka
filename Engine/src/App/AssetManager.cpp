@@ -47,16 +47,16 @@ auto PreparePath(const std::string& path) -> std::string {
 
 namespace Engine {
   FolderPaths AssetManager::_folderPahts{
-      "./Assets",            //
-      "./Assets/fonts",      //
-      "./Assets/materials",  //
-      "./Assets/models",     //
-      "./Assets/resources",  //
-      "./Assets/scenes",     //
-      "./Assets/shaders",    //
-      "./Assets/skyboxes",   //
-      "./Assets/sounds",     //
-      "./Assets/textures",   //
+      "./Assets/",            //
+      "./Assets/fonts/",      //
+      "./Assets/materials/",  //
+      "./Assets/models/",     //
+      "./Assets/resources/",  //
+      "./Assets/scenes/",     //
+      "./Assets/shaders/",    //
+      "./Assets/skyboxes/",   //
+      "./Assets/sounds/",     //
+      "./Assets/textures/",   //
   };
 
   auto AssetManager::GetAssetsFolders() -> FolderPaths {

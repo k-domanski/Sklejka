@@ -113,6 +113,12 @@ auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
 }
 
 auto GameManager::UpdateImpl(float deltaTime) -> void {
+#if defined(_DEBUG)
+  if (Input::IsKeyPressed(Key::K)) {
+    auto folder = AssetManager::GetAssetsFolders().scenes;
+    AssetManager::SaveScene(SceneManager::GetCurrentScene(), folder + "__LEVEL__DUMP__.scene");
+  }
+#endif
   if (_speedUpDuration > 0.0f) {
     _speedUpDuration -= deltaTime;
   } else {
@@ -171,10 +177,13 @@ auto GameManager::CreatePlayer() -> void {
 
   { /* Player Model */
     auto transform = player_model->AddComponent< Transform >();
+    // transform->Euler(glm::radians(glm::vec3{-110.0f, 0.0f, 0.0f})); // No Anim
     transform->Euler(glm::radians(glm::vec3{-20.0f, 0.0f, 0.0f}));
+    transform->Scale({2.0f, 2.0f, 2.0f});
     auto mesh_renderer = player_model->AddComponent< MeshRenderer >();
     mesh_renderer->SetModel(AssetManager::GetModel("./models/squirrel_anim_idle.fbx"));
     mesh_renderer->SetMaterial(AssetManager::GetMaterial("./materials/animation.mat"));
+    // mesh_renderer->SetMaterial(AssetManager::GetMaterial("./materials/squirrel.mat")); // No Anim
     auto collider       = player_model->AddComponent< Collider >();
     collider->Size      = {1.2f, 0.35f, 1.9f};
     collider->Center    = {0.0f, 0.0f, -0.35f};
@@ -199,6 +208,7 @@ auto GameManager::CreatePlayer() -> void {
 
   /* Scene Graph */
   {
+    scene_graph->SetParent(main_camera, nullptr);
     scene_graph->SetParent(player_rect, nullptr);
     scene_graph->SetParent(player, player_rect);
     scene_graph->SetParent(player_model, player);

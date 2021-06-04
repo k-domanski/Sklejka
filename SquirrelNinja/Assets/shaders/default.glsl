@@ -40,8 +40,8 @@ fs_in;
 out vec4 out_color;
 void main() {
   vec3 texel_color = gamma2linear(texture(u_MainTexture, fs_in.uv)).rgb * u_Color.rgb;
-  float metalness   = texture(u_MetalnessMap, fs_in.uv).r * u_Metalness;
-  float roughness   = texture(u_RoughnessMap, fs_in.uv).r * u_Roughness;
+  float metalness  = texture(u_MetalnessMap, fs_in.uv).r * u_Metalness;
+  float roughness  = texture(u_RoughnessMap, fs_in.uv).r * u_Roughness;
 
   vec3 normal    = normalize(fs_in.normal);
   vec3 view_dir  = normalize(fs_in.cameraPos - fs_in.posWS.xyz);
