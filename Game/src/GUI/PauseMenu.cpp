@@ -20,7 +20,7 @@ PauseMenu::PauseMenu() {
   _text = std::make_shared< Engine::Renderer::Text >();
   _text->SetText("Paused");
   _text->Color(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-  _text->Offset(glm::vec2(-75.0f, 100.0f));
+  _text->Offset(glm::vec2(-75.0f, 150.0f));
   _text->Size(1);
 
   auto entity1            = Engine::ECS::EntityManager::GetInstance().CreateEntity();
@@ -30,7 +30,7 @@ PauseMenu::PauseMenu() {
   _mainMenuButton->Size(glm::vec2(300.0f, 100.0f));
   _mainMenuButton->HandleSize(glm::vec2(300.0f, 100.0f));
   _mainMenuButton->text("Main menu");
-  _mainMenuButton->TextOffset(glm::vec2(-75.0f, -20.0f));
+  _mainMenuButton->TextOffset(glm::vec2(-90.0f, -15.0f));
   _mainMenuButton->TextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   _mainMenuButton->OnPress([this]() {
     Engine::ECS::EntityManager::GetInstance()
@@ -41,7 +41,7 @@ PauseMenu::PauseMenu() {
   });
   _mainMenuButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _mainMenuButton->Color(glm::vec4(1.0f));
-  transform1->Position(glm::vec3(windowSize.x / 2.0f, windowSize.y / 2.0f - 150.0f, 0.0f));
+  transform1->Position(glm::vec3(windowSize.x / 2.0f, windowSize.y / 2.0f - 100.0f, 0.0f));
 
   auto entity2          = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   _resumeButtonRenderer = entity2->AddComponent< Engine::Components::UIRenderer >();
@@ -50,12 +50,12 @@ PauseMenu::PauseMenu() {
   _resumeButton->Size(glm::vec2(300.0f, 100.0f));
   _resumeButton->HandleSize(glm::vec2(300.0f, 100.0f));
   _resumeButton->text("Resume");
-  _resumeButton->TextOffset(glm::vec2(-50.0f, -20.0f));
+  _resumeButton->TextOffset(glm::vec2(-60.0f, -15.0f));
   _resumeButton->TextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   _resumeButton->OnPress([this]() { this->Hide(); });
   _resumeButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _resumeButton->Color(glm::vec4(1.0f));
-  transform2->Position(glm::vec3(windowSize.x / 2.0f, windowSize.y / 2.0f, 0.0f));
+  transform2->Position(glm::vec3(windowSize.x / 2.0f, windowSize.y / 2.0f + 50.0f, 0.0f));
 
   _backroundRenderer->AddElement(_background);
   _backroundRenderer->AddElement(_text);
