@@ -37,20 +37,37 @@ LevelSelection::LevelSelection() {
   _lvl1Button->OnPress([]() { GameManager::SwitchScene(SceneName::Cutscene); });
   _lvl1Button->text("Level 1");
   _lvl1Button->TextColor(glm::vec4(0, 0, 0, 1));
-  _lvl1Button->TextOffset(glm::vec2(-50.0f, -20.0f));
-  _lvl1Button->Size(glm::vec2(300.0f, 100.0f));
-  _lvl1Button->HandleSize(glm::vec2(300.0f, 100.0f));
+  _lvl1Button->TextOffset(glm::vec2(-50.0f, -150.0f));
+  _lvl1Button->Size(glm::vec2(300.0f, 200.0f));
+  _lvl1Button->HandleSize(glm::vec2(300.0f, 200.0f));
+  stbi_set_flip_vertically_on_load(true);
   _lvl1Button->Background(Engine::AssetManager::GetTexture2D("./textures/lvl1ImagePlaceholder.png"));
+  stbi_set_flip_vertically_on_load(false);
   transform->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f, 0.0f));
+
+  
+  auto returnEntity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
+  auto returnuiRenderer = returnEntity->AddComponent< Engine::Components::UIRenderer >();
+  auto returnTransform  = returnEntity->AddComponent< Engine::Transform >();
+  _returnButton     = std::make_shared< Engine::Renderer::Button >();
+  returnuiRenderer->AddButton(_returnButton);
+  returnuiRenderer->AddElement(_returnButton);
+  _returnButton->Color(glm::vec4(1.0f));
+  _returnButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+  _returnButton->OnPress([]() { GameManager::SwitchScene(SceneName::MainMenu); });
+  _returnButton->text("Return");
+  _returnButton->TextColor(glm::vec4(0, 0, 0, 1));
+  _returnButton->TextOffset(glm::vec2(-50.0f, -15.0f));
+  _returnButton->Size(glm::vec2(200.0f, 75.0f));
+  _returnButton->HandleSize(glm::vec2(200.0f, 75.0f));
+  returnTransform->Position(glm::vec3(window_size.x * 0.5f - 600.0f, window_size.y * 0.5f + 350.0f, 0.0f));
 
   _title = std::make_shared< Engine::Renderer::Text >();
   _title->Size(1);
   _title->SetText("Choose level");
   _title->Color(glm::vec4(1.0f));
-  _title->Offset(glm::vec2(0.0f, window_size.y * 0.25f));
+  _title->Offset(glm::vec2(-130.0f, window_size.y * 0.25f - 100.0f));
   backgroundUIRenderer->AddElement(_title);
-
-
 
   if (current_scene != nullptr) {
     Engine::SceneManager::OpenScene(current_scene->GetID());

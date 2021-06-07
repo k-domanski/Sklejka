@@ -30,6 +30,7 @@ namespace Engine::Renderer {
     glm::vec4 _color;
     float _size;
     glm::vec2 _offset;
+    float _newLineOffset{50};
     std::shared_ptr< std::map< char, Utility::Character > > _characters;
     GL::VertexBuffer _vbo;
     GL::VertexArray _vao;
