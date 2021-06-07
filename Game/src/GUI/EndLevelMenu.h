@@ -6,7 +6,7 @@
 class EndLevelMenu {
 public:
   EndLevelMenu();
-  auto Show(std::string text) -> void;
+  auto Show(std::string timeText, std::string winText) -> void;
   auto Hide() -> void;
 private:
   std::shared_ptr< Engine::Components::UIRenderer > _imageRenderer;
@@ -16,4 +16,5 @@ private:
   std::shared_ptr< Engine::Components::UIRenderer > _nextLevelRenderer;
   std::shared_ptr< Engine::Renderer::Button > _nextLevelButton;
   std::shared_ptr< Engine::Renderer::Text > _timeText;
+  std::shared_ptr< Engine::Renderer::Text > _winText;
 };

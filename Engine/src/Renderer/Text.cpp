@@ -63,25 +63,25 @@ Engine::Renderer::Text::Text() {
   // glBindVertexArray(0);
 }
 Engine::Renderer::Text::Text(Text&& other) {
-  _vao  = std::move(other._vao);
-  _vbo = std::move(other._vbo);
-  _shader       = other._shader;
-  _characters   = other._characters;
-  _size         = other._size;
-  _color        = other._color;
-  _text         = other._text;
-  _offset       = other._offset;
+  _vao        = std::move(other._vao);
+  _vbo        = std::move(other._vbo);
+  _shader     = other._shader;
+  _characters = other._characters;
+  _size       = other._size;
+  _color      = other._color;
+  _text       = other._text;
+  _offset     = other._offset;
 }
 
 auto Engine::Renderer::Text::operator=(Text&& other) noexcept -> Text& {
-  _vao  = std::move(other._vao);
-  _vbo = std::move(other._vbo);
-  _shader       = other._shader;
-  _characters   = other._characters;
-  _size         = other._size;
-  _color        = other._color;
-  _text         = other._text;
-  _offset       = other._offset;
+  _vao        = std::move(other._vao);
+  _vbo        = std::move(other._vbo);
+  _shader     = other._shader;
+  _characters = other._characters;
+  _size       = other._size;
+  _color      = other._color;
+  _text       = other._text;
+  _offset     = other._offset;
   return *this;
 }
 
@@ -116,11 +116,17 @@ auto Engine::Renderer::Text::RenderText(float x, float y, float scale) -> void {
   // glActiveTexture(GL_TEXTURE0);
   _vao.Bind();
   // glBindVertexArray(VAO);
+  auto startXPos = x;
 
   // iterate through all characters
   std::string::const_iterator c;
   auto& characters = *_characters;
-  for (c = _text.begin(); c != _text.end(); c++) {
+  for (c = _text.begin(); c != _text.end(); c++) {;
+    if (*c == (char)10) {
+      x = startXPos;
+      y -= _newLineOffset * scale;
+      continue;
+    }
     Utility::Character ch = characters[*c];
 
     float xpos = x + ch.Bearing.x * scale;

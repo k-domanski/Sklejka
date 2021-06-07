@@ -1,6 +1,7 @@
 #include <pch.h>
 #include "GameManager.h"
 #include <Engine.h>
+#include <iomanip>
 
 #include "Scripts/CameraController.h"
 #include "Scripts/FlightTimer.h"
@@ -47,6 +48,7 @@ auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISound
 }
 
 auto GameManager::SwitchScene(SceneName scene) -> void {
+  _instance->_currentSceneName = scene;
   if (_instance->_pauseMenu != nullptr)
     _instance->_pauseMenu = nullptr;
   switch (scene) {
@@ -88,6 +90,12 @@ auto GameManager::GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene > 
   }
 }
 
+auto GameManager::GetNextSceneName() -> SceneName {
+  auto it = _instance->_currentSceneName._to_index();
+  ++it %= SceneName::_size();
+  return SceneName::_from_index(it);
+}
+
 auto GameManager::ShowLoadingScreen() -> void {
   Engine::SceneManager::OpenScene(_instance->_loadingScreen->Scene()->GetID());
 }
@@ -109,7 +117,9 @@ auto GameManager::PlayerSpeedUp() -> void {
 }
 
 auto GameManager::ShowLevelSumUp(float time, bool win) -> void {
-  _instance->_endLevelMenu->Show("You win. \n Your time was: " + std::to_string(time));
+  std::stringstream s;
+  s << "Your time was: " << std::fixed << std::setprecision(2) << time;
+  _instance->_endLevelMenu->Show(s.str(), "You win");
 }
 
 auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {

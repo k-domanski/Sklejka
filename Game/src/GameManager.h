@@ -47,6 +47,7 @@ public:
   static auto GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine >;
   static auto SwitchScene(SceneName scene) -> void;
   static auto GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene >;
+  static auto GetNextSceneName() -> SceneName;
   static auto ShowLoadingScreen() -> void;
   static auto Update(float deltaTime) -> void;
   static auto PlayerSpeedUp() -> void;
