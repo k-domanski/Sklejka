@@ -34,8 +34,10 @@ namespace Engine {
     static inline std::unordered_map< std::size_t, std::shared_ptr< Renderer::Material > >
         _loadedMaterials;
     static inline std::unordered_map< std::string, std::shared_ptr< Scene > > _loadedScenes;
-    static inline std::unordered_map< std::string, std::shared_ptr<std::map< char, Utility::Character >> >
+    static inline std::unordered_map< std::string,
+                                      std::shared_ptr< std::map< char, Utility::Character > > >
         _loadedCharacters;
+    static inline std::unordered_map< std::string, std::shared_ptr< GL::Cubemap > > _loadedCubemaps;
     static FolderPaths _folderPahts;
 
   public:
@@ -53,6 +55,7 @@ namespace Engine {
     static auto SaveScene(const std::shared_ptr< Scene >& scene, std::string file) -> void;
     static auto LoadScene(std::string file) -> std::shared_ptr< Scene >;
     static auto GetCharacters(std::string file, int fontSize)
-        -> std::shared_ptr<std::map< char, Utility::Character >>;
+        -> std::shared_ptr< std::map< char, Utility::Character > >;
+    static auto GetCubemap(std::string folder) -> std::shared_ptr< GL::Cubemap >;
   };
 }  // namespace Engine

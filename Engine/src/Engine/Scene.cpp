@@ -37,6 +37,7 @@ namespace Engine {
     _nodeSystem->Update(deltaTime);
 
     // Update other systems before
+    _sceneGraph->ClearFlags();
     _sceneGraph->Update(deltaTime);
     // Physics go here
     //

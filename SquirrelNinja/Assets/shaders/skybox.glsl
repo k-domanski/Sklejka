@@ -1,18 +1,13 @@
 #version 430
 
 #shader vertex
-// #include "vs_common.incl"
+#include "vs_common.incl"
 
-layout(location = 0) in vec3 aPos;
-
-out vec3 TexCoords;
-
-uniform mat4 projection;
-uniform mat4 view;
+out vec3 direction;
 
 void main() {
-  TexCoords   = aPos;
-  vec4 pos    = projection * view * vec4(aPos, 1.0);
+  direction   = a_Position;
+  vec4 pos    = u_Projection * mat4(mat3(u_View)) * vec4(a_Position, 1.0);
   gl_Position = pos.xyww;
 }
 #endshader
@@ -20,13 +15,12 @@ void main() {
 #shader fragment
 #include "fs_common.incl"
 
-out vec4 FragColor;
+in vec3 direction;
+out vec4 out_color;
 
-in vec3 TexCoords;
-
-uniform samplerCube skybox;
+uniform samplerCube u_Skybox;
 
 void main() {
-  FragColor = gamma2linear(texture(skybox, TexCoords));
+  out_color = gamma2linear(texture(u_Skybox, direction));
 }
 #endshader

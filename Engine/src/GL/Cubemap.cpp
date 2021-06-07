@@ -1,72 +1,30 @@
 #include "pch.h"
 #include "Cubemap.h"
+#include "Renderer/Vertex.h"
 
 #include "App/AssetManager.h"
+#include "GL/Context.h"
 
-Engine::GL::Cubemap::Cubemap(std::string path) {
-  Create(path);
+Engine::GL::Cubemap::Cubemap(std::vector< std::pair< const unsigned char*, glm::ivec2 > > faces) {
+  Create(faces);
 }
 
-void Engine::GL::Cubemap::Create(std::string path)
-{
-  faces.push_back(path + "/right.jpg");
-  faces.push_back(path + "/left.jpg");
-  faces.push_back(path + "/top.jpg");
-  faces.push_back(path + "/bottom.jpg");
-  faces.push_back(path + "/front.jpg");
-  faces.push_back(path + "/back.jpg");
+void Engine::GL::Cubemap::Create(
+    std::vector< std::pair< const unsigned char*, glm::ivec2 > > faces) {
+  /* Preserve state */
+  auto current_target  = Context::GetTextureTarget();
+  auto current_texture = Context::GetBoundTexture();
 
-  float skyboxVertices[] = {// positions
-                            -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f,
-                            1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f,
-
-                            -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f,
-                            -1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f, 1.0f,
-
-                            1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,  1.0f,
-                            1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f, -1.0f,
-
-                            -1.0f, -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,  1.0f,  1.0f,
-                            1.0f,  1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,
-
-                            -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,
-                            1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f,
-
-                            -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f,
-                            1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f};
-
-  // skybox VAO
-  //unsigned int skyboxVBO;
-  skyboxVAO.Bind();
-  skyboxVBO.SetData(sizeof(skyboxVertices), skyboxVertices);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-  cubemapTexture = LoadCubemap(faces);
-
-  skyboxShader = AssetManager::GetShader("./shaders/skybox.glsl");
-
-  skyboxShader->Use();
-  skyboxShader->SetValue("skybox", 0);
-}
-
-unsigned Engine::GL::Cubemap::LoadCubemap(std::vector<std::string> faces)
-{
-  unsigned int textureID;
-  glGenTextures(1, &textureID);
-  glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-  int width, height, nrChannels;
-  for (unsigned int i = 0; i < faces.size(); i++) {
-    unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-    if (data) {
-      glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB,
-                   GL_UNSIGNED_BYTE, data);
-      stbi_image_free(data);
-    } else {
-      std::cout << "Cubemap texture failed to load at path: " << faces[i] << std::endl;
-      stbi_image_free(data);
+  glGenTextures(1, &_handle);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, _handle);
+  for (int index = 0; index < faces.size(); ++index) {
+    const auto& data = faces[index];
+    if (data.first == nullptr) {
+      LOG_WARN("Nullptr in data while creating cubemap");
+      continue;
     }
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + index, 0, GL_RGBA, data.second.x, data.second.y,
+                 0, GL_RGBA, GL_UNSIGNED_BYTE, data.first);
   }
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -74,23 +32,28 @@ unsigned Engine::GL::Cubemap::LoadCubemap(std::vector<std::string> faces)
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-  return textureID;
+  /* Restore state */
+  Context::BindTexture(current_target, current_texture);
 }
 
-void Engine::GL::Cubemap::Draw(glm::mat4 view, glm::mat4 projection)
-{
-  view = glm::mat4(glm::mat3(view)); // remove translation from the view matrix
+/* Don't use that method */
+void Engine::GL::Cubemap::Draw(glm::mat4 view, glm::mat4 projection) {
+  view = glm::mat4(glm::mat3(view));  // remove translation from the view matrix
 
   glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to
                            // depth buffer's content
-  skyboxShader->Use();
-  skyboxShader->SetMatrix("view", view);
-  skyboxShader->SetMatrix("projection", projection);
-  // skybox cube
-  skyboxVAO.Bind();
-  skyboxVBO.Bind();
+  // skyboxShader->Use();
+  // skyboxShader->SetMatrix("view", view);
+  // skyboxShader->SetMatrix("projection", projection);
+  //// skybox cube
+  // skyboxVAO.Bind();
+  // skyboxVBO.Bind();
   glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, _handle);
   glDrawArrays(GL_TRIANGLES, 0, 36);
   glDepthFunc(GL_LESS);  // set depth function back to default
+}
+
+auto Engine::GL::Cubemap::Bind(GLuint slot) -> void {
+  Context::BindTexture(GL_TEXTURE_CUBE_MAP, _handle, slot);
 }

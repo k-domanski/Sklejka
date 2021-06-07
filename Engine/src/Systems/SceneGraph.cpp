@@ -21,18 +21,6 @@ namespace Engine::Systems {
         RecursiveUpdateParentAndChildren(transform, parent_tr);
       }
     }
-
-    /* O L D */
-    // for (auto& kv : _parentChildMap) {
-    //  /*if (kv.first == _rootID)
-    //    continue;*/
-    //  auto& transform = EntityManager::GetInstance().GetComponent< Transform >(kv.first);
-    //  if (transform->flags.Get(TransformFlag::Dirty)) {
-    //    auto& parent_tr =
-    //        EntityManager::GetInstance().GetComponent< Transform >(_childParentMap[kv.first]);
-    //    RecursiveUpdateParentAndChildren(transform, parent_tr);
-    //  }
-    //}
   }
   auto SceneGraph::SetParent(const std::shared_ptr< ECS::Entity >& child,
                              const std::shared_ptr< ECS::Entity >& parent) -> void {
@@ -74,6 +62,13 @@ namespace Engine::Systems {
     _childParentMap.erase(entity->GetID());
   }
 
+  auto SceneGraph::ClearFlags() -> void {
+    for(auto& entity : _entities) {
+      auto& tr = entity->GetComponent< Transform >();
+      tr->flags.Clear(TransformFlag::NewData);
+    }
+  }
+
   auto SceneGraph::GetRootID() -> ECS::EntityID {
     return _rootID;
   }
@@ -96,6 +91,7 @@ namespace Engine::Systems {
       transform->_modelMatrix = parent->_modelMatrix * transform->GetLocalMatrix();
     }
     transform->flags.Clear(TransformFlag::Dirty);
+    transform->flags.Set(TransformFlag::NewData);
     if (_parentChildMap.count(transform->GetEntityID()) == 0)
       return;
     for (auto& child : _parentChildMap[transform->GetEntityID()]) {
