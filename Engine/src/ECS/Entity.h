@@ -5,7 +5,7 @@
 #include <Utility/Utility.h>
 
 namespace Engine {
-  BETTER_ENUM(LayerBit, int, Default = Helpers::Bit32(0), Player = Helpers::Bit32(1));
+  BETTER_ENUM(LayerBit, uint32_t, Default = Helpers::Bit32(0), Player = Helpers::Bit32(1));
   typedef Utility::BitFlags< LayerBit > LayerMask;
 }  // namespace Engine
 

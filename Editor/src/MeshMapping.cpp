@@ -7,20 +7,21 @@ using namespace Engine::Utility;
 namespace Editor {
   auto ShouldIgnore_1(int index) -> bool {
     /* Ignore Indexes */
-    /*0-2, 9-11, 13, 15, 22-28, 34*/
-    return InRange(index, 0, 2) || InRange(index, 9, 11) || InRange(index, 13, 13)
-           || InRange(index, 15, 15) || InRange(index, 22, 28) || InRange(index, 34, 34);
+    /*0-1, 9, 11, 13, 15, 22, 28, 34*/
+    return InRange(index, 0, 1) || InRange(index, 9, 9) || InRange(index, 11, 11)
+           || InRange(index, 13, 13) || InRange(index, 15, 15) || InRange(index, 22, 22)
+           || InRange(index, 28, 28) || InRange(index, 34, 34);
   }
   auto GetColliderMapping_1() -> std::vector< TransformData > {
     /* Ignore Indexes */
-    /*0-2, 9-11, 13, 15, 22-28, 34*/
+    /*0-1, 9, 11, 13, 15, 22, 28, 34*/
     return std::vector< TransformData >{
         /* D A T A */
         /* Ind */ /* Position */ /*   Rotation   */ /*   Scale   */
         /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
         /*0*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
         /*1*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-        /*2*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        /*2*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}},
         /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
         /*3*/ {{100.0f, 350.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {180.0f, 700.0f, 415.0f}},
         /*4*/ {{90.0f, 350.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {135.0f, 700.0f, 415.0f}},
@@ -30,7 +31,7 @@ namespace Editor {
         /*8*/ {{45.0f, 220.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {130.0f, 425.0f, 280.0f}},
         /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
         /*9*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-        /*10*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        /*10*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}},
         /*11*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
         /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
         /*12*/ {{2.4f, 0.3f, 5.8f}, {-3.1f, -0.4f, 30.0f}, {3.5f, 0.2f, 13.4f}},
@@ -49,12 +50,12 @@ namespace Editor {
         /*21*/ {{45.0f, 220.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {130.0f, 425.0f, 280.0f}},
         /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
         /*22*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-        /*23*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-        /*24*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-        /*25*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-        /*26*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-        /*27*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-        /*28*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        /*23*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}},
+        /*24*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}},
+        /*25*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}},
+        /*26*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}},
+        /*27*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}},
+        /*28*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}},
         /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
         /*29*/ {{-16.0f, 120.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {120.0f, 230.0f, 210.0f}},
         /*30*/ {{0.0f, 135.0f, -5.0f}, {0.0f, 0.0f, 0.0f}, {100.0f, 260.0f, 175.0f}},
@@ -66,4 +67,28 @@ namespace Editor {
         /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
         /**/};
   } /* -=-=-=-*/
+
+  auto GetMeshMaterial_1(int index) -> std::shared_ptr< Material > {
+    const std::vector< std::shared_ptr< Material > > wall_materials{
+        /* Wall Material */
+        AssetManager::GetMaterial("Assets/materials/l1w1.mat"),
+        AssetManager::GetMaterial("Assets/materials/l1w2.mat"),
+        AssetManager::GetMaterial("Assets/materials/l1w3.mat")
+        /**/};
+    const std::shared_ptr< Material > floor_material =
+        AssetManager::GetMaterial("Assets/materials/l1f1.mat");
+
+    /* If wall */
+    auto is_wall  = InRange(index, 3, 8) || InRange(index, 17, 21) || InRange(index, 29, 33);
+    auto is_floor = InRange(index, 2, 2) || InRange(index, 10, 16) || InRange(index, 23, 27);
+
+    if (is_wall) {
+      auto r = rand() % wall_materials.size();
+      return wall_materials[r];
+    } else if (is_floor) {
+      return floor_material;
+    }
+
+    return nullptr;
+  }
 }  // namespace Editor

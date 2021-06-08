@@ -74,8 +74,10 @@ namespace Editor {
     if (ImGui::IsItemClicked()) {
       SetSelectedEntity(entity);
     }
-    if (ImGui::BeginPopupContextItem("item context menu")) {
-      if (ImGui::Selectable("Remove")) {
+    auto str_id = std::to_string(entity->GetID());
+    if (ImGui::BeginPopupContextItem(str_id.c_str())) {
+      auto label = std::string("Remove##") + str_id;
+      if (ImGui::Selectable(label.c_str())) {
         LOG_INFO("Removing {}", entity->Name());
         RecursiveRemoveEntity(entity);
       }
@@ -102,7 +104,8 @@ namespace Editor {
     }
   }
 
-  auto SceneHierarchyPanel::RecursiveRemoveEntity(std::shared_ptr<Engine::ECS::Entity> entity) -> void {
+  auto SceneHierarchyPanel::RecursiveRemoveEntity(std::shared_ptr< Engine::ECS::Entity > entity)
+      -> void {
     const auto sg = m_Scene->SceneGraph();
     for (auto& child : sg->GetChildren(entity)) {
       RecursiveRemoveEntity(child);

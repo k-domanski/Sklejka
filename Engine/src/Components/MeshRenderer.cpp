@@ -2,6 +2,7 @@
 #include "MeshRenderer.h"
 #include "Utility/Utility.h"
 #include "App/AssetManager.h"
+#include "Engine.h"
 
 namespace Engine::Components {
   auto MeshRenderer::GetModel() -> std::shared_ptr< Renderer::Model > {
@@ -28,6 +29,7 @@ namespace Engine::Components {
   auto MeshRenderer::SetMaterial(std::shared_ptr< Renderer::Material > material) -> void {
     _material = material;
     _dirty    = true;
+    SceneManager::GetCurrentScene()->RenderSystem()->SetShouldSort(true);
   }
 
   auto MeshRenderer::IsDirty() -> bool {

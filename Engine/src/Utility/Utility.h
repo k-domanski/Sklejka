@@ -34,6 +34,9 @@ namespace Engine::Utility {
     auto SetAll() noexcept -> void {
       _state = ~value_t(0);
     }
+    auto SetState(value_t state) noexcept -> void {
+      _state = state;
+    }
     auto GetState() const noexcept -> value_t {
       return _state;
     }

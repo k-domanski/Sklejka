@@ -20,6 +20,10 @@ namespace Engine::Systems {
     AddSignature< Transform >();
     const auto size = Window::Get().GetScreenSize();
 
+    /* Switches */
+    _cullingEnabled = false;
+    /* -=-=-=-=- */
+
     /* Data */
     _transformUniformBuffer.BindToSlot(GL::UniformBlock::TransformData);
     /* -=-=- */
@@ -100,7 +104,7 @@ namespace Engine::Systems {
     }
     const auto camera_tr = ECS::EntityManager::GetComponent< Transform >(camera->GetEntity());
     /* CULLING */
-    if (false) {
+    if (_cullingEnabled) {
       SortByDistance(camera);
       _depthTarget->Bind(FramebufferTarget::ReadWrite);
       GL::Context::ClearBuffers(GL::BufferBit::Depth);
@@ -187,14 +191,12 @@ namespace Engine::Systems {
     if (_lightSystem != nullptr) {
       auto light = _lightSystem->Light();
       if (light != nullptr && light->flags.GetAny(LightFlag::Dirty | LightFlag::NewData)) {
-        auto light_tr = ECS::EntityManager::GetComponent< Transform >(light->GetEntity());
-        if (light_tr->flags.Get(TransformFlag::NewData)) {
-          const auto& fr  = light_tr->Forward();
-          const auto& pos = camera_tr->Position() + camera_tr->Forward() * 5.0f;
-          _shadowUniformData.lightSpaceMatrix =
-              _shadowProjection * glm::lookAt(pos, pos + fr, {0.0f, 1.0f, 0.0f});
-          _shadowUniformBuffer.SetData(_shadowUniformData);
-        }
+        auto light_tr   = ECS::EntityManager::GetComponent< Transform >(light->GetEntity());
+        const auto& fr  = light_tr->Forward();
+        const auto& pos = camera_tr->Position() + camera_tr->Forward() * 5.0f;
+        _shadowUniformData.lightSpaceMatrix =
+            _shadowProjection * glm::lookAt(pos, pos + fr, {0.0f, 1.0f, 0.0f});
+        _shadowUniformBuffer.SetData(_shadowUniformData);
         _shadowTarget->Bind(FramebufferTarget::ReadWrite);
         GL::Context::Viewport(0, 0, _shadowMapSize.x, _shadowMapSize.y);
         GL::Context::ClearBuffers(BufferBit::Depth);
@@ -273,8 +275,14 @@ namespace Engine::Systems {
     GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth);
     GL::Context::DepthTest(true);
     _shadowTexture->Bind(_shadowMapSlot);
-    // for (auto& entityID : _visibleEntities) {
-    for (auto& entityID : _entities) {
+
+    std::vector< std::shared_ptr< Entity > >* entity_list = nullptr;
+    if (_cullingEnabled) {
+      entity_list = &_visibleEntities;
+    } else {
+      entity_list = &_entities;
+    }
+    for (auto& entityID : *entity_list) {
       auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
       auto material      = mesh_renderer->GetMaterial();
       auto model         = mesh_renderer->GetModel();
@@ -394,6 +402,15 @@ namespace Engine::Systems {
     }
   }
 
+  auto Renderer::AddEntity(const std::shared_ptr< ECS::Entity >& entity) -> void {
+    ECS::System::AddEntity(entity);
+    _shouldSort = true;
+  }
+
+  auto Renderer::SetShouldSort(bool value) -> void {
+    _shouldSort = true;
+  }
+
   /*auto Renderer::SetShadowChecker(std::shared_ptr< ShadowTarget > target) -> void {
     _playerShadowTarget = target;
   }*/
@@ -416,14 +433,20 @@ namespace Engine::Systems {
         return true;
       }
       // Sort by the queue and then by the asset ID
-      if (rmat->Queue() == rmat->Queue()) {
-        return rmat->GetAssetID() < rmat->GetAssetID();
+      if (lmat->Queue() == rmat->Queue()) {
+        return lmat->GetAssetID() < rmat->GetAssetID();
       }
-      return rmat->Queue() < rmat->Queue();
+      return lmat->Queue() < rmat->Queue();
     };
     // Actual sort
-    std::sort(_visibleEntities.begin(), _visibleEntities.end(), OrderFunction);
-    return;
+    if (_cullingEnabled) {
+      std::sort(_visibleEntities.begin(), _visibleEntities.end(), OrderFunction);
+    } else {
+      if (_shouldSort) {
+        std::sort(_entities.begin(), _entities.end(), OrderFunction);
+        _shouldSort = false;
+      }
+    }
   }
 
   auto Renderer::SortByDistance(std::shared_ptr< Camera > cam) -> void {

@@ -227,6 +227,8 @@ auto GameManager::CreatePlayer() -> void {
   /* -=-=-=-=-=- */
 
   /* Finalize */
+  player->layer.Set(LayerMask::Flag::Player);
+  player->collisionLayer.Set(LayerMask::Flag::Default);
   _player     = player;
   _playerRect = player_rect;
   _model      = player_model;

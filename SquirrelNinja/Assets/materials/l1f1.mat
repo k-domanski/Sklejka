@@ -1,0 +1,15 @@
+{
+    "assetID": "15902327985924607021",
+    "diffuseFilepath": "",
+    "mainColor": [
+        0.13840830326080322,
+        0.5882353186607361,
+        0.0,
+        1.0
+    ],
+    "metalness": 0.0,
+    "metalnessMap": "",
+    "roughness": 1.0,
+    "roughnessMap": "",
+    "shaderFilepath": "Assets/shaders/default.glsl"
+}

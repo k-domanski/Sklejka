@@ -25,15 +25,19 @@ void Engine::Systems::Physics::Update(float deltaTime) {
 
     for (int j = i + 1; j < ent_count; ++j) {
       const auto& ent2       = _entities[j];
-      const auto layer_check = ent1->collisionLayer.GetState() & ent2->layer.GetState();
+      const auto layer_check = ent1->collisionLayer.Get(ent2->layer.GetState());
 
       if (layer_check == 0) {
+        continue;
+      }
+      const auto& transform2 = ECS::EntityManager::GetComponent< Transform >(ent2);
+
+      if (glm::distance2(transform1->WorldPosition(), transform2->WorldPosition()) > 20.0f) {
         continue;
       }
 
       const auto& collider2  = ECS::EntityManager::GetComponent< Components::Collider >(ent2);
       const auto& rigidbody2 = ECS::EntityManager::GetComponent< Components::Rigidbody >(ent2);
-      const auto& transform2 = ECS::EntityManager::GetComponent< Transform >(ent2);
 
       if (CheckCollision(collider1, transform1, collider2, transform2)) {
         // std::cout << "Colliding" << std::endl;
@@ -42,6 +46,7 @@ void Engine::Systems::Physics::Update(float deltaTime) {
           ResolveCollisions(collider1, transform1, !rigidbody1->IsKinematic(), collider2,
                             transform2, !rigidbody2->IsKinematic());
         }
+        LOG_DEBUG("COLLISION DETECTED");
         using Engine::ECS::EntityManager;
         const auto& ns1 = EntityManager::GetComponent< NativeScript >(collider1->GetEntity());
         const auto& ns2 = EntityManager::GetComponent< NativeScript >(collider2->GetEntity());
