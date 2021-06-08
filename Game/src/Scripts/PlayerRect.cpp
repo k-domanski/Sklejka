@@ -117,8 +117,8 @@ auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
   const auto magnitude2 = glm::dot(delta, delta);
   auto min_mag          = _playerSettings->MinNodeDistance();
   if (magnitude2 <= (min_mag * min_mag)) {
-    if (_currentNode->NextIndex() == 3)
-      GameManager::ShowLevelSumUp(10.0f, true);
+    //if (_currentNode->NextIndex() == 3)
+      //GameManager::ShowLevelSumUp(10.0f, true);
     _currentNode   = _nodeSystem->GetNode(_currentNode->NextIndex());
     _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   }
