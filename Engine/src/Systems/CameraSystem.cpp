@@ -49,6 +49,7 @@ namespace Engine::Systems {
     if (_mainCamera != nullptr) {
       if (_mainCamera->flags.Get(CameraFlag::NewData)) {
         _cameraUniformBuffer.SetData(_mainCamera->UniformData());
+        _mainCamera->flags.Clear(CameraFlag::NewData);
       }
     }
   }

@@ -28,6 +28,18 @@ auto FileExists(const std::string& path) -> bool {
   return true;
 }
 
+auto FolderExists(const std::string& path) -> bool {
+  if (fs::exists(path) && !fs::is_directory(path)) {
+    LOG_WARN("No folder under this path: {}", path);
+    return false;
+  }
+  if (!fs::exists(path)) {
+    LOG_WARN("Folder does not exist: {}", path);
+    return false;
+  }
+  return true;
+}
+
 auto PreparePath(const std::string& path) -> std::string {
   const std::string assets = ("Assets");
   auto pos                 = path.find(assets);
@@ -40,7 +52,7 @@ auto PreparePath(const std::string& path) -> std::string {
   {                                                                                                \
     path = StripToRelativePath(path);                                                              \
     path = PreparePath(path);                                                                      \
-    if (FileExists(path)) {                                                                        \
+    if (FileExists(path) || FolderExists(path)) {                                                  \
       path = fs::relative(fs::canonical(path)).generic_string();                                   \
     }                                                                                              \
   }
@@ -362,5 +374,66 @@ namespace Engine {
     }
 
     return _loadedCharacters[file];
+  }
+  BETTER_ENUM(__FACES, int, RIGHT, LEFT, TOP, BOTTOM, FRONT, BACK);
+  auto AssetManager::GetCubemap(std::string folder) -> std::shared_ptr< GL::Cubemap > {
+    FORMAT_PATH(folder);
+    if (_loadedCubemaps.count(folder) == 0) {
+      const std::vector< std::string > extensions{".png", ".jpg"};
+      std::vector< std::pair< const unsigned char*, glm::ivec2 > > faces(6,
+                                                                         {nullptr, glm::ivec2(0)});
+      /*
+        Face order:
+        Right
+        Left
+        Top
+        Bottom
+        Front
+        Back
+      */
+      /* Get all files in this folder */
+      std::vector< fs::path > files;
+      for (const auto& entry : fs::directory_iterator(folder)) {
+        /* If is not file or is not .png nor .jpg */
+        if (!entry.is_regular_file()) {
+          continue;
+        }
+        if (!std::any_of(
+                extensions.begin(), extensions.end(),
+                [ext = entry.path().extension()](const auto& item) { return ext == item; })) {
+          continue;
+        }
+        /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+        files.push_back(entry.path());
+      }
+      if (files.size() < 6) {
+        LOG_ERROR("Too few files in directory {} to load cubemap", folder);
+        return nullptr;
+      }
+      for (const auto& path : files) {
+        auto file_name = path.filename().stem().string();
+        std::transform(file_name.begin(), file_name.end(), file_name.begin(), ::toupper);
+        auto face = __FACES::_from_string(file_name.c_str());
+        int width{0}, height{0}, channels{0};
+        std::pair< const unsigned char*, glm::ivec2 > data;
+        data.first              = stbi_load(path.string().c_str(), &width, &height, &channels, 4);
+        data.second             = {width, height};
+        faces[face._to_index()] = data;
+      }
+
+      auto cubemap            = std::make_shared< GL::Cubemap >(faces);
+      _loadedCubemaps[folder] = cubemap;
+
+      /* Cleanup */
+      for (auto pair : faces) {
+        if (pair.first != nullptr) {
+          stbi_image_free((void*)pair.first);
+        }
+      }
+      /* -=-=-=- */
+
+      return cubemap;
+    }
+    return _loadedCubemaps[folder];
   }
 }  // namespace Engine
