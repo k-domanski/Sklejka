@@ -323,6 +323,8 @@ namespace Engine::Renderer {
     Node s_node;
     s_node.parent_node = parent_node;
     s_node.name        = node->mName.data;
+    //if (s_node.name == "skalka pionowa 1.159")
+    //    __debugbreak();
     /* Local transform */
     s_node.transform = aiMat4ToGlmMat4(node->mTransformation);
 
