@@ -1,0 +1,138 @@
+{
+    "sceneID": 2645820551037338188
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "1774785268086112334",
+    "entityName": "Light",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": -0.2840358316898346,
+        "x": -0.9107692837715149,
+        "y": 0.29937225580215454,
+        "z": 0.01411372423171997
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "ambient": {
+        "x": 0.019607843831181526,
+        "y": 0.019607843831181526,
+        "z": 0.019607843831181526
+    },
+    "componentType": "directionalLight",
+    "diffuse": {
+        "x": 1.0,
+        "y": 0.9999899864196777,
+        "z": 0.9999899864196777
+    },
+    "flags": 3,
+    "intensity": 1.0,
+    "shadowBias": 0.0,
+    "specular": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "8733107914759486432",
+    "entityName": "Mesh",
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "Assets/materials/default.mat",
+    "meshIndex": 0,
+    "model": "Assets/models/cube.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "entityID": "580674882483911622",
+    "entityName": "Collider",
+    "parentID": 8733107914759486432
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "center": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "colliderType": "Box",
+    "componentType": "collider",
+    "size": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "static": true,
+    "trigger": true
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "rigidbody",
+    "kinematic": true,
+    "useGravity": true,
+    "velocity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}

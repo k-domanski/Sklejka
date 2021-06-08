@@ -8,6 +8,7 @@
 #include "ImGui/Panels/FileSystemPanel.h"
 #include "ImGui/Panels/MaterialPanel.h"
 #include "ImGui/Panels/NodesUtilityPanel.h"
+#include "ImGui/Panels/LevelProcessPanel.h"
 
 template< typename T >
 using ptr_t = std::shared_ptr< T >;
@@ -58,4 +59,5 @@ private:
   Editor::FileSystemPanel m_FileSystemPanel;
   Editor::MaterialPanel m_MaterialPanel;
   Editor::NodesUtilityPanel m_NodeUtilityPanel;
+  Editor::LevelProcessPanel m_LevelProcessPanel;
 };

@@ -55,6 +55,10 @@ auto ProcessIncludeDirective(std::string content, const std::string& parent_dir)
   return content;
 }
 
+auto Engine::Utility::InRange(int value, int min, int max) -> bool {
+  return (value >= min) && (value <= max);
+}
+
 auto Engine::Utility::ReadTextFile(const std::string_view& fileName, bool* success) -> std::string {
   std::ifstream file(fileName.data());
   if (!file.good()) {

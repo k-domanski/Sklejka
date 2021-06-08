@@ -86,6 +86,7 @@ namespace Engine::Utility {
     unsigned int Advance;
   };
 
+  auto InRange(int value, int min, int max) -> bool;
   auto ReadTextFile(const std::string_view& fileName, bool* success = nullptr) -> std::string;
   auto StripToRelativePath(const std::string& filePath) -> std::string;
   auto ParseShaderSource(std::string source, const std::string& file_path) -> ShaderParseResult;

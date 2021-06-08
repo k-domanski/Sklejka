@@ -88,6 +88,7 @@ namespace Engine::Systems {
     auto SortByDistance(std::shared_ptr< Camera > cam) -> void;
 
 #if defined(_DEBUG)
+    auto DrawColliders() -> void;
     auto DrawNodes() -> void;
 #endif
   };

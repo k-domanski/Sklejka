@@ -1,13 +1,23 @@
 #pragma once
 #include <pch.h>
 #include "Types.h"
+#include <Utility/Helpers.h>
+#include <Utility/Utility.h>
+
+namespace Engine {
+  BETTER_ENUM(LayerBit, int, Default = Helpers::Bit32(0), Player = Helpers::Bit32(1));
+  typedef Utility::BitFlags< LayerBit > LayerMask;
+}  // namespace Engine
 
 namespace Engine::ECS {
   class Entity {
     friend class EntityManager;
 
   public:
-    Entity() = default;
+    Entity() {
+      layer.Set(LayerMask::Flag::Default);
+      collisionLayer.SetAll();
+    }
     /*TODO: Entity(const std::string& name);
       lub overload CreateEntity w EntityManager*/
     ~Entity() = default;
@@ -51,6 +61,10 @@ namespace Engine::ECS {
     std::string SaveToJson(std::string filepath, size_t parentID);
     void LoadFromJson(std::string filepath);
     EntityID GetParentFromJson(std::string json_string);
+
+  public:
+    LayerMask layer;
+    LayerMask collisionLayer;
 
   private:
     EntityID _entityID{0};

@@ -4,9 +4,11 @@
 #include "Utility/GJK.h"
 #include <ECS/Types.h>
 
+
 namespace Engine::Components {
   // enum ColliderType { Sphere, Box };
   BETTER_ENUM(ColliderType, int, Sphere, Box);
+
   // typedef __ColliderType ColliderType;
   class Collider : public ECS::Component {
   public:
@@ -35,6 +37,7 @@ namespace Engine::Components {
     Collider(const glm::vec3 size, bool trigger, bool static_, ColliderType type)
         : Component("Collider", ECS::GetComponentTypeID< Collider >()), _size(size),
           _center(glm::vec3(0.0f)), _trigger(trigger), _static(static_), _type(type) {
+
     }
     Collider()
         : Component("Collider", ECS::GetComponentTypeID< Collider >()), _size(glm::vec3(1.0f)),
@@ -43,6 +46,8 @@ namespace Engine::Components {
     ~Collider() override = default;
     std::string SaveToJson(std::string filePath) override;
     std::string SaveToJson() override;
+
+
 
   private:
     glm::vec3 _size;
