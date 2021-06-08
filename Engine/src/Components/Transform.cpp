@@ -52,6 +52,7 @@ namespace Engine {
     if (!glm::decompose(matrix, scale, rotation, translation, skew, perspective)) {
       translation = matrix[3];
       rotation = {1.0f, 0.0f, 0.0f, 0.0f};
+      //scale = { 0.1f, 0.1f, 0.1f };
     }
 
     Position(translation);
