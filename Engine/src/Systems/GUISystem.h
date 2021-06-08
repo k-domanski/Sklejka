@@ -17,5 +17,9 @@ namespace Engine::Systems
     std::shared_ptr< Engine::GL::Shader > _imageShader;
     glm::mat4 _camProj;
     bool _breakChecking;
+    bool _useMouse;
+    bool _DPADUpLastFrame;
+    bool _DPADDownLastFrame;
+    bool _gamepadALastFrame;
   };
 }

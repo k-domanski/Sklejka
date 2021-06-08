@@ -17,8 +17,10 @@ private:
   std::shared_ptr< Engine::Scene > _scene;
   std::shared_ptr< Engine::Renderer::Image > _image;
   //std::shared_ptr< Engine::Transform > _imageTransform;
-  std::shared_ptr< Engine::Renderer::Button > _exitButton;
   std::shared_ptr< Engine::Renderer::Button > _startButton;
+  std::shared_ptr< Engine::Renderer::Button > _optionsButton;
+  std::shared_ptr< Engine::Renderer::Button > _creditsButton;
+  std::shared_ptr< Engine::Renderer::Button > _exitButton;
   std::shared_ptr< Engine::Renderer::Text > _title;
 
 };

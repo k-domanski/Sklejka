@@ -6,6 +6,8 @@
 namespace Engine::Renderer {
   class Bar : public UIElement {
   public:
+    glm::vec2 Offset() const;
+    void Offset(const glm::vec2& offset);
     Image Background() const;
     Image FillArea() const;
     float FillRatio() const;
@@ -35,5 +37,6 @@ namespace Engine::Renderer {
     glm::vec2 _padding;
     glm::vec2 _size;
     bool _horizontal;
+    glm::vec2 _offset;
   };
 }  // namespace Engine::Renderer
