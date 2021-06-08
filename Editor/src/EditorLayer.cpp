@@ -43,7 +43,8 @@ void EditorLayer::OnAttach() {
   m_FileSystemPanel.SetEditorLayer(this);
   m_NodeUtilityPanel.SetScene(SceneManager::GetCurrentScene());
   m_NodeUtilityPanel.SetEditorLayer(this);
-
+  m_LevelProcessPanel.SetScene(SceneManager::GetCurrentScene());
+  m_LevelProcessPanel.SetEditorLayer(this);
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {
@@ -73,6 +74,7 @@ void EditorLayer::OnImGuiRender() {
   m_InspectorPanel.OnImGuiRender();
   m_MaterialPanel.OnImGuiRender();
   m_NodeUtilityPanel.OnImGuiRender();
+  m_LevelProcessPanel.OnImGuiRender();
 }
 
 bool EditorLayer::OnWindowResize(Engine::WindowResizeEvent& e) {
@@ -213,6 +215,7 @@ auto EditorLayer::LoadScene() -> void {
     SceneManager::OpenScene(scene->GetID());
     m_SceneHierarchyPanel.SetScene(SceneManager::GetCurrentScene());
     m_NodeUtilityPanel.SetScene(SceneManager::GetCurrentScene());
+    m_LevelProcessPanel.SetScene(SceneManager::GetCurrentScene());
 
     /* Force inject editor camera into the new scene */
     scene->SceneGraph()->AddChild(0, m_EditorCamera.entity);

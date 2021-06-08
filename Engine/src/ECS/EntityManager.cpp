@@ -95,6 +95,9 @@ namespace Engine::ECS {
   }
 
   auto EntityManager::RemoveEntity(const std::shared_ptr< Entity >& entity) -> void {
+    if (entity == nullptr) {
+      return;
+    }
     for (auto& system : SceneManager::GetCurrentScene()->_registeredSystems) {
       RemoveFromSystem(system.first, entity);
     }

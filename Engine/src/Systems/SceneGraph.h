@@ -30,6 +30,7 @@ namespace Engine::Systems {
     auto GetChildren(const std::shared_ptr< ECS::Entity >& entity)
         -> std::vector< std::shared_ptr< ECS::Entity > >&;
     auto GetParent(const std::shared_ptr< ECS::Entity >& entity) -> std::shared_ptr< ECS::Entity >;
+    auto RemoveEntity(const std::shared_ptr< ECS::Entity >& entity) -> void override;
 
   private:
     auto RecursiveUpdateParentAndChildren(std::shared_ptr< Transform >& transform,
