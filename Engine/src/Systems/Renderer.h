@@ -27,47 +27,63 @@ namespace Engine::Systems {
     auto ObjectInShadow(const std::shared_ptr< ECS::Entity >& entity) -> GLint;
 
   private:
+    /* Data */
     std::vector< std::shared_ptr< ECS::Entity > > _visibleEntities;
+    GL::TransformUniformData _transformUniformData;
+    GL::TransformUniformBuffer _transformUniformBuffer;
+    /* -=-=- */
+
+    /* Systems */
+    std::shared_ptr< CameraSystem > _cameraSystem;
+    std::shared_ptr< LightSystem > _lightSystem;
+    /* -=-=-=- */
+
+    /* Skybox */
+    uint32_t _skyboxSlot{7u};
+    std::shared_ptr< Engine::Renderer::Mesh > _cube;
+    std::shared_ptr< GL::Cubemap > _cubemap;
+    std::shared_ptr< GL::Shader > _skyboxShader;
+    /* -=-=-=- */
+
+    /* Shadow Mapping */
+    uint32_t _shadowMapSlot{6u};
+    glm::vec2 _shadowMapSize;
+    glm::mat4 _shadowProjection;
+    GL::ShadowUniformBuffer _shadowUniformBuffer;
+    GL::ShadowUniformData _shadowUniformData;
+    std::shared_ptr< GL::Shader > _shadowMapShader;
+    std::shared_ptr< GL::Shader > _shadowMapAnimShader;
+    std::shared_ptr< GL::RenderTarget > _shadowTarget;
+    std::shared_ptr< GL::TextureAttachment > _shadowTexture;
+    /* -=-=-=-=-=-=-=- */
+
+    /* Occlusion Culling (?) */
+    float _frustum[6][4];
+    std::shared_ptr< GL::RenderTarget > _depthTarget;
+    /* -=-=-=-=-=-=-=-=-=-=- */
+
+    /* Post Processing */
     std::shared_ptr< Engine::Renderer::PingPongBuffer > _pingPongBuffer;
     std::shared_ptr< Engine::Renderer::Mesh > _quad;
     std::shared_ptr< Engine::GL::Shader > _blurShader;
     std::shared_ptr< Engine::GL::Shader > _fishEyeShader;
     std::shared_ptr< Engine::GL::Shader > _finalPassShader;
+    /* -=-=-=-=-=-=-=- */
 
-    std::shared_ptr< Engine::Renderer::Mesh > _boxCollider;
-    std::shared_ptr< Engine::GL::Shader > _boxColliderShader;
-
-    std::shared_ptr< Engine::Renderer::Mesh > _sphereCollider;
-    std::shared_ptr< Engine::GL::Shader > _sphereColliderShader;
-
-    // std::shared_ptr< ShadowTarget > _playerShadowTarget;
-
-    std::shared_ptr< CameraSystem > _cameraSystem;
-    std::shared_ptr< LightSystem > _lightSystem;
+    /* DEBUG */
     std::shared_ptr< Engine::Renderer::Material > _debugMaterial;
 
-    std::shared_ptr< GL::Cubemap > cubemap;
+    std::shared_ptr< Engine::Renderer::Mesh > _boxCollider;
+    std::shared_ptr< Engine::Renderer::Mesh > _sphereCollider;
 
-    uint32_t _transformUniformSlot{0u};
-    GL::TransformUniformData _transformUniformData;
-    GL::TransformUniformBuffer _transformUniformBuffer;
-
-    float _frustum[6][4];
-    std::shared_ptr< GL::RenderTarget > _depthTarget;
-
-    uint32_t _shadowMapSlot{6u};
-    GL::ShadowUniformBuffer _shadowUniformBuffer;
-    GL::ShadowUniformData _shadowUniformData;
-    std::shared_ptr< GL::Shader > _shadowMapShader;
-    std::shared_ptr< GL::Shader > _shadowMapAnimShader;
-    glm::vec2 _shadowMapSize;
-    glm::mat4 _shadowProjection;
-    std::shared_ptr< GL::RenderTarget > _shadowTarget;
-    std::shared_ptr< GL::TextureAttachment > _shadowTexture;
+    std::shared_ptr< Engine::GL::Shader > _boxColliderShader;
+    std::shared_ptr< Engine::GL::Shader > _sphereColliderShader;
+    /* -=-=- */
 
     auto CalculateFrustrum(glm::mat4 clip) -> void;
     auto SphereInFrustum(glm::vec3 center, float radius) -> bool;
     auto PostProcessing() -> void;
+    auto DrawSkybox() -> void;
     auto SortByMaterial() -> void;
     auto SortByDistance(std::shared_ptr< Camera > cam) -> void;
 

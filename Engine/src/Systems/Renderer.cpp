@@ -17,34 +17,26 @@ namespace Engine::Systems {
   Renderer::Renderer() {
     AddSignature< Components::MeshRenderer >();
     AddSignature< Transform >();
-    auto size        = Window::Get().GetScreenSize();
-    _quad            = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
-    _pingPongBuffer  = std::make_shared< PingPongBuffer >(size);
-    _blurShader      = AssetManager::GetShader("./shaders/blur.glsl");
-    _fishEyeShader   = AssetManager::GetShader("./shaders/fish_eye.glsl");
-    _finalPassShader = AssetManager::GetShader("./shaders/final_pass.glsl");
+    const auto size = Window::Get().GetScreenSize();
 
-    _boxCollider =
-        Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeBox);
-    _boxColliderShader = AssetManager::GetShader("./shaders/color.glsl");
+    /* Data */
+    _transformUniformBuffer.BindToSlot(GL::UniformBlock::TransformData);
+    /* -=-=- */
 
-    _sphereCollider =
-        Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeSphere);
-    _sphereColliderShader = AssetManager::GetShader("./shaders/color.glsl");
-
+    /* Systems */
     _cameraSystem = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
     _lightSystem  = ECS::EntityManager::GetInstance().GetSystem< LightSystem >();
+    /* -=-=-=- */
 
-    _debugMaterial = AssetManager::GetMaterial("./materials/_error_.mat");
-    if (_debugMaterial == nullptr) {
-      LOG_ERROR("Failed to load debug material: {}", "./materials/_error_.mat");
-    }
+    /* Skybox */
+    _cube         = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Cube);
+    _cubemap      = AssetManager::GetCubemap("./Assets/skyboxes/forest");
+    //_cubemap      = AssetManager::GetCubemap("./Assets/skyboxes/blue_sky");
+    _skyboxShader = AssetManager::GetShader("./shaders/skybox.glsl");
+    _skyboxShader->SetValue("u_Skybox", (int)_skyboxSlot);
+    /* -=-=-=- */
 
-    _depthTarget = std::make_shared< GL::RenderTarget >(size.x, size.y);
-    auto depth   = std::make_shared< GL::Renderbuffer >(size.x, size.y);
-    _depthTarget->AttachDepthStencil(depth);
-
-    /* Shadow map setup */
+    /* Shadow Mapping */
     _shadowMapSize = glm::vec2(1024.0f, 1024.0f) * 3.0f;
     _shadowTarget  = std::make_shared< GL::RenderTarget >(_shadowMapSize.x, _shadowMapSize.y);
 
@@ -61,10 +53,36 @@ namespace Engine::Systems {
     _shadowUniformBuffer.BindToSlot(GL::UniformBlock::ShadowData);
     _shadowMapShader     = AssetManager::GetShader("./shaders/shadow_map.glsl");
     _shadowMapAnimShader = AssetManager::GetShader("./shaders/shadow_map_anim.glsl");
+    /* -=-=-=--=-=-=- */
 
-    cubemap = std::make_shared< Cubemap >("./Assets/skyboxes/forest");
-    _transformUniformBuffer.BindToSlot(GL::UniformBlock::TransformData);
+    /* Occlusion Culling */
+    _depthTarget = std::make_shared< GL::RenderTarget >(size.x, size.y);
+    auto depth   = std::make_shared< GL::Renderbuffer >(size.x, size.y);
+    _depthTarget->AttachDepthStencil(depth);
+    /* -=-=-=-=-=-=-=-=- */
+
+    /* Post Processing */
+    _quad            = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
+    _pingPongBuffer  = std::make_shared< PingPongBuffer >(size);
+    _blurShader      = AssetManager::GetShader("./shaders/blur.glsl");
+    _fishEyeShader   = AssetManager::GetShader("./shaders/fish_eye.glsl");
+    _finalPassShader = AssetManager::GetShader("./shaders/final_pass.glsl");
+    /* -=-=-=-=-=-=-=- */
+
+    /* DEBUG */
+    _debugMaterial = AssetManager::GetMaterial("./materials/_error_.mat");
+    if (_debugMaterial == nullptr) {
+      LOG_ERROR("Failed to load debug material: {}", "./materials/_error_.mat");
+    }
+    _boxCollider =
+        Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeBox);
+    _sphereCollider =
+        Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::WireframeSphere);
+    _boxColliderShader    = AssetManager::GetShader("./shaders/color.glsl");
+    _sphereColliderShader = AssetManager::GetShader("./shaders/color.glsl");
+    /* -=-=- */
   }
+
   void Renderer::Update(float deltaTime) {
     using Engine::Components::MeshRenderer;
     using Engine::ECS::Entity;
@@ -350,7 +368,10 @@ namespace Engine::Systems {
       }
 #endif
     }
-    cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
+    GL::Context::CullFace(GL::Face::Front);
+    DrawSkybox();
+    GL::Context::CullFace(GL::Face::Back);
+    //_cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
 
 #if defined(_DEBUG)
     DrawNodes();
@@ -631,6 +652,17 @@ namespace Engine::Systems {
     _finalPassShader->Use();
     _finalPassShader->SetValue("u_MainTexture", 0);
     glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
+  }
+
+  auto Renderer::DrawSkybox() -> void {
+    glDepthFunc(GL_LEQUAL);
+
+    _cubemap->Bind(_skyboxSlot);
+    _cube->Use();
+    _skyboxShader->Use();
+    glDrawElements(_cube->GetPrimitive(), _cube->ElementCount(), GL_UNSIGNED_INT, NULL);
+
+    glDepthFunc(GL_LESS);
   }
 
 /* Debug draw calls */

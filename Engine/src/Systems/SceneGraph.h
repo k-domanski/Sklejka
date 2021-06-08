@@ -23,6 +23,8 @@ namespace Engine::Systems {
                   const std::shared_ptr< ECS::Entity >& child) -> void;
     auto DetachFromGraph(const std::shared_ptr< ECS::Entity >& entity) -> void;
 
+    auto ClearFlags() -> void;
+
     /*Editor Gui*/
     auto GetRootID() -> ECS::EntityID;
     auto GetChildren(const std::shared_ptr< ECS::Entity >& entity)
