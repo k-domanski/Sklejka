@@ -98,6 +98,7 @@ Engine::Renderer::Bar::Bar(): UIElement() {
   _background.Size(_size);
   _fillArea.Size(_size - _padding);
   _fillArea.Ratio(_fillRatio);
+  _offset = glm::vec2(0.0f);
 }
 
 auto Engine::Renderer::Bar::Draw(glm::mat4 model, glm::mat4 proj) -> void {

@@ -70,7 +70,7 @@ auto Engine::Components::UIRenderer::DeselectButton() -> void {
 }
 
 auto Engine::Components::UIRenderer::TriggerOnPressed() -> void {
-  if (_buttons.size() == 0)
+  if (_buttons.empty())
     return;
   auto button = _buttons[_currentlySelectedButton];
   if (button->IsActive())

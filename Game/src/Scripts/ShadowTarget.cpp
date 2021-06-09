@@ -10,7 +10,7 @@ ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
   auto renderer   = entity->AddComponent< Engine::Components::UIRenderer >();
   _bar->transform = entity->AddComponent< Engine::Transform >();
   _bar->bar       = std::make_shared< Engine::Renderer::Bar >();
-  renderer->GetElements().push_back(_bar->bar);
+  renderer->AddElement(_bar->bar);
   _rendererSystem =
       Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
 }
