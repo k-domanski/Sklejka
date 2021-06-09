@@ -70,6 +70,7 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
     case SceneName::LVL_1: {
       // auto scene = Engine::AssetManager::LoadScene("./scenes/_lvl1.scene");
       auto scene = Engine::AssetManager::LoadScene("./scenes/LEVEL_1.scene");
+      //auto scene = Engine::AssetManager::LoadScene("./scenes/LEVEL_1_BOSSNODES.scene");
       Engine::SceneManager::AddScene(scene);
       Engine::SceneManager::OpenScene(scene->GetID());
       _instance->NextFrameTrigger();
@@ -132,7 +133,7 @@ auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
 }
 
 auto GameManager::KillPlayer() -> void {
-  _instance->KillPlayerImpl();
+  //_instance->KillPlayerImpl();
 }
 
 auto GameManager::UpdateImpl(float deltaTime) -> void {
