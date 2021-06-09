@@ -34,6 +34,7 @@ auto BellThrower::OnKeyPressed(Engine::Key key) -> void {
         acorn->GetComponent< Engine::Transform >()->Position(_playerTransform->WorldPosition());
         auto acorn_rb            = acorn->GetComponent< Engine::Components::Rigidbody >();
         auto acorn_native_script = acorn->AddComponent< Engine::NativeScript >();
+        GameManager::GetSoundEngine()->play2D("./Assets/sounds/throw.wav");
         acorn_native_script->Attach< CollisionDetector >();
         acorn_rb->SetVelocity((bellTransform->WorldPosition() - _playerTransform->WorldPosition())
                               * 10.f);
