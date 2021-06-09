@@ -20,20 +20,12 @@ void main() {
 #shader fragment
 #include "fs_common.incl"
 
-vec3 GammaCompress(vec3 color, float gamma) {
-  return pow(color, vec3(1.0f / gamma));
-}
-
 out vec4 frag_color;
 in ShaderData {
   vec2 uv;
   vec3 v_pos;
 }
 fs_in;
-
-uniform float u_Gamma      = 2.2f;
-uniform float u_Brightness = 0.0f;
-uniform float u_Contrast   = 1.0f;
 
 void main() {
   vec3 texel = texture(u_MainTexture, fs_in.uv).rgb;

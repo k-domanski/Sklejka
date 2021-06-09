@@ -57,6 +57,14 @@ namespace Editor {
       if (ShouldIgnore_1(index)) {
         continue;
       }
+
+      auto& children = scene_graph->GetChildren(entity);
+      auto it        = std::find_if(children.begin(), children.end(),
+                             [](auto& item) { return item->Name() == "Collider"; });
+      if (it != children.end()) {
+        EntityManager::GetInstance().RemoveEntity(*it);
+      }
+
       auto srt   = collider_mapping[index];
       auto child = EntityManager::GetInstance().CreateEntity();
       child->Name("Collider");

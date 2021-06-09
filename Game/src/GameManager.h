@@ -40,7 +40,8 @@ private:
 
   float _speedUpDuration = 0.0f;
   std::shared_ptr< Engine::GL::Shader > _fishEyeShader;
-  float _speedFactor = 1.0f;
+  float _speedFactor    = 1.0f;
+  int _frameWaitCounter = 0;
 
 public:
   static auto Initialize() -> void;
@@ -55,10 +56,13 @@ public:
   static auto PlayerSpeedUp() -> void;
   static auto ShowLevelSumUp(float time, bool win) -> void;
   static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
+  static auto KillPlayer() -> void;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;
   auto PlayCutscene() -> void;
   auto CreatePlayer() -> void;
   auto SetupScripts() -> void;
+  auto NextFrameTrigger() -> void;
+  auto KillPlayerImpl() -> void;
 };

@@ -2,7 +2,7 @@
 #include <Engine.h>
 #include <Scripts/PlayerController.h>
 
-class CameraController : public Engine::Script {
+class CameraController : public Engine::Script<CameraController> {
 private:
   //std::shared_ptr< Engine::Transform > _playerTransform;
   std::shared_ptr< Engine::Transform > _cameraTransform;

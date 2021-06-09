@@ -35,7 +35,9 @@ void main() {
       alpha = 0.0f;
     }
   }
-  vec4 texel = texture(u_MainTexture, v_uv);
-  out_color  = vec4(u_Color.xyz, alpha) * texel;
+  vec4 texel = gamma2linear(texture(u_MainTexture, v_uv));
+  texel = (texel - 0.5f) * u_Contrast + 0.5f;
+  texel = texel + vec4(u_Brightness, u_Brightness, u_Brightness, 0.0f);
+  out_color  = vec4(GammaCompress(u_Color.rgb * texel.rgb, u_Gamma), alpha);
 }
 #endshader

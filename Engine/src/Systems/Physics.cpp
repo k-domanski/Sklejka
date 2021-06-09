@@ -46,7 +46,6 @@ void Engine::Systems::Physics::Update(float deltaTime) {
           ResolveCollisions(collider1, transform1, !rigidbody1->IsKinematic(), collider2,
                             transform2, !rigidbody2->IsKinematic());
         }
-        LOG_DEBUG("COLLISION DETECTED");
         using Engine::ECS::EntityManager;
         const auto& ns1 = EntityManager::GetComponent< NativeScript >(collider1->GetEntity());
         const auto& ns2 = EntityManager::GetComponent< NativeScript >(collider2->GetEntity());

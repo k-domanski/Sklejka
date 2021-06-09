@@ -22,8 +22,10 @@ auto CollisionDetector::OnCollisionEnter(const std::shared_ptr< Collider >& coll
       if (_timeout <= 0.0f) {
         _timeout = _timeoutDuration;
         GameManager::PlayerSpeedUp();
-        //Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
       }
+    } else {
+      /* Player fucking dies */
+      GameManager::KillPlayer();
     }
   }
 }
