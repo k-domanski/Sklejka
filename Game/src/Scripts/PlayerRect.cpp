@@ -132,8 +132,6 @@ auto PlayerRect::HandleModelRotation(float roll, float deltaTime, glm::vec3 axis
       if ((abs(_modelTransform->Rotation().x) < 0.22f && axis.x != 0.f)
           || (abs(_modelTransform->Rotation().y) < 0.22f && axis.y != 0.f)) {
         _modelTransform->Rotate(roll * deltaTime, axis);
-        LOG_DEBUG("x: " + std::to_string(_modelTransform->Rotation().x));
-        LOG_DEBUG("y: " + std::to_string(_modelTransform->Rotation().y));
       }
     } else{
       auto currentRot = _modelTransform->Rotation();
