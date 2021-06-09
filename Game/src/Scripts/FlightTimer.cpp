@@ -46,3 +46,7 @@ auto FlightTimer::CanCount(bool value) -> void {
 auto FlightTimer::ResetTimer() -> void {
   _time = 0;
 }
+
+auto FlightTimer::GetTime() -> float {
+  return _time;
+}

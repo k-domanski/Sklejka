@@ -2,6 +2,8 @@
 #include "Transform.h"
 #include <ECS/Types.h>
 #include <nlohmann/json.hpp>
+#include <Engine.h>
+#include <Systems/SceneGraph.h>
 
 #include "glm/gtx/matrix_decompose.hpp"
 
@@ -51,8 +53,8 @@ namespace Engine {
     glm::vec4 perspective;
     if (!glm::decompose(matrix, scale, rotation, translation, skew, perspective)) {
       translation = matrix[3];
-      rotation = {1.0f, 0.0f, 0.0f, 0.0f};
-      //scale = { 0.1f, 0.1f, 0.1f };
+      rotation    = {1.0f, 0.0f, 0.0f, 0.0f};
+      // scale = { 0.1f, 0.1f, 0.1f };
     }
 
     Position(translation);
@@ -89,7 +91,11 @@ namespace Engine {
     return _rotation = glm::rotate(glm::quat{1.0f, 0.0f, 0.0f, 0.0f}, radians, axis) * _rotation;
   }
 
-  auto Transform::WorldPosition() const noexcept -> glm::vec3 {
+  auto Transform::WorldPosition() -> glm::vec3 {
+    //if (flags.GetAll(TransformFlag::Dirty)) {
+    //  // Trigger force update
+    //  ForceUpdate();
+    //}
     return glm::vec3(_modelMatrix[3]);
   }
 
@@ -140,6 +146,14 @@ namespace Engine {
                        json["localRotation"]["y"], json["localRotation"]["z"]));
 
     Scale(glm::vec3(json["localScale"]["x"], json["localScale"]["y"], json["localScale"]["z"]));
+  }
+
+  auto Transform::ForceUpdate() -> void {
+    const auto& scene = SceneManager::GetCurrentScene();
+    if (scene == nullptr) {
+      return;
+    }
+    scene->SceneGraph()->Update(-1);
   }
 
   // auto Transform::LoadFromJsonString(std::string jsonString) -> void
