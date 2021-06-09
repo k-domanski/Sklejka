@@ -5,7 +5,7 @@
 #include "Renderer/Button.h"
 #include "Renderer/Text.h"
 
-class FlightTimer : public Engine::Script {
+class FlightTimer : public Engine::Script< FlightTimer > {
 public:
   FlightTimer();
   auto OnCreate() -> void override;
@@ -14,6 +14,7 @@ public:
   auto CanCount() -> bool;
   auto CanCount(bool value) -> void;
   auto ResetTimer() -> void;
+  auto GetTime() -> float;
 
 private:
   bool _canCount;

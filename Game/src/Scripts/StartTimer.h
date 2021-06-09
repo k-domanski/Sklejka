@@ -7,7 +7,7 @@
 class FlightTimer;
 class PlayerRect;
 
-class StartTimer : public Engine::Script {
+class StartTimer : public Engine::Script<StartTimer> {
 public:
   StartTimer(std::shared_ptr< PlayerRect > playerRect, std::shared_ptr< FlightTimer > flightTimer);
   auto OnCreate() -> void override;
