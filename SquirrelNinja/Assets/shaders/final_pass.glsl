@@ -26,12 +26,12 @@ in ShaderData {
   vec3 v_pos;
 }
 fs_in;
-float gamma = 2.2f;
+
 void main() {
   vec3 texel = texture(u_MainTexture, fs_in.uv).rgb;
-  texel = (texel - 0.5f) * u_Contrast + 0.5f;
-  texel = texel + vec3(u_Brightness);
-  texel = texel / (texel + vec3(1.0f));
+  texel      = (texel - 0.5f) * u_Contrast + 0.5f;
+  texel      = texel + vec3(u_Brightness);
+  texel      = texel / (texel + vec3(1.0f));
   frag_color = vec4(GammaCompress(texel, u_Gamma), 1.0f);
 }
 #endshader

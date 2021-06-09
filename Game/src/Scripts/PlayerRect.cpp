@@ -106,11 +106,13 @@ auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -
 
     if (new_pos.x < half_size.x && new_pos.x > -half_size.x)
       HandleModelRotation(rotation_delta.x, deltaTime, {0.f, 1.f, 0.f});
+    else
+      HandleModelRotation(0.f, deltaTime, {0.f, 1.f, 0.f});
+
     if (new_pos.y < half_size.y && new_pos.y > -half_size.y)
       HandleModelRotation(rotation_delta.y, deltaTime, {1.f, 0.f, 0.f});
-
-    //if (rotation_delta.x == 0.f && rotation_delta.y == 0.f)
-    //  LerpResetRotation();
+    else
+      HandleModelRotation(0.f, deltaTime, {1.f, 0.f, 0.f});
   }
 
   _transform->Position(_transform->Position()
@@ -139,7 +141,7 @@ auto PlayerRect::HandleModelRotation(float roll, float deltaTime, glm::vec3 axis
           glm::quat(1.f, axis.x == 0.f ? currentRot.x : 0,
                     axis.y == 0.f ? currentRot.y : 0, axis.z == 0.f ? currentRot.z : 0);
 
-      _modelTransform->Rotation(glm::lerp(currentRot, desiredRot, 0.1f));
+      _modelTransform->Rotation(glm::lerp(currentRot, desiredRot, 0.05f));
     }
   }
 }
@@ -149,9 +151,9 @@ auto PlayerRect::LerpResetRotation() -> void
   auto currentRot = _modelTransform->Rotation();
   auto desiredRot = glm::quat(1.f, 0.f, 0.f, currentRot.z);
 
-  LOG_DEBUG("x: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).x));
-  LOG_DEBUG("y: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).y));
-  LOG_DEBUG("w: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).w));
+  //LOG_DEBUG("x: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).x));
+  //LOG_DEBUG("y: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).y));
+  //LOG_DEBUG("w: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).w));
 
   _modelTransform->Rotation(glm::lerp(currentRot, desiredRot, 0.1f));
 }

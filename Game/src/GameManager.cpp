@@ -136,6 +136,9 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
     auto folder = AssetManager::GetAssetsFolders().scenes;
     AssetManager::SaveScene(SceneManager::GetCurrentScene(), folder + "__LEVEL__DUMP__.scene");
   }
+  if(Input::IsKeyPressed(Key::P)) {
+    ShowLevelSumUp(21.37f, true);
+  }
 #endif
   if (_speedUpDuration > 0.0f) {
     _speedUpDuration -= deltaTime;

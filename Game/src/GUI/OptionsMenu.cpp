@@ -197,8 +197,8 @@ OptionsMenu::OptionsMenu() {
   });
 
   _contrastData.currentValue = 1.0f;  // GameManager::GetGameSettings()->Contrast();
-  _contrastData.maxValue     = 8.0f;
-  _contrastData.minValue     = 1.0f;
+  _contrastData.maxValue     = 6.0f;
+  _contrastData.minValue     = 0.5f;
   _contrastData.bar          = std::make_shared< Engine::Renderer::Bar >();
   _contrastData.bar->Size(glm::vec2(400.0f, 50.0f));
   _contrastData.bar->BackgroundColor(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
