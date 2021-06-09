@@ -142,13 +142,8 @@ auto PlayerRect::HandleModelRotation(float roll, float deltaTime, glm::vec3 axis
     } else {
       auto currentRot = _modelTransform->Rotation();
       auto desiredRot =
-<<<<<<< HEAD
           glm::quat(1.f, axis.x == 0.f ? currentRot.x : -0.11f,
                     axis.y == 0.f ? currentRot.y : 0, axis.z == 0.f ? currentRot.z : 0);
-=======
-          glm::quat(1.f, axis.x == 0.f ? currentRot.x : 0, axis.y == 0.f ? currentRot.y : 0,
-                    axis.z == 0.f ? currentRot.z : 0);
->>>>>>> dee70bd535c5736757255520894afe78f2c61bb9
 
       _modelTransform->Rotation(glm::lerp(currentRot, desiredRot, 0.05f));
     }
