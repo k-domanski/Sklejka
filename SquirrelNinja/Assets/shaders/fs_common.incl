@@ -3,9 +3,9 @@ uniform sampler2D u_NormalMap;
 uniform sampler2D u_RoughnessMap;
 uniform sampler2D u_MetalnessMap;
 uniform vec4 u_Color;
-uniform float u_Contrast;
-uniform float u_Brightness;
-uniform float u_Gamma;
+uniform float u_Contrast = 1.0f;
+uniform float u_Brightness = 0.0f;
+uniform float u_Gamma = 2.2f;
 
 vec4 gamma2linear(vec4 color) {
   return vec4(pow(color.rgb, vec3(2.2f)), color.a);
