@@ -8,6 +8,7 @@
 class PlayerRect : public Engine::Script {
 private:
   std::shared_ptr< Engine::Transform > _transform;
+  std::shared_ptr< Engine::Transform > _modelTransform;
   std::shared_ptr< PlayerController > _playerController;
   std::shared_ptr< Engine::NodeSystem > _nodeSystem;
   std::shared_ptr< Engine::Node > _currentNode;
@@ -23,7 +24,7 @@ private:
   float _minNodeDistance = 0.2f;*/
 
 public:
-  PlayerRect(const std::shared_ptr< PlayerController >& player_controller);
+  PlayerRect(const std::shared_ptr< PlayerController >& player_controller, const std::shared_ptr< Engine::Transform>& player_model );
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
   auto OnKeyPressed(Engine::Key key) -> void override;
@@ -36,6 +37,8 @@ private:
   auto HandleInput(float& vertical, float& horizontal, float& roll) -> void;
   auto SeekTarget(float deltaTime) -> void;
   auto HandleMove(float vertical, float horizontal, float deltaTime) -> void;
-  auto HandleRotation(float roll, float deltaTime) -> void;
+  auto HandleRotation(float roll, float deltaTime, glm::vec3 axis = {0.0f, 0.0f, -1.0f}) -> void;
+  auto HandleModelRotation(float roll, float deltaTime, glm::vec3 axis = {0.0f, 0.0f, -1.0f}) -> void;
+  auto LerpResetRotation() -> void;
   auto GetNode() -> std::shared_ptr< Engine::Node >;
 };

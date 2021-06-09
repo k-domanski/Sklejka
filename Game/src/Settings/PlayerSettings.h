@@ -8,6 +8,7 @@ private:
   float _forwardSpeed     = 6.0f; /* Forward Speed (Player Rect) */
   float _controlSpeedBase = 2.0f; /* Left, Right, Up, Down Speed */
   float _controlSpeed     = 2.0f; /* Left, Right, Up, Down Speed */
+  float _moveRotationSpeed = 1.0f; 
   float _rollSpeed        = 2.0f; /* Roll speed */
   float _seekSpeed        = 2.0f; /* Direction seek speed */
   float _minNodeDistance  = 4.0f; /* Min distance to the target node */
@@ -22,6 +23,8 @@ public:
   auto ForwardSpeed(float speed) noexcept -> float;
   auto ControlSpeed() const noexcept -> float;
   auto ControlSpeed(float speed) noexcept -> float;
+  auto MoveRotationSpeed() const noexcept -> float;
+  auto MoveRotationSpeed(float speed) noexcept -> float;
   auto RollSpeed() const noexcept -> float;
   auto RollSpeed(float speed) noexcept -> float;
   auto SeekSpeed() const noexcept -> float;

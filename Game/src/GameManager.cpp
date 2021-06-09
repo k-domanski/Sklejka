@@ -260,7 +260,7 @@ auto GameManager::SetupScripts() -> void {
 
   native_script    = _playerRect->AddComponent< Engine::NativeScript >();
   auto player_rect = std::make_shared< PlayerRect >(
-      player_controller);  // Save it to variable, because I cannot retrive anything from attached
+      player_controller, _model->GetComponent<Transform>());  // Save it to variable, because I cannot retrive anything from attached
                            // scripts.......
   player_rect->CanMove(false);
   native_script->Attach(player_rect);
@@ -319,7 +319,7 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
 
   native_script    = _playerRect->AddComponent< Engine::NativeScript >();
   auto player_rect = std::make_shared< PlayerRect >(
-      player_controller);  // Save it to variable, because I cannot retrive anything from attached
+      player_controller, _model->GetComponent<Transform>());  // Save it to variable, because I cannot retrive anything from attached
                            // scripts.......
   player_rect->CanMove(false);
   native_script->Attach(player_rect);

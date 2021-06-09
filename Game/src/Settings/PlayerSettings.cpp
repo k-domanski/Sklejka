@@ -28,6 +28,14 @@ auto PlayerSettings::ControlSpeed(float speed) noexcept -> float {
   return _controlSpeed = speed;
 }
 
+auto PlayerSettings::MoveRotationSpeed() const noexcept -> float {
+  return _moveRotationSpeed;
+}
+
+auto PlayerSettings::MoveRotationSpeed(float speed) noexcept -> float {
+  return _moveRotationSpeed = speed;
+}
+
 auto PlayerSettings::RollSpeed() const noexcept -> float {
   return _rollSpeed;
 }
