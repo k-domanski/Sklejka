@@ -24,4 +24,5 @@ private:
   std::shared_ptr< Engine::Renderer::Button > _returnButton;
   std::shared_ptr< Engine::Renderer::Text > _title;
   std::shared_ptr< Engine::Renderer::Image > _background;
+  std::shared_ptr< Engine::Renderer::Image > _titleBackground;
 };

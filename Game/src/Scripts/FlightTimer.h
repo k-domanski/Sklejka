@@ -22,5 +22,4 @@ private:
   std::shared_ptr< Engine::Transform > _textTransform;
   std::stringstream _stream;
   int _precision;
-  std::shared_ptr<Engine::Renderer::Button> _button;
 };
