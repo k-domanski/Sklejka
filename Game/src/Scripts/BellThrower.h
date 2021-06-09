@@ -1,6 +1,6 @@
 #include <Engine.h>
 
-class BellThrower : public Engine::Script
+class BellThrower : public Engine::Script<BellThrower>
 {
 private:
   float _maxDistance;

@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine.h>
 
-class CollisionDetector : public Engine::Script {
+class CollisionDetector : public Engine::Script<CollisionDetector> {
 private:
   float _timeoutDuration = 1.0f;
   float _timeout         = 0.0f;

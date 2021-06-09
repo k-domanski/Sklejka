@@ -2,7 +2,7 @@
 #include <Engine.h>
 #include "Utility/Utility.h"
 
-class CutscenePlayer : public Engine::Script {
+class CutscenePlayer : public Engine::Script<CutscenePlayer> {
   typedef Engine::Utility::TimeLerp< glm::vec2 > Vec2Lerp;
 
 private:

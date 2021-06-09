@@ -14,7 +14,7 @@ struct BarData {
   std::shared_ptr< Engine::Renderer::Text > text;
 };
 
-class ShadowTarget : public Engine::Script {
+class ShadowTarget : public Engine::Script<ShadowTarget> {
 public:
   ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target);
   auto OnCreate() -> void override;

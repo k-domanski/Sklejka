@@ -4,6 +4,7 @@
 #include <Components/Collider.h>
 
 namespace Engine {
+  template< typename Derived >
   class Script : public IScript {
     friend class NativeScript;
 
@@ -29,6 +30,9 @@ namespace Engine {
     }
     auto Entity() const -> std::shared_ptr< ECS::Entity > {
       return _entity;
+    }
+    auto GetTypeID() const -> ScriptTypeID override {
+      return GetScriptTypeID< Derived >();
     }
 
   private:

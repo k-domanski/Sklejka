@@ -17,6 +17,8 @@
 #include "Systems/NodeSystem.h"
 
 using namespace Engine;
+using namespace Engine::Components;
+using namespace Engine::ECS;
 
 GameManager::GameManager() {
   _gameSettings   = std::make_shared< GameSettings >();
@@ -26,7 +28,7 @@ GameManager::GameManager() {
   _cutscene       = std::make_shared< Cutscene >();
   _mainMenu       = std::make_shared< MainMenu >();
   _levelSelection = std::make_shared< LevelSelection >();
-  _options = std::make_shared< OptionsMenu >();
+  _options        = std::make_shared< OptionsMenu >();
   _fishEyeShader  = Engine::AssetManager::GetShader("./shaders/fish_eye.glsl");
 }
 
@@ -70,8 +72,7 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
       auto scene = Engine::AssetManager::LoadScene("./scenes/LEVEL_1.scene");
       Engine::SceneManager::AddScene(scene);
       Engine::SceneManager::OpenScene(scene->GetID());
-      _instance->CreatePlayer();
-      // SetupPlayer(scene);
+      _instance->NextFrameTrigger();
       break;
     }
     case SceneName::LevelSelection:
@@ -130,16 +131,34 @@ auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
   return _player;
 }
 
+auto GameManager::KillPlayer() -> void {
+  _instance->KillPlayerImpl();
+}
+
 auto GameManager::UpdateImpl(float deltaTime) -> void {
 #if defined(_DEBUG)
   if (Input::IsKeyPressed(Key::K)) {
     auto folder = AssetManager::GetAssetsFolders().scenes;
     AssetManager::SaveScene(SceneManager::GetCurrentScene(), folder + "__LEVEL__DUMP__.scene");
   }
-  if(Input::IsKeyPressed(Key::P)) {
+  if (Input::IsKeyPressed(Key::P)) {
     ShowLevelSumUp(21.37f, true);
   }
 #endif
+
+  if (_frameWaitCounter > 0) {
+    if (_frameWaitCounter == 1) {
+      switch (_currentSceneName) {
+        case SceneName::LVL_1: {
+          /* This is delayed 1 frame */
+          _instance->CreatePlayer();
+          break;
+        }
+      }
+    }
+    --_frameWaitCounter;
+  }
+
   if (_speedUpDuration > 0.0f) {
     _speedUpDuration -= deltaTime;
   } else {
@@ -180,14 +199,19 @@ auto GameManager::CreatePlayer() -> void {
   main_camera->Name("Main_Camera");
   /* -=-=-=-=-=-=-=-=- */
 
+  // scene_graph->Update(-1);
+
   /* Components Setup */
   { /* Player Rect */
     auto transform = player_rect->AddComponent< Transform >();
-    auto n0_pos    = node_system->GetNode(0)->GetEntity()->GetComponent< Transform >()->Position();
-    auto n1_pos    = node_system->GetNode(1)->GetEntity()->GetComponent< Transform >()->Position();
-    transform->Position(n0_pos);
+    /* Skip 1st node */
+    auto n1_pos =
+        node_system->GetNode(0)->GetEntity()->GetComponent< Transform >()->WorldPosition();
+    auto n2_pos =
+        node_system->GetNode(1)->GetEntity()->GetComponent< Transform >()->WorldPosition();
+    transform->Position(n1_pos);
     transform->Scale(glm::vec3(0.9f));
-    transform->Forward(glm::normalize(n1_pos - n0_pos));
+    transform->Forward(glm::normalize(n2_pos - n1_pos));
   }
 
   { /* Player */
@@ -234,8 +258,8 @@ auto GameManager::CreatePlayer() -> void {
   /* -=-=-=-=-=- */
 
   /* Finalize */
-  player->layer.Set(LayerMask::Flag::Player);
-  player->collisionLayer.Set(LayerMask::Flag::Default);
+  player_model->layer.Set(LayerMask::Flag::Player);
+  player_model->collisionLayer.Set(LayerMask::Flag::Default);
   _player     = player;
   _playerRect = player_rect;
   _model      = player_model;
@@ -261,7 +285,7 @@ auto GameManager::SetupScripts() -> void {
   auto camera_entity =
       Engine::ECS::EntityManager::GetInstance().GetEntity(main_camera->GetEntityID());
   auto camera_tr = camera_entity->GetComponent< Engine::Transform >();
-  // camera_tr->Position(player_tr->Position());
+  camera_tr->Position(player_tr->Position());
 
   auto native_script = _player->AddComponent< Engine::NativeScript >();
   player_tr->Position(glm::vec3{0.0f});
@@ -269,8 +293,9 @@ auto GameManager::SetupScripts() -> void {
 
   native_script    = _playerRect->AddComponent< Engine::NativeScript >();
   auto player_rect = std::make_shared< PlayerRect >(
-      player_controller, _model->GetComponent<Transform>());  // Save it to variable, because I cannot retrive anything from attached
-                           // scripts.......
+      player_controller,
+      _model->GetComponent< Transform >());  // Save it to variable, because I cannot retrive
+                                             // anything from attached scripts.......
   player_rect->CanMove(false);
   native_script->Attach(player_rect);
 
@@ -298,6 +323,30 @@ auto GameManager::SetupScripts() -> void {
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();
   // scene->RenderSystem()->SetShadowChecker(shadowTarget);
+}
+
+auto GameManager::NextFrameTrigger() -> void {
+  _frameWaitCounter = 2;
+}
+
+auto GameManager::KillPlayerImpl() -> void {
+  auto player_rect = _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >();
+  player_rect->CanMove(false);
+  player_rect->Enable(false);
+
+  auto collider       = _model->GetComponent< Collider >();
+  collider->IsTrigger = false;
+  auto rb             = _model->GetComponent< Rigidbody >();
+
+  rb->SetGravity(true);
+  rb->SetKinematic(false);
+
+  auto camera = SceneManager::GetCurrentScene()->CameraSystem()->MainCamera();
+  auto timer  = camera->GetEntity()->GetComponent< NativeScript >()->GetScript< FlightTimer >();
+  auto time   = timer->GetTime();
+  timer->CanCount(false);
+
+  ShowLevelSumUp(time, false);
 }
 
 /* Try not to use this shit anymore */
@@ -328,8 +377,9 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
 
   native_script    = _playerRect->AddComponent< Engine::NativeScript >();
   auto player_rect = std::make_shared< PlayerRect >(
-      player_controller, _model->GetComponent<Transform>());  // Save it to variable, because I cannot retrive anything from attached
-                           // scripts.......
+      player_controller,
+      _model->GetComponent< Transform >());  // Save it to variable, because I cannot retrive
+                                             // anything from attached scripts.......
   player_rect->CanMove(false);
   native_script->Attach(player_rect);
 

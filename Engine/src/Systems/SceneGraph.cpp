@@ -12,13 +12,23 @@ namespace Engine::Systems {
     AddEntity(_rootEntity);
   }
   auto SceneGraph::Update(float deltaTime) -> void {
-    // Check if any transform is dirty and update it's branch
+// Check if any transform is dirty and update it's branch
+#if defined(_DEBUG)
+    static int force_counter = 0;
+    if (deltaTime < 0) {
+      force_counter++;
+      LOG_DEBUG("Forced graph updates {}", force_counter);
+    } else {
+      force_counter = 0;
+    }
+#endif
     for (auto& entity : _entities) {
       auto& transform = EntityManager::GetComponent< Transform >(entity);
       if (transform->flags.Get(TransformFlag::Dirty)) {
         auto& parent_tr =
             EntityManager::GetComponent< Transform >(_childParentMap[entity->GetID()]);
         RecursiveUpdateParentAndChildren(transform, parent_tr);
+        transform->flags.Clear(TransformFlag::Dirty);
       }
     }
   }
