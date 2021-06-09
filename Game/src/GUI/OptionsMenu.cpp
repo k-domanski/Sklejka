@@ -142,9 +142,9 @@ OptionsMenu::OptionsMenu() {
                               / (_soundData.maxValue - _soundData.minValue));
   });
 
-  _brightnessData.currentValue = 1.0f;
-  _brightnessData.maxValue     = 10.0f;
-  _brightnessData.minValue     = 0.0f;
+  _brightnessData.currentValue = 0.0f;  // GameManager::GetGameSettings()->Brightness();
+  _brightnessData.maxValue     = 1.0f;
+  _brightnessData.minValue     = -1.0f;
   _brightnessData.bar          = std::make_shared< Engine::Renderer::Bar >();
   _brightnessData.bar->Size(glm::vec2(400.0f, 50.0f));
   _brightnessData.bar->BackgroundColor(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
@@ -171,10 +171,11 @@ OptionsMenu::OptionsMenu() {
   _brightnessData.downButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _brightnessData.downButton->OnPress([this]() {
-    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue - 1.0f,
+    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue - 0.1f,
                                               _brightnessData.minValue, _brightnessData.maxValue);
     _brightnessData.bar->FillRatio((_brightnessData.currentValue - _brightnessData.minValue)
                                    / (_brightnessData.maxValue - _brightnessData.minValue));
+    GameManager::GetGameSettings()->Brightness(_brightnessData.currentValue);
   });
   _brightnessData.upButton = std::make_shared< Engine::Renderer::Button >();
   _brightnessData.upButton->Size(glm::vec2(50.0f, 50.0f));
@@ -188,15 +189,16 @@ OptionsMenu::OptionsMenu() {
   _brightnessData.upButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _brightnessData.upButton->OnPress([this]() {
-    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue + 1.0f,
+    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue + 0.1f,
                                               _brightnessData.minValue, _brightnessData.maxValue);
     _brightnessData.bar->FillRatio((_brightnessData.currentValue - _brightnessData.minValue)
                                    / (_brightnessData.maxValue - _brightnessData.minValue));
+    GameManager::GetGameSettings()->Brightness(_brightnessData.currentValue);
   });
 
-  _contrastData.currentValue = 0.0f;
-  _contrastData.maxValue     = 10.0f;
-  _contrastData.minValue     = -10.0f;
+  _contrastData.currentValue = 1.0f;  // GameManager::GetGameSettings()->Contrast();
+  _contrastData.maxValue     = 8.0f;
+  _contrastData.minValue     = 1.0f;
   _contrastData.bar          = std::make_shared< Engine::Renderer::Bar >();
   _contrastData.bar->Size(glm::vec2(400.0f, 50.0f));
   _contrastData.bar->BackgroundColor(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
@@ -223,10 +225,11 @@ OptionsMenu::OptionsMenu() {
   _contrastData.downButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _contrastData.downButton->OnPress([this]() {
-    _contrastData.currentValue = std::clamp(_contrastData.currentValue - 1.0f,
+    _contrastData.currentValue = std::clamp(_contrastData.currentValue - 0.1f,
                                             _contrastData.minValue, _contrastData.maxValue);
     _contrastData.bar->FillRatio((_contrastData.currentValue - _contrastData.minValue)
                                  / (_contrastData.maxValue - _contrastData.minValue));
+    GameManager::GetGameSettings()->Contrast(_contrastData.currentValue);
   });
   _contrastData.upButton = std::make_shared< Engine::Renderer::Button >();
   _contrastData.upButton->Size(glm::vec2(50.0f, 50.0f));
@@ -240,15 +243,16 @@ OptionsMenu::OptionsMenu() {
   _contrastData.upButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _contrastData.upButton->OnPress([this]() {
-    _contrastData.currentValue = std::clamp(_contrastData.currentValue + 1.0f,
+    _contrastData.currentValue = std::clamp(_contrastData.currentValue + 0.1f,
                                             _contrastData.minValue, _contrastData.maxValue);
     _contrastData.bar->FillRatio((_contrastData.currentValue - _contrastData.minValue)
                                  / (_contrastData.maxValue - _contrastData.minValue));
+    GameManager::GetGameSettings()->Contrast(_contrastData.currentValue);
   });
 
-  _gammaData.currentValue = 0.0f;
-  _gammaData.maxValue     = 10.0f;
-  _gammaData.minValue     = -10.0f;
+  _gammaData.currentValue = 2.2f;  // GameManager::GetGameSettings()->Gamma();
+  _gammaData.maxValue     = 8.0f;
+  _gammaData.minValue     = 0.0f;
   _gammaData.bar          = std::make_shared< Engine::Renderer::Bar >();
   _gammaData.bar->Size(glm::vec2(400.0f, 50.0f));
   _gammaData.bar->BackgroundColor(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
@@ -276,9 +280,10 @@ OptionsMenu::OptionsMenu() {
   // TODO: add value changing in game settings
   _gammaData.downButton->OnPress([this]() {
     _gammaData.currentValue =
-        std::clamp(_gammaData.currentValue - 1.0f, _gammaData.minValue, _gammaData.maxValue);
+        std::clamp(_gammaData.currentValue - 0.1f, _gammaData.minValue, _gammaData.maxValue);
     _gammaData.bar->FillRatio((_gammaData.currentValue - _gammaData.minValue)
                               / (_gammaData.maxValue - _gammaData.minValue));
+    GameManager::GetGameSettings()->Gamma(_gammaData.currentValue);
   });
   _gammaData.upButton = std::make_shared< Engine::Renderer::Button >();
   _gammaData.upButton->Size(glm::vec2(50.0f, 50.0f));
@@ -293,9 +298,10 @@ OptionsMenu::OptionsMenu() {
   // TODO: add value changing in game settings
   _gammaData.upButton->OnPress([this]() {
     _gammaData.currentValue =
-        std::clamp(_gammaData.currentValue + 1.0f, _gammaData.minValue, _gammaData.maxValue);
+        std::clamp(_gammaData.currentValue + 0.1f, _gammaData.minValue, _gammaData.maxValue);
     _gammaData.bar->FillRatio((_gammaData.currentValue - _gammaData.minValue)
                               / (_gammaData.maxValue - _gammaData.minValue));
+    GameManager::GetGameSettings()->Gamma(_gammaData.currentValue);
   });
 
   _returnButton = std::make_shared< Engine::Renderer::Button >();
@@ -304,7 +310,7 @@ OptionsMenu::OptionsMenu() {
   _returnButton->SelectedColor(glm::vec4(1.0f));
   _returnButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _returnButton->Offset(glm::vec2(0.0f, -275.0f));
-  _returnButton->HandleSize(glm::vec2(50.0f, 50.0f));
+  _returnButton->HandleSize(glm::vec2(150.0f, 50.0f));
   _returnButton->text("Back");
   _returnButton->TextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   _returnButton->TextOffset(glm::vec2(-15.0f, -15.0f));

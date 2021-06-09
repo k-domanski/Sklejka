@@ -1,9 +1,16 @@
 #pragma once
+#include <memory>
+
+namespace Engine {
+  namespace GL {
+    class Shader;
+  }
+}  // namespace Engine
 
 class GameSettings {
 private:
   /* Graphics */
-  float _brightness = 1.0f;
+  float _brightness = 0.0f;
   float _contrast   = 1.0f;
   float _gamma      = 2.2f;
   /* Time */
@@ -13,8 +20,15 @@ private:
   /* Duration */
   float _playerSpeedUpDuration = 3.0f;
 
+  // shaders to apply changes
+  std::shared_ptr< Engine::GL::Shader > _final_pass;
+  std::shared_ptr< Engine::GL::Shader > _bar;
+  std::shared_ptr< Engine::GL::Shader > _imageUI;
+  std::shared_ptr< Engine::GL::Shader > _skybox;
+  std::shared_ptr< Engine::GL::Shader > _text;
+
 public:
-  GameSettings() = default;
+  GameSettings();//= default;
   /* Graphics */
   auto Brightness() const noexcept -> float;
   auto Brightness(float value) noexcept -> float;

@@ -1,12 +1,14 @@
 #include "pch.h"
 #include "GUISystem.h"
 
+#include "App/AssetManager.h"
 #include "App/Input.h"
 #include "App/Window.h"
 #include "App/KeyCodes/GamepadCode.h"
 #include "ECS/EntityManager.h"
 #include "Components/Transform.h"
 #include "Components/UIRenderer.h"
+#include "GL/Context.h"
 
 Engine::Systems::GUISystem::GUISystem(): System() {
   AddSignature< Engine::Components::UIRenderer >();
