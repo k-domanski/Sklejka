@@ -19,6 +19,14 @@
 //  _background = background;
 //}
 
+glm::vec2 Engine::Renderer::Button::Offset() const {
+  return _offset;
+}
+
+void Engine::Renderer::Button::Offset(const glm::vec2& offset) {
+  _offset = offset;
+}
+
 auto Engine::Renderer::Button::Size() -> glm::vec2 {
   return _background.Size();
 }
@@ -92,9 +100,16 @@ void Engine::Renderer::Button::Background(std::shared_ptr< GL::Texture2D > textu
   _background.Texture(texture);
 }
 
+bool Engine::Renderer::Button::IsMouseOverButton(glm::vec2 mousePos) {
+  auto handle = _handleSize / 2.0f;
+  return (handle.x > mousePos.x && -handle.x < mousePos.x && handle.y > mousePos.y
+          && -handle.y < mousePos.y);
+}
+
 Engine::Renderer::Button::Button()
-    : UIElement(), _handleSize(glm::vec2(100, 50)), _color(glm::vec4(1.0f)),
-      _pressedColor(glm::vec4(0.0f)) {
+    : UIElement(), _handleSize(glm::vec2(100, 50)), _color(glm::vec4(0.5f)),
+      _pressedColor(glm::vec4(0.0f)), _selectedColor(glm::vec4(1.0f)), _isSelected(false),
+      _offset(glm::vec2(0.0f)) {
   _background = Image();
   _background.Texture(AssetManager::GetTexture2D("./textures/button_default.png"));
   _text = Text();
@@ -102,24 +117,51 @@ Engine::Renderer::Button::Button()
 }
 
 auto Engine::Renderer::Button::Draw(glm::mat4 model, glm::mat4 proj) -> void {
+  model = glm::translate(model, glm::vec3(_offset, 0.0f));
   _background.Draw(model, proj);
   _text.Draw(model, proj);
 }
 
 auto Engine::Renderer::Button::OnReleaseHandle(glm::vec2 position) -> void {
-  // if (_handleSize.x > position.x && -_handleSize.x < position.x && _handleSize.y > position.y
-  //  && -_handleSize.y < position.y) {
-  // here we can put on releasae if needed
   _background.Color(_color);
-  //}
+  auto handle = _handleSize / 2.0f;
+  if (handle.x > position.x && -handle.x < position.x && handle.y > position.y
+      && -handle.y < position.y) {
+    if (_onPress != nullptr)
+      _onPress();
+    // here we can put on releasae if needed
+  }
+}
+
+glm::vec4 Engine::Renderer::Button::SelectedColor() const {
+  return _selectedColor;
+}
+
+void Engine::Renderer::Button::SelectedColor(const glm::vec4& selected_color) {
+  _selectedColor = selected_color;
+}
+
+bool Engine::Renderer::Button::IsSelected() const {
+  return _isSelected;
+}
+
+void Engine::Renderer::Button::IsSelected(bool is_selected) {
+  _isSelected = is_selected;
+  if (_isSelected)
+    _background.Color(_selectedColor);
+  else
+    _background.Color(_color);
+}
+
+void Engine::Renderer::Button::TriggerOnPress() {
+  if (_onPress != nullptr)
+    _onPress();
 }
 
 auto Engine::Renderer::Button::OnPressHandle(glm::vec2 position) -> void {
   auto handle = _handleSize / 2.0f;
   if (handle.x > position.x && -handle.x < position.x && handle.y > position.y
       && -handle.y < position.y) {
-    if (_onPress != nullptr)
-      _onPress();
     _background.Color(_pressedColor);
   }
 }

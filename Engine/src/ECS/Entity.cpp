@@ -35,7 +35,9 @@ namespace Engine::ECS {
     using namespace nlohmann;
     json json               = nlohmann::json{{"entityID", std::to_string(GetID())},
                                {"entityName", _name},
-                               {"parentID", parentID}};
+                               {"parentID", parentID},
+                               {"layer", layer.GetState()},
+                               {"collisionLayer", collisionLayer.GetState()}};
     std::string fileContent = json.dump(4);
 
     for (std::shared_ptr< Component > component : components) {
@@ -93,6 +95,9 @@ namespace Engine::ECS {
 
     _entityID = entityID;
     _name     = entity_json["entityName"];
+
+    layer.SetState(READ_VALUE(entity_json, "layer", 1));
+    collisionLayer.SetState(READ_VALUE(entity_json, "collisionLayer", ~(0u)));
 
     for (int i = 1; i < separated_jsons.size(); i++) {
       nlohmann::json component_json =

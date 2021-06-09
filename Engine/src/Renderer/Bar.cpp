@@ -2,6 +2,14 @@
 #include "Bar.h"
 #include "Engine.h"
 
+glm::vec2 Engine::Renderer::Bar::Offset() const {
+  return _offset;
+}
+
+void Engine::Renderer::Bar::Offset(const glm::vec2& offset) {
+  _offset = offset;
+}
+
 Engine::Renderer::Image Engine::Renderer::Bar::Background() const {
   return _background;
 }
@@ -93,6 +101,7 @@ Engine::Renderer::Bar::Bar(): UIElement() {
 }
 
 auto Engine::Renderer::Bar::Draw(glm::mat4 model, glm::mat4 proj) -> void {
+  model = glm::translate(model, glm::vec3(_offset, 0.0f));
   _background.Draw(model, proj);
   _fillArea.Draw(model, proj);
 }

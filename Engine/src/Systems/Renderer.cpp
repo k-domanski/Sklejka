@@ -9,6 +9,7 @@
 #include "Components/Collider.h"
 #include "GL/Cubemap.h"
 #include <Systems/NodeSystem.h>
+#include <Systems/Physics.h>
 #include "Components/Animator.h"
 
 namespace Engine::Systems {
@@ -18,6 +19,10 @@ namespace Engine::Systems {
     AddSignature< Components::MeshRenderer >();
     AddSignature< Transform >();
     const auto size = Window::Get().GetScreenSize();
+
+    /* Switches */
+    _cullingEnabled = false;
+    /* -=-=-=-=- */
 
     /* Data */
     _transformUniformBuffer.BindToSlot(GL::UniformBlock::TransformData);
@@ -29,8 +34,8 @@ namespace Engine::Systems {
     /* -=-=-=- */
 
     /* Skybox */
-    _cube         = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Cube);
-    _cubemap      = AssetManager::GetCubemap("./Assets/skyboxes/forest");
+    _cube    = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Cube);
+    _cubemap = AssetManager::GetCubemap("./Assets/skyboxes/forest");
     //_cubemap      = AssetManager::GetCubemap("./Assets/skyboxes/blue_sky");
     _skyboxShader = AssetManager::GetShader("./shaders/skybox.glsl");
     _skyboxShader->SetValue("u_Skybox", (int)_skyboxSlot);
@@ -99,7 +104,7 @@ namespace Engine::Systems {
     }
     const auto camera_tr = ECS::EntityManager::GetComponent< Transform >(camera->GetEntity());
     /* CULLING */
-    if (false) {
+    if (_cullingEnabled) {
       SortByDistance(camera);
       _depthTarget->Bind(FramebufferTarget::ReadWrite);
       GL::Context::ClearBuffers(GL::BufferBit::Depth);
@@ -186,14 +191,12 @@ namespace Engine::Systems {
     if (_lightSystem != nullptr) {
       auto light = _lightSystem->Light();
       if (light != nullptr && light->flags.GetAny(LightFlag::Dirty | LightFlag::NewData)) {
-        auto light_tr = ECS::EntityManager::GetComponent< Transform >(light->GetEntity());
-        if (light_tr->flags.Get(TransformFlag::NewData)) {
-          const auto& fr  = light_tr->Forward();
-          const auto& pos = camera_tr->Position() + camera_tr->Forward() * 5.0f;
-          _shadowUniformData.lightSpaceMatrix =
-              _shadowProjection * glm::lookAt(pos, pos + fr, {0.0f, 1.0f, 0.0f});
-          _shadowUniformBuffer.SetData(_shadowUniformData);
-        }
+        auto light_tr   = ECS::EntityManager::GetComponent< Transform >(light->GetEntity());
+        const auto& fr  = light_tr->Forward();
+        const auto& pos = camera_tr->Position() + camera_tr->Forward() * 5.0f;
+        _shadowUniformData.lightSpaceMatrix =
+            _shadowProjection * glm::lookAt(pos, pos + fr, {0.0f, 1.0f, 0.0f});
+        _shadowUniformBuffer.SetData(_shadowUniformData);
         _shadowTarget->Bind(FramebufferTarget::ReadWrite);
         GL::Context::Viewport(0, 0, _shadowMapSize.x, _shadowMapSize.y);
         GL::Context::ClearBuffers(BufferBit::Depth);
@@ -272,8 +275,14 @@ namespace Engine::Systems {
     GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth);
     GL::Context::DepthTest(true);
     _shadowTexture->Bind(_shadowMapSlot);
-    // for (auto& entityID : _visibleEntities) {
-    for (auto& entityID : _entities) {
+
+    std::vector< std::shared_ptr< Entity > >* entity_list = nullptr;
+    if (_cullingEnabled) {
+      entity_list = &_visibleEntities;
+    } else {
+      entity_list = &_entities;
+    }
+    for (auto& entityID : *entity_list) {
       auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
       auto material      = mesh_renderer->GetMaterial();
       auto model         = mesh_renderer->GetModel();
@@ -312,69 +321,15 @@ namespace Engine::Systems {
 
       shader->SetValue("u_ShadowDepthTexture", (int)_shadowMapSlot);
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
-
-      // collider
-#if defined(_DEBUG)
-      std::shared_ptr< Components::Collider > collider;
-      if ((collider = ECS::EntityManager::GetComponent< Components::Collider >(entityID))
-          != nullptr) {
-        if (collider->Type == +Components::ColliderType::Box) {
-          _boxColliderShader->Use();
-          _boxCollider->Use();
-
-          auto colModel = transform->GetWorldMatrix();
-          colModel      = glm::translate(colModel, collider->Center);
-          colModel      = glm::scale(colModel, collider->Size);
-
-          _transformUniformData.model     = colModel;
-          _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
-          _transformUniformData.modelViewProjection =
-              camera->ProjectionMatrix() * _transformUniformData.modelView;
-
-          // HACK: Assume for now that under slot 1 is camera uniform buffer
-          // TODO: Get the actual slot number from somewhere, somehow :)
-          _transformUniformBuffer.SetData(_transformUniformData);
-
-          _boxColliderShader->SetVector("u_Color", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-          glDrawElements(_boxCollider->GetPrimitive(), _boxCollider->ElementCount(),
-                         GL_UNSIGNED_INT, NULL);
-        } else if (collider->Type == +Components::ColliderType::Sphere) {
-          _sphereColliderShader->Use();
-          _sphereCollider->Use();
-
-          glEnable(GL_PRIMITIVE_RESTART);
-          glPrimitiveRestartIndex(2137);
-
-          auto colModel = transform->GetWorldMatrix();
-
-          colModel = glm::translate(colModel, collider->Center);
-          colModel = glm::scale(colModel, glm::vec3(collider->Size.x));
-
-          _transformUniformData.model     = colModel;
-          _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
-          _transformUniformData.modelViewProjection =
-              camera->ProjectionMatrix() * _transformUniformData.modelView;
-
-          // HACK: Assume for now that under slot 1 is camera uniform buffer
-          // TODO: Get the actual slot number from somewhere, somehow :)
-          _transformUniformBuffer.SetData(_transformUniformData);
-
-          _sphereColliderShader->SetVector("u_Color", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-          glDrawElements(_sphereCollider->GetPrimitive(), _sphereCollider->ElementCount(),
-                         GL_UNSIGNED_INT, NULL);
-
-          glDisable(GL_PRIMITIVE_RESTART);
-        }
-      }
-#endif
     }
+
     GL::Context::CullFace(GL::Face::Front);
     DrawSkybox();
     GL::Context::CullFace(GL::Face::Back);
-    //_cubemap->Draw(camera->ViewMatrix(), camera->ProjectionMatrix());
 
 #if defined(_DEBUG)
     DrawNodes();
+    DrawColliders();
 #endif
 
     PostProcessing();
@@ -447,6 +402,15 @@ namespace Engine::Systems {
     }
   }
 
+  auto Renderer::AddEntity(const std::shared_ptr< ECS::Entity >& entity) -> void {
+    ECS::System::AddEntity(entity);
+    _shouldSort = true;
+  }
+
+  auto Renderer::SetShouldSort(bool value) -> void {
+    _shouldSort = true;
+  }
+
   /*auto Renderer::SetShadowChecker(std::shared_ptr< ShadowTarget > target) -> void {
     _playerShadowTarget = target;
   }*/
@@ -469,46 +433,20 @@ namespace Engine::Systems {
         return true;
       }
       // Sort by the queue and then by the asset ID
-      if (rmat->Queue() == rmat->Queue()) {
-        return rmat->GetAssetID() < rmat->GetAssetID();
+      if (lmat->Queue() == rmat->Queue()) {
+        return lmat->GetAssetID() < rmat->GetAssetID();
       }
-      return rmat->Queue() < rmat->Queue();
+      return lmat->Queue() < rmat->Queue();
     };
     // Actual sort
-    std::sort(_visibleEntities.begin(), _visibleEntities.end(), OrderFunction);
-    // std::sort(_entities.begin(), _entities.end(), OrderFunction);
-    // What the fuck :)
-    return;  // Retun the fuck out
-    /*for (auto entityID : _entities) {
-      auto meshRenderer = ECS::EntityManager::GetComponent< Components::MeshRenderer >(entityID);
-      if (meshRenderer->IsDirty()) {
-        _entitiesToSort.insert(entityID);
-        meshRenderer->SetDirty(false);
+    if (_cullingEnabled) {
+      std::sort(_visibleEntities.begin(), _visibleEntities.end(), OrderFunction);
+    } else {
+      if (_shouldSort) {
+        std::sort(_entities.begin(), _entities.end(), OrderFunction);
+        _shouldSort = false;
       }
     }
-
-    for (auto entityID : _entitiesToSort) {
-      auto meshRenderer = ECS::EntityManager::GetComponent< Components::MeshRenderer >(entityID);
-      auto material     = meshRenderer->GetMaterial();
-      if (material == nullptr)
-        continue;
-      for (auto& [materialFRST, vec] : _sortedEntities) {
-        auto it =
-            std::find_if(vec.begin(), vec.end(), [entityID](auto id) { return id == entityID; });
-        if (it != vec.end()) {
-          vec.erase(it);
-          break;
-        }
-      }
-      if (_sortedEntities.count(material) == 0) {
-        std::vector< ECS::EntityID > vec;
-        vec.push_back(entityID);
-        _sortedEntities[material] = std::move(vec);
-      } else
-        _sortedEntities[material].push_back(entityID);
-    }
-
-    _entitiesToSort.clear();*/
   }
 
   auto Renderer::SortByDistance(std::shared_ptr< Camera > cam) -> void {
@@ -667,6 +605,67 @@ namespace Engine::Systems {
 
 /* Debug draw calls */
 #if defined(_DEBUG)
+  auto Renderer::DrawColliders() -> void {
+    const auto& camera = _cameraSystem->MainCamera();
+    const auto& all_entities =
+        ECS::EntityManager::GetInstance().GetSystem< Systems::Physics >()->Entities();
+    for (auto& entityID : all_entities) {
+      auto transform = entityID->GetComponent< Transform >();
+      if (transform == nullptr) {
+        continue;
+      }
+      std::shared_ptr< Components::Collider > collider;
+      if ((collider = ECS::EntityManager::GetComponent< Components::Collider >(entityID))
+          != nullptr) {
+        if (collider->Type == +Components::ColliderType::Box) {
+          _boxColliderShader->Use();
+          _boxCollider->Use();
+          auto colModel = transform->GetWorldMatrix();
+          colModel      = glm::translate(colModel, collider->Center);
+          colModel      = glm::scale(colModel, collider->Size);
+
+          _transformUniformData.model     = colModel;
+          _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+          _transformUniformData.modelViewProjection =
+              camera->ProjectionMatrix() * _transformUniformData.modelView;
+
+          // HACK: Assume for now that under slot 1 is camera uniform buffer
+          // TODO: Get the actual slot number from somewhere, somehow :)
+          _transformUniformBuffer.SetData(_transformUniformData);
+
+          _boxColliderShader->SetVector("u_Color", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+          glDrawElements(_boxCollider->GetPrimitive(), _boxCollider->ElementCount(),
+                         GL_UNSIGNED_INT, NULL);
+        } else if (collider->Type == +Components::ColliderType::Sphere) {
+          _sphereColliderShader->Use();
+          _sphereCollider->Use();
+
+          glEnable(GL_PRIMITIVE_RESTART);
+          glPrimitiveRestartIndex(2137);
+
+          auto colModel = transform->GetWorldMatrix();
+
+          colModel = glm::translate(colModel, collider->Center);
+          colModel = glm::scale(colModel, glm::vec3(collider->Size.x));
+
+          _transformUniformData.model     = colModel;
+          _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+          _transformUniformData.modelViewProjection =
+              camera->ProjectionMatrix() * _transformUniformData.modelView;
+
+          // HACK: Assume for now that under slot 1 is camera uniform buffer
+          // TODO: Get the actual slot number from somewhere, somehow :)
+          _transformUniformBuffer.SetData(_transformUniformData);
+
+          _sphereColliderShader->SetVector("u_Color", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+          glDrawElements(_sphereCollider->GetPrimitive(), _sphereCollider->ElementCount(),
+                         GL_UNSIGNED_INT, NULL);
+
+          glDisable(GL_PRIMITIVE_RESTART);
+        }
+      }
+    }
+  }
   auto Renderer::DrawNodes() -> void {
     const auto node_system = ECS::EntityManager::GetInstance().GetSystem< Engine::NodeSystem >();
     const auto cube        = AssetManager::GetModel(Engine::Renderer::ModelPrimitive::Cube);

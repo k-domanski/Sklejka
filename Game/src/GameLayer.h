@@ -15,7 +15,6 @@ public:
   bool OnMouseButtonPress(Engine::MouseButtonPressedEvent& e);
   bool OnMouseButtonRelease(Engine::MouseButtonReleasedEvent& e);
   bool OnKeyPress(Engine::KeyPressedEvent& e);
-  
 
 private:
 };

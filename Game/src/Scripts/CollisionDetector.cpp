@@ -1,5 +1,6 @@
 #include "CollisionDetector.h"
 #include <GameManager.h>
+#include <regex>
 
 using Engine::Components::Collider;
 
@@ -9,18 +10,19 @@ auto CollisionDetector::Update(float deltaTime) -> void {
   }
 }
 
-auto CollisionDetector::OnKeyPressed(Engine::Key key) -> void{
+auto CollisionDetector::OnKeyPressed(Engine::Key key) -> void {
 }
 
 auto CollisionDetector::OnCollisionEnter(const std::shared_ptr< Collider >& collider) -> void {
   auto entity = Engine::ECS::EntityManager::GetInstance().GetEntity(collider->GetEntityID());
   if (entity != nullptr) {
-    if (entity->Name() == "Bell") {
+    LOG_INFO("Collision detected: {}", entity->Name());
+    const std::regex bell_rx("BELL.*");
+    if (std::regex_match(entity->Name(), bell_rx)) {
       if (_timeout <= 0.0f) {
-        LOG_INFO("Collision detected: {}", entity->Name());
         _timeout = _timeoutDuration;
         GameManager::PlayerSpeedUp();
-        Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
+        //Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
       }
     }
   }

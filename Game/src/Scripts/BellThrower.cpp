@@ -9,7 +9,7 @@
 auto BellThrower::OnCreate() -> void {
   auto scene       = Engine::SceneManager::GetCurrentScene();
   auto sg          = scene->SceneGraph();
-  auto bell_parent = scene->FindEntity("Bells");
+  auto bell_parent = scene->FindEntity("DZWONY");
   _bells           = sg->GetChildren(bell_parent);
   _playerTransform = GameManager::GetCurrentPlayer()->GetComponent< Engine::Transform >();
   _maxDistance     = 15;  // TODO: Move to settings

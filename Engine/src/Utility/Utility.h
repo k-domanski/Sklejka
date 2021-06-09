@@ -34,6 +34,9 @@ namespace Engine::Utility {
     auto SetAll() noexcept -> void {
       _state = ~value_t(0);
     }
+    auto SetState(value_t state) noexcept -> void {
+      _state = state;
+    }
     auto GetState() const noexcept -> value_t {
       return _state;
     }
@@ -86,6 +89,7 @@ namespace Engine::Utility {
     unsigned int Advance;
   };
 
+  auto InRange(int value, int min, int max) -> bool;
   auto ReadTextFile(const std::string_view& fileName, bool* success = nullptr) -> std::string;
   auto StripToRelativePath(const std::string& filePath) -> std::string;
   auto ParseShaderSource(std::string source, const std::string& file_path) -> ShaderParseResult;

@@ -25,12 +25,19 @@ namespace Engine::Systems {
     auto OnWindowResize(glm::vec2 windowSize) -> void;
     // auto SetShadowChecker(std::shared_ptr< ShadowTarget > target) -> void;
     auto ObjectInShadow(const std::shared_ptr< ECS::Entity >& entity) -> GLint;
+    auto AddEntity(const std::shared_ptr< ECS::Entity >& entity) -> void override;
+    auto SetShouldSort(bool value) -> void;
 
   private:
+    /* Switches */
+    bool _cullingEnabled = false;
+    /* -=-=-=-=- */
+
     /* Data */
     std::vector< std::shared_ptr< ECS::Entity > > _visibleEntities;
     GL::TransformUniformData _transformUniformData;
     GL::TransformUniformBuffer _transformUniformBuffer;
+    bool _shouldSort = true;
     /* -=-=- */
 
     /* Systems */
@@ -88,6 +95,7 @@ namespace Engine::Systems {
     auto SortByDistance(std::shared_ptr< Camera > cam) -> void;
 
 #if defined(_DEBUG)
+    auto DrawColliders() -> void;
     auto DrawNodes() -> void;
 #endif
   };

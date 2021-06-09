@@ -63,7 +63,7 @@ namespace Engine::Systems {
   }
 
   auto SceneGraph::ClearFlags() -> void {
-    for(auto& entity : _entities) {
+    for (auto& entity : _entities) {
       auto& tr = entity->GetComponent< Transform >();
       tr->flags.Clear(TransformFlag::NewData);
     }
@@ -81,6 +81,20 @@ namespace Engine::Systems {
   auto SceneGraph::GetParent(const std::shared_ptr< ECS::Entity >& entity)
       -> std::shared_ptr< ECS::Entity > {
     return _childParentMap[entity->GetID()];
+  }
+
+  auto SceneGraph::RemoveEntity(const std::shared_ptr< ECS::Entity >& entity) -> void {
+    if (entity == nullptr) {
+      return;
+    }
+    const auto& parent = _childParentMap[entity->GetID()];
+    auto parent_id     = parent != nullptr ? parent->GetID() : 0;
+    auto& list         = _parentChildMap[parent_id];
+    auto it            = std::find(list.begin(), list.end(), entity);
+    if (it != list.end()) {
+      list.erase(it);
+    }
+    _childParentMap.erase(entity->GetID());
   }
 
   auto SceneGraph::RecursiveUpdateParentAndChildren(std::shared_ptr< Transform >& transform,

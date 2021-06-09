@@ -28,9 +28,8 @@ MainMenu::MainMenu() {
   auto uiRenderer = entity->AddComponent< Engine::Components::UIRenderer >();
   auto transform  = entity->AddComponent< Engine::Transform >();
   _exitButton     = std::make_shared< Engine::Renderer::Button >();
-  uiRenderer->AddButton(_exitButton);
-  uiRenderer->AddElement(_exitButton);
-  _exitButton->Color(glm::vec4(1.0f));
+  _exitButton->SelectedColor(glm::vec4(1.0f));
+  _exitButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
   _exitButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   _exitButton->OnPress([]() { std::exit(0); });
   _exitButton->text("Exit");
@@ -38,15 +37,13 @@ MainMenu::MainMenu() {
   _exitButton->TextOffset(glm::vec2(-35.0f, -15.0f));
   _exitButton->Size(glm::vec2(300.0f, 100.0f));
   _exitButton->HandleSize(glm::vec2(300.0f, 100.0f));
-  //transform->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f - 150.0f, 0.0f));
-  transform->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f - 350.0f, 0.0f));
+  // transform->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f - 150.0f, 0.0f));
+  transform->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f - 325.0f, 0.0f));
 
-  auto entity2     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
-  auto uiRenderer2 = entity2->AddComponent< Engine::Components::UIRenderer >();
-  auto transform2  = entity2->AddComponent< Engine::Transform >();
-  _startButton     = std::make_shared< Engine::Renderer::Button >();
+  _startButton = std::make_shared< Engine::Renderer::Button >();
   //_startButton->Color(glm::vec4(1.0f, 1.0f, 1.0f, 0.5f));
-  _startButton->Color(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+  _startButton->SelectedColor(glm::vec4(1.0f));
+  _startButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
   _startButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   _startButton->OnPress([]() { GameManager::SwitchScene(SceneName::LevelSelection); });
   _startButton->text("Start");
@@ -54,10 +51,41 @@ MainMenu::MainMenu() {
   _startButton->TextOffset(glm::vec2(-45.0f, -15.0f));
   _startButton->Size(glm::vec2(300.0f, 100.0f));
   _startButton->HandleSize(glm::vec2(300.0f, 100.0f));
-  uiRenderer2->AddButton(_startButton);
-  uiRenderer2->AddElement(_startButton);
-  //transform2->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f + 50.0f, 0.0f));
-  transform2->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f - 225.0f, 0.0f));
+  // transform2->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f + 50.0f, 0.0f));
+  _startButton->Offset(glm::vec2(0.0f, 375.0f));
+
+  _optionsButton = std::make_shared< Engine::Renderer::Button >();
+  _optionsButton->SelectedColor(glm::vec4(1.0f));
+  _optionsButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _optionsButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+  _optionsButton->OnPress([]() { GameManager::SwitchScene(SceneName::Options); });
+  _optionsButton->text("Options");
+  _optionsButton->TextColor(glm::vec4(0, 0, 0, 1));
+  _optionsButton->TextOffset(glm::vec2(-45.0f, -15.0f));
+  _optionsButton->Size(glm::vec2(300.0f, 100.0f));
+  _optionsButton->HandleSize(glm::vec2(300.0f, 100.0f));
+  _optionsButton->Offset(glm::vec2(0.0f, 250.0f));
+
+  _creditsButton = std::make_shared< Engine::Renderer::Button >();
+  _creditsButton->SelectedColor(glm::vec4(1.0f));
+  _creditsButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _creditsButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+  _creditsButton->OnPress([]() { GameManager::SwitchScene(SceneName::LevelSelection); });
+  _creditsButton->text("Credits");
+  _creditsButton->TextColor(glm::vec4(0, 0, 0, 1));
+  _creditsButton->TextOffset(glm::vec2(-45.0f, -15.0f));
+  _creditsButton->Size(glm::vec2(300.0f, 100.0f));
+  _creditsButton->HandleSize(glm::vec2(300.0f, 100.0f));
+  _creditsButton->Offset(glm::vec2(0.0f, 125.0f));
+
+  uiRenderer->AddButton(_startButton);
+  uiRenderer->AddElement(_startButton);
+  uiRenderer->AddButton(_optionsButton);
+  uiRenderer->AddElement(_optionsButton);
+  uiRenderer->AddButton(_creditsButton);
+  uiRenderer->AddElement(_creditsButton);
+  uiRenderer->AddButton(_exitButton);
+  uiRenderer->AddElement(_exitButton);
 
   if (current_scene != nullptr) {
     Engine::SceneManager::OpenScene(current_scene->GetID());

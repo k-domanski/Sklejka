@@ -33,6 +33,51 @@ auto Engine::Components::UIRenderer::RemoveElement(std::shared_ptr< Renderer::UI
   _elements.erase(it);
 }
 
+auto Engine::Components::UIRenderer::SelectNext() -> void {
+  if (_buttons.empty())
+    return;
+  _buttons[_currentlySelectedButton]->IsSelected(false);
+  _currentlySelectedButton++;
+  if (_currentlySelectedButton < 0)
+    _currentlySelectedButton = _buttons.size() - 1;
+  _currentlySelectedButton %= _buttons.size();
+  _buttons[_currentlySelectedButton]->IsSelected(true);
+}
+
+auto Engine::Components::UIRenderer::SelectPrevious() -> void {
+  if (_buttons.empty())
+    return;
+  _buttons[_currentlySelectedButton]->IsSelected(false);
+  _currentlySelectedButton--;
+  if (_currentlySelectedButton < 0)
+    _currentlySelectedButton = _buttons.size() - 1;
+  _currentlySelectedButton %= _buttons.size();
+  _buttons[_currentlySelectedButton]->IsSelected(true);
+}
+
+auto Engine::Components::UIRenderer::SelectButton(int buttonNR) -> void {
+  if (_buttons.empty())
+    return;
+  _buttons[_currentlySelectedButton]->IsSelected(false);
+  _currentlySelectedButton = buttonNR % _buttons.size();
+  _buttons[_currentlySelectedButton]->IsSelected(true);
+}
+
+auto Engine::Components::UIRenderer::DeselectButton() -> void {
+  if (_buttons.empty())
+    return;
+  _buttons[_currentlySelectedButton]->IsSelected(false);
+}
+
+auto Engine::Components::UIRenderer::TriggerOnPressed() -> void {
+  if (_buttons.size() == 0)
+    return;
+  auto button = _buttons[_currentlySelectedButton];
+  if (button->IsActive())
+    button->TriggerOnPress();
+}
+
 Engine::Components::UIRenderer::UIRenderer()
     : Component("UIRenderer", ECS::GetComponentTypeID< UIRenderer >()) {
+  _currentlySelectedButton = 0;
 }
