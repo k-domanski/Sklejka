@@ -30,7 +30,7 @@ auto BellThrower::OnKeyPressed(Engine::Key key) -> void {
       if (distance <= _maxDistance) {
         LOG_DEBUG("Found bell that is close enough");
         auto acorn = Engine::ECS::EntityManager::GetInstance().CreateEntity();
-        acorn->LoadFromJson("./prefabs/acorn.prefab");
+        acorn->LoadFromJson("./Assets/prefabs/acorn.prefab");
         acorn->GetComponent< Engine::Transform >()->Position(_playerTransform->WorldPosition());
         auto acorn_rb            = acorn->GetComponent< Engine::Components::Rigidbody >();
         auto acorn_native_script = acorn->AddComponent< Engine::NativeScript >();
