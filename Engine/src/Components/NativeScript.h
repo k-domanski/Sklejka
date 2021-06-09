@@ -23,6 +23,11 @@ namespace Engine {
   public:
     NativeScript();
     auto Attach(const std::shared_ptr< IScript >& script) -> void;
+    auto Detach(const std::shared_ptr< IScript >& script) -> void;
+    auto Update(float deltaTime) -> void;
+    auto OnKeyPressed(Key key) -> void;
+    auto OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider) -> void;
+
     template< typename T, typename... Args >
     auto Attach(Args&&... args) -> std::shared_ptr< T > {
       auto script = std::make_shared< T >(std::forward< Args >(args)...);
@@ -32,10 +37,17 @@ namespace Engine {
 
       return script;
     }
-    auto Detach(const std::shared_ptr< IScript >& script) -> void;
-    auto Update(float deltaTime) -> void;
-    auto OnKeyPressed(Key key) -> void;
-    auto OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider) -> void;
+
+    template< typename T >
+    auto GetScript() -> std::shared_ptr< T > {
+      auto it = std::find_if(
+          _scripts.begin(), _scripts.end(),
+          [id = GetScriptTypeID< T >()](const auto& item) { return item->GetTypeID() == id; });
+      if (it == _scripts.end()) {
+        return nullptr;
+      }
+      return std::static_pointer_cast< T >(*it);
+    }
 
   private:
     auto Entity() -> std::shared_ptr< ECS::Entity >;

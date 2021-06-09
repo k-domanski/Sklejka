@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <App/KeyCodes/KeyCode.h>
 
 namespace Engine::ECS {
   class Entity;
@@ -9,6 +10,15 @@ namespace Engine::Components {
 }
 
 namespace Engine {
+  typedef int ScriptTypeID;
+  auto GetNextScriptTypeID() -> int;
+
+  template< typename T >
+  auto GetScriptTypeID() {
+    const static int id = GetNextScriptTypeID();
+    return id;
+  }
+
   class IScript {
     friend class NativeScript;
 
@@ -22,6 +32,7 @@ namespace Engine {
         -> void                                                   = 0;
     auto virtual Priority() -> int                                = 0;
     auto virtual Entity() const -> std::shared_ptr< ECS::Entity > = 0;
+    auto virtual GetTypeID() const -> ScriptTypeID                = 0;
 
   private:
     auto virtual Entity(const std::shared_ptr< ECS::Entity >& entity) -> void = 0;

@@ -1,9 +1,10 @@
 #pragma once
 #include "ECS/System.h"
 #include "GL/Shader.h"
+#include "Renderer/Mesh.h"
+#include "Renderer/PingPongBuffer.h"
 
-namespace Engine::Systems
-{
+namespace Engine::Systems {
   class GUISystem : public Engine::ECS::System {
   public:
     GUISystem();
@@ -12,6 +13,7 @@ namespace Engine::Systems
     auto HandleMousePressed(glm::vec2 mousePosition) -> void;
     auto HandleMouseRelease(glm::vec2 mousePosition) -> void;
     auto BreakChecking(bool breakChecking) -> void;
+
   private:
     std::shared_ptr< Engine::GL::Shader > _textShader;
     std::shared_ptr< Engine::GL::Shader > _imageShader;
@@ -22,4 +24,4 @@ namespace Engine::Systems
     bool _DPADDownLastFrame;
     bool _gamepadALastFrame;
   };
-}
+}  // namespace Engine::Systems

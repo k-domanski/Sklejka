@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine.h>
 
-class PlayerController : public Engine::Script {
+class PlayerController : public Engine::Script<PlayerController> {
 private:
   std::shared_ptr< Engine::Transform > _transform;
 

@@ -21,6 +21,9 @@ out vec4 out_color;
 uniform samplerCube u_Skybox;
 
 void main() {
-  out_color = gamma2linear(texture(u_Skybox, direction));
+  vec4 texel = gamma2linear(texture(u_Skybox, direction));
+  texel = (texel - 0.5f) * u_Contrast + 0.5f;
+  texel = texel + vec4(u_Brightness, u_Brightness, u_Brightness, 0.0f);
+  out_color = vec4(GammaCompress(texel.rgb, u_Gamma), texel.a);
 }
 #endshader

@@ -13,21 +13,7 @@ FlightTimer::FlightTimer(): Script(), _time(0.0f), _precision(2) {
   _text->Offset(glm::vec2(600.0f, 0.0f));
   _textTransform = entity->AddComponent< Engine::Transform >();
 
-  _button = std::make_shared< Engine::Renderer::Button >();
-  _button->Size(glm::vec2(150.0f, 50.0f));
-  _button->TextOffset(glm::vec2(-80.0f, -20.0f));
-  _button->PressedColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));
-  _button->Color(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
-  _button->TextColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-  _button->HandleSize(glm::vec2(150.0f, 50.0f));
-  //_button->text().Size(1);
-  _button->text("Reset time");
-
-  _button->OnPress([this]() { this->ResetTimer(); });
-
   renderer->GetElements().push_back(_text);
-  renderer->GetElements().push_back(_button);
-  renderer->GetButtons().push_back(_button);
 }
 
 auto FlightTimer::OnCreate() -> void {
@@ -59,4 +45,8 @@ auto FlightTimer::CanCount(bool value) -> void {
 
 auto FlightTimer::ResetTimer() -> void {
   _time = 0;
+}
+
+auto FlightTimer::GetTime() -> float {
+  return _time;
 }

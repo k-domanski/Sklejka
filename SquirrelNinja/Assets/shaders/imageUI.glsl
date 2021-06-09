@@ -23,7 +23,10 @@ in vec2 v_uv;
 out vec4 out_color;
 
 void main() {
-  vec4 texel = texture(u_MainTexture, v_uv);
-  out_color  = texel * u_Color;
+  vec4 texel = gamma2linear(texture(u_MainTexture, v_uv));
+  texel = (texel - 0.5f) * u_Contrast + 0.5f;
+  texel = texel + vec4(u_Brightness, u_Brightness, u_Brightness, 0.0f);
+  vec4 res = texel * u_Color;
+  out_color  = vec4(GammaCompress(res.rgb, u_Gamma), res.a);
 }
 #endshader
