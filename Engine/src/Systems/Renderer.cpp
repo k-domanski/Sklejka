@@ -33,6 +33,10 @@ namespace Engine::Systems {
     _lightSystem  = ECS::EntityManager::GetInstance().GetSystem< LightSystem >();
     /* -=-=-=- */
 
+    /* Animation */
+    m_JointBuffer.BindToSlot(GL::UniformBlock::JointData);
+    /* -=-=-=-=- */
+
     /* Skybox */
     _cube    = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Cube);
     _cubemap = AssetManager::GetCubemap("./Assets/skyboxes/forest");
@@ -282,8 +286,8 @@ namespace Engine::Systems {
     } else {
       entity_list = &_entities;
     }
-    for (auto& entityID : *entity_list) {
-      auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
+    for (auto& entity : *entity_list) {
+      auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entity);
       auto material      = mesh_renderer->GetMaterial();
       auto model         = mesh_renderer->GetModel();
       std::shared_ptr< Mesh > mesh;
@@ -297,7 +301,7 @@ namespace Engine::Systems {
         material = _debugMaterial;
       }
       auto shader          = material->GetShader();
-      const auto transform = ECS::EntityManager::GetComponent< Transform >(entityID);
+      const auto transform = ECS::EntityManager::GetComponent< Transform >(entity);
 
       _transformUniformData.model     = transform->GetWorldMatrix();
       _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
@@ -315,11 +319,14 @@ namespace Engine::Systems {
       material->Use();
       mesh->Use();
 
-      // HACK: Assume for now that under slot 1 is camera uniform buffer
-      // TODO: Get the actual slot number from somewhere, somehow :)
       _transformUniformBuffer.SetData(_transformUniformData);
-
       shader->SetValue("u_ShadowDepthTexture", (int)_shadowMapSlot);
+
+      if (entity->HasComponent< Animator >()) {
+        const auto& animator = entity->GetComponent< Animator >();
+        m_JointBuffer.SetData(animator->GetJointData());
+      }
+
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
     }
 

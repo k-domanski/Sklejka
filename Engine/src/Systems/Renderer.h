@@ -45,6 +45,10 @@ namespace Engine::Systems {
     std::shared_ptr< LightSystem > _lightSystem;
     /* -=-=-=- */
 
+    /* Animation */
+    GL::JointsUniformBuffer m_JointBuffer;
+    /* -=-=-=-=- */
+
     /* Skybox */
     uint32_t _skyboxSlot{7u};
     std::shared_ptr< Engine::Renderer::Mesh > _cube;

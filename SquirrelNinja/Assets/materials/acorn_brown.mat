@@ -1,0 +1,15 @@
+{
+    "assetID": "5475075590469868524",
+    "diffuseFilepath": "Assets/textures/acorn_brown.png",
+    "mainColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "metalness": 0.0,
+    "metalnessMap": "",
+    "roughness": 1.0,
+    "roughnessMap": "",
+    "shaderFilepath": "Assets/shaders/default.glsl"
+}

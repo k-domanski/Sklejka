@@ -1,15 +1,15 @@
 {
     "assetID": "3022815089797335798",
-    "diffuseFilepath": "",
+    "diffuseFilepath": "Assets/textures/rock-01.png",
     "mainColor": [
-        0.3614457845687866,
-        0.33548152446746826,
-        0.29757586121559143,
+        1.0,
+        0.9363284111022949,
+        0.8433734774589539,
         1.0
     ],
-    "metalness": 0.0,
+    "metalness": 0.20499999821186066,
     "metalnessMap": "",
-    "roughness": 0.0,
-    "roughnessMap": "",
+    "roughness": 1.0,
+    "roughnessMap": "Assets/textures/rock-03.png",
     "shaderFilepath": "Assets/shaders/default.glsl"
 }

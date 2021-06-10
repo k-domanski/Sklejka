@@ -1,0 +1,173 @@
+{
+    "sceneID": 17676946412471755691
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "collisionLayer": 4294967295,
+    "entityID": "4001115823025195888",
+    "entityName": "Weasle",
+    "layer": 1,
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -5.900000095367432
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "Assets/materials/weasle.mat",
+    "meshIndex": 0,
+    "model": "Assets/models/weasel_jet.fbx"
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+  "componentType": "animator",
+  "model": "Assets/models/weasel_jet.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "collisionLayer": 4294967295,
+    "entityID": "8882477608515092270",
+    "entityName": "Light",
+    "layer": 1,
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": -0.0791328027844429,
+        "x": -0.5666471123695374,
+        "y": -0.11343420296907425,
+        "z": 0.8122695088386536
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "ambient": {
+        "x": 0.019607843831181526,
+        "y": 0.019607843831181526,
+        "z": 0.019607843831181526
+    },
+    "componentType": "directionalLight",
+    "diffuse": {
+        "x": 1.0,
+        "y": 0.9999899864196777,
+        "z": 0.9999899864196777
+    },
+    "flags": 3,
+    "intensity": 1.0,
+    "shadowBias": 0.0,
+    "specular": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "collisionLayer": 4294967295,
+    "entityID": "701776780730303865",
+    "entityName": "Squirrel",
+    "layer": 1,
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "Assets/materials/animation.mat",
+    "meshIndex": 0,
+    "model": "Assets/models/squirrel_anim_idle.fbx"
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+  "componentType": "animator",
+  "model": "Assets/models/squirrel_anim_idle.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "collisionLayer": 4294967295,
+    "entityID": "9339381648005567254",
+    "entityName": "Jet_Pack",
+    "layer": 1,
+    "parentID": 4001115823025195888
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "Assets/materials/weasle_jet.mat",
+    "meshIndex": 1,
+    "model": "Assets/models/weasel_jet.fbx"
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+  "componentType": "animator",
+  "model": "Assets/models/weasel_jet.fbx"
+}

@@ -26,9 +26,9 @@
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "./\\materials\\default_color.mat",
+    "material": "materials/acorn_brown.mat",
     "meshIndex": 0,
-    "model": "./\\models\\acorn.FBX"
+    "model": "models/acorn.fbx"
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
