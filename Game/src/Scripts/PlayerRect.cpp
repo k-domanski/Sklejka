@@ -13,7 +13,7 @@ PlayerRect::PlayerRect(const std::shared_ptr< PlayerController >& player_control
 auto PlayerRect::OnCreate() -> void {
   _transform      = Entity()->GetComponent< Engine::Transform >();
   _nodeSystem     = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
-  _currentNode    = _nodeSystem->GetNode(1);
+  _currentNode    = _nodeSystem->GetNode(1, NodeTag::Player);
   _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   _playerSettings = GameManager::GetPlayerSettings();
   _gameSettings   = GameManager::GetGameSettings();
@@ -142,8 +142,8 @@ auto PlayerRect::HandleModelRotation(float roll, float deltaTime, glm::vec3 axis
     } else {
       auto currentRot = _modelTransform->Rotation();
       auto desiredRot =
-          glm::quat(1.f, axis.x == 0.f ? currentRot.x : -0.11f,
-                    axis.y == 0.f ? currentRot.y : 0, axis.z == 0.f ? currentRot.z : 0);
+          glm::quat(1.f, axis.x == 0.f ? currentRot.x : -0.11f, axis.y == 0.f ? currentRot.y : 0,
+                    axis.z == 0.f ? currentRot.z : 0);
 
       _modelTransform->Rotation(glm::lerp(currentRot, desiredRot, 0.05f));
     }
@@ -154,9 +154,9 @@ auto PlayerRect::LerpResetRotation() -> void {
   auto currentRot = _modelTransform->Rotation();
   auto desiredRot = glm::quat(1.f, 0.f, 0.f, currentRot.z);
 
-  //LOG_DEBUG("x: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).x));
-  //LOG_DEBUG("y: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).y));
-  //LOG_DEBUG("w: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).w));
+  // LOG_DEBUG("x: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).x));
+  // LOG_DEBUG("y: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).y));
+  // LOG_DEBUG("w: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).w));
 
   _modelTransform->Rotation(glm::lerp(currentRot, desiredRot, 0.1f));
 }
@@ -169,7 +169,7 @@ auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
   if (magnitude2 <= (min_mag * min_mag)) {
     // if (_currentNode->NextIndex() == 3)
     // GameManager::ShowLevelSumUp(10.0f, true);
-    _currentNode   = _nodeSystem->GetNode(_currentNode->NextIndex());
+    _currentNode   = _nodeSystem->GetNode(_currentNode->NextIndex(), NodeTag::Player);
     _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   }
   return _currentNode;

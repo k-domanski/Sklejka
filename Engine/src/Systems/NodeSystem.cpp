@@ -22,10 +22,10 @@ namespace Engine {
     });
   }
 
-  auto NodeSystem::GetNode(int index) -> std::shared_ptr< Node > {
+  auto NodeSystem::GetNode(int index, NodeTag tag) -> std::shared_ptr< Node > {
     for (auto id : _entities) {
       auto& node = ECS::EntityManager::GetComponent< Engine::Node >(id);
-      if (node->Index() == index) {
+      if (node->Tag() == tag && node->Index() == index) {
         return node;
       }
     }

@@ -41,7 +41,9 @@ namespace Engine::ECS {
     auto AddComponent(std::shared_ptr< Entity >& entity, Args&&... args) -> std::shared_ptr< T > {
       auto compTypeID = GetComponentTypeID< T >();
       auto it         = entity->_signature->find(compTypeID);
-      assert(it == entity->_signature->end());
+      if (it != entity->_signature->end()) {
+        return entity->GetComponent< T >();
+      }
       entity->_signature->insert(compTypeID);
 
       // TODO: Create Component Instance

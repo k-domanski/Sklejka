@@ -1,9 +1,9 @@
 {
     "assetID": "15902327985924607021",
-    "diffuseFilepath": "",
+    "diffuseFilepath": "Assets/textures/grass.png",
     "mainColor": [
-        0.13840830326080322,
-        0.5882353186607361,
+        0.23809540271759033,
+        1.0,
         0.0,
         1.0
     ],

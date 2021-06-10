@@ -8,6 +8,6 @@ namespace Engine {
     NodeSystem();
     void Update(float deltaTime) override;
     auto AddEntity(const std::shared_ptr< ECS::Entity >& entity) -> void override;
-    auto GetNode(int index) -> std::shared_ptr< Node >;
+    auto GetNode(int index, Engine::NodeTag tag) -> std::shared_ptr< Node >;
   };
 }  // namespace Engine

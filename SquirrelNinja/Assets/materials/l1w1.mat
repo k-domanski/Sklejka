@@ -1,10 +1,10 @@
 {
     "assetID": "10724556321433530213",
-    "diffuseFilepath": "Assets/textures/rock-03.png",
+    "diffuseFilepath": "Assets/textures/rocks_tex.png",
     "mainColor": [
-        0.6907630562782288,
-        0.6907607913017273,
-        0.6907561421394348,
+        0.650602400302887,
+        0.6506004333496094,
+        0.6505959033966064,
         1.0
     ],
     "metalness": 0.0,

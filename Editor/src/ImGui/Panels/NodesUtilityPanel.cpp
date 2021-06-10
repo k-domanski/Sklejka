@@ -12,6 +12,7 @@ namespace Editor {
   }
   auto NodesUtilityPanel::OnImGuiRender() -> void {
     using Engine::Node;
+    using Engine::NodeTag;
     using Engine::Components::MeshRenderer;
     using Engine::ECS::Entity;
 
@@ -20,16 +21,17 @@ namespace Editor {
     if (_scene != nullptr) {
       const auto& entities = _scene->Entities();
       const std::regex node_regex("[Nn]ode_[0-9]*_[0-9]*");
+      const std::regex boss_regex("[Bb]oss_[0-9]*_[0-9]*");
       const std::regex number_regex("[0-9]+");
 
-      if (ImGui::Button("Process")) {
+      const auto Process = [&entities, &number_regex](const std::regex& type, NodeTag tag) {
         std::vector< std::shared_ptr< Entity > > nodes;
         int count = 0;
         for (auto& entity : entities) {
-          auto has_node = entity->HasComponent< Node >();
-          if (has_node || !std::regex_match(entity->Name(), node_regex)) {
+          if (!std::regex_match(entity->Name(), type)) {
             continue;
           }
+
           const auto& name = entity->Name();
           std::vector< std::string > numbers(
               std::sregex_token_iterator(name.begin(), name.end(), number_regex),
@@ -44,13 +46,18 @@ namespace Editor {
           auto node_comp = entity->AddComponent< Node >();
           node_comp->Index(self_index);
           node_comp->NextIndex(next_index);
+          node_comp->Tag(tag);
           ++count;
 
           if (entity->HasComponent< MeshRenderer >()) {
             entity->RemoveComponent< MeshRenderer >();
           }
         }
-        LOG_DEBUG("Added {} Nodes", count);
+      };
+
+      if (ImGui::Button("Process")) {
+        Process(node_regex, NodeTag::Player);
+        Process(boss_regex, NodeTag::Boss);
       }
 
       /* Display matching entities */

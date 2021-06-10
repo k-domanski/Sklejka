@@ -84,7 +84,7 @@ namespace Editor {
     }
   }
   auto LevelProcessPanel::ProcessBell(std::shared_ptr< Entity >& entity) -> void {
-    entity->layer.Set(LayerMask::Flag::Default);
+    entity->layer.Set(LayerMask::Flag::Default | LayerMask::Flag::Acorn);
     entity->collisionLayer.Set(LayerMask::Flag::Player);
     auto collider       = entity->AddComponent< Collider >();
     collider->Center    = {0.0f, 0.0f, 5.0f};

@@ -206,10 +206,14 @@ auto GameManager::CreatePlayer() -> void {
   { /* Player Rect */
     auto transform = player_rect->AddComponent< Transform >();
     /* Skip 1st node */
-    auto n1_pos =
-        node_system->GetNode(0)->GetEntity()->GetComponent< Transform >()->WorldPosition();
-    auto n2_pos =
-        node_system->GetNode(1)->GetEntity()->GetComponent< Transform >()->WorldPosition();
+    auto n1_pos = node_system->GetNode(0, NodeTag::Player)
+                      ->GetEntity()
+                      ->GetComponent< Transform >()
+                      ->WorldPosition();
+    auto n2_pos = node_system->GetNode(1, NodeTag::Player)
+                      ->GetEntity()
+                      ->GetComponent< Transform >()
+                      ->WorldPosition();
     transform->Position(n1_pos);
     transform->Scale(glm::vec3(0.9f));
     transform->Forward(glm::normalize(n2_pos - n1_pos));

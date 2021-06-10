@@ -1,6 +1,8 @@
 {
+    "collisionLayer": 1,
     "entityID": "18199893111962970731",
     "entityName": "Acorn",
+    "layer": 8,
     "parentID": 0
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
