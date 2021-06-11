@@ -53,7 +53,6 @@ private:
   auto HandleRotation(float roll, float deltaTime, glm::vec3 axis = {0.0f, 0.0f, -1.0f}) -> void;
   auto HandleModelRotation(float roll, float deltaTime, glm::vec3 axis = {0.0f, 0.0f, -1.0f})
       -> void;
-  auto LerpResetRotation() -> void;
   auto ModelRotation(float vertical, float horizontal, float deltaTime) -> void;
   auto GetNode() -> std::shared_ptr< Engine::Node >;
 };

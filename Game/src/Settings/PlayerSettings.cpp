@@ -36,6 +36,14 @@ auto PlayerSettings::MoveRotationSpeed(float speed) noexcept -> float {
   return _moveRotationSpeed = speed;
 }
 
+auto PlayerSettings::MaxMoveRotation() const noexcept -> float {
+  return _maxMoveRotation;
+}
+
+auto PlayerSettings::MaxMoveRotation(float maxRotation) noexcept -> float {
+  return _maxMoveRotation = maxRotation;
+}
+
 auto PlayerSettings::RollSpeed() const noexcept -> float {
   return _rollSpeed;
 }
