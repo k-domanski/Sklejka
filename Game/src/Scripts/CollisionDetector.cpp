@@ -21,6 +21,7 @@ auto CollisionDetector::OnCollisionEnter(const std::shared_ptr< Collider >& coll
     if (std::regex_match(entity->Name(), bell_rx)) {
       if (_timeout <= 0.0f) {
         _timeout = _timeoutDuration;
+        GameManager::GetSoundEngine()->play2D("./Assets/sounds/bell.wav");
         GameManager::PlayerSpeedUp();
       }
     } else {
