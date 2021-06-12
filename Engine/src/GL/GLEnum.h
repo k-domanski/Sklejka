@@ -3,7 +3,7 @@
 
 namespace Engine::GL {
   BETTER_ENUM(__ShaderType, GLenum, VertexShader = GL_VERTEX_SHADER,
-              FragmentShader = GL_FRAGMENT_SHADER);
+              GeometryShader = GL_GEOMETRY_SHADER, FragmentShader = GL_FRAGMENT_SHADER);
   typedef __ShaderType ShaderType;
 
   BETTER_ENUM(__Primitive, GLenum, Points = GL_POINTS, LineStrip = GL_LINE_STRIP, Lines = GL_LINES,

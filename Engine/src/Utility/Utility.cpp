@@ -202,6 +202,8 @@ auto Engine::Utility::ParseShaderSource(std::string source, const std::string& f
     auto type_str = GetNextWord(source, sh_begin[index] + begin_tag_len);
     if (type_str == "vertex") {
       sh_types.emplace_back(GL::ShaderType::VertexShader);
+    } else if (type_str == "geometry") {
+      sh_types.emplace_back(GL::ShaderType::GeometryShader);
     } else if (type_str == "fragment") {
       sh_types.emplace_back(GL::ShaderType::FragmentShader);
     } else {
