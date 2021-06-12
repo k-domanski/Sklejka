@@ -23,7 +23,7 @@ MainMenu::MainMenu() {
   stbi_set_flip_vertically_on_load(false);
   transform3->Position(glm::vec3(window_size * 0.5f, 0.0f));
   uiRenderer3->AddElement(_image);
-
+  stbi_set_flip_vertically_on_load(true);
   auto entity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   auto uiRenderer = entity->AddComponent< Engine::Components::UIRenderer >();
   auto transform  = entity->AddComponent< Engine::Transform >();
@@ -32,13 +32,14 @@ MainMenu::MainMenu() {
   _exitButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
   _exitButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   _exitButton->OnPress([]() { std::exit(0); });
-  _exitButton->text("Exit");
+  _exitButton->text("");
   _exitButton->TextColor(glm::vec4(0, 0, 0, 1));
   _exitButton->TextOffset(glm::vec2(-35.0f, -15.0f));
-  _exitButton->Size(glm::vec2(300.0f, 100.0f));
-  _exitButton->HandleSize(glm::vec2(300.0f, 100.0f));
+  _exitButton->Size(glm::vec2(231.0f, 65.0f));
+  _exitButton->HandleSize(glm::vec2(231.0f, 65.0f));
   // transform->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f - 150.0f, 0.0f));
   transform->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f - 325.0f, 0.0f));
+  _exitButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/exit.png"));
 
   _startButton = std::make_shared< Engine::Renderer::Button >();
   //_startButton->Color(glm::vec4(1.0f, 1.0f, 1.0f, 0.5f));
@@ -46,38 +47,41 @@ MainMenu::MainMenu() {
   _startButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
   _startButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   _startButton->OnPress([]() { GameManager::SwitchScene(SceneName::LevelSelection); });
-  _startButton->text("Start");
+  _startButton->text("");
   _startButton->TextColor(glm::vec4(0, 0, 0, 1));
   _startButton->TextOffset(glm::vec2(-45.0f, -15.0f));
-  _startButton->Size(glm::vec2(300.0f, 100.0f));
-  _startButton->HandleSize(glm::vec2(300.0f, 100.0f));
+  _startButton->Size(glm::vec2(231.0f, 65.0f));
+  _startButton->HandleSize(glm::vec2(231.0f, 65.0f));
   // transform2->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f + 50.0f, 0.0f));
   _startButton->Offset(glm::vec2(0.0f, 375.0f));
+  _startButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/start.png"));
 
   _optionsButton = std::make_shared< Engine::Renderer::Button >();
   _optionsButton->SelectedColor(glm::vec4(1.0f));
   _optionsButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
   _optionsButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-  _optionsButton->OnPress([]() { GameManager::SwitchScene(SceneName::Options); });
-  _optionsButton->text("Options");
+  _optionsButton->OnPress([this]() { GameManager::SwitchScene(SceneName::Options); });
+  _optionsButton->text("");
   _optionsButton->TextColor(glm::vec4(0, 0, 0, 1));
   _optionsButton->TextOffset(glm::vec2(-45.0f, -15.0f));
-  _optionsButton->Size(glm::vec2(300.0f, 100.0f));
-  _optionsButton->HandleSize(glm::vec2(300.0f, 100.0f));
+  _optionsButton->Size(glm::vec2(231.0f, 65.0f));
+  _optionsButton->HandleSize(glm::vec2(231.0f, 65.0f));
   _optionsButton->Offset(glm::vec2(0.0f, 250.0f));
+  _optionsButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/options.png"));
 
   _creditsButton = std::make_shared< Engine::Renderer::Button >();
   _creditsButton->SelectedColor(glm::vec4(1.0f));
   _creditsButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
   _creditsButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   _creditsButton->OnPress([]() { GameManager::SwitchScene(SceneName::LevelSelection); });
-  _creditsButton->text("Credits");
+  _creditsButton->text("");
   _creditsButton->TextColor(glm::vec4(0, 0, 0, 1));
   _creditsButton->TextOffset(glm::vec2(-45.0f, -15.0f));
-  _creditsButton->Size(glm::vec2(300.0f, 100.0f));
-  _creditsButton->HandleSize(glm::vec2(300.0f, 100.0f));
+  _creditsButton->Size(glm::vec2(231.0f, 65.0f));
+  _creditsButton->HandleSize(glm::vec2(231.0f, 65.0f));
   _creditsButton->Offset(glm::vec2(0.0f, 125.0f));
-
+  _creditsButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/credits.png"));
+  stbi_set_flip_vertically_on_load(false);
   uiRenderer->AddButton(_startButton);
   uiRenderer->AddElement(_startButton);
   uiRenderer->AddButton(_optionsButton);

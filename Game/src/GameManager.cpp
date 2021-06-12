@@ -111,6 +111,7 @@ auto GameManager::Update(float deltaTime) -> void {
 
   // test pause menu:
   if (Engine::Input::IsKeyPressed(Engine::Key::ESCAPE)) {
+    if (_instance->_pauseMenu != nullptr)
     _instance->_pauseMenu->Show();
   }
 }
