@@ -75,6 +75,51 @@ namespace Engine::Utility {
     }
   };
 
+  class QuatLerp {
+  private:
+    glm::quat _start, _end, _value;
+    float _duration, _time{0.0f};
+
+  public:
+    QuatLerp() = default;
+    QuatLerp(glm::quat start, glm::quat end, float duration); /*
+        : _start(start), _end(end), _duration(duration), _time(0.0f) {
+    }*/
+    auto Set(glm::quat start, glm::quat end, float duration) -> void; /* {
+      _start    = start;
+      _end      = end;
+      _duration = duration;
+      _time     = 0.0f;
+    }*/
+    auto Update(float deltaTime) -> glm::quat;
+    /* {
+      auto t = glm::clamp(_time / _duration, 0.0f, 1.0f);
+      _time += deltaTime;
+      _value = glm::slerp(_start, _end, t);
+      return _value;
+    }*/
+    auto Reset() -> void;
+    /*{
+      _time = 0.0f;
+    }*/
+    auto Finished() -> bool;
+    /*{
+      return (_duration - _time) <= 0.0f;
+    }*/
+    auto Start() -> glm::quat;
+    /*{
+      return _start;
+    }*/
+    auto End() -> glm::quat;
+    /*{
+      return _end;
+    }*/
+    auto Value() -> glm::quat;
+    /*{
+      return _value;
+    }*/
+  };
+
   struct ShaderParseResult {
     bool success = false;
     std::string version;

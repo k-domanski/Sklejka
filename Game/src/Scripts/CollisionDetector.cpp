@@ -14,14 +14,19 @@ auto CollisionDetector::OnKeyPressed(Engine::Key key) -> void {
 }
 
 auto CollisionDetector::OnCollisionEnter(const std::shared_ptr< Collider >& collider) -> void {
-  auto entity = Engine::ECS::EntityManager::GetInstance().GetEntity(collider->GetEntityID());
+  auto entity = collider->GetEntity();
   if (entity != nullptr) {
     LOG_INFO("Collision detected: {}", entity->Name());
     const std::regex bell_rx("BELL.*");
     if (std::regex_match(entity->Name(), bell_rx)) {
+      if (Entity()->Name() == "Player_Model") {
+        return;
+      }
       if (_timeout <= 0.0f) {
         _timeout = _timeoutDuration;
+        GameManager::GetSoundEngine()->play2D("./Assets/sounds/bell.wav");
         GameManager::PlayerSpeedUp();
+        Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
       }
     } else {
       /* Player fucking dies */

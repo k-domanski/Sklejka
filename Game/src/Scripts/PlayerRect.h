@@ -4,6 +4,7 @@
 #include <Settings/PlayerSettings.h>
 
 #include "Settings/GameSettings.h"
+#include <Utility/Utility.h>
 
 class PlayerRect : public Engine::Script< PlayerRect > {
 private:
@@ -18,6 +19,15 @@ private:
   std::shared_ptr< GameSettings > _gameSettings;
   bool _canMove;
   bool _enabled = true;
+
+  /* Lerp */
+  glm::quat _qBase, _qIden, _qUp, _qDown, _qLeft, _qRight, _qLRoll, _qRRoll;
+  float _vRad, _hRad;
+  float _lerpTime;
+  Engine::Utility::QuatLerp _hLerp;
+  Engine::Utility::QuatLerp _vLerp;
+  Engine::Utility::QuatLerp _rLerp;
+  /* -=-=- */
 
   /*glm::vec2 _size{4, 4};
   float _speed           = 3.0f;
@@ -43,6 +53,6 @@ private:
   auto HandleRotation(float roll, float deltaTime, glm::vec3 axis = {0.0f, 0.0f, -1.0f}) -> void;
   auto HandleModelRotation(float roll, float deltaTime, glm::vec3 axis = {0.0f, 0.0f, -1.0f})
       -> void;
-  auto LerpResetRotation() -> void;
+  auto ModelRotation(float vertical, float horizontal, float deltaTime) -> void;
   auto GetNode() -> std::shared_ptr< Engine::Node >;
 };

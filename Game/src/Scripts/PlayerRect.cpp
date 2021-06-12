@@ -17,6 +17,20 @@ auto PlayerRect::OnCreate() -> void {
   _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   _playerSettings = GameManager::GetPlayerSettings();
   _gameSettings   = GameManager::GetGameSettings();
+
+  _qBase    = _modelTransform->Rotation();
+  _vRad     = glm::radians(10.0f); /* Param this */
+  _hRad     = glm::radians(10.0f);
+  _lerpTime = 0.25f; /* Param this */
+
+  _qIden  = glm::quat({0.0f, 0.0f, 0.0f});
+  _qUp    = glm::quat({_vRad, 0.0f, 0.0f});
+  _qDown  = glm::inverse(_qUp);
+  _qLeft  = glm::quat({0.0f, _hRad, 0.0f});
+  _qRight = glm::inverse(_qLeft);
+
+  _vLerp.Set(_qIden, _qIden, 1.0f);
+  _hLerp.Set(_qIden, _qIden, 1.0f);
 }
 
 auto PlayerRect::Update(float deltaTime) -> void {
@@ -29,6 +43,7 @@ auto PlayerRect::Update(float deltaTime) -> void {
   SeekTarget(deltaTime);
   HandleMove(vertical_move, horizontal_move, deltaTime);
   HandleRotation(roll, deltaTime);
+  ModelRotation(vertical_move, horizontal_move, deltaTime);
 }
 
 auto PlayerRect::OnKeyPressed(Engine::Key key) -> void {
@@ -110,7 +125,7 @@ auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -
     auto rotation_delta = (move_delta / deltaTime) * _playerSettings->MoveRotationSpeed() * -1.f;
     // auto rotation = _playerController->Transform()->Rotation();
 
-    if (new_pos.x < half_size.x && new_pos.x > -half_size.x)
+    /*if (new_pos.x < half_size.x && new_pos.x > -half_size.x)
       HandleModelRotation(rotation_delta.x, deltaTime, {0.f, 1.f, 0.f});
     else
       HandleModelRotation(0.f, deltaTime, {0.f, 1.f, 0.f});
@@ -118,7 +133,7 @@ auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -
     if (new_pos.y < half_size.y && new_pos.y > -half_size.y)
       HandleModelRotation(rotation_delta.y, deltaTime, {1.f, 0.f, 0.f});
     else
-      HandleModelRotation(0.f, deltaTime, {1.f, 0.f, 0.f});
+      HandleModelRotation(0.f, deltaTime, {1.f, 0.f, 0.f});*/
   }
 
   _transform->Position(_transform->Position()
@@ -128,15 +143,16 @@ auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -
 
 auto PlayerRect::HandleRotation(float roll, float deltaTime, glm::vec3 axis) -> void {
   if (_canMove) {
-    _playerController->Transform()->Rotate(roll * deltaTime, axis);
+    _playerController->Transform()->Rotate(roll * _playerSettings->RollSpeed() * deltaTime, axis);
   }
 }
 
 auto PlayerRect::HandleModelRotation(float roll, float deltaTime, glm::vec3 axis) -> void {
   if (_canMove) {
     if (roll != 0.f) {
-      if ((abs(_modelTransform->Rotation().x) < 0.22f && axis.x != 0.f)
-          || (abs(_modelTransform->Rotation().y) < 0.22f && axis.y != 0.f)) {
+      if ((abs(_modelTransform->Rotation().x) < _playerSettings->MaxMoveRotation() && axis.x != 0.f)
+          || (abs(_modelTransform->Rotation().y) < _playerSettings->MaxMoveRotation()
+              && axis.y != 0.f)) {
         _modelTransform->Rotate(roll * deltaTime, axis);
       }
     } else {
@@ -150,15 +166,29 @@ auto PlayerRect::HandleModelRotation(float roll, float deltaTime, glm::vec3 axis
   }
 }
 
-auto PlayerRect::LerpResetRotation() -> void {
-  auto currentRot = _modelTransform->Rotation();
-  auto desiredRot = glm::quat(1.f, 0.f, 0.f, currentRot.z);
+auto PlayerRect::ModelRotation(float vertical, float horizontal, float deltaTime) -> void {
+  auto v_target = (vertical > 0 ? _qUp : (vertical < 0 ? _qDown : _qIden));
+  auto h_target = (horizontal > 0 ? _qRight : (horizontal < 0 ? _qLeft : _qIden));
 
-  // LOG_DEBUG("x: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).x));
-  // LOG_DEBUG("y: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).y));
-  // LOG_DEBUG("w: " + std::to_string(glm::lerp(currentRot, desiredRot, 0.1f).w));
+  if (_vLerp.End() != v_target) {
+    /* Get ratio to scale lerp time up */
+    auto v_rad = glm::pitch(_vLerp.Value());
+    auto t_rad = glm::pitch(v_target);
+    auto ratio = glm::abs(v_rad - t_rad) / _vRad;
+    ratio      = glm::max(0.001f, ratio);
 
-  _modelTransform->Rotation(glm::lerp(currentRot, desiredRot, 0.1f));
+    _vLerp.Set(_vLerp.Value(), v_target, _lerpTime * ratio);
+  }
+  if (_hLerp.End() != h_target) {
+    /* Get ratio to scale lerp time up */
+    auto h_rad = glm::yaw(_hLerp.Value());
+    auto t_rad = glm::yaw(h_target);
+    auto ratio = glm::abs(h_rad - t_rad) / _hRad;
+    ratio      = glm::max(0.001f, ratio);
+    _hLerp.Set(_hLerp.Value(), h_target, _lerpTime * ratio);
+  }
+  auto rotation = _qBase * _vLerp.Update(deltaTime) * _hLerp.Update(deltaTime);
+  _modelTransform->Rotation(rotation);
 }
 
 auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {

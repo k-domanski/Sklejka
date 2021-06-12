@@ -233,7 +233,7 @@ auto GameManager::CreatePlayer() -> void {
     mesh_renderer->SetModel(AssetManager::GetModel("./models/squirrel_anim_idle.fbx"));
     mesh_renderer->SetMaterial(AssetManager::GetMaterial("./materials/animation.mat"));
     auto collider       = player_model->AddComponent< Collider >();
-    collider->Size      = {1.2f, 0.35f, 1.9f};
+    collider->Size      = {1.1f, 0.10f, 1.4f};
     collider->Center    = {0.0f, 0.0f, -0.35f};
     collider->Type      = Components::ColliderType::Box;
     collider->IsTrigger = true;
@@ -264,8 +264,8 @@ auto GameManager::CreatePlayer() -> void {
   /* -=-=-=-=-=- */
 
   /* Finalize */
-  player_model->layer.Set(LayerMask::Flag::Player);
-  player_model->collisionLayer.Set(LayerMask::Flag::Default);
+  player_model->layer.SetState(LayerMask::Flag::Player);
+  player_model->collisionLayer.SetState(LayerMask::Flag::Default);
   _player     = player;
   _playerRect = player_rect;
   _model      = player_model;
