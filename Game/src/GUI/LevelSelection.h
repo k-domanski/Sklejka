@@ -22,8 +22,8 @@ private:
   std::shared_ptr< Engine::Scene > _scene;
   std::shared_ptr< Engine::Renderer::Button > _lvl1Button;
   std::shared_ptr< Engine::Renderer::Button > _returnButton;
-  std::shared_ptr< Engine::Renderer::Text > _title;
+  std::shared_ptr< Engine::Renderer::Image > _lvl1Image;
+  std::shared_ptr< Engine::Renderer::Image > _titleImage;
   std::shared_ptr< Engine::Renderer::Image > _background;
-  std::shared_ptr< Engine::Renderer::Image > _titleBackground;
   std::shared_ptr< Engine::Renderer::Image > _buttonBackground;
 };
