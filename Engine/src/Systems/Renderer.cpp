@@ -12,9 +12,15 @@
 #include <Systems/Physics.h>
 #include "Components/Animator.h"
 #include <Components/ParticleEmitter.h>
+#include <Systems/SceneGraph.h>
+#include <regex>
+#include "glm/gtx/matrix_decompose.hpp"
 
 namespace Engine::Systems {
   using namespace GL;
+  using Engine::Components::MeshRenderer;
+  using Engine::ECS::EntityID;
+  using Engine::Renderer::Material;
   using Engine::Renderer::PingPongBuffer;
   Renderer::Renderer() {
     AddSignature< Components::MeshRenderer >();
@@ -80,6 +86,10 @@ namespace Engine::Systems {
     _fishEyeShader   = AssetManager::GetShader("./shaders/fish_eye.glsl");
     _finalPassShader = AssetManager::GetShader("./shaders/final_pass.glsl");
     /* -=-=-=-=-=-=-=- */
+
+    /* Bell Outline */
+    _bellOutlineMat = AssetManager::GetMaterial("Assets/materials/bell_outline.mat");
+    /* -=-=-=-=-=-=- */
 
     /* DEBUG */
     _debugMaterial = AssetManager::GetMaterial("./materials/_error_.mat");
@@ -282,8 +292,12 @@ namespace Engine::Systems {
 #endif
 
     // Geometry
+    // GL::Context::StencilTest(true);
+    //_pingPongBuffer->Back()->Bind(FramebufferTarget::ReadWrite);
+    // GL::Context::ClearBuffers(GL::BufferBit::Stencil);
+
     _pingPongBuffer->Bind(FramebufferTarget::ReadWrite);
-    GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth);
+    GL::Context::ClearBuffers(GL::BufferBit::Color | GL::BufferBit::Depth | GL::BufferBit::Stencil);
     GL::Context::DepthTest(true);
     _shadowTexture->Bind(_shadowMapSlot);
 
@@ -319,10 +333,8 @@ namespace Engine::Systems {
       CalculateFrustrum(_transformUniformData.modelViewProjection);
       auto sphere = mesh->GetBoundingSphere();
       if (!SphereInFrustum(sphere.first, sphere.second)) {
-        // i++;
         continue;
       }
-
       material->Use();
       mesh->Use();
 
@@ -337,15 +349,9 @@ namespace Engine::Systems {
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
     }
 
-    GL::Context::CullFace(GL::Face::Front);
     DrawSkybox();
-    GL::Context::CullFace(GL::Face::Back);
-
-    GL::Context::EnableBlending(true);
-    GL::Context::DepthWrite(false);
+    DrawBellOutline();
     DrawParticles();
-    GL::Context::DepthWrite(true);
-    GL::Context::EnableBlending(false);
 
 #if defined(_DEBUG)
     DrawNodes();
@@ -470,10 +476,6 @@ namespace Engine::Systems {
   }
 
   auto Renderer::SortByDistance(std::shared_ptr< Camera > cam) -> void {
-    using Engine::Components::MeshRenderer;
-    using Engine::ECS::EntityID;
-    using Engine::Renderer::Material;
-
     auto camTrans = ECS::EntityManager::GetComponent< Transform >(cam->GetEntity());
     auto camPos   = camTrans->WorldPosition();
 
@@ -489,6 +491,72 @@ namespace Engine::Systems {
     };
     // Actual sort
     std::sort(_entities.begin(), _entities.end(), OrderFunction);
+  }
+
+  auto Renderer::DrawBellOutline() -> void {
+    if (_searchBells) {
+      auto scene_graph = SceneManager::GetCurrentScene()->SceneGraph();
+      for (const auto& ent : scene_graph->Entities()) {
+        const std::regex rx("BELL.*");
+        if (!std::regex_match(ent->Name(), rx)) {
+          continue;
+        }
+        _bells.push_back(ent);
+      }
+      _searchBells = false;
+    }
+    if (_bellOutlineMat == nullptr) {
+      LOG_WARN("No bell outline material");
+      return;
+    }
+
+    GL::Context::DepthTest(false);
+    GL::Context::StencilMask(0x00);
+    _bellOutlineMat->Use();
+    for (const auto& ent : _bells) {
+      auto tr = ent->GetComponent< Transform >();
+
+      /* If bell is too far - continue */
+
+      auto mr = ent->GetComponent< MeshRenderer >();
+      if (mr == nullptr || mr->GetModel() == nullptr) {
+        continue;
+      }
+
+      auto model = mr->GetModel();
+      auto mesh  = model->GetMesh(mr->MeshIndex());
+      if (mesh == nullptr) {
+        continue;
+      }
+
+      auto mat = tr->GetWorldMatrix();
+
+      /* Resize a little bit */
+      glm::vec3 scale;
+      glm::quat rotation;
+      glm::vec3 translation;
+      glm::vec3 skew;
+      glm::vec4 perspective;
+      glm::decompose(mat, scale, rotation, translation, skew, perspective);
+
+      scale *= 1.1f;
+      auto sm = glm::scale(glm::mat4(1.0f), scale);
+      auto rm = glm::toMat4(rotation);
+      auto tm = glm::translate(glm::mat4(1.0f), translation);
+      mat     = tm * rm * sm;
+
+      auto camera                     = _cameraSystem->MainCamera();
+      _transformUniformData.model     = mat;
+      _transformUniformData.modelView = camera->ViewMatrix() * _transformUniformData.model;
+      _transformUniformData.modelViewProjection =
+          camera->ProjectionMatrix() * _transformUniformData.modelView;
+      _transformUniformBuffer.SetData(_transformUniformData);
+
+      mesh->Use();
+      glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
+    }
+    GL::Context::StencilMask(0xFF);
+    GL::Context::DepthTest(true);
   }
 
   auto Renderer::CalculateFrustrum(glm::mat4 clip) -> void {
@@ -613,21 +681,28 @@ namespace Engine::Systems {
   }
 
   auto Renderer::DrawSkybox() -> void {
+    GL::Context::CullFace(GL::Face::Front);
     glDepthFunc(GL_LEQUAL);
 
     _cubemap->Bind(_skyboxSlot);
     _cube->Use();
+    GL::Context::StencilTest(false);
     _skyboxShader->Use();
     glDrawElements(_cube->GetPrimitive(), _cube->ElementCount(), GL_UNSIGNED_INT, NULL);
 
     glDepthFunc(GL_LESS);
+    GL::Context::CullFace(GL::Face::Back);
   }
 
   auto Renderer::DrawParticles() -> void {
+    GL::Context::EnableBlending(true);
+    GL::Context::DepthWrite(false);
     for (auto& entity : _particleSystem->Entities()) {
       auto& emitter = entity->GetComponent< ParticleEmitter >();
       emitter->Draw();
     }
+    GL::Context::DepthWrite(true);
+    GL::Context::EnableBlending(false);
   }
 
 /* Debug draw calls */

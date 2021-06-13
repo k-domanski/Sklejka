@@ -33,6 +33,10 @@ namespace Engine::GL {
 
     /* Framebuffers */
     glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &_maxColorAttachments);
+
+    /* Stencil */
+    glClearStencil(0x00);
+    glStencilMask(_stencilMask);
   }
   auto Context::VertexBuffer() noexcept -> GLenum {
     return VertexBuffer::GetCurrentHandle();
@@ -176,6 +180,47 @@ namespace Engine::GL {
     glDepthMask(enable ? GL_TRUE : GL_FALSE);
 
     _depthWriteEnabled = enable;
+  }
+  auto Context::StencilTest(bool enable) noexcept -> void {
+    if (_stencilTestEnabled == enable) {
+      return;
+    }
+    if (enable) {
+      glEnable(GL_STENCIL_TEST);
+    } else {
+      glDisable(GL_STENCIL_TEST);
+    }
+    _stencilTestEnabled = enable;
+  }
+  auto Context::StencilMask(uint8_t mask) noexcept -> void {
+    if (_stencilMask == mask) {
+      return;
+    }
+
+    glStencilMask(mask);
+    _stencilMask = mask;
+  }
+  auto Context::StencilFunction(StencilFunc func, uint8_t ref, uint8_t mask) -> void {
+    if (func == _stencilFunc && ref == _stencilRef /*&& mask == _stencilMask*/) {
+      return;
+    }
+
+    glStencilFunc(func, ref, mask);
+
+    _stencilFunc = func;
+    _stencilRef  = ref;
+    //_stencilMask = mask;
+  }
+  auto Context::StencilOperation(StencilOp sfail, StencilOp dpfail, StencilOp dppass) -> void {
+    if (_sfail == sfail && _dpfail == dpfail && _dppass == dppass) {
+      return;
+    }
+
+    glStencilOp(sfail, dpfail, dppass);
+
+    _sfail  = sfail;
+    _dpfail = dpfail;
+    _dppass = dppass;
   }
   auto Context::FaceCulling(bool enable) noexcept -> void {
     if (_faceCullingEnabled == enable) {

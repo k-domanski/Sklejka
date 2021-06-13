@@ -83,6 +83,12 @@ namespace Engine::Systems {
     std::shared_ptr< Engine::GL::Shader > _finalPassShader;
     /* -=-=-=-=-=-=-=- */
 
+    /* Bell Outline */
+    bool _searchBells = true;
+    std::vector< std::shared_ptr< Engine::ECS::Entity > > _bells;
+    std::shared_ptr< Engine::Renderer::Material > _bellOutlineMat;
+    /* -=-=-=-=-=-=- */
+
     /* DEBUG */
     std::shared_ptr< Engine::Renderer::Material > _debugMaterial;
 
@@ -100,6 +106,7 @@ namespace Engine::Systems {
     auto DrawParticles() -> void;
     auto SortByMaterial() -> void;
     auto SortByDistance(std::shared_ptr< Camera > cam) -> void;
+    auto DrawBellOutline() -> void;
 
 #if defined(_DEBUG)
     auto DrawColliders() -> void;
