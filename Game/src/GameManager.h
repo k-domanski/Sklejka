@@ -62,6 +62,7 @@ private:
   auto UpdateImpl(float deltaTime) -> void;
   auto PlayCutscene() -> void;
   auto CreatePlayer() -> void;
+  auto CreateBoss() -> void;
   auto SetupScripts() -> void;
   auto NextFrameTrigger() -> void;
   auto KillPlayerImpl() -> void;

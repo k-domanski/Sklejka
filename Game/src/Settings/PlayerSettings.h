@@ -5,6 +5,8 @@ class PlayerSettings {
 private:
   float _speedMultiplier  = 2.0f;
   float _forwardSpeedBase = 7.5f;
+  float _bossForwardSpeedBase = 7.5f;
+  float _bossForwardSpeed = 7.5f;
   float _forwardSpeed     = 7.5f; /* Forward Speed (Player Rect) */
   float _controlSpeedBase = 3.2f; /* Left, Right, Up, Down Speed */
   float _controlSpeed     = 3.2f; /* Left, Right, Up, Down Speed */
@@ -19,9 +21,12 @@ public:
   PlayerSettings() = default;
   auto SpeedMultiplier() const noexcept -> float;
   auto ForwardSpeedBase() const noexcept -> float;
+  auto BossForwardSpeedBase() const noexcept -> float;
   auto ControlSpeedBase() const noexcept -> float;
   auto ForwardSpeed() const noexcept -> float;
   auto ForwardSpeed(float speed) noexcept -> float;
+  auto BossForwardSpeed() const noexcept -> float;
+  auto BossForwardSpeed(float speed) noexcept -> float;
   auto ControlSpeed() const noexcept -> float;
   auto ControlSpeed(float speed) noexcept -> float;
   auto MoveRotationSpeed() const noexcept -> float;

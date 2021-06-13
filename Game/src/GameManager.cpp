@@ -14,6 +14,7 @@
 #include <Scripts/CollisionDetector.h>
 #include "Components/Rigidbody.h"
 #include "Components/Animator.h"
+#include "Scripts/Boss.h"
 #include "Systems/NodeSystem.h"
 
 using namespace Engine;
@@ -153,6 +154,7 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
         case SceneName::LVL_1: {
           /* This is delayed 1 frame */
           _instance->CreatePlayer();
+          _instance->CreateBoss();
           break;
         }
       }
@@ -272,6 +274,36 @@ auto GameManager::CreatePlayer() -> void {
   SceneManager::GetCurrentScene()->CameraSystem()->FindMainCamera();
   SetupScripts();
   /* -=-=-=-=- */
+}
+
+auto GameManager::CreateBoss() -> void
+{
+  auto& entity_manager = EntityManager::GetInstance();
+  auto& scene_graph    = SceneManager::GetCurrentScene()->SceneGraph();
+  auto& node_system    = SceneManager::GetCurrentScene()->NodeSystem();
+
+  auto boss = entity_manager.CreateEntity();
+  boss->LoadFromJson("./Assets/prefabs/weasel.prefab");
+  auto boss_jet = entity_manager.CreateEntity();
+  boss_jet->LoadFromJson("./Assets/prefabs/jet.prefab");
+
+  scene_graph->SetParent(boss_jet, boss);
+
+  auto transform = boss->GetComponent< Transform >();
+  /* Skip 1st node */
+  auto n1_pos = node_system->GetNode(0, NodeTag::Boss)
+                    ->GetEntity()
+                    ->GetComponent< Transform >()
+                    ->WorldPosition();
+  auto n2_pos = node_system->GetNode(1, NodeTag::Boss)
+                    ->GetEntity()
+                    ->GetComponent< Transform >()
+                    ->WorldPosition();
+  transform->Position(n1_pos);
+  transform->Forward(glm::normalize(n2_pos - n1_pos));
+
+  auto boss_native_script = boss->AddComponent< NativeScript >();
+  boss_native_script->Attach(std::make_shared< Boss >(_playerRect->GetComponent<NativeScript>()->GetScript<PlayerRect>()));
 }
 
 auto GameManager::SetupScripts() -> void {

@@ -26,7 +26,8 @@ auto CollisionDetector::OnCollisionEnter(const std::shared_ptr< Collider >& coll
       }
     } else {
       /* Player fucking dies */
-      GameManager::KillPlayer();
+      if (Entity()->Name() != "Acorn" && entity->Name() != "Player_Model")
+        GameManager::KillPlayer();
     }
   }
 }

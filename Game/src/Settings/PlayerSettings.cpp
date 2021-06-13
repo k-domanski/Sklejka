@@ -8,6 +8,10 @@ auto PlayerSettings::ForwardSpeedBase() const noexcept -> float {
   return _forwardSpeedBase;
 }
 
+auto PlayerSettings::BossForwardSpeedBase() const noexcept -> float {
+  return _bossForwardSpeedBase;
+}
+
 auto PlayerSettings::ControlSpeedBase() const noexcept -> float {
   return _controlSpeedBase;
 }
@@ -18,6 +22,14 @@ auto PlayerSettings::ForwardSpeed() const noexcept -> float {
 
 auto PlayerSettings::ForwardSpeed(float speed) noexcept -> float {
   return _forwardSpeed = speed;
+}
+
+auto PlayerSettings::BossForwardSpeed() const noexcept -> float {
+  return _bossForwardSpeed;
+}
+
+auto PlayerSettings::BossForwardSpeed(float speed) noexcept -> float {
+  return _bossForwardSpeed = speed;
 }
 
 auto PlayerSettings::ControlSpeed() const noexcept -> float {

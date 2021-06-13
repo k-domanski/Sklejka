@@ -43,6 +43,7 @@ public:
   auto CanMove() -> bool;
   auto CanMove(bool value) -> void;
   auto Enable(bool value) -> void;
+  auto CurrentNodeIndex() -> int;
   // auto Size() const noexcept -> glm::vec2;
   // auto Size(const glm::vec2& size) noexcept -> glm::vec2;
 
