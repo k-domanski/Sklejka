@@ -11,6 +11,7 @@
 #include <Systems/NodeSystem.h>
 #include <Systems/Physics.h>
 #include "Components/Animator.h"
+#include <Components/ParticleEmitter.h>
 
 namespace Engine::Systems {
   using namespace GL;
@@ -29,8 +30,10 @@ namespace Engine::Systems {
     /* -=-=- */
 
     /* Systems */
-    _cameraSystem = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
-    _lightSystem  = ECS::EntityManager::GetInstance().GetSystem< LightSystem >();
+    _cameraSystem   = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
+    _lightSystem    = ECS::EntityManager::GetInstance().GetSystem< LightSystem >();
+    //_particleSystem = ECS::EntityManager::GetInstance().GetSystem< ParticleSystem >();
+    _particleSystem = SceneManager::GetCurrentScene()->ParticleSystem();
     /* -=-=-=- */
 
     /* Animation */
@@ -334,6 +337,8 @@ namespace Engine::Systems {
     DrawSkybox();
     GL::Context::CullFace(GL::Face::Back);
 
+    DrawParticles();
+
 #if defined(_DEBUG)
     DrawNodes();
     DrawColliders();
@@ -608,6 +613,13 @@ namespace Engine::Systems {
     glDrawElements(_cube->GetPrimitive(), _cube->ElementCount(), GL_UNSIGNED_INT, NULL);
 
     glDepthFunc(GL_LESS);
+  }
+
+  auto Renderer::DrawParticles() -> void {
+    for (auto& entity : _particleSystem->Entities()) {
+      auto& emitter = entity->GetComponent< ParticleEmitter >();
+      emitter->Draw();
+    }
   }
 
 /* Debug draw calls */

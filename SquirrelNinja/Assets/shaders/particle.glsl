@@ -1,18 +1,17 @@
 #version 430
 
 #shader vertex
-layout(location = 0) vec3 a_Position;
-layout(location = 1) vec3 a_Color;
-layout(location = 2) vec2 a_Scale;
-layout(location = 3) float a_Rotation;
+layout(location = 0) in vec3 a_Position;
+layout(location = 1) in vec3 a_Color;
+layout(location = 2) in vec2 a_Scale;
+layout(location = 3) in float a_Rotation;
 
-struct Vert2Geo {
+out Vert2Geo {
   vec3 color;
   vec2 scale;
   float rotation;
-};
-
-out Vert2Geo vs_out;
+}
+vs_out;
 
 void main() {
   gl_Position     = vec4(a_Position, 1.0f);
@@ -30,55 +29,64 @@ layout(max_vertices = 4) out;
 
 #include "include/vs_data.incl"
 
-struct Vert2Geo {
+in Vert2Geo {
   vec3 color;
   vec2 scale;
   float rotation;
-};
+}
+geo_in[];
 
-struct Geo2Frag {
+out Geo2Frag {
   vec3 color;
   vec2 uv;
-};
-
-in Vert2Geo geo_in;
-out Geo2Frag geo_out;
+}
+geo_out;
 
 void main() {
   /* Create quad */
-  mat4 model      = mat4(1.0f);
-  model[0][0]     = geo_in.scale.x;
-  model[1][1]     = geo_in.scale.y;
-  vec4 position   = gl_in[0].gl_Position;
-  vec4 camera_pos = vec4(-(transpose(mat3(u_View)) * u_View[3].xyz), 0.0f);
-  model[3]        = position - camera_pos;
-  vec4 offset;
+  mat4 model = mat4(1.0f);
+  model[3]   = gl_in[0].gl_Position;
 
+  mat4 model_view  = u_View * model;
+  model_view[0][0] = 1.0f;
+  model_view[0][1] = 0.0f;
+  model_view[0][2] = 0.0f;
+
+  model_view[1][0] = 0.0f;
+  model_view[1][1] = 1.0f;
+  model_view[1][2] = 0.0f;
+
+  model_view[2][0] = 0.0f;
+  model_view[2][1] = 0.0f;
+  model_view[2][2] = 1.0f;
+
+  vec4 offset;
+  vec2 scale = geo_in[0].scale;
   /* Bottom Left */
-  offset        = vec4(-0.5f, -0.5f, 0.0f, 1.0f);
-  gl_Position   = u_Projection * model * offset;
-  geo_out.color = geo_in.color;
+  offset        = vec4(-0.5f * scale.x, -0.5f * scale.y, 0.0f, 1.0f);
+  gl_Position   = u_Projection * model_view * offset;
+  geo_out.color = geo_in[0].color;
   geo_out.uv    = vec2(0.0f, 0.0f);
   EmitVertex();
 
   /* Bottom Right */
-  offset        = vec4(0.5f, -0.5f, 0.0f, 0.0f);
-  gl_Position   = u_Projection * model * offset;
-  geo_out.color = geo_in.color;
+  offset        = vec4(0.5f * scale.x, -0.5f * scale.y, 0.0f, 1.0f);
+  gl_Position   = u_Projection * model_view * offset;
+  geo_out.color = geo_in[0].color;
   geo_out.uv    = vec2(1.0f, 0.0f);
   EmitVertex();
 
   /* Top Left */
-  offset        = vec4(-0.5f, 0.5f, 0.0f, 1.0f);
-  gl_Position   = u_Projection * model * offset;
-  geo_out.color = geo_in.color;
+  offset        = vec4(-0.5f * scale.x, 0.5f * scale.y, 0.0f, 1.0f);
+  gl_Position   = u_Projection * model_view * offset;
+  geo_out.color = geo_in[0].color;
   geo_out.uv    = vec2(0.0f, 1.0f);
   EmitVertex();
 
   /* Top Right */
-  offset        = vec4(0.5f, 0.5f, 0.0f, 1.0f);
-  gl_Position   = u_Projection * model * offset;
-  geo_out.color = geo_in.color;
+  offset        = vec4(0.5f * scale.x, 0.5f * scale.y, 0.0f, 1.0f);
+  gl_Position   = u_Projection * model_view * offset;
+  geo_out.color = geo_in[0].color;
   geo_out.uv    = vec2(1.0f, 1.0f);
   EmitVertex();
 }
@@ -87,12 +95,14 @@ void main() {
 
 #shader fragment
 
-struct Geo2Frag {
+#include "fs_common.incl"
+
+in Geo2Frag {
   vec3 color;
   vec2 uv;
-};
+}
+fs_in;
 
-in Geo2Frag fs_in;
 out vec4 final_color;
 
 void main() {

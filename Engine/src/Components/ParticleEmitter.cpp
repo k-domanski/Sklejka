@@ -13,14 +13,21 @@ namespace Engine {
     _attributes.resize(particle_count);
   }
   auto ParticleEmitter::UpdateBuffer() -> void {
-    std::transform(_particles.begin(), _particles.end(), _attributes.begin(),
-                   [](const ParticleData& p) { return p.attributes; });
+    /*std::transform(_particles.begin(), _particles.end(), _attributes.begin(),
+                   [](const ParticleData& p) { return p.attributes; });*/
+    for(int i=0; i<_particles.size(); ++i) {
+      _attributes[i] = _particles[i].attributes;
+    }
     _instanceBuffer.SetData(_attributes.size() * sizeof(ParticleData::Attributes),
                             _attributes.data());
   }
   auto ParticleEmitter::Draw() -> void {
+    if (_material == nullptr) {
+      return;
+    }
     _material->Use();
-    _instanceBuffer.Bind();
+    _vertexArray.Bind();
+    //_instanceBuffer.Bind();
     glDrawArraysInstanced(GL_POINTS, 0, 1, _particles.size());
   }
   auto ParticleEmitter::SizeDecay() const noexcept -> float {
@@ -47,7 +54,7 @@ namespace Engine {
   auto ParticleEmitter::Scale(const glm::vec2& scale) noexcept -> glm::vec2 {
     return _scale = scale;
   }
-  auto ParticleEmitter::Velocit() const noexcept -> glm::vec3 {
+  auto ParticleEmitter::Velocity() const noexcept -> glm::vec3 {
     return _velocity;
   }
   auto ParticleEmitter::Velocity(const glm::vec3& velocity) noexcept -> glm::vec3 {

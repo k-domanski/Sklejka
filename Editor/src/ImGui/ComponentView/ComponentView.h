@@ -7,6 +7,7 @@
 #include "Components/DirectionalLight.h"
 #include "Components/Node.h"
 #include "Components/Animator.h"
+#include "Components/ParticleEmitter.h"
 #include <filesystem>
 
 using namespace Engine;
@@ -377,6 +378,72 @@ namespace Editor {
 
       auto model = Engine::AssetManager::GetModel(payload_str);
       _component->SetAnimation(model);
+    }
+  };
+
+  class ParticleEmitterView : public ComponentView< Engine::ParticleEmitter > {
+  private:
+    std::string _materialPath;
+    std::filesystem::path _materialsFolder;
+
+  public:
+    ParticleEmitterView() {
+      auto assets_path = AssetManager::GetAssetsFolders();
+      _materialsFolder = assets_path.materials;
+    }
+    auto OnDraw() -> void override {
+      /* Material */
+      {
+        bool hasMaterial = _component->Material() != nullptr;
+        _materialPath =
+            hasMaterial
+                ? std::filesystem::path(_component->Material()->FilePath()).filename().string()
+                : "<None>";
+
+        std::string mat = "Material";
+        ImGui::PushID(mat.c_str());
+        ImGui::Columns(2);
+        ImGui::SetColumnWidth(0, 100);
+        ImGui::Text(mat.c_str());
+        ImGui::NextColumn();
+        if (ImGui::BeginCombo("", _materialPath.c_str())) {
+          for (auto& entry : std::filesystem::recursive_directory_iterator(_materialsFolder)) {
+            const auto path     = entry.path();
+            const auto filename = path.filename().string();
+            const auto ext      = path.extension();
+            if (ext != ".mat")
+              continue;
+            if (ImGui::Selectable(filename.c_str())) {
+              auto material = Engine::AssetManager::GetMaterial(path.string());
+              _component->Material(material);
+            }
+          }
+          ImGui::EndCombo();
+        }
+        if (ImGui::BeginPopupContextItem("component context menu")) {
+          if (ImGui::Selectable("Clear")) {
+            _component->Material(nullptr);
+          }
+          ImGui::EndPopup();
+        }
+        ImGui::Columns(1);
+        ImGui::PopID();
+      }
+      /* Params */
+      {
+        auto spawn_rate = _component->SpawnRate();
+        if (DrawFloat("Spawn Rate", spawn_rate, 0.0f, 100.0f)) {
+          _component->SpawnRate(spawn_rate);
+        }
+        auto velocity = _component->Velocity();
+        if (DrawVec3("Velocity", velocity)) {
+          _component->Velocity(velocity);
+        }
+        auto lifetime = _component->Lifetime();
+        if (DrawFloat("Lifetime", lifetime, 0.0f, 100.0f)) {
+          _component->Lifetime(lifetime);
+        }
+      }
     }
   };
 }  // namespace Editor

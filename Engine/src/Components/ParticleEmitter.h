@@ -50,7 +50,7 @@ namespace Engine {
     auto SpawnRate(float rate) noexcept -> float;
     auto Scale() const noexcept -> glm::vec2;
     auto Scale(const glm::vec2& scale) noexcept -> glm::vec2;
-    auto Velocit() const noexcept -> glm::vec3;
+    auto Velocity() const noexcept -> glm::vec3;
     auto Velocity(const glm::vec3& velocity) noexcept -> glm::vec3;
     auto Material() const noexcept -> std::shared_ptr< Renderer::Material >;
     auto Material(const std::shared_ptr< Renderer::Material >& material) noexcept

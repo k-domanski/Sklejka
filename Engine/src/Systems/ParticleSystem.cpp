@@ -4,6 +4,7 @@
 
 namespace Engine::Systems {
   ParticleSystem::ParticleSystem() {
+    AddSignature< Transform >();
     AddSignature< ParticleEmitter >();
   }
   auto ParticleSystem::Update(float deltaTime) -> void {
@@ -21,9 +22,8 @@ namespace Engine::Systems {
         }
         /* Update position and scale */
         particle.attributes.position += particle.velociy * deltaTime;
-        particle.attributes.scale *=
-            glm::max(glm::vec2(0.0f), (glm::vec2(1.0f) - glm::vec2(emitter->_sizeDecay)))
-            * deltaTime;
+        particle.attributes.scale =
+            glm::max(glm::vec2(0.0f), particle.attributes.scale - emitter->_sizeDecay * deltaTime);
       }
 
       SortParticles(emitter);
@@ -32,9 +32,13 @@ namespace Engine::Systems {
       emitter->_spawnCache += emitter->_spawnRate * deltaTime;
       /* Spawn particles until spawn cache < 1.0f*/
       while (emitter->_spawnCache >= 1.0f) {
-        SpawnParticle(emitter);
+        if (!SpawnParticle(emitter)) {
+          break;
+        }
         emitter->_spawnCache -= 1.0f;
       }
+
+      emitter->UpdateBuffer();
     }
   }
   auto ParticleSystem::SpawnParticle(std::shared_ptr< ParticleEmitter >& emitter) -> bool {
@@ -45,17 +49,19 @@ namespace Engine::Systems {
       return false;
     }
 
+    auto position = emitter->GetEntity()->GetComponent< Transform >()->WorldPosition();
     /* Prepare particle */
-    auto& particle            = *it;
-    particle.attributes.scale = emitter->_scale;
-    particle.velociy          = emitter->_velocity;
-    particle.lifetime         = emitter->_lifetime;
+    auto& particle               = *it;
+    particle.attributes.scale    = emitter->_scale;
+    particle.attributes.position = position;
+    particle.velociy             = emitter->_velocity;
+    particle.lifetime            = emitter->_lifetime;
 
     return true;
   }
   auto ParticleSystem::SortParticles(std::shared_ptr< ParticleEmitter >& emitter) -> void {
     const auto OrderFunction = [](const auto& lhs, const auto& rhs) -> bool {
-      return lhs.lifetime > rhs.lifetime;
+      return lhs.lifetime < rhs.lifetime;
     };
     std::sort(emitter->_particles.begin(), emitter->_particles.end(), OrderFunction);
   }

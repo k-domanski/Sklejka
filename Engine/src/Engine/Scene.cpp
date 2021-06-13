@@ -19,17 +19,17 @@ namespace Engine {
   }
 
   auto Scene::OpenScene() -> void {
-    _sceneGraph    = ECS::EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();
-    _lightSystem   = ECS::EntityManager::GetInstance().RegisterSystem< Systems::LightSystem >();
-    _cameraSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
-    _renderSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
-    _physicsSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
-    _scriptSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ScriptSystem >();
-    _GUISystem     = ECS::EntityManager::GetInstance().RegisterSystem< Systems::GUISystem >();
-    _nodeSystem    = ECS::EntityManager::GetInstance().RegisterSystem< Engine::NodeSystem >();
+    _sceneGraph     = ECS::EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();
+    _lightSystem    = ECS::EntityManager::GetInstance().RegisterSystem< Systems::LightSystem >();
+    _cameraSystem   = ECS::EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
+    _particleSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ParticleSystem >();
+    _renderSystem   = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
+    _physicsSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
+    _scriptSystem   = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ScriptSystem >();
+    _GUISystem      = ECS::EntityManager::GetInstance().RegisterSystem< Systems::GUISystem >();
+    _nodeSystem     = ECS::EntityManager::GetInstance().RegisterSystem< Engine::NodeSystem >();
     _animationSystem =
         ECS::EntityManager::GetInstance().RegisterSystem< Systems::AnimationSystem >();
-    _particleSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ParticleSystem >();
     _cameraSystem->FindMainCamera();
   }
 
