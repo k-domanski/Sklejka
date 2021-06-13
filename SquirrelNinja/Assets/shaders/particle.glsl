@@ -2,22 +2,16 @@
 
 #shader vertex
 layout(location = 0) in vec3 a_Position;
-layout(location = 1) in vec3 a_Color;
-layout(location = 2) in vec2 a_Scale;
-layout(location = 3) in float a_Rotation;
+layout(location = 1) in vec2 a_Scale;
 
 out Vert2Geo {
-  vec3 color;
   vec2 scale;
-  float rotation;
 }
 vs_out;
 
 void main() {
   gl_Position     = vec4(a_Position, 1.0f);
-  vs_out.color    = a_Color;
   vs_out.scale    = a_Scale;
-  vs_out.rotation = a_Rotation;
 }
 
 #endshader
@@ -30,14 +24,11 @@ layout(max_vertices = 4) out;
 #include "include/vs_data.incl"
 
 in Vert2Geo {
-  vec3 color;
   vec2 scale;
-  float rotation;
 }
 geo_in[];
 
 out Geo2Frag {
-  vec3 color;
   vec2 uv;
 }
 geo_out;
@@ -65,28 +56,24 @@ void main() {
   /* Bottom Left */
   offset        = vec4(-0.5f * scale.x, -0.5f * scale.y, 0.0f, 1.0f);
   gl_Position   = u_Projection * model_view * offset;
-  geo_out.color = geo_in[0].color;
   geo_out.uv    = vec2(0.0f, 0.0f);
   EmitVertex();
 
   /* Bottom Right */
   offset        = vec4(0.5f * scale.x, -0.5f * scale.y, 0.0f, 1.0f);
   gl_Position   = u_Projection * model_view * offset;
-  geo_out.color = geo_in[0].color;
   geo_out.uv    = vec2(1.0f, 0.0f);
   EmitVertex();
 
   /* Top Left */
   offset        = vec4(-0.5f * scale.x, 0.5f * scale.y, 0.0f, 1.0f);
   gl_Position   = u_Projection * model_view * offset;
-  geo_out.color = geo_in[0].color;
   geo_out.uv    = vec2(0.0f, 1.0f);
   EmitVertex();
 
   /* Top Right */
   offset        = vec4(0.5f * scale.x, 0.5f * scale.y, 0.0f, 1.0f);
   gl_Position   = u_Projection * model_view * offset;
-  geo_out.color = geo_in[0].color;
   geo_out.uv    = vec2(1.0f, 1.0f);
   EmitVertex();
 }
@@ -98,7 +85,6 @@ void main() {
 #include "fs_common.incl"
 
 in Geo2Frag {
-  vec3 color;
   vec2 uv;
 }
 fs_in;
@@ -107,7 +93,7 @@ out vec4 final_color;
 
 void main() {
   vec4 texel_color = texture2D(u_MainTexture, fs_in.uv);
-  final_color      = texel_color * vec4(fs_in.color, 1.0f);
+  final_color      = texel_color * u_Color;
 }
 
 #endshader

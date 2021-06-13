@@ -11,13 +11,11 @@ namespace Engine {
 
     _particles.resize(particle_count);
     _attributes.resize(particle_count);
+    _maxParticles = particle_count;
   }
   auto ParticleEmitter::UpdateBuffer() -> void {
-    /*std::transform(_particles.begin(), _particles.end(), _attributes.begin(),
-                   [](const ParticleData& p) { return p.attributes; });*/
-    for(int i=0; i<_particles.size(); ++i) {
-      _attributes[i] = _particles[i].attributes;
-    }
+    std::transform(_particles.begin(), _particles.end(), _attributes.begin(),
+                   [](const ParticleData& p) { return p.attributes; });
     _instanceBuffer.SetData(_attributes.size() * sizeof(ParticleData::Attributes),
                             _attributes.data());
   }
@@ -27,8 +25,16 @@ namespace Engine {
     }
     _material->Use();
     _vertexArray.Bind();
-    //_instanceBuffer.Bind();
-    glDrawArraysInstanced(GL_POINTS, 0, 1, _particles.size());
+    glDrawArraysInstanced(GL_POINTS, 0, 1, _emitCount);
+  }
+  auto ParticleEmitter::MaxParticles() const noexcept -> std::size_t {
+    return _maxParticles;
+  }
+  auto ParticleEmitter::EmitCount() const noexcept -> std::size_t {
+    return _emitCount;
+  }
+  auto ParticleEmitter::EmitCount(std::size_t count) noexcept -> std::size_t {
+    return _emitCount = count;
   }
   auto ParticleEmitter::SizeDecay() const noexcept -> float {
     return _sizeDecay;
@@ -60,6 +66,12 @@ namespace Engine {
   auto ParticleEmitter::Velocity(const glm::vec3& velocity) noexcept -> glm::vec3 {
     return _velocity = velocity;
   }
+  auto ParticleEmitter::VelocityRandomness() const noexcept -> float {
+    return _velocityRandomness;
+  }
+  auto ParticleEmitter::VelocityRandomness(float value) noexcept -> float {
+    return _velocityRandomness = value;
+  }
   auto ParticleEmitter::Material() const noexcept -> std::shared_ptr< Renderer::Material > {
     return _material;
   }
@@ -70,21 +82,13 @@ namespace Engine {
   auto ParticleEmitter::EnableAttributes() -> void {
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    glEnableVertexAttribArray(3);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3),
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(ParticleData::Attributes),
                           (const void*)offsetof(ParticleData::Attributes, position));
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3),
-                          (const void*)offsetof(ParticleData::Attributes, color));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2),
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleData::Attributes),
                           (const void*)offsetof(ParticleData::Attributes, scale));
-    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(float),
-                          (const void*)offsetof(ParticleData::Attributes, rotation));
 
     glVertexAttribDivisor(0, 1);
     glVertexAttribDivisor(1, 1);
-    glVertexAttribDivisor(2, 1);
-    glVertexAttribDivisor(3, 1);
   }
 }  // namespace Engine

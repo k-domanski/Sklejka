@@ -30,8 +30,8 @@ namespace Engine::Systems {
     /* -=-=- */
 
     /* Systems */
-    _cameraSystem   = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
-    _lightSystem    = ECS::EntityManager::GetInstance().GetSystem< LightSystem >();
+    _cameraSystem = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
+    _lightSystem  = ECS::EntityManager::GetInstance().GetSystem< LightSystem >();
     //_particleSystem = ECS::EntityManager::GetInstance().GetSystem< ParticleSystem >();
     _particleSystem = SceneManager::GetCurrentScene()->ParticleSystem();
     /* -=-=-=- */
@@ -93,6 +93,10 @@ namespace Engine::Systems {
     _boxColliderShader    = AssetManager::GetShader("./shaders/color.glsl");
     _sphereColliderShader = AssetManager::GetShader("./shaders/color.glsl");
     /* -=-=- */
+
+    /* Context Setup */
+    GL::Context::SetBlendFunction(GL::BlendFunc::SrcAlpha, GL::BlendFunc::OneMinusSrcAlpha);
+    /* -=-=-=-=-=-=- */
   }
 
   void Renderer::Update(float deltaTime) {
@@ -337,7 +341,11 @@ namespace Engine::Systems {
     DrawSkybox();
     GL::Context::CullFace(GL::Face::Back);
 
+    GL::Context::EnableBlending(true);
+    GL::Context::DepthWrite(false);
     DrawParticles();
+    GL::Context::DepthWrite(true);
+    GL::Context::EnableBlending(false);
 
 #if defined(_DEBUG)
     DrawNodes();

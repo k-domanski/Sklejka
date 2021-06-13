@@ -1,10 +1,10 @@
 {
     "assetID": "15994822110574494309",
-    "diffuseFilepath": "Assets/textures/jetpack.jpg",
+    "diffuseFilepath": "Assets/textures/smoke.png",
     "mainColor": [
         1.0,
-        0.9999899864196777,
-        0.9999899864196777,
+        0.577380359172821,
+        0.0,
         1.0
     ],
     "metalness": 0.0,

@@ -431,6 +431,10 @@ namespace Editor {
       }
       /* Params */
       {
+        int count = _component->EmitCount();
+        if (DrawInt("Count", count, 0, (int)_component->MaxParticles())) {
+          _component->EmitCount(count);
+        }
         auto spawn_rate = _component->SpawnRate();
         if (DrawFloat("Spawn Rate", spawn_rate, 0.0f, 100.0f)) {
           _component->SpawnRate(spawn_rate);
@@ -442,6 +446,14 @@ namespace Editor {
         auto lifetime = _component->Lifetime();
         if (DrawFloat("Lifetime", lifetime, 0.0f, 100.0f)) {
           _component->Lifetime(lifetime);
+        }
+        auto size_decay = _component->SizeDecay();
+        if (DrawFloat("Size Decay", size_decay, 0.0f, 100.0f)) {
+          _component->SizeDecay(size_decay);
+        }
+        auto vel_rand = _component->VelocityRandomness();
+        if (DrawFloat("Velocity Randomness", vel_rand, 0.0f, 1.0f)) {
+          _component->VelocityRandomness(vel_rand);
         }
       }
     }

@@ -49,4 +49,8 @@ namespace Engine::GL {
               ShadowData = 3, JointData = 4);
   typedef __UniformBlock UniformBlock;
 
+  BETTER_ENUM(__BlendFunc, GLenum, SrcAlpha = GL_SRC_ALPHA,
+              OneMinusSrcAlpha = GL_ONE_MINUS_SRC_ALPHA);
+  typedef __BlendFunc BlendFunc;
+
 }  // namespace Engine::GL

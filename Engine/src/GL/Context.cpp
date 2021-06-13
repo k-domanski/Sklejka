@@ -168,6 +168,15 @@ namespace Engine::GL {
     }
     _depthTestEnabled = enable;
   }
+  auto Context::DepthWrite(bool enable) noexcept -> void {
+    if (enable == _depthWriteEnabled) {
+      return;
+    }
+
+    glDepthMask(enable ? GL_TRUE : GL_FALSE);
+
+    _depthWriteEnabled = enable;
+  }
   auto Context::FaceCulling(bool enable) noexcept -> void {
     if (_faceCullingEnabled == enable) {
       return;
@@ -195,6 +204,26 @@ namespace Engine::GL {
     }
     glViewport(x, y, width, height);
     _viewport = {x, y, width, height};
+  }
+  auto Context::EnableBlending(bool value) -> void {
+    if (value == _blendingEnabled) {
+      return;
+    }
+    if (value) {
+      glEnable(GL_BLEND);
+    } else {
+      glDisable(GL_BLEND);
+    }
+    _blendingEnabled = value;
+  }
+  auto Context::SetBlendFunction(BlendFunc source, BlendFunc destination) -> void {
+    if (source == _blendFuncSrc && destination == _blendFuncDest) {
+      return;
+    }
+
+    _blendFuncSrc  = source;
+    _blendFuncDest = destination;
+    glBlendFunc(_blendFuncSrc, _blendFuncDest);
   }
   auto Context::BindUniformBlocks(const std::shared_ptr< Engine::GL::Shader >& shader) -> void {
     shader->BindUniformBlock("u_Transform", UniformBlock::TransformData);

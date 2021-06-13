@@ -53,7 +53,7 @@ void EditorLayer::OnAttach() {
   auto ent = EntityManager::GetInstance().CreateEntity();
   ent->Name("Particle System");
   ent->AddComponent< Transform >();
-  ent->AddComponent< ParticleEmitter >(10);
+  ent->AddComponent< ParticleEmitter >(100);
 
   SceneManager::GetCurrentScene()->SceneGraph()->AddChild(nullptr, ent);
   /* ------------------------------*/
