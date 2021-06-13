@@ -3,7 +3,7 @@
 
 namespace Engine::GL {
   BETTER_ENUM(__ShaderType, GLenum, VertexShader = GL_VERTEX_SHADER,
-              FragmentShader = GL_FRAGMENT_SHADER);
+              GeometryShader = GL_GEOMETRY_SHADER, FragmentShader = GL_FRAGMENT_SHADER);
   typedef __ShaderType ShaderType;
 
   BETTER_ENUM(__Primitive, GLenum, Points = GL_POINTS, LineStrip = GL_LINE_STRIP, Lines = GL_LINES,
@@ -48,5 +48,9 @@ namespace Engine::GL {
   BETTER_ENUM(__UniformBlock, GLint, TransformData = 0, CameraData = 1, LightData = 2,
               ShadowData = 3, JointData = 4);
   typedef __UniformBlock UniformBlock;
+
+  BETTER_ENUM(__BlendFunc, GLenum, SrcAlpha = GL_SRC_ALPHA,
+              OneMinusSrcAlpha = GL_ONE_MINUS_SRC_ALPHA);
+  typedef __BlendFunc BlendFunc;
 
 }  // namespace Engine::GL

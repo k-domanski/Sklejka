@@ -11,6 +11,7 @@
 #include "ECS/EntityManager.h"
 #include "Systems/GUISystem.h"
 #include "Systems/AnimationSystem.h"
+#include "Systems/ParticleSystem.h"
 
 namespace Engine {
   auto Scene::GetID() -> size_t {
@@ -18,14 +19,15 @@ namespace Engine {
   }
 
   auto Scene::OpenScene() -> void {
-    _sceneGraph    = ECS::EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();
-    _lightSystem   = ECS::EntityManager::GetInstance().RegisterSystem< Systems::LightSystem >();
-    _cameraSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
-    _renderSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
-    _physicsSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
-    _scriptSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ScriptSystem >();
-    _GUISystem     = ECS::EntityManager::GetInstance().RegisterSystem< Systems::GUISystem >();
-    _nodeSystem    = ECS::EntityManager::GetInstance().RegisterSystem< Engine::NodeSystem >();
+    _sceneGraph     = ECS::EntityManager::GetInstance().RegisterSystem< Systems::SceneGraph >();
+    _lightSystem    = ECS::EntityManager::GetInstance().RegisterSystem< Systems::LightSystem >();
+    _cameraSystem   = ECS::EntityManager::GetInstance().RegisterSystem< Systems::CameraSystem >();
+    _particleSystem = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ParticleSystem >();
+    _renderSystem   = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Renderer >();
+    _physicsSystem  = ECS::EntityManager::GetInstance().RegisterSystem< Systems::Physics >();
+    _scriptSystem   = ECS::EntityManager::GetInstance().RegisterSystem< Systems::ScriptSystem >();
+    _GUISystem      = ECS::EntityManager::GetInstance().RegisterSystem< Systems::GUISystem >();
+    _nodeSystem     = ECS::EntityManager::GetInstance().RegisterSystem< Engine::NodeSystem >();
     _animationSystem =
         ECS::EntityManager::GetInstance().RegisterSystem< Systems::AnimationSystem >();
     _cameraSystem->FindMainCamera();
@@ -47,6 +49,8 @@ namespace Engine {
     _cameraSystem->Update(deltaTime);
     _lightSystem->Update(deltaTime);
     _animationSystem->Update(deltaTime);
+
+    _particleSystem->Update(deltaTime);
   }
   auto Scene::Draw() -> void {
     _renderSystem->Update(0.0f);
@@ -94,5 +98,8 @@ namespace Engine {
   }
   auto Scene::Entities() -> std::vector< std::shared_ptr< ECS::Entity > > {
     return _entities;
+  }
+  auto Scene::ParticleSystem() -> std::shared_ptr< Systems::ParticleSystem > {
+    return _particleSystem;
   }
 }  // namespace Engine

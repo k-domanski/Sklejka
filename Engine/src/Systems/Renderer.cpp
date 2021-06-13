@@ -11,6 +11,7 @@
 #include <Systems/NodeSystem.h>
 #include <Systems/Physics.h>
 #include "Components/Animator.h"
+#include <Components/ParticleEmitter.h>
 
 namespace Engine::Systems {
   using namespace GL;
@@ -31,6 +32,8 @@ namespace Engine::Systems {
     /* Systems */
     _cameraSystem = ECS::EntityManager::GetInstance().GetSystem< CameraSystem >();
     _lightSystem  = ECS::EntityManager::GetInstance().GetSystem< LightSystem >();
+    //_particleSystem = ECS::EntityManager::GetInstance().GetSystem< ParticleSystem >();
+    _particleSystem = SceneManager::GetCurrentScene()->ParticleSystem();
     /* -=-=-=- */
 
     /* Animation */
@@ -90,6 +93,10 @@ namespace Engine::Systems {
     _boxColliderShader    = AssetManager::GetShader("./shaders/color.glsl");
     _sphereColliderShader = AssetManager::GetShader("./shaders/color.glsl");
     /* -=-=- */
+
+    /* Context Setup */
+    GL::Context::SetBlendFunction(GL::BlendFunc::SrcAlpha, GL::BlendFunc::OneMinusSrcAlpha);
+    /* -=-=-=-=-=-=- */
   }
 
   void Renderer::Update(float deltaTime) {
@@ -333,6 +340,12 @@ namespace Engine::Systems {
     GL::Context::CullFace(GL::Face::Front);
     DrawSkybox();
     GL::Context::CullFace(GL::Face::Back);
+
+    GL::Context::EnableBlending(true);
+    GL::Context::DepthWrite(false);
+    DrawParticles();
+    GL::Context::DepthWrite(true);
+    GL::Context::EnableBlending(false);
 
 #if defined(_DEBUG)
     DrawNodes();
@@ -608,6 +621,13 @@ namespace Engine::Systems {
     glDrawElements(_cube->GetPrimitive(), _cube->ElementCount(), GL_UNSIGNED_INT, NULL);
 
     glDepthFunc(GL_LESS);
+  }
+
+  auto Renderer::DrawParticles() -> void {
+    for (auto& entity : _particleSystem->Entities()) {
+      auto& emitter = entity->GetComponent< ParticleEmitter >();
+      emitter->Draw();
+    }
   }
 
 /* Debug draw calls */

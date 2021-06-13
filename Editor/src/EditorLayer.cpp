@@ -8,7 +8,10 @@
 #include "Renderer/Animation/Animation.h"
 #include "Components/Animator.h"
 
+#include "Components/ParticleEmitter.h"
+
 using namespace Engine;
+using namespace Engine::ECS;
 EditorLayer::EditorLayer(const std::string& name): Layer(name) {
   // Scene manager test
   size_t sceneID = AssetManager::GenerateAssetID();
@@ -45,6 +48,15 @@ void EditorLayer::OnAttach() {
   m_NodeUtilityPanel.SetEditorLayer(this);
   m_LevelProcessPanel.SetScene(SceneManager::GetCurrentScene());
   m_LevelProcessPanel.SetEditorLayer(this);
+
+  /* --Particle System--Remove Me--*/
+  auto ent = EntityManager::GetInstance().CreateEntity();
+  ent->Name("Particle System");
+  ent->AddComponent< Transform >();
+  ent->AddComponent< ParticleEmitter >(100);
+
+  SceneManager::GetCurrentScene()->SceneGraph()->AddChild(nullptr, ent);
+  /* ------------------------------*/
 }
 
 void EditorLayer::OnUpdate(double deltaTime) {

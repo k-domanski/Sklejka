@@ -55,8 +55,11 @@ namespace Editor {
     if (_entity->HasComponent< Engine::Node >()) {
       _componentViews.push_back(std::make_shared< NodeView >());
     }
-    if (_entity->HasComponent<Engine::Animator>()) {
-        _componentViews.push_back(std::make_shared<AnimatorView>());
+    if (_entity->HasComponent< Engine::Animator >()) {
+      _componentViews.push_back(std::make_shared< AnimatorView >());
+    }
+    if (_entity->HasComponent< Engine::ParticleEmitter >()) {
+      _componentViews.push_back(std::make_shared< ParticleEmitterView >());
     }
   }
 
@@ -182,14 +185,22 @@ namespace Editor {
         ImGui::CloseCurrentPopup();
       }
       if (ImGui::MenuItem("Animator")) {
-          if (_entity->GetComponent< Animator >() == nullptr) {
-              _entity->AddComponent< Animator >();
-              ReattachEntity();
-          }
-          else {
-              APP_WARN("{} entity already has Node component!", _entity->Name());
-          }
-          ImGui::CloseCurrentPopup();
+        if (_entity->GetComponent< Animator >() == nullptr) {
+          _entity->AddComponent< Animator >();
+          ReattachEntity();
+        } else {
+          APP_WARN("{} entity already has Node component!", _entity->Name());
+        }
+        ImGui::CloseCurrentPopup();
+      }
+      if (ImGui::MenuItem("ParticleEmitter")) {
+        if (_entity->GetComponent< ParticleEmitter >() == nullptr) {
+          _entity->AddComponent< ParticleEmitter >(100);
+          ReattachEntity();
+        } else {
+          APP_WARN("{} entity already has Node component!", _entity->Name());
+        }
+        ImGui::CloseCurrentPopup();
       }
       ReattachEntity();
       ImGui::EndPopup();
