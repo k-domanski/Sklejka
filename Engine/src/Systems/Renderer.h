@@ -9,6 +9,7 @@
 #include <Systems/CameraSystem.h>
 #include <Renderer/PingPongBuffer.h>
 #include <Systems/LightSystem.h>
+#include <Systems/ParticleSystem.h>
 
 #include "../../../Game/src/Scripts/ShadowTarget.h"
 
@@ -43,6 +44,7 @@ namespace Engine::Systems {
     /* Systems */
     std::shared_ptr< CameraSystem > _cameraSystem;
     std::shared_ptr< LightSystem > _lightSystem;
+    std::shared_ptr< ParticleSystem > _particleSystem;
     /* -=-=-=- */
 
     /* Animation */
@@ -81,6 +83,12 @@ namespace Engine::Systems {
     std::shared_ptr< Engine::GL::Shader > _finalPassShader;
     /* -=-=-=-=-=-=-=- */
 
+    /* Bell Outline */
+    bool _searchBells = true;
+    std::vector< std::shared_ptr< Engine::ECS::Entity > > _bells;
+    std::shared_ptr< Engine::Renderer::Material > _bellOutlineMat;
+    /* -=-=-=-=-=-=- */
+
     /* DEBUG */
     std::shared_ptr< Engine::Renderer::Material > _debugMaterial;
 
@@ -95,8 +103,10 @@ namespace Engine::Systems {
     auto SphereInFrustum(glm::vec3 center, float radius) -> bool;
     auto PostProcessing() -> void;
     auto DrawSkybox() -> void;
+    auto DrawParticles() -> void;
     auto SortByMaterial() -> void;
     auto SortByDistance(std::shared_ptr< Camera > cam) -> void;
+    auto DrawBellOutline() -> void;
 
 #if defined(_DEBUG)
     auto DrawColliders() -> void;

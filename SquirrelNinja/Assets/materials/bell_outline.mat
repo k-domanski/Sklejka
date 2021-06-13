@@ -1,0 +1,21 @@
+{
+    "assetID": "6415476360533357786",
+    "diffuseFilepath": "",
+    "mainColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "metalness": 0.0,
+    "metalnessMap": "",
+    "roughness": 0.0,
+    "roughnessMap": "",
+    "sfail": "Keep",
+    "shaderFilepath": "Assets/shaders/bell_outline.glsl",
+    "stencilFunc": "NotEqual",
+    "stencilRef": 1,
+    "useStencil": true,
+    "zfail": "Keep",
+    "zpass": "Keep"
+}

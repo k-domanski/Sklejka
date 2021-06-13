@@ -62,6 +62,7 @@ namespace Engine::GL {
   /* GL Buffers */
   typedef Buffer< GL_ARRAY_BUFFER > VertexBuffer;
   typedef Buffer< GL_ELEMENT_ARRAY_BUFFER > IndiceBuffer;
+  typedef Buffer< GL_ARRAY_BUFFER > InstanceBuffer;
 
   template< typename DataType >
   class UniformBuffer : public Buffer< GL_UNIFORM_BUFFER > {

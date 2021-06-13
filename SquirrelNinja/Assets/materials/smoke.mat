@@ -1,0 +1,15 @@
+{
+    "assetID": "15994822110574494309",
+    "diffuseFilepath": "Assets/textures/smoke.png",
+    "mainColor": [
+        1.0,
+        0.577380359172821,
+        0.0,
+        1.0
+    ],
+    "metalness": 0.0,
+    "metalnessMap": "",
+    "roughness": 0.0,
+    "roughnessMap": "",
+    "shaderFilepath": "Assets/shaders/particle.glsl"
+}

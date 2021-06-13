@@ -10,6 +10,14 @@ void Engine::Renderer::Bar::Offset(const glm::vec2& offset) {
   _offset = offset;
 }
 
+glm::vec2 Engine::Renderer::Bar::FillAreaOffset() const {
+  return _fillAreaOffset;
+}
+
+void Engine::Renderer::Bar::FillAreaOffset(const glm::vec2& offset) {
+  _fillAreaOffset = offset;
+}
+
 Engine::Renderer::Image Engine::Renderer::Bar::Background() const {
   return _background;
 }
@@ -46,6 +54,14 @@ void Engine::Renderer::Bar::Size(const glm::vec2& size) {
   _fillArea.Size(_size - _padding);
 }
 
+glm::vec2 Engine::Renderer::Bar::FillAreaSize() const {
+  return _fillArea.Size();
+}
+
+void Engine::Renderer::Bar::FillAreaSize(const glm::vec2& size) {
+  _fillArea.Size(size);
+}
+
 bool Engine::Renderer::Bar::Horizontal() const {
   return _horizontal;
 }
@@ -53,6 +69,15 @@ bool Engine::Renderer::Bar::Horizontal() const {
 void Engine::Renderer::Bar::Horizontal(bool horizontal) {
   _horizontal = horizontal;
   _fillArea.Horizontal(_horizontal);
+}
+
+bool Engine::Renderer::Bar::Middle() const {
+  return _middle;
+}
+
+void Engine::Renderer::Bar::Middle(bool middle) {
+  _middle = middle;
+  _fillArea.Middle(_middle);
 }
 
 glm::vec4 Engine::Renderer::Bar::FillColor() {
@@ -93,16 +118,19 @@ Engine::Renderer::Bar::Bar(): UIElement() {
   _fillArea.Shader(Engine::AssetManager::GetShader("./shaders/bar.glsl"));
   _fillRatio  = 1.0f;
   _horizontal = true;
+  _middle     = false;
   _padding    = glm::vec2(0.0f);
   _size       = glm::vec2(100.0f);
   _background.Size(_size);
   _fillArea.Size(_size - _padding);
   _fillArea.Ratio(_fillRatio);
   _offset = glm::vec2(0.0f);
+  _fillAreaOffset = glm::vec2(0.0f);
 }
 
 auto Engine::Renderer::Bar::Draw(glm::mat4 model, glm::mat4 proj) -> void {
   model = glm::translate(model, glm::vec3(_offset, 0.0f));
   _background.Draw(model, proj);
+  model = glm::translate(model, glm::vec3(_fillAreaOffset, 0.0f));
   _fillArea.Draw(model, proj);
 }

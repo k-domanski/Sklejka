@@ -10,7 +10,7 @@ namespace Editor {
     EditorLayer* _editorLayer;
     char _charBuffer[100]{0};
     bool _isDirty{false};
-    std::shared_ptr< Engine::Renderer::Material > _selectedMaterial;
+    std::shared_ptr< Engine::Renderer::Material > _material;
     std::filesystem::path _rootFolder;
     std::filesystem::path _materialsFolder;
     std::filesystem::path _shadersFolder;
@@ -31,6 +31,7 @@ namespace Editor {
     auto TextureSelection() -> void;
     auto PBRParams() -> void;
     auto ColorSelection() -> void;
+    auto StencilSetup() -> void;
 
     auto SaveMaterial(const std::shared_ptr< Engine::Renderer::Material >& material) -> void;
     auto LoadMaterial(const std::string& file) -> void;

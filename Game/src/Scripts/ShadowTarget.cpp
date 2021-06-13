@@ -20,6 +20,7 @@ auto ShadowTarget::OnCreate() -> void {
       Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
   _bar->bar->FillRatio(glm::min(1.0f, _currentAmount / _maxAmount));
   _bar->bar->Horizontal(false);
+  _bar->bar->Middle(true);
   _bar->transform->Position(glm::vec3(100.0f, 400.0f, 0.0f));
   _bar->bar->BackgroundColor(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
   _bar->bar->FillColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));

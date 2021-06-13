@@ -19,6 +19,14 @@ namespace Engine::Renderer {
     float _roughness = 0.0f;
     float _metalness = 0.0f;
 
+    /* Stencil */
+    bool _useStencil{false};
+    uint8_t _stencilRef{0};
+    GL::StencilFunc _stencilFunc{GL::StencilFunc::Always};
+    GL::StencilOp _sfail{GL::StencilOp::Keep}, _zfail{GL::StencilOp::Keep},
+        _zpass{GL::StencilOp::Keep};
+    /* -=-=-=- */
+
   public:
     Material(std::size_t assetID);
     auto SetShader(const std::shared_ptr< GL::Shader >& shader) noexcept -> void;
@@ -41,6 +49,20 @@ namespace Engine::Renderer {
     auto MainColorPtr() -> float*;
     auto Queue() const noexcept -> uint32_t;
     auto Queue(uint32_t queue) noexcept -> uint32_t;
+    /* Stencil */
+    auto UseStencil() const noexcept -> bool;
+    auto UseStencil(bool value) noexcept -> bool;
+    auto StencilRef() const noexcept -> uint8_t;
+    auto StencilRef(uint8_t ref) noexcept -> uint8_t;
+    auto StencilFunc() const noexcept -> GL::StencilFunc;
+    auto StencilFunc(GL::StencilFunc func) noexcept -> GL::StencilFunc;
+    auto StencilSFail() const noexcept -> GL::StencilOp;
+    auto StencilSFail(GL::StencilOp op) noexcept -> GL::StencilOp;
+    auto StencilZFail() const noexcept -> GL::StencilOp;
+    auto StencilZFail(GL::StencilOp op) noexcept -> GL::StencilOp;
+    auto StencilZPass() const noexcept -> GL::StencilOp;
+    auto StencilZPass(GL::StencilOp op) noexcept -> GL::StencilOp;
+    /* -=-=-=- */
 
     std::size_t GetAssetID();
     std::string ToJson();

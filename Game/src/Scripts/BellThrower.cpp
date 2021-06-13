@@ -31,13 +31,18 @@ auto BellThrower::OnKeyPressed(Engine::Key key) -> void {
         LOG_DEBUG("Found bell that is close enough");
         auto acorn = Engine::ECS::EntityManager::GetInstance().CreateEntity();
         acorn->LoadFromJson("./Assets/prefabs/acorn.prefab");
+
+        acorn->layer.SetState(Engine::LayerMask::Flag::Acorn);
+        acorn->collisionLayer.SetState(Engine::LayerMask::Flag::Default);
+
         acorn->GetComponent< Engine::Transform >()->Position(_playerTransform->WorldPosition());
         auto acorn_rb            = acorn->GetComponent< Engine::Components::Rigidbody >();
         auto acorn_native_script = acorn->AddComponent< Engine::NativeScript >();
         GameManager::GetSoundEngine()->play2D("./Assets/sounds/throw.wav");
         acorn_native_script->Attach< CollisionDetector >();
-        acorn_rb->SetVelocity((bellTransform->WorldPosition() - _playerTransform->WorldPosition())
-                              * 10.f);
+        acorn_rb->SetVelocity(
+            glm::normalize(bellTransform->WorldPosition() - _playerTransform->WorldPosition())
+            * 10.f);
         _currentTimeout = _timeout;
         // GameManager::PlayerSpeedUp();
       } else {

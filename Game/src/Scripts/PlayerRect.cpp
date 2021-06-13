@@ -19,8 +19,8 @@ auto PlayerRect::OnCreate() -> void {
   _gameSettings   = GameManager::GetGameSettings();
 
   _qBase    = _modelTransform->Rotation();
-  _vRad     = glm::radians(30.0f); /* Param this */
-  _hRad     = glm::radians(30.0f);
+  _vRad     = glm::radians(10.0f); /* Param this */
+  _hRad     = glm::radians(10.0f);
   _lerpTime = 0.25f; /* Param this */
 
   _qIden  = glm::quat({0.0f, 0.0f, 0.0f});
