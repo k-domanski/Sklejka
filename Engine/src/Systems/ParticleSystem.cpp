@@ -29,14 +29,26 @@ namespace Engine::Systems {
       SortParticles(emitter);
 
       /* Spawn new particles */
-      emitter->_spawnCache += emitter->_spawnRate * deltaTime;
+
+      if (emitter->_spawnRate != 0.0f) {
+        if (emitter->_intervalCache <= 0.0f) {
+          if (!SpawnParticle(emitter)) {
+            LOG_INFO("Failed to spawn particle");
+          }
+          emitter->_intervalCache += emitter->_interval;
+        } else {
+          emitter->_intervalCache -= deltaTime;
+        }
+      }
+
       /* Spawn particles until spawn cache < 1.0f*/
+      /*emitter->_spawnCache += emitter->_spawnRate * deltaTime;
       while (emitter->_spawnCache >= 1.0f) {
         if (!SpawnParticle(emitter)) {
           break;
         }
         emitter->_spawnCache -= 1.0f;
-      }
+      }*/
 
       emitter->UpdateBuffer();
     }

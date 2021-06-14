@@ -18,6 +18,7 @@
 #include "Components/Animator.h"
 #include "Scripts/Boss.h"
 #include "Systems/NodeSystem.h"
+#include "Components/ParticleEmitter.h"
 
 using namespace Engine;
 using namespace Engine::Components;
@@ -223,6 +224,10 @@ auto GameManager::CreatePlayer() -> void {
   player->Name("Player");
   auto player_model = entity_manager.CreateEntity();
   player_model->Name("Player_Model");
+  auto emitter_left = entity_manager.CreateEntity();
+  emitter_left->Name("Trail Left");
+  auto emitter_right = entity_manager.CreateEntity();
+  emitter_left->Name("Trail Right");
   auto main_camera = entity_manager.CreateEntity();
   main_camera->Name("Main_Camera");
   /* -=-=-=-=-=-=-=-=- */
@@ -270,6 +275,43 @@ auto GameManager::CreatePlayer() -> void {
     animator->SetAnimation(AssetManager::GetModel("./models/squirrel_anim_idle.fbx"));
   }
 
+  {
+    /* Emitters */
+    auto em_l     = emitter_left->AddComponent< ParticleEmitter >(100);
+    auto em_r     = emitter_right->AddComponent< ParticleEmitter >(100);
+    auto material = AssetManager::GetMaterial("materials/trail.mat");
+    em_l->Material(material);
+    em_r->Material(material);
+
+    em_l->EmitCount(100);
+    em_r->EmitCount(100);
+
+    constexpr auto scale    = 0.2f;
+    constexpr auto lifetime = 0.75f;
+    constexpr auto decay    = scale / lifetime;
+
+    em_l->Scale(glm::vec2(scale));
+    em_r->Scale(glm::vec2(scale));
+
+    em_l->Lifetime(lifetime);
+    em_r->Lifetime(lifetime);
+
+    em_l->SizeDecay(decay);
+    em_r->SizeDecay(decay);
+
+    em_l->SpawnRate(50.0f);
+    em_r->SpawnRate(50.0f);
+
+    auto tr_l = emitter_left->AddComponent< Transform >();
+    auto tr_r = emitter_right->AddComponent< Transform >();
+
+    constexpr auto x = 0.70f;
+    constexpr auto y = -0.1f;
+    constexpr auto z = -0.55f;
+    tr_l->Position({-x, y, z});
+    tr_r->Position({x, y, z});
+  }
+
   { /* Camera */
     auto transform = main_camera->AddComponent< Transform >();
     auto camera    = main_camera->AddComponent< Camera >();
@@ -286,6 +328,8 @@ auto GameManager::CreatePlayer() -> void {
     scene_graph->SetParent(player_rect, nullptr);
     scene_graph->SetParent(player, player_rect);
     scene_graph->SetParent(player_model, player);
+    scene_graph->SetParent(emitter_left, player_model);
+    scene_graph->SetParent(emitter_right, player_model);
   }
   /* -=-=-=-=-=- */
 
