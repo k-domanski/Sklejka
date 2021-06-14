@@ -57,6 +57,7 @@ auto Boss::CanMove(bool value) -> void {
 auto Boss::Hit() -> void
 {
   _hits++;
+  GameManager::GetSoundEngine()->play2D("./Assets/sounds/placeholderBeep.wav");
   if (_hits >= 3)
   {
     Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
