@@ -80,16 +80,18 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
       _instance->NextFrameTrigger();
       break;
     }
-    case SceneName::LevelSelection:
+    case SceneName::LevelSelection: {
       Engine::SceneManager::OpenScene(_instance->_levelSelection->Scene()->GetID());
       break;
-    case SceneName::Options:
+    }
+    case SceneName::Options: {
       Engine::SceneManager::OpenScene(_instance->_options->Scene()->GetID());
       break;
-  }
+    }
 
-  if (IsGameplayScene()) {
-    FindBells();
+      if (IsGameplayScene()) {
+        FindBells();
+      }
   }
 }
 
@@ -110,6 +112,10 @@ auto GameManager::GetNextSceneName() -> SceneName {
   return SceneName::_from_index(it);
 }
 
+auto GameManager::GetCurrentSceneName() -> SceneName {
+  return _instance->_currentSceneName;
+}
+
 auto GameManager::Update(float deltaTime) -> void {
   _instance->UpdateImpl(deltaTime);
 
@@ -127,10 +133,8 @@ auto GameManager::PlayerSpeedUp() -> void {
   _instance->GetPlayerSettings()->ForwardSpeed(fast_speed);
 }
 
-auto GameManager::ShowLevelSumUp(float time, bool win) -> void {
-  std::stringstream s;
-  s << "Your time was: " << std::fixed << std::setprecision(2) << time;
-  _instance->_endLevelMenu->Show(s.str(), "You win");
+auto GameManager::ShowLevelSumUp(bool win, float time, int bells) -> void {
+  _instance->_endLevelMenu->Show(win, time, bells);
 }
 
 auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
@@ -418,7 +422,7 @@ auto GameManager::SetupScripts() -> void {
   native_script->Attach(flightTimer);
 
   // native_script->Attach(std::make_shared< StartTimer >(player_rect, flightTimer));
-  auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer);
+  auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer, shadowTarget);
   start_timer->CanCount(true);
 
   native_script = _model->AddComponent< Engine::NativeScript >();
@@ -452,7 +456,7 @@ auto GameManager::KillPlayerImpl() -> void {
   auto time   = timer->GetTime();
   timer->CanCount(false);
 
-  ShowLevelSumUp(time, false);
+  ShowLevelSumUp(false, 0, 0);
 }
 
 auto GameManager::WinImpl() -> void {
@@ -472,7 +476,7 @@ auto GameManager::WinImpl() -> void {
   auto time   = timer->GetTime();
   timer->CanCount(false);
 
-  ShowLevelSumUp(time, true);
+  ShowLevelSumUp(true, time, 10);  // TODO: get hitted bells value
 }
 
 /* Try not to use this shit anymore */
@@ -522,7 +526,7 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script->Attach(flightTimer);
 
   // native_script->Attach(std::make_shared< StartTimer >(player_rect, flightTimer));
-  auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer);
+  auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer, shadowTarget);
   start_timer->CanCount(true);
 
   native_script = _model->AddComponent< Engine::NativeScript >();

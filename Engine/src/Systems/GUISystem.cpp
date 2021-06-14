@@ -31,6 +31,12 @@ void Engine::Systems::GUISystem::Update(float deltaTime) {
   auto mousePos = Input::GetMousePosition();
   mousePos.y    = Window::Get().GetHeight() - mousePos.y;
 
+  GL::Context::DepthTest(false);
+  GL::Context::EnableBlending(true);
+  GL::Context::SetBlendFunction(GL::BlendFunc::SrcAlpha, GL::BlendFunc::OneMinusSrcAlpha);
+  GL::Context::BindFramebuffer(GL::FramebufferTarget::ReadWrite, 0);
+  //GL::Context::ClearBuffers(GL::BufferBit::Color);
+
   for (auto entityID : _entities) {
     auto transform = Engine::ECS::EntityManager::GetComponent< Engine::Transform >(entityID);
     auto renderer =

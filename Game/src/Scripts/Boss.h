@@ -12,6 +12,9 @@ private:
   std::shared_ptr< PlayerSettings > _playerSettings;
   std::shared_ptr< PlayerRect > _player;
   glm::vec3 _moveVelocity{0};
+  std::shared_ptr< Engine::Renderer::Image > _health1;
+  std::shared_ptr< Engine::Renderer::Image > _health2;
+  std::shared_ptr< Engine::Renderer::Image > _health3;
 
   int _hits = 0;
   bool _canMove;

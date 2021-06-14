@@ -38,7 +38,7 @@ void Engine::Renderer::Text::Offset(glm::vec2 offset) {
 }
 
 Engine::Renderer::Text::Text() {
-  _characters = AssetManager::GetCharacters("./fonts/arialn/Arialn.ttf", 48);
+  _characters = AssetManager::GetCharacters("./fonts/finger-paint/FingerPaint-Regular.ttf", 48);
   _shader     = AssetManager::GetShader("./shaders/text.glsl");
 
   _size   = 48.0f;
@@ -94,10 +94,6 @@ auto Engine::Renderer::Text::Draw(glm::mat4 model, glm::mat4 proj) -> void {
   glm::vec3 skew;
   glm::vec4 perspective;
   glm::decompose(model, scale, rotation, translation, skew, perspective);*/
-
-  // TODO: Move to GL::Context
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   _shader->Use();
   _shader->SetMatrix("projection", proj);

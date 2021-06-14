@@ -6,15 +6,26 @@
 class EndLevelMenu {
 public:
   EndLevelMenu();
-  auto Show(std::string timeText, std::string winText) -> void;
+  auto Show(bool win, float time, int bells) -> void;
   auto Hide() -> void;
 private:
+
+  bool _win;
+  bool _visible;
+  //common
   std::shared_ptr< Engine::Components::UIRenderer > _imageRenderer;
-  std::shared_ptr< Engine::Renderer::Image > _image;
-  std::shared_ptr< Engine::Components::UIRenderer > _tryAgainRenderer;
+  std::shared_ptr< Engine::Components::UIRenderer > _buttonRenderer;
+  std::shared_ptr< Engine::Renderer::Image > _background;
+  std::shared_ptr< Engine::Renderer::Image > _title;
   std::shared_ptr< Engine::Renderer::Button > _tryAgainButton;
-  std::shared_ptr< Engine::Components::UIRenderer > _nextLevelRenderer;
-  std::shared_ptr< Engine::Renderer::Button > _nextLevelButton;
+  std::shared_ptr< Engine::Renderer::Button > _mainMenuButton;
+
+  //win summary
   std::shared_ptr< Engine::Renderer::Text > _timeText;
-  std::shared_ptr< Engine::Renderer::Text > _winText;
+  std::shared_ptr< Engine::Renderer::Text > _bellText;
+  std::shared_ptr< Engine::Renderer::Button > _nextLevelButton;
+
+  //lost summary
+  std::shared_ptr< Engine::Renderer::Image > _deathMark;
+  
 };
