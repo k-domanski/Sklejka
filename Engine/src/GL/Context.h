@@ -18,10 +18,27 @@ namespace Engine::GL {
     /* Other */
     static inline glm::vec4 _clearColor{0.0f};
     static inline GLbitfield _clearBitMask{0u};
-    static inline bool _depthTestEnabled   = false;
     static inline bool _faceCullingEnabled = false;
     static inline glm::ivec4 _viewport;
     static inline Face _cullFace = +Face::Back;
+
+    /* Depth Test */
+    static inline bool _depthTestEnabled  = false;
+    static inline bool _depthWriteEnabled = true;
+
+    /* Stencil Test */
+    static inline bool _stencilTestEnabled = false;
+    static inline uint8_t _stencilMask     = 0xFF;
+    static inline uint8_t _stencilRef      = 0;
+    static inline StencilFunc _stencilFunc = StencilFunc::Never;
+    static inline StencilOp _sfail         = StencilOp::Keep;
+    static inline StencilOp _dpfail        = StencilOp::Keep;
+    static inline StencilOp _dppass        = StencilOp::Keep;
+
+    /* Blending */
+    static inline bool _blendingEnabled    = false;
+    static inline BlendFunc _blendFuncSrc  = BlendFunc::SrcAlpha;
+    static inline BlendFunc _blendFuncDest = BlendFunc::OneMinusSrcAlpha;
 
   public:
     static auto Initialize() noexcept -> void;
@@ -54,11 +71,24 @@ namespace Engine::GL {
     /* Wrappers */
     static auto ClearBuffers() noexcept -> void;
     static auto ClearBuffers(GLbitfield mask) noexcept -> void;
-    static auto DepthTest(bool enable) noexcept -> void;
     static auto FaceCulling(bool enable) noexcept -> void;
     static auto CullFace(Face face) noexcept -> void;
     static auto Viewport() noexcept -> glm::vec4;
     static auto Viewport(int x, int y, unsigned width, unsigned height) noexcept -> void;
+
+    /* Depth Test */
+    static auto DepthTest(bool enable) noexcept -> void;
+    static auto DepthWrite(bool enable) noexcept -> void;
+
+    /* Stencil Test */
+    static auto StencilTest(bool enable) noexcept -> void;
+    static auto StencilMask(uint8_t mask) noexcept -> void;
+    static auto StencilFunction(StencilFunc func, uint8_t ref, uint8_t mask = 0xFF) -> void;
+    static auto StencilOperation(StencilOp sfail, StencilOp dpfail, StencilOp dppass) -> void;
+
+    /* Blending */
+    static auto EnableBlending(bool value) -> void;
+    static auto SetBlendFunction(BlendFunc source, BlendFunc destination) -> void;
 
     /* Helpers */
     static auto BindUniformBlocks(const std::shared_ptr< Engine::GL::Shader >& shader) -> void;

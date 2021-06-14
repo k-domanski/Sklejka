@@ -63,6 +63,42 @@ namespace Engine::Renderer {
   auto Material::Queue(uint32_t queue) noexcept -> uint32_t {
     return _queue = queue;
   }
+  auto Material::UseStencil() const noexcept -> bool {
+    return _useStencil;
+  }
+  auto Material::UseStencil(bool value) noexcept -> bool {
+    return _useStencil = value;
+  }
+  auto Material::StencilRef() const noexcept -> uint8_t {
+    return _stencilRef;
+  }
+  auto Material::StencilRef(uint8_t ref) noexcept -> uint8_t {
+    return _stencilRef = ref;
+  }
+  auto Material::StencilFunc() const noexcept -> GL::StencilFunc {
+    return _stencilFunc;
+  }
+  auto Material::StencilFunc(GL::StencilFunc func) noexcept -> GL::StencilFunc {
+    return _stencilFunc = func;
+  }
+  auto Material::StencilSFail() const noexcept -> GL::StencilOp {
+    return _sfail;
+  }
+  auto Material::StencilSFail(GL::StencilOp op) noexcept -> GL::StencilOp {
+    return _sfail = op;
+  }
+  auto Material::StencilZFail() const noexcept -> GL::StencilOp {
+    return _zfail;
+  }
+  auto Material::StencilZFail(GL::StencilOp op) noexcept -> GL::StencilOp {
+    return _zfail = op;
+  }
+  auto Material::StencilZPass() const noexcept -> GL::StencilOp {
+    return _zpass;
+  }
+  auto Material::StencilZPass(GL::StencilOp op) noexcept -> GL::StencilOp {
+    return _zpass = op;
+  }
   std::size_t Material::GetAssetID() {
     return _assetID;
   }
@@ -76,7 +112,14 @@ namespace Engine::Renderer {
         {"metalnessMap", (_metalnessMap != nullptr ? _metalnessMap->FilePath() : "")},
         {"mainColor", json::array({_mainColor.r, _mainColor.g, _mainColor.b, _mainColor.a})},
         {"roughness", _roughness},
-        {"metalness", _metalness}};
+        {"metalness", _metalness},
+        {"useStencil", _useStencil},
+        {"stencilRef", _stencilRef},
+        {"stencilFunc", _stencilFunc._to_string()},
+        {"sfail", _sfail._to_string()},
+        {"zfail", _zfail._to_string()},
+        {"zpass", _zpass._to_string()}
+        /**/};
 
     return json.dump(4);
   }
@@ -90,6 +133,13 @@ namespace Engine::Renderer {
     if (_assetID == s_currentMaterial) {
       return;
     }
+
+    GL::Context::StencilTest(_useStencil);
+    if (_useStencil) {
+      GL::Context::StencilFunction(_stencilFunc, _stencilRef);
+      GL::Context::StencilOperation(_sfail, _zfail, _zpass);
+    }
+
     auto white_texture = AssetManager::GetTexture2D("./textures/white.png");
     if (_mainTexture != nullptr) {
       _mainTexture->Bind(0);

@@ -1,0 +1,196 @@
+{
+    "sceneID": 12925756366277776294
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "collisionLayer": 4294967295,
+    "entityID": "8150593624672918040",
+    "entityName": "Boss",
+    "layer": 1,
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 0.7073181867599487,
+        "x": 0.0,
+        "y": 0.7068952918052673,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 0.5,
+        "y": 0.5,
+        "z": 0.5
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "Assets/materials/weasle.mat",
+    "meshIndex": 0,
+    "model": "Assets/models/weasel_jet.fbx"
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "center": {
+        "x": 0.0,
+        "y": 0.20000000298023224,
+        "z": -1.2000000476837158
+    },
+    "colliderType": "Box",
+    "componentType": "collider",
+    "size": {
+        "x": 3.4000000953674316,
+        "y": 2.0,
+        "z": 7.0
+    },
+    "static": true,
+    "trigger": false
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "rigidbody",
+    "kinematic": false,
+    "useGravity": false,
+    "velocity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+  "componentType": "animator",
+  "model": "Assets/models/weasel_jet.fbx"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "collisionLayer": 4294967295,
+    "entityID": "11064007037674847747",
+    "entityName": "Acorn",
+    "layer": 1,
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 0.7760464549064636,
+        "x": 0.0,
+        "y": -0.630675733089447,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "Assets/materials/acorn_brown.mat",
+    "meshIndex": 0,
+    "model": "Assets/models/acorn.FBX"
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "collisionLayer": 4294967295,
+    "entityID": "2664970257694949620",
+    "entityName": "New Entity",
+    "layer": 1,
+    "parentID": 0
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "ambient": {
+        "x": 1.0,
+        "y": 0.9999899864196777,
+        "z": 0.9999899864196777
+    },
+    "componentType": "directionalLight",
+    "diffuse": {
+        "x": 1.0,
+        "y": 0.9999899864196777,
+        "z": 0.9999899864196777
+    },
+    "flags": 3,
+    "intensity": 1.0,
+    "shadowBias": 0.0,
+    "specular": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}
+42091169692137SUPERJSONENTITYSEPARATOR42091169692137
+{
+    "collisionLayer": 4294967295,
+    "entityID": "943348019160047607",
+    "entityName": "Jet",
+    "layer": 1,
+    "parentID": 8150593624672918040
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localRotation": {
+        "w": 1.0,
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "Assets/materials/weasle_jet.mat",
+    "meshIndex": 1,
+    "model": "Assets/models/weasel_jet.fbx"
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+  "componentType": "animator",
+  "model": "Assets/models/weasel_jet.fbx"
+}

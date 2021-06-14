@@ -14,8 +14,12 @@ namespace Engine::Renderer {
     void Color(const glm::vec4& color);
     glm::vec2 Size() const;
     void Size(const glm::vec2& size);
+    glm::vec2 Offset() const;
+    void Offset(const glm::vec2& offset);
     bool Horizontal() const;
     void Horizontal(bool horizontal);
+    bool Middle() const;
+    void Middle(bool middle);
     std::shared_ptr< GL::Texture2D > Texture() const;
     void Texture(const std::shared_ptr< GL::Texture2D >& texture);
     std::shared_ptr< GL::Shader > Shader() const;
@@ -38,6 +42,8 @@ namespace Engine::Renderer {
     float _ratio;
     glm::vec4 _color;
     glm::vec2 _size;
-    bool _horizontal;  // TODO: Consider better enum
+    glm::vec2 _offset;
+    bool _horizontal;  // TODO: Consider better enum  -- Maybe some day :)
+    bool _middle;
   };
 }  // namespace Engine::Renderer

@@ -29,12 +29,28 @@ void Engine::Renderer::Image::Size(const glm::vec2& size) {
   _size = size;
 }
 
+glm::vec2 Engine::Renderer::Image::Offset() const {
+  return _offset;
+}
+
+void Engine::Renderer::Image::Offset(const glm::vec2& offset) {
+  _offset = offset;
+}
+
 bool Engine::Renderer::Image::Horizontal() const {
   return _horizontal;
 }
 
 void Engine::Renderer::Image::Horizontal(bool horizontal) {
   _horizontal = horizontal;
+}
+
+bool Engine::Renderer::Image::Middle() const {
+  return _middle;
+}
+
+void Engine::Renderer::Image::Middle(bool middle) {
+  _middle = middle;
 }
 
 std::shared_ptr< Engine::GL::Texture2D > Engine::Renderer::Image::Texture() const {
@@ -53,18 +69,21 @@ void Engine::Renderer::Image::Shader(const std::shared_ptr< GL::Shader >& shader
   _shader = shader;
 }
 
-Engine::Renderer::Image::Image() : UIElement() {
+Engine::Renderer::Image::Image(): UIElement() {
   _shader     = AssetManager::GetShader("./shaders/imageUI.glsl");
   _texture    = AssetManager::GetTexture2D("./textures/white.png");
   _mesh       = Mesh::GetPrimitive(MeshPrimitive::Plane);
   _ratio      = 1.0;
   _color      = glm::vec4(1.0f);
   _horizontal = true;
+  _middle     = false;
   _size       = glm::vec2(100.0f, 100.0f);
+  _offset     = glm::vec2(0.0f);
 }
 
 auto Engine::Renderer::Image::Draw(glm::mat4 model, glm::mat4 proj) -> void {
-  model = glm::scale(model, glm::vec3(_size.x/2.0f, _size.y/2.0f, 1.0f));
+  model = glm::translate(model, glm::vec3(_offset, 0.0f));
+  model = glm::scale(model, glm::vec3(_size.x / 2.0f, _size.y / 2.0f, 1.0f));
   _shader->Use();
   _mesh->Use();
   _texture->Bind(0);
@@ -74,6 +93,7 @@ auto Engine::Renderer::Image::Draw(glm::mat4 model, glm::mat4 proj) -> void {
   _shader->SetVector("u_Color", _color);
   _shader->SetValue("ratio", _ratio);
   _shader->SetValue("horizontal", _horizontal);
+  _shader->SetValue("middle", _middle);
   glDrawElements(_mesh->GetPrimitive(), _mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
 }
 

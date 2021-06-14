@@ -57,12 +57,15 @@ public:
   static auto ShowLevelSumUp(float time, bool win) -> void;
   static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
   static auto KillPlayer() -> void;
+  static auto Win() -> void;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;
   auto PlayCutscene() -> void;
   auto CreatePlayer() -> void;
+  auto CreateBoss() -> void;
   auto SetupScripts() -> void;
   auto NextFrameTrigger() -> void;
   auto KillPlayerImpl() -> void;
+  auto WinImpl() -> void;
 };

@@ -19,8 +19,8 @@ auto PlayerRect::OnCreate() -> void {
   _gameSettings   = GameManager::GetGameSettings();
 
   _qBase    = _modelTransform->Rotation();
-  _vRad     = glm::radians(30.0f); /* Param this */
-  _hRad     = glm::radians(30.0f);
+  _vRad     = glm::radians(10.0f); /* Param this */
+  _hRad     = glm::radians(10.0f);
   _lerpTime = 0.25f; /* Param this */
 
   _qIden  = glm::quat({0.0f, 0.0f, 0.0f});
@@ -61,6 +61,13 @@ auto PlayerRect::Enable(bool value) -> void {
   _enabled = value;
 }
 
+auto PlayerRect::CurrentNodeIndex() -> int {
+  if (_currentNode != nullptr)
+    return _currentNode->Index();
+  else
+    return -1;
+}
+
 // auto PlayerRect::Size() const noexcept -> glm::vec2 {
 //  return _size;
 //}
@@ -83,8 +90,8 @@ auto PlayerRect::HandleInput(float& vertical, float& horizontal, float& roll) ->
   horizontal = glm::clamp(horizontal, -1.0f, 1.0f);
   roll       = glm::clamp(roll, -1.0f, 1.0f);
 
-  if (Input::IsKeyPressed(Key::X))
-    GameManager::GetSoundEngine()->play2D("./Assets/sounds/placeholderBeep.wav", false);
+  /*if (Input::IsKeyPressed(Key::X))
+    GameManager::GetSoundEngine()->play2D("./Assets/sounds/placeholderBeep.wav", false);*/
 }
 
 auto PlayerRect::SeekTarget(float deltaTime) -> void {
@@ -200,6 +207,7 @@ auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
     // if (_currentNode->NextIndex() == 3)
     // GameManager::ShowLevelSumUp(10.0f, true);
     _currentNode   = _nodeSystem->GetNode(_currentNode->NextIndex(), NodeTag::Player);
+    LOG_DEBUG("Current node: " + std::to_string(_currentNode->Index()));
     _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   }
   return _currentNode;

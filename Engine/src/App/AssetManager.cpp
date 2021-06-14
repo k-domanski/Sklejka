@@ -192,6 +192,20 @@ namespace Engine {
       material->Metalness(READ_VALUE(json, "metalness", 0));
       material->RoughnessMap(GetTexture2D(READ_VALUE(json, "roughnessMap", "")));
       material->MetalnessMap(GetTexture2D(READ_VALUE(json, "metalnessMap", "")));
+
+      /* Stencli */
+      using namespace std::literals;
+      material->UseStencil(READ_VALUE(json, "useStencil", false));
+      material->StencilRef(READ_VALUE(json, "stencilRef", 0));
+      material->StencilFunc(
+          GL::StencilFunc::_from_string(READ_VALUE(json, "stencilFunc", "Always"s).c_str()));
+      material->StencilSFail(
+          GL::StencilOp::_from_string(READ_VALUE(json, "sfail", "Keep"s).c_str()));
+      material->StencilZFail(
+          GL::StencilOp::_from_string(READ_VALUE(json, "zfail", "Keep"s).c_str()));
+      material->StencilZPass(
+          GL::StencilOp::_from_string(READ_VALUE(json, "zpass", "Keep"s).c_str()));
+
       _loadedMaterials[assetID] = material;
       material->FilePath(file);
       return material;

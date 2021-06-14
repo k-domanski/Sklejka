@@ -23,19 +23,34 @@ in vec2 v_uv;
 out vec4 out_color;
 uniform float ratio;
 uniform bool horizontal;
+uniform bool middle;
 
 void main() {
-  float alpha = 1.0f;
-  if (horizontal) {
-    if (v_uv.x > ratio) {
-      alpha = 0.0f;
+  vec4 texel = gamma2linear(texture(u_MainTexture, v_uv));
+  float alpha = texel.a;
+  float halfRatio = ratio * 0.5f;
+
+  if(middle) {
+    if (horizontal) {
+      if (v_uv.x < (0.5f - halfRatio) || v_uv.x > (0.5f + halfRatio)) {
+        alpha = 0.0f;
+      }
+    } else {
+      if (v_uv.y < (0.5f - halfRatio) || v_uv.y > (0.5f + halfRatio)) {
+        alpha = 0.0f;
+      }
     }
   } else {
-    if (v_uv.y > ratio) {
-      alpha = 0.0f;
+    if (horizontal) {
+      if (v_uv.x > ratio) {
+        alpha = 0.0f;
+      }
+    } else {
+      if (v_uv.y > ratio) {
+        alpha = 0.0f;
+      }
     }
   }
-  vec4 texel = gamma2linear(texture(u_MainTexture, v_uv));
   texel = (texel - 0.5f) * u_Contrast + 0.5f;
   texel = texel + vec4(u_Brightness, u_Brightness, u_Brightness, 0.0f);
   out_color  = vec4(GammaCompress(u_Color.rgb * texel.rgb, u_Gamma), alpha);

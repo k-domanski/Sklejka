@@ -1,6 +1,6 @@
 {
     "assetID": "5671687025210346200",
-    "diffuseFilepath": "textures/bell.png",
+    "diffuseFilepath": "Assets/textures/bell.png",
     "mainColor": [
         1.0,
         1.0,
@@ -8,6 +8,14 @@
         1.0
     ],
     "metalness": 0.382999986410141,
+    "metalnessMap": "",
     "roughness": 0.32600000500679016,
-    "shaderFilepath": "shaders/directonal_light.glsl"
+    "roughnessMap": "",
+    "sfail": "Keep",
+    "shaderFilepath": "Assets/shaders/default.glsl",
+    "stencilFunc": "Always",
+    "stencilRef": 1,
+    "useStencil": true,
+    "zfail": "Keep",
+    "zpass": "Replace"
 }

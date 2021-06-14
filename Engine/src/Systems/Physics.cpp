@@ -8,8 +8,7 @@
 #include "Components/NativeScript.h"
 
 void Engine::Systems::Physics::Update(float deltaTime) {
-  const auto ent_count = _entities.size();
-  for (int i = 0; i < ent_count; ++i) {
+  for (int i = 0; i < _entities.size(); ++i) {
     const auto& ent1       = _entities[i];
     const auto& collider1  = ECS::EntityManager::GetComponent< Components::Collider >(ent1);
     const auto& rigidbody1 = ECS::EntityManager::GetComponent< Components::Rigidbody >(ent1);
@@ -23,7 +22,7 @@ void Engine::Systems::Physics::Update(float deltaTime) {
     pos += rigidbody1->GetVelocity() * deltaTime;
     transform1->Position(pos);
 
-    for (int j = i + 1; j < ent_count; ++j) {
+    for (int j = i + 1; j < _entities.size(); ++j) {
       const auto& ent2       = _entities[j];
       const auto layer_check = ent1->collisionLayer.Get(ent2->layer.GetState());
 

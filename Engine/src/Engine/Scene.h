@@ -21,6 +21,7 @@ namespace Engine {
     class LightSystem;
     class ScriptSystem;
     class AnimationSystem;
+    class ParticleSystem;
   }  // namespace Systems
   class NodeSystem;
 
@@ -38,7 +39,8 @@ namespace Engine {
     std::shared_ptr< Systems::ScriptSystem > _scriptSystem;
     std::shared_ptr< Systems::GUISystem > _GUISystem;
     std::shared_ptr< NodeSystem > _nodeSystem;
-    std::shared_ptr<Systems::AnimationSystem> _animationSystem;
+    std::shared_ptr< Systems::AnimationSystem > _animationSystem;
+    std::shared_ptr< Systems::ParticleSystem > _particleSystem;
 
     size_t _id;
     std::vector< std::shared_ptr< ECS::Entity > > _entities;
@@ -67,5 +69,6 @@ namespace Engine {
     auto FindEntity(const std::string& name) -> std::shared_ptr< ECS::Entity >;
     auto NodeSystem() const -> std::shared_ptr< Engine::NodeSystem >;
     auto Entities() -> std::vector< std::shared_ptr< ECS::Entity > >;
+    auto ParticleSystem() -> std::shared_ptr< Systems::ParticleSystem >;
   };
 }  // namespace Engine

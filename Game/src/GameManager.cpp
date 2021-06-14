@@ -8,12 +8,13 @@
 #include "Scripts/PlayerController.h"
 #include "Scripts/PlayerRect.h"
 #include "Scripts/StartTimer.h"
-#include "Scripts/BellThrower.h"
+#include "Scripts/AcornThrower.h"
 #include "Systems/SceneGraph.h"
 #include "Components/NativeScript.h"
 #include <Scripts/CollisionDetector.h>
 #include "Components/Rigidbody.h"
 #include "Components/Animator.h"
+#include "Scripts/Boss.h"
 #include "Systems/NodeSystem.h"
 
 using namespace Engine;
@@ -111,6 +112,7 @@ auto GameManager::Update(float deltaTime) -> void {
 
   // test pause menu:
   if (Engine::Input::IsKeyPressed(Engine::Key::ESCAPE)) {
+    if (_instance->_pauseMenu != nullptr)
     _instance->_pauseMenu->Show();
   }
 }
@@ -136,6 +138,10 @@ auto GameManager::KillPlayer() -> void {
   _instance->KillPlayerImpl();
 }
 
+auto GameManager::Win() -> void {
+  _instance->WinImpl();
+}
+
 auto GameManager::UpdateImpl(float deltaTime) -> void {
 #if defined(_DEBUG)
   if (Input::IsKeyPressed(Key::K)) {
@@ -153,6 +159,7 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
         case SceneName::LVL_1: {
           /* This is delayed 1 frame */
           _instance->CreatePlayer();
+          _instance->CreateBoss();
           break;
         }
       }
@@ -232,7 +239,7 @@ auto GameManager::CreatePlayer() -> void {
     mesh_renderer->SetModel(AssetManager::GetModel("./models/squirrel_anim_idle.fbx"));
     mesh_renderer->SetMaterial(AssetManager::GetMaterial("./materials/animation.mat"));
     auto collider       = player_model->AddComponent< Collider >();
-    collider->Size      = {1.2f, 0.35f, 1.9f};
+    collider->Size      = {1.1f, 0.10f, 1.4f};
     collider->Center    = {0.0f, 0.0f, -0.35f};
     collider->Type      = Components::ColliderType::Box;
     collider->IsTrigger = true;
@@ -263,8 +270,8 @@ auto GameManager::CreatePlayer() -> void {
   /* -=-=-=-=-=- */
 
   /* Finalize */
-  player_model->layer.Set(LayerMask::Flag::Player);
-  player_model->collisionLayer.Set(LayerMask::Flag::Default);
+  player_model->layer.SetState(LayerMask::Flag::Player);
+  player_model->collisionLayer.SetState(LayerMask::Flag::Default);
   _player     = player;
   _playerRect = player_rect;
   _model      = player_model;
@@ -272,6 +279,36 @@ auto GameManager::CreatePlayer() -> void {
   SceneManager::GetCurrentScene()->CameraSystem()->FindMainCamera();
   SetupScripts();
   /* -=-=-=-=- */
+}
+
+auto GameManager::CreateBoss() -> void
+{
+  auto& entity_manager = EntityManager::GetInstance();
+  auto& scene_graph    = SceneManager::GetCurrentScene()->SceneGraph();
+  auto& node_system    = SceneManager::GetCurrentScene()->NodeSystem();
+
+  auto boss = entity_manager.CreateEntity();
+  boss->LoadFromJson("./Assets/prefabs/weasel.prefab");
+  auto boss_jet = entity_manager.CreateEntity();
+  boss_jet->LoadFromJson("./Assets/prefabs/jet.prefab");
+
+  scene_graph->SetParent(boss_jet, boss);
+
+  auto transform = boss->GetComponent< Transform >();
+  /* Skip 1st node */
+  auto n1_pos = node_system->GetNode(0, NodeTag::Boss)
+                    ->GetEntity()
+                    ->GetComponent< Transform >()
+                    ->WorldPosition();
+  auto n2_pos = node_system->GetNode(1, NodeTag::Boss)
+                    ->GetEntity()
+                    ->GetComponent< Transform >()
+                    ->WorldPosition();
+  transform->Position(n1_pos);
+  transform->Forward(glm::normalize(n2_pos - n1_pos));
+
+  auto boss_native_script = boss->AddComponent< NativeScript >();
+  boss_native_script->Attach(std::make_shared< Boss >(_playerRect->GetComponent<NativeScript>()->GetScript<PlayerRect>()));
 }
 
 auto GameManager::SetupScripts() -> void {
@@ -323,7 +360,7 @@ auto GameManager::SetupScripts() -> void {
   native_script = _model->AddComponent< Engine::NativeScript >();
   native_script->Attach< CollisionDetector >();
 
-  native_script->Attach< BellThrower >();
+  native_script->Attach< AcornThrower >();
 
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();
@@ -352,6 +389,27 @@ auto GameManager::KillPlayerImpl() -> void {
   timer->CanCount(false);
 
   ShowLevelSumUp(time, false);
+}
+
+auto GameManager::WinImpl() -> void
+{
+  auto player_rect = _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >();
+  player_rect->CanMove(false);
+  player_rect->Enable(false);
+
+  auto collider       = _model->GetComponent< Collider >();
+  collider->IsTrigger = false;
+  auto rb             = _model->GetComponent< Rigidbody >();
+
+  rb->SetGravity(true);
+  rb->SetKinematic(false);
+
+  auto camera = SceneManager::GetCurrentScene()->CameraSystem()->MainCamera();
+  auto timer  = camera->GetEntity()->GetComponent< NativeScript >()->GetScript< FlightTimer >();
+  auto time   = timer->GetTime();
+  timer->CanCount(false);
+
+  ShowLevelSumUp(time, true);
 }
 
 /* Try not to use this shit anymore */
@@ -407,7 +465,7 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script = _model->AddComponent< Engine::NativeScript >();
   native_script->Attach< CollisionDetector >();
 
-  native_script->Attach< BellThrower >();
+  native_script->Attach< AcornThrower >();
 
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();
