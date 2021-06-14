@@ -77,12 +77,14 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
       _instance->NextFrameTrigger();
       break;
     }
-    case SceneName::LevelSelection:
+    case SceneName::LevelSelection: {
       Engine::SceneManager::OpenScene(_instance->_levelSelection->Scene()->GetID());
       break;
-    case SceneName::Options:
+    }
+    case SceneName::Options: {
       Engine::SceneManager::OpenScene(_instance->_options->Scene()->GetID());
       break;
+    }
   }
 }
 
@@ -103,6 +105,10 @@ auto GameManager::GetNextSceneName() -> SceneName {
   return SceneName::_from_index(it);
 }
 
+auto GameManager::GetCurrentSceneName() -> SceneName {
+  return _instance->_currentSceneName;
+}
+
 auto GameManager::ShowLoadingScreen() -> void {
   Engine::SceneManager::OpenScene(_instance->_loadingScreen->Scene()->GetID());
 }
@@ -113,7 +119,7 @@ auto GameManager::Update(float deltaTime) -> void {
   // test pause menu:
   if (Engine::Input::IsKeyPressed(Engine::Key::ESCAPE)) {
     if (_instance->_pauseMenu != nullptr)
-    _instance->_pauseMenu->Show();
+      _instance->_pauseMenu->Show();
   }
 }
 
@@ -124,10 +130,8 @@ auto GameManager::PlayerSpeedUp() -> void {
   _instance->GetPlayerSettings()->ForwardSpeed(fast_speed);
 }
 
-auto GameManager::ShowLevelSumUp(float time, bool win) -> void {
-  std::stringstream s;
-  s << "Your time was: " << std::fixed << std::setprecision(2) << time;
-  _instance->_endLevelMenu->Show(s.str(), "You win");
+auto GameManager::ShowLevelSumUp(bool win, float time, int bells) -> void {
+  _instance->_endLevelMenu->Show(win, time, bells);
 }
 
 auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
@@ -281,8 +285,7 @@ auto GameManager::CreatePlayer() -> void {
   /* -=-=-=-=- */
 }
 
-auto GameManager::CreateBoss() -> void
-{
+auto GameManager::CreateBoss() -> void {
   auto& entity_manager = EntityManager::GetInstance();
   auto& scene_graph    = SceneManager::GetCurrentScene()->SceneGraph();
   auto& node_system    = SceneManager::GetCurrentScene()->NodeSystem();
@@ -308,7 +311,8 @@ auto GameManager::CreateBoss() -> void
   transform->Forward(glm::normalize(n2_pos - n1_pos));
 
   auto boss_native_script = boss->AddComponent< NativeScript >();
-  boss_native_script->Attach(std::make_shared< Boss >(_playerRect->GetComponent<NativeScript>()->GetScript<PlayerRect>()));
+  boss_native_script->Attach(std::make_shared< Boss >(
+      _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >()));
 }
 
 auto GameManager::SetupScripts() -> void {
@@ -388,11 +392,10 @@ auto GameManager::KillPlayerImpl() -> void {
   auto time   = timer->GetTime();
   timer->CanCount(false);
 
-  ShowLevelSumUp(time, false);
+  ShowLevelSumUp(false, 0, 0);
 }
 
-auto GameManager::WinImpl() -> void
-{
+auto GameManager::WinImpl() -> void {
   auto player_rect = _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >();
   player_rect->CanMove(false);
   player_rect->Enable(false);
@@ -409,7 +412,7 @@ auto GameManager::WinImpl() -> void
   auto time   = timer->GetTime();
   timer->CanCount(false);
 
-  ShowLevelSumUp(time, true);
+  ShowLevelSumUp(true, time, 10);  // TODO: get hitted bells value
 }
 
 /* Try not to use this shit anymore */

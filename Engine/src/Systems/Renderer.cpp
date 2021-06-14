@@ -426,6 +426,7 @@ namespace Engine::Systems {
         return 0;
       }
     }
+    return 0;
   }
 
   auto Renderer::AddEntity(const std::shared_ptr< ECS::Entity >& entity) -> void {

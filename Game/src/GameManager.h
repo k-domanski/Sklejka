@@ -21,11 +21,11 @@ private:
 private:
   std::shared_ptr< GameSettings > _gameSettings;
   std::shared_ptr< PlayerSettings > _playerSettings;
+  std::shared_ptr< OptionsMenu > _options;
   std::shared_ptr< LoadingScreen > _loadingScreen;
   std::shared_ptr< Cutscene > _cutscene;
   std::shared_ptr< MainMenu > _mainMenu;
   std::shared_ptr< LevelSelection > _levelSelection;
-  std::shared_ptr< OptionsMenu > _options;
   std::shared_ptr< PauseMenu > _pauseMenu;
   std::shared_ptr< EndLevelMenu > _endLevelMenu;
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
@@ -51,10 +51,11 @@ public:
   static auto SwitchScene(SceneName scene) -> void;
   static auto GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene >;
   static auto GetNextSceneName() -> SceneName;
+  static auto GetCurrentSceneName() -> SceneName;
   static auto ShowLoadingScreen() -> void;
   static auto Update(float deltaTime) -> void;
   static auto PlayerSpeedUp() -> void;
-  static auto ShowLevelSumUp(float time, bool win) -> void;
+  static auto ShowLevelSumUp(bool win, float time, int bells) -> void;
   static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
   static auto KillPlayer() -> void;
   static auto Win() -> void;
