@@ -95,10 +95,6 @@ auto Engine::Renderer::Text::Draw(glm::mat4 model, glm::mat4 proj) -> void {
   glm::vec4 perspective;
   glm::decompose(model, scale, rotation, translation, skew, perspective);*/
 
-  // TODO: Move to GL::Context
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
   _shader->Use();
   _shader->SetMatrix("projection", proj);
   _shader->SetMatrix("model", model);

@@ -16,7 +16,7 @@ PauseMenu::PauseMenu() {
   _background = std::make_shared< Engine::Renderer::Image >();
   _background->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/white_background.png"));
   _background->Size({380.0f, 285.0f});
-  _background->Color(glm::vec4(1.0f));
+  _background->Color(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
   //_background->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   transform->Position(glm::vec3(windowSize / 2.0f, 0.0f));
 
