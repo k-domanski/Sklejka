@@ -15,7 +15,7 @@ auto AcornThrower::OnCreate() -> void {
   _maxDistance     = GameManager::GetPlayerSettings()->ThrowDistance();
 }
 
-auto AcornThrower::TryThrow() {
+auto AcornThrower::TryThrow() -> void {
   if (_boss == nullptr) {
     _boss          = Engine::SceneManager::GetCurrentScene()->FindEntity("Boss");
     _bossTransform = _boss->GetComponent< Engine::Transform >();

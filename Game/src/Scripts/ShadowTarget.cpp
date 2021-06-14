@@ -4,8 +4,8 @@
 #include "Components/UIRenderer.h"
 
 ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
-    : Script(), _shadowRate(0.0f), _bar(std::make_shared< BarData >()), _maxAmount(100.0f),
-      _currentAmount(0.0f), _fillSpeed(10.0f), _target(target), _maxSamplesPassed(0) {
+    : Script(), _shadowRate(0.0f), _bar(std::make_shared< BarData >()), _maxAmount(1.0f),
+      _currentAmount(0.0f), _target(target), _maxSamplesPassed(0) {
   auto entity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   auto renderer   = entity->AddComponent< Engine::Components::UIRenderer >();
   _bar->transform = entity->AddComponent< Engine::Transform >();
@@ -13,7 +13,9 @@ ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
   renderer->AddElement(_bar->bar);
   _rendererSystem =
       Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
-  _canCollect = false;
+  _gameTimeLerp.Set(1.0f, 1.0f, 1.0f);
+  _playerTimeLerp.Set(1.0f, 1.0f, 1.0f);
+  _lerpTime = 0.5f;
 }
 
 auto ShadowTarget::OnCreate() -> void {
@@ -30,33 +32,46 @@ auto ShadowTarget::OnCreate() -> void {
 }
 
 auto ShadowTarget::Update(float deltaTime) -> void {
+  if (GameManager::IsPaused()) {
+    return;
+  }
+
+  const auto player_settings = GameManager::GetPlayerSettings();
   if (!_timeSlowed) {
-    if (_canCollect) {
-      SamplesPassed(_rendererSystem->ObjectInShadow(_target));
-      _currentAmount +=
-          _fillSpeed * _shadowRate * deltaTime * GameManager::GetGameSettings()->PlayerTimeScale();
+    if (IsInShadow()) {
+      /* Increase energy */
+      _currentAmount += (1.0f / player_settings->EnergyFillTime()) * deltaTime;
+      _currentAmount = glm::min(_currentAmount, 1.0f);
     }
   } else {
-    _currentAmount -= 10 * deltaTime * GameManager::GetGameSettings()->PlayerTimeScale();
-  }
-
-  if (_currentAmount <= 0) {
-    _currentAmount = 0;
-    if (_timeSlowed)
+    /* Decrease energy */
+    if (_currentAmount > 0.0f) {
+      _currentAmount -= (1.0f / (player_settings->SlowTimeDuration() + 2 * _lerpTime)) * deltaTime;
+    } else {
       SetTimeSlowed(false);
+      _currentAmount = 0.0f;
+    }
   }
+  _bar->bar->FillRatio(glm::min(0.01f, _currentAmount));
 
-  _bar->bar->FillRatio(glm::min(1.0f, _currentAmount / _maxAmount));
+  GameManager::GetGameSettings()->GameTimeScale(_gameTimeLerp.Update(deltaTime));
+  GameManager::GetGameSettings()->PlayerTimeScale(_playerTimeLerp.Update(deltaTime));
 }
 
 auto ShadowTarget::OnKeyPressed(Engine::Key key) -> void {
-  if (key == Engine::Key::Z) {
-    if (_timeSlowed) {
-      SetTimeSlowed(false);
-    } else if (_currentAmount > 0) {
-      SetTimeSlowed(true);
-    }
+  if (key == Engine::Key::LEFT_SHIFT) {
+    SlowTime();
   }
+}
+
+auto ShadowTarget::SlowTime() -> void {
+  if (_timeSlowed) {
+    return;
+  }
+  if (_currentAmount < 1.0f) {
+    return;
+  }
+  SetTimeSlowed(true);
 }
 
 auto ShadowTarget::GetTarget() -> std::shared_ptr< Engine::ECS::Entity > {
@@ -83,9 +98,15 @@ auto ShadowTarget::SamplesPassed(GLint samplesPassed) -> void {
 
 auto ShadowTarget::SetTimeSlowed(bool value) -> void {
   _timeSlowed = value;
-  GameManager::GetGameSettings()->PlayerTimeScale(value ? 0.25f : 1.f);
+  _playerTimeLerp.Set((!value ? 0.75f : 1.f), (value ? 0.75f : 1.f), _lerpTime);
+  _gameTimeLerp.Set((!value ? 0.5f : 1.f), (value ? 0.5f : 1.f), _lerpTime);
+  GameManager::GetGameSettings()->GameTimeScale(_gameTimeLerp.Value());
+  GameManager::GetGameSettings()->PlayerTimeScale(_playerTimeLerp.Value());
 }
 
-auto ShadowTarget::CanColect(bool canCollect) -> void {
-  _canCollect = canCollect;
+auto ShadowTarget::IsInShadow() -> bool {
+  auto samplesPassed = _rendererSystem->ObjectInShadow(_target);
+  _maxSamplesPassed  = glm::max(samplesPassed, _maxSamplesPassed);
+  auto test_against  = glm::max(100.0f, _maxSamplesPassed / 2.0f);
+  return samplesPassed < test_against;
 }

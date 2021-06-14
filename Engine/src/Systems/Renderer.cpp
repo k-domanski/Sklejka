@@ -378,13 +378,17 @@ namespace Engine::Systems {
         }
         _shadowTarget->Bind(FramebufferTarget::ReadWrite);
         GL::Context::Viewport(0, 0, _shadowMapSize.x, _shadowMapSize.y);
-        // GL::Context::ClearBuffers(BufferBit::Depth);
         GL::Context::FaceCulling(true);
-        GL::Context::CullFace(Face::Front);
-        _shadowMapShader->Use();
+
+        if (entity->HasComponent< Animator >()) {
+          _shadowMapAnimShader->Use();
+          const auto& animator = entity->GetComponent< Animator >();
+          m_JointBuffer.SetData(animator->GetJointData());
+        } else {
+          _shadowMapShader->Use();
+        }
 
         GL::Context::CullFace(Face::Back);
-        // auto entityID      = _playerShadowTarget->GetTargetID();
         auto trans         = ECS::EntityManager::GetComponent< Transform >(entity);
         auto mesh_renderer = ECS::EntityManager::GetComponent< Components::MeshRenderer >(entity);
         auto material      = mesh_renderer->GetMaterial();

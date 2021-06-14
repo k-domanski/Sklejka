@@ -48,7 +48,7 @@ namespace Engine::Utility {
   template< typename T >
   class TimeLerp {
   private:
-    T _start, _end;
+    T _start, _end, _value;
     float _duration, _time{0.0f};
 
   public:
@@ -57,6 +57,7 @@ namespace Engine::Utility {
         : _start(start), _end(end), _duration(duration), _time(0.0f) {
     }
     auto Set(T start, T end, float duration) {
+      _value    = start;
       _start    = start;
       _end      = end;
       _duration = duration;
@@ -65,7 +66,8 @@ namespace Engine::Utility {
     auto Update(float deltaTime) -> T {
       auto t = glm::clamp(_time / _duration, 0.0f, 1.0f);
       _time += deltaTime;
-      return (1.0f - t) * _start + t * _end;
+      _value = (1.0f - t) * _start + t * _end;
+      return _value;
     }
     auto Reset() -> void {
       _time = 0.0f;
@@ -73,7 +75,18 @@ namespace Engine::Utility {
     auto Finished() -> bool {
       return (_duration - _time) <= 0.0f;
     }
+    auto Start() -> T {
+      return _start;
+    }
+    auto End() -> T {
+      return _end;
+    }
+    auto Value() -> T {
+      return _value;
+    }
   };
+
+  typedef TimeLerp< float > LerpFloat;
 
   class QuatLerp {
   private:
@@ -82,42 +95,14 @@ namespace Engine::Utility {
 
   public:
     QuatLerp() = default;
-    QuatLerp(glm::quat start, glm::quat end, float duration); /*
-        : _start(start), _end(end), _duration(duration), _time(0.0f) {
-    }*/
-    auto Set(glm::quat start, glm::quat end, float duration) -> void; /* {
-      _start    = start;
-      _end      = end;
-      _duration = duration;
-      _time     = 0.0f;
-    }*/
+    QuatLerp(glm::quat start, glm::quat end, float duration);
+    auto Set(glm::quat start, glm::quat end, float duration) -> void;
     auto Update(float deltaTime) -> glm::quat;
-    /* {
-      auto t = glm::clamp(_time / _duration, 0.0f, 1.0f);
-      _time += deltaTime;
-      _value = glm::slerp(_start, _end, t);
-      return _value;
-    }*/
     auto Reset() -> void;
-    /*{
-      _time = 0.0f;
-    }*/
     auto Finished() -> bool;
-    /*{
-      return (_duration - _time) <= 0.0f;
-    }*/
     auto Start() -> glm::quat;
-    /*{
-      return _start;
-    }*/
     auto End() -> glm::quat;
-    /*{
-      return _end;
-    }*/
     auto Value() -> glm::quat;
-    /*{
-      return _value;
-    }*/
   };
 
   struct ShaderParseResult {
