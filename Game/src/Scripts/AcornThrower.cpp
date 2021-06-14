@@ -67,6 +67,6 @@ auto AcornThrower::Throw(std::shared_ptr<Engine::Transform> target) -> void
   GameManager::GetSoundEngine()->play2D("./Assets/sounds/throw.wav");
   acorn_native_script->Attach< CollisionDetector >();
   acorn_rb->SetVelocity(
-      glm::normalize(target->WorldPosition() - _playerTransform->WorldPosition()) * 77.f);
+      glm::normalize(target->WorldPosition() - _playerTransform->WorldPosition()) * 20.f);
   _currentTimeout = _timeout;
 }
