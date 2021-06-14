@@ -36,7 +36,6 @@ auto StartTimer::Update(float deltaTime) -> void {
     if (_time <= 1.0f) {
       _playerRect->CanMove(true);
       _flightTimer->CanCount(true);
-      _shadowTarget->CanColect(true);
       _text->SetText("GO");
       // TODO: Remove timer object
     }

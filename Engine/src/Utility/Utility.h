@@ -86,6 +86,8 @@ namespace Engine::Utility {
     }
   };
 
+  typedef TimeLerp< float > LerpFloat;
+
   class QuatLerp {
   private:
     glm::quat _start, _end, _value;

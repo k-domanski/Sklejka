@@ -166,6 +166,14 @@ auto GameManager::IsGameplayInitialized() -> bool {
   return is_initialized;
 }
 
+auto GameManager::IsPaused() -> bool {
+  return _instance->_isPaused;
+}
+
+auto GameManager::SetPaused(bool value) -> bool {
+  return _instance->_isPaused = value;
+}
+
 auto GameManager::UpdateImpl(float deltaTime) -> void {
 #if defined(_DEBUG)
   if (Input::IsKeyPressed(Key::K)) {
@@ -181,6 +189,9 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
           /* This is delayed 1 frame */
           _instance->CreatePlayer();
           _instance->CreateBoss();
+          if(IsGameplayScene()){
+            FindBells();
+          }
           break;
         }
       }

@@ -7,6 +7,9 @@
 #include "Engine/Script.h"
 #include "Renderer/Text.h"
 #include "Systems/Renderer.h"
+#include <Utility/Utility.h>
+
+using Engine::Utility::LerpFloat;
 
 struct BarData {
   std::shared_ptr< Engine::Transform > transform;
@@ -14,28 +17,30 @@ struct BarData {
   std::shared_ptr< Engine::Renderer::Text > text;
 };
 
-class ShadowTarget : public Engine::Script<ShadowTarget> {
+class ShadowTarget : public Engine::Script< ShadowTarget > {
 public:
   ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target);
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
   auto OnKeyPressed(Engine::Key key) -> void override;
+  auto SlowTime() -> void;
   auto GetTarget() -> std::shared_ptr< Engine::ECS::Entity >;
   auto ShadowRate() -> float;
   auto ShadowRate(float shadowRate) -> void;
   auto SamplesPassed(GLint samplesPassed) -> void;
   auto SetTimeSlowed(bool value) -> void;
-  auto CanColect(bool canCollect) -> void;
+  auto IsInShadow() -> bool;
 
 private:
-  std::shared_ptr<Engine::ECS::Entity> _target;
+  std::shared_ptr< Engine::ECS::Entity > _target;
   float _shadowRate;
-  float _maxAmount;
-  float _currentAmount;
-  float _fillSpeed;
+  float _maxAmount;     /* 1.0f */
+  float _currentAmount; /* In range [0.0f, 1.0f] */
   bool _timeSlowed;
-  bool _canCollect;
   GLint _maxSamplesPassed;
   std::shared_ptr< BarData > _bar;
   std::shared_ptr< Engine::Systems::Renderer > _rendererSystem;
+  LerpFloat _gameTimeLerp;
+  LerpFloat _playerTimeLerp;
+  float _lerpTime;
 };

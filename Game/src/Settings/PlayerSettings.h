@@ -17,6 +17,8 @@ private:
   float _maxMoveRotation      = 0.22f;
   glm::vec2 _rectSize         = {4.75, 4.5};
   float _throwDistance        = 15.0f;
+  float _slowTimeDuration     = 5.0f;  /* Seconds */
+  float _energyFillTime       = 10.0f; /* Fill Time*/
 
 public:
   PlayerSettings() = default;
@@ -43,4 +45,6 @@ public:
   auto RectSize() const noexcept -> glm::vec2;
   auto RectSize(const glm::vec2& size) noexcept -> glm::vec2;
   auto ThrowDistance() const noexcept -> float;
+  auto SlowTimeDuration() const noexcept -> float;
+  auto EnergyFillTime() const noexcept -> float;
 };
