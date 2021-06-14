@@ -7,14 +7,13 @@ using namespace Engine::Utility;
 namespace Editor {
   auto ShouldIgnore_1(int index) -> bool {
     /* Ignore Indexes */
-    /*0-1, 9, 11, 13, 15, 22, 28, 34*/
-    return InRange(index, 0, 1) || InRange(index, 9, 9) || InRange(index, 11, 11)
-           || InRange(index, 13, 13) || InRange(index, 15, 15) || InRange(index, 22, 22)
-           || InRange(index, 28, 28) || InRange(index, 34, 34);
+    /* 0-1, 9, 11 - 15, 22, 28, 34 */
+    return InRange(index, 0, 1) || InRange(index, 9, 9) || InRange(index, 11, 15)
+           || InRange(index, 22, 22) || InRange(index, 28, 28) || InRange(index, 34, 39);
   }
   auto GetColliderMapping_1() -> std::vector< TransformData > {
     /* Ignore Indexes */
-    /*0-1, 9, 11, 13, 15, 22, 28, 34*/
+    /* 0-1, 9, 11 - 15, 22, 28, 34 */
     return std::vector< TransformData >{
         /* D A T A */
         /* Ind */ /* Position */ /*   Rotation   */ /*   Scale   */
@@ -33,13 +32,11 @@ namespace Editor {
         /*9*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
         /*10*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f, 2.0f}},
         /*11*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-        /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-        /*12*/ {{2.4f, 0.3f, 5.8f}, {-3.1f, -0.4f, 30.0f}, {3.5f, 0.2f, 13.4f}},
-        /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+        /*12*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        ///*12*/ {{2.4f, 0.3f, 5.8f}, {-3.1f, -0.4f, 30.0f}, {3.5f, 0.2f, 13.4f}},
         /*13*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-        /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-        /*14*/ {{-0.6f, 0.2f, 6.0f}, {-4.8f, 0.0f, -30.0f}, {3.4f, 0.3f, 13.0f}},
-        /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+        /*14*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        ///*14*/ {{-0.6f, 0.2f, 6.0f}, {-4.8f, 0.0f, -30.0f}, {3.4f, 0.3f, 13.0f}},
         /*15*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
         /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
         /*16*/ {{0.0f, 1.7f, 8.6f}, {-4.5f, 0.0f, 0.0f}, {10.0f, 1.0f, 29.0f}},
@@ -61,9 +58,14 @@ namespace Editor {
         /*30*/ {{0.0f, 135.0f, -5.0f}, {0.0f, 0.0f, 0.0f}, {100.0f, 260.0f, 175.0f}},
         /*31*/ {{330.0f, 130.0f, 0.0f}, {0.0f, 0.0f, 15.0f}, {700.0f, 95.0f, 215.0f}},
         /*32*/ {{170.0f, 75.0f, 0.0f}, {0.0f, 0.0f, 7.0f}, {330.0f, 75.0f, 315.0f}},
-        /*33*/ {{100.0f, 535.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {300.0f, 1175.0f, 670.0f}},
+        /*33*/ {{110.0f, 350.0f, 25.0f}, {0.0f, 0.0f, 0.0f}, {164.0f, 655.0f, 350.0f}},
         /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
         /*34*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        /*35*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        /*36*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        /*37*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        /*38*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        /*39*/ {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
         /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
         /**/};
   } /* -=-=-=-*/
@@ -78,15 +80,21 @@ namespace Editor {
     const std::shared_ptr< Material > floor_material =
         AssetManager::GetMaterial("Assets/materials/l1f1.mat");
 
+    const std::shared_ptr< Material > tree_material =
+        AssetManager::GetMaterial("Assets/materials/tree.mat");
+
     /* If wall */
     auto is_wall  = InRange(index, 3, 8) || InRange(index, 17, 21) || InRange(index, 29, 33);
     auto is_floor = InRange(index, 2, 2) || InRange(index, 10, 16) || InRange(index, 23, 27);
+    auto is_tree  = InRange(index, 36, 39);
 
     if (is_wall) {
       auto r = rand() % wall_materials.size();
       return wall_materials[r];
     } else if (is_floor) {
       return floor_material;
+    } else if (is_tree) {
+      return tree_material;
     }
 
     return nullptr;

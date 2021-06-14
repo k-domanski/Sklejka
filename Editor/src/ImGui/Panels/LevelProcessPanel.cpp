@@ -54,15 +54,16 @@ namespace Editor {
     for (auto& entity : entities) {
       auto renderer = entity->GetComponent< Components::MeshRenderer >();
       auto index    = renderer->MeshIndex();
-      if (ShouldIgnore_1(index)) {
-        continue;
-      }
 
       auto& children = scene_graph->GetChildren(entity);
       auto it        = std::find_if(children.begin(), children.end(),
                              [](auto& item) { return item->Name() == "Collider"; });
       if (it != children.end()) {
         EntityManager::GetInstance().RemoveEntity(*it);
+      }
+
+      if (ShouldIgnore_1(index)) {
+        continue;
       }
 
       auto srt   = collider_mapping[index];
