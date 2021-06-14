@@ -20,37 +20,46 @@ auto AcornThrower::Update(float deltaTime) -> void {
     _currentTimeout -= deltaTime;
   }
 
+  if (Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_A))
+  {
+    TryThrow();
+  }
+
+}
+
+auto AcornThrower::TryThrow() {
+  if (_boss == nullptr) {
+    _boss          = Engine::SceneManager::GetCurrentScene()->FindEntity("Boss");
+    _bossTransform = _boss->GetComponent< Engine::Transform >();
+  }
+  auto bossDistance =
+      glm::distance(_playerTransform->WorldPosition(), _bossTransform->WorldPosition());
+
+  LOG_DEBUG("Distance to boss is " + std::to_string(bossDistance));
+
+  if (bossDistance <= _maxDistance) {
+    LOG_DEBUG("Boss is close enough");
+    Throw(_bossTransform);
+    return;
+  }
+
+  for (auto bell : _bells) {
+    auto bellTransform = bell->GetComponent< Engine::Transform >();
+    auto distance =
+        glm::distance(_playerTransform->WorldPosition(), bellTransform->WorldPosition());
+    if (distance <= _maxDistance) {
+      LOG_DEBUG("Found bell that is close enough");
+      Throw(bellTransform);
+      // GameManager::PlayerSpeedUp();
+    }
+  }
 }
 
 auto AcornThrower::OnKeyPressed(Engine::Key key) -> void {
 
   if (key == Engine::Key::SPACE && _currentTimeout <= 0.f)
   {
-    if (_boss == nullptr) {
-      _boss          = Engine::SceneManager::GetCurrentScene()->FindEntity("Boss");
-      _bossTransform = _boss->GetComponent< Engine::Transform >();
-    }
-    auto bossDistance =
-        glm::distance(_playerTransform->WorldPosition(), _bossTransform->WorldPosition());
-
-    LOG_DEBUG("Distance to boss is " + std::to_string(bossDistance));
-
-    if (bossDistance <= _maxDistance) {
-      LOG_DEBUG("Boss is close enough");
-      Throw(_bossTransform);
-      return;
-    }
-
-    for (auto bell : _bells) {
-      auto bellTransform = bell->GetComponent< Engine::Transform >();
-      auto distance =
-          glm::distance(_playerTransform->WorldPosition(), bellTransform->WorldPosition());
-      if (distance <= _maxDistance) {
-        LOG_DEBUG("Found bell that is close enough");
-        Throw(bellTransform);
-        // GameManager::PlayerSpeedUp();
-      }
-    }
+    TryThrow();
   }
 }
 

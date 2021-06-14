@@ -11,10 +11,11 @@ private:
   std::shared_ptr< Engine::Transform > _playerTransform;
   std::shared_ptr< Engine::Transform > _bossTransform;
   std::shared_ptr< Engine::Systems::SceneGraph > _sg;
+  auto TryThrow();
+  auto Throw(std::shared_ptr< Engine::Transform > target) -> void;
 
 public:
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
   auto OnKeyPressed(Engine::Key key) -> void override;
-  auto Throw(std::shared_ptr< Engine::Transform > target) -> void;
 };
