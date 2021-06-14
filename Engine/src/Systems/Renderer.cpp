@@ -231,6 +231,8 @@ namespace Engine::Systems {
           auto has_animator  = entity->HasComponent< Animator >();
           if (has_animator) {
             _shadowMapAnimShader->Use();
+            const auto& animator = entity->GetComponent< Animator >();
+            m_JointBuffer.SetData(animator->GetJointData());
           }
           auto material = mesh_renderer->GetMaterial();
           auto model    = mesh_renderer->GetModel();
@@ -242,32 +244,12 @@ namespace Engine::Systems {
           const auto transform        = ECS::EntityManager::GetComponent< Transform >(entity);
           _transformUniformData.model = transform->GetWorldMatrix();
           _transformUniformBuffer.SetData(_transformUniformData);
+
           glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
           if (has_animator) {
             _shadowMapShader->Use();
           }
         }
-        /*GL::Context::CullFace(Face::Back);
-        auto entityID      = _playerShadowTarget->GetTargetID();
-        auto trans         = ECS::EntityManager::GetComponent< Transform >(entityID);
-        auto mesh_renderer = ECS::EntityManager::GetComponent< MeshRenderer >(entityID);
-        auto material      = mesh_renderer->GetMaterial();
-        auto model         = mesh_renderer->GetModel();
-        if (material != nullptr && model != nullptr) {
-          auto& query = model->GetQuery();
-          query.Start(GL_SAMPLES_PASSED);
-          auto mesh = model->GetMesh(mesh_renderer->MeshIndex());
-          mesh->Use();
-          const auto transform        = ECS::EntityManager::GetComponent< Transform >(entityID);
-          _transformUniformData.model = transform->GetWorldMatrix();
-          _transformUniformBuffer.SetData(_transformUniformData);
-          glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
-
-          query.End();
-          auto res = query.SamplesPassed();
-
-          _playerShadowTarget->SamplesPassed(res);
-        }*/
 
         const auto window_size = Window::Get().GetScreenSize();
         GL::Context::Viewport(0, 0, window_size.x, window_size.y);
@@ -510,8 +492,7 @@ namespace Engine::Systems {
       return;
     }
 
-    GL::Context::DepthTest(false);
-    GL::Context::StencilMask(0x00);
+    // GL::Context::StencilMask(0x00);
     _bellOutlineMat->Use();
     for (const auto& ent : _bells) {
       auto tr = ent->GetComponent< Transform >();
@@ -555,8 +536,7 @@ namespace Engine::Systems {
       mesh->Use();
       glDrawElements(mesh->GetPrimitive(), mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
     }
-    GL::Context::StencilMask(0xFF);
-    GL::Context::DepthTest(true);
+    // GL::Context::StencilMask(0xFF);
   }
 
   auto Renderer::CalculateFrustrum(glm::mat4 clip) -> void {

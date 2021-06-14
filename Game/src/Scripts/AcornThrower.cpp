@@ -12,7 +12,7 @@ auto AcornThrower::OnCreate() -> void {
   auto bell_parent = scene->FindEntity("DZWONY");
   _bells           = sg->GetChildren(bell_parent);
   _playerTransform = GameManager::GetCurrentPlayer()->GetComponent< Engine::Transform >();
-  _maxDistance     = 15;  // TODO: Move to settings
+  _maxDistance     = GameManager::GetPlayerSettings()->ThrowDistance();
 }
 
 auto AcornThrower::Update(float deltaTime) -> void {

@@ -2,6 +2,8 @@
 #include "GameManager.h"
 #include <Engine.h>
 #include <iomanip>
+#include <regex>
+#include <limits>
 
 #include "Scripts/CameraController.h"
 #include "Scripts/FlightTimer.h"
@@ -25,12 +27,12 @@ GameManager::GameManager() {
   _gameSettings   = std::make_shared< GameSettings >();
   _playerSettings = std::make_shared< PlayerSettings >();
   _soundEngine    = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
-  _loadingScreen  = std::make_shared< LoadingScreen >();
   _cutscene       = std::make_shared< Cutscene >();
   _mainMenu       = std::make_shared< MainMenu >();
   _levelSelection = std::make_shared< LevelSelection >();
   _options        = std::make_shared< OptionsMenu >();
-  _fishEyeShader  = Engine::AssetManager::GetShader("./shaders/fish_eye.glsl");
+  _fishEyeShader  = AssetManager::GetShader("./shaders/fish_eye.glsl");
+  _bellOutlineMaterial = AssetManager::GetMaterial("materials/bell_outline.mat");
 }
 
 auto GameManager::Initialize() -> void {
@@ -55,13 +57,13 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
   _instance->_currentSceneName = scene;
   if (_instance->_pauseMenu != nullptr)
     _instance->_pauseMenu = nullptr;
+
+  _playerRect = nullptr;
+  _player     = nullptr;
+  _model      = nullptr;
   switch (scene) {
     case SceneName::MainMenu: {
       Engine::SceneManager::OpenScene(_instance->_mainMenu->Scene()->GetID());
-      break;
-    }
-    case SceneName::Loading: {
-      ShowLoadingScreen();
       break;
     }
     case SceneName::Cutscene: {
@@ -84,6 +86,10 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
       Engine::SceneManager::OpenScene(_instance->_options->Scene()->GetID());
       break;
   }
+
+  if (IsGameplayScene()) {
+    FindBells();
+  }
 }
 
 auto GameManager::GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene > {
@@ -103,17 +109,13 @@ auto GameManager::GetNextSceneName() -> SceneName {
   return SceneName::_from_index(it);
 }
 
-auto GameManager::ShowLoadingScreen() -> void {
-  Engine::SceneManager::OpenScene(_instance->_loadingScreen->Scene()->GetID());
-}
-
 auto GameManager::Update(float deltaTime) -> void {
   _instance->UpdateImpl(deltaTime);
 
   // test pause menu:
   if (Engine::Input::IsKeyPressed(Engine::Key::ESCAPE)) {
     if (_instance->_pauseMenu != nullptr)
-    _instance->_pauseMenu->Show();
+      _instance->_pauseMenu->Show();
   }
 }
 
@@ -142,14 +144,28 @@ auto GameManager::Win() -> void {
   _instance->WinImpl();
 }
 
+auto GameManager::IsGameplayState() -> bool {
+  const auto is_gameplay_scene = IsGameplayScene();
+  const auto is_initialized    = IsGameplayInitialized();
+
+  return is_gameplay_scene && is_initialized;
+}
+
+auto GameManager::IsGameplayScene() -> bool {
+  const auto is_gameplay_scene = (_instance->_currentSceneName == +SceneName::LVL_1);
+  return is_gameplay_scene;
+}
+
+auto GameManager::IsGameplayInitialized() -> bool {
+  const auto is_initialized = (_playerRect != nullptr && _player != nullptr && _model != nullptr);
+  return is_initialized;
+}
+
 auto GameManager::UpdateImpl(float deltaTime) -> void {
 #if defined(_DEBUG)
   if (Input::IsKeyPressed(Key::K)) {
     auto folder = AssetManager::GetAssetsFolders().scenes;
     AssetManager::SaveScene(SceneManager::GetCurrentScene(), folder + "__LEVEL__DUMP__.scene");
-  }
-  if (Input::IsKeyPressed(Key::P)) {
-    ShowLevelSumUp(21.37f, true);
   }
 #endif
 
@@ -179,6 +195,10 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
 
   auto factor = (current_speed - base_speed) / max_speed;
   _fishEyeShader->SetValue("u_Factor", factor);
+
+  if (IsGameplayState()) {
+    UpdateMarkerColor();
+  }
 }
 
 auto GameManager::PlayCutscene() -> void {
@@ -281,8 +301,7 @@ auto GameManager::CreatePlayer() -> void {
   /* -=-=-=-=- */
 }
 
-auto GameManager::CreateBoss() -> void
-{
+auto GameManager::CreateBoss() -> void {
   auto& entity_manager = EntityManager::GetInstance();
   auto& scene_graph    = SceneManager::GetCurrentScene()->SceneGraph();
   auto& node_system    = SceneManager::GetCurrentScene()->NodeSystem();
@@ -308,7 +327,8 @@ auto GameManager::CreateBoss() -> void
   transform->Forward(glm::normalize(n2_pos - n1_pos));
 
   auto boss_native_script = boss->AddComponent< NativeScript >();
-  boss_native_script->Attach(std::make_shared< Boss >(_playerRect->GetComponent<NativeScript>()->GetScript<PlayerRect>()));
+  boss_native_script->Attach(std::make_shared< Boss >(
+      _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >()));
 }
 
 auto GameManager::SetupScripts() -> void {
@@ -391,8 +411,7 @@ auto GameManager::KillPlayerImpl() -> void {
   ShowLevelSumUp(time, false);
 }
 
-auto GameManager::WinImpl() -> void
-{
+auto GameManager::WinImpl() -> void {
   auto player_rect = _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >();
   player_rect->CanMove(false);
   player_rect->Enable(false);
@@ -470,4 +489,30 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();
   // scene->RenderSystem()->SetShadowChecker(shadowTarget);
+}
+
+auto GameManager::FindBells() -> void {
+  auto entities = SceneManager::GetCurrentScene()->Entities();
+  _bellsTransform.clear();
+  for (const auto& ent : entities) {
+    const std::regex rx("BELL.*");
+    if (!std::regex_match(ent->Name(), rx)) {
+      continue;
+    }
+    _bellsTransform.push_back(ent->GetComponent< Transform >());
+  }
+}
+
+auto GameManager::UpdateMarkerColor() -> void {
+  float closest2       = std::numeric_limits< float >::max();
+  const auto& model_tr = _model->GetComponent< Transform >();
+  for (const auto& tr : _bellsTransform) {
+    auto d2  = glm::distance2(tr->WorldPosition(), model_tr->WorldPosition());
+    closest2 = glm::min(d2, closest2);
+  }
+  auto closest    = glm::sqrt(closest2);
+  auto throw_dist = _instance->_playerSettings->ThrowDistance();
+  /* Get ratio with remapping into [-1, 1] range */
+  auto ratio = glm::clamp((closest / throw_dist) - 1.0f, -1.0f, 1.0f);
+  _instance->_bellOutlineMaterial->GetShader()->SetValue("u_Ratio", ratio);
 }

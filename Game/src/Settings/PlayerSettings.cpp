@@ -87,3 +87,7 @@ auto PlayerSettings::RectSize() const noexcept -> glm::vec2 {
 auto PlayerSettings::RectSize(const glm::vec2& size) noexcept -> glm::vec2 {
   return _rectSize = size;
 }
+
+auto PlayerSettings::ThrowDistance() const noexcept -> float {
+  return _throwDistance;
+}
