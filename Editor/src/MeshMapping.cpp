@@ -80,8 +80,10 @@ namespace Editor {
     const std::shared_ptr< Material > floor_material =
         AssetManager::GetMaterial("Assets/materials/l1f1.mat");
 
-    const std::shared_ptr< Material > tree_material =
-        AssetManager::GetMaterial("Assets/materials/tree.mat");
+    const std::shared_ptr< Material > crown_material =
+        AssetManager::GetMaterial("Assets/materials/l1t1.mat");
+    const std::shared_ptr< Material > trunk_material =
+        AssetManager::GetMaterial("Assets/materials/l1t2.mat");
 
     /* If wall */
     auto is_wall  = InRange(index, 3, 8) || InRange(index, 17, 21) || InRange(index, 29, 33);
@@ -94,7 +96,13 @@ namespace Editor {
     } else if (is_floor) {
       return floor_material;
     } else if (is_tree) {
-      return tree_material;
+      if (index == 37 || index == 39) {
+        /* Tree Trunk */
+        return trunk_material;
+      } else {
+        /* Tree Crown */
+        return crown_material;
+      }
     }
 
     return nullptr;

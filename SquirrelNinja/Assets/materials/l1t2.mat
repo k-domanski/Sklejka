@@ -1,10 +1,10 @@
 {
-    "assetID": "15902327985924607021",
-    "diffuseFilepath": "Assets/textures/grass.png",
+    "assetID": "12480674600009514724",
+    "diffuseFilepath": "",
     "mainColor": [
-        0.6358760595321655,
-        1.0,
-        0.522088348865509,
+        0.6787148714065552,
+        0.4690077304840088,
+        0.03816066309809685,
         1.0
     ],
     "metalness": 0.0,
@@ -16,8 +16,8 @@
     "stencilFunc": "Always",
     "stencilRef": 0,
     "tilingOffset": [
-        4.0,
-        4.0,
+        1.0,
+        1.0,
         0.0,
         0.0
     ],
