@@ -15,18 +15,6 @@ auto AcornThrower::OnCreate() -> void {
   _maxDistance     = GameManager::GetPlayerSettings()->ThrowDistance();
 }
 
-auto AcornThrower::Update(float deltaTime) -> void {
-  if (_currentTimeout >= 0.f) {
-    _currentTimeout -= deltaTime;
-  }
-
-  if (Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_A))
-  {
-    TryThrow();
-  }
-
-}
-
 auto AcornThrower::TryThrow() {
   if (_boss == nullptr) {
     _boss          = Engine::SceneManager::GetCurrentScene()->FindEntity("Boss");
@@ -54,6 +42,19 @@ auto AcornThrower::TryThrow() {
     }
   }
 }
+
+auto AcornThrower::Update(float deltaTime) -> void {
+  if (_currentTimeout >= 0.f) {
+    _currentTimeout -= deltaTime;
+  }
+
+  if (Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_A))
+  {
+    TryThrow();
+  }
+
+}
+
 
 auto AcornThrower::OnKeyPressed(Engine::Key key) -> void {
 
