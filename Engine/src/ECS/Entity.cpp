@@ -60,7 +60,7 @@ namespace Engine::ECS {
     return SaveToJson(parentID);
   }
 
-  void Entity::LoadFromJson(std::string filepath) {
+  void Entity::LoadFromJson(std::string filepath, bool overrideID) {
     std::string content = "";
     if (filepath[0] == '{' || filepath[0] == '\n'
         || filepath[0] == ' ')  // HACK: Check if string is json
@@ -93,7 +93,7 @@ namespace Engine::ECS {
     size_t entityID;
     ss >> entityID;
 
-    _entityID = entityID;
+    _entityID = overrideID ? AssetManager::GenerateAssetID() : entityID;
     _name     = entity_json["entityName"];
 
     layer.SetState(READ_VALUE(entity_json, "layer", 1));

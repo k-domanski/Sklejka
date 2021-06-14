@@ -8,7 +8,7 @@
 #include "Scripts/PlayerController.h"
 #include "Scripts/PlayerRect.h"
 #include "Scripts/StartTimer.h"
-#include "Scripts/BellThrower.h"
+#include "Scripts/AcornThrower.h"
 #include "Systems/SceneGraph.h"
 #include "Components/NativeScript.h"
 #include <Scripts/CollisionDetector.h>
@@ -136,6 +136,10 @@ auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
 
 auto GameManager::KillPlayer() -> void {
   _instance->KillPlayerImpl();
+}
+
+auto GameManager::Win() -> void {
+  _instance->WinImpl();
 }
 
 auto GameManager::UpdateImpl(float deltaTime) -> void {
@@ -356,7 +360,7 @@ auto GameManager::SetupScripts() -> void {
   native_script = _model->AddComponent< Engine::NativeScript >();
   native_script->Attach< CollisionDetector >();
 
-  native_script->Attach< BellThrower >();
+  native_script->Attach< AcornThrower >();
 
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();
@@ -385,6 +389,27 @@ auto GameManager::KillPlayerImpl() -> void {
   timer->CanCount(false);
 
   ShowLevelSumUp(time, false);
+}
+
+auto GameManager::WinImpl() -> void
+{
+  auto player_rect = _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >();
+  player_rect->CanMove(false);
+  player_rect->Enable(false);
+
+  auto collider       = _model->GetComponent< Collider >();
+  collider->IsTrigger = false;
+  auto rb             = _model->GetComponent< Rigidbody >();
+
+  rb->SetGravity(true);
+  rb->SetKinematic(false);
+
+  auto camera = SceneManager::GetCurrentScene()->CameraSystem()->MainCamera();
+  auto timer  = camera->GetEntity()->GetComponent< NativeScript >()->GetScript< FlightTimer >();
+  auto time   = timer->GetTime();
+  timer->CanCount(false);
+
+  ShowLevelSumUp(time, true);
 }
 
 /* Try not to use this shit anymore */
@@ -440,7 +465,7 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script = _model->AddComponent< Engine::NativeScript >();
   native_script->Attach< CollisionDetector >();
 
-  native_script->Attach< BellThrower >();
+  native_script->Attach< AcornThrower >();
 
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();

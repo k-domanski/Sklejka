@@ -5,8 +5,8 @@ class PlayerSettings {
 private:
   float _speedMultiplier  = 2.0f;
   float _forwardSpeedBase = 7.5f;
-  float _bossForwardSpeedBase = 7.5f;
-  float _bossForwardSpeed = 7.5f;
+  float _bossForwardSpeedBase = 8.5f;
+  float _bossForwardSpeed = 8.5f;
   float _forwardSpeed     = 7.5f; /* Forward Speed (Player Rect) */
   float _controlSpeedBase = 3.2f; /* Left, Right, Up, Down Speed */
   float _controlSpeed     = 3.2f; /* Left, Right, Up, Down Speed */

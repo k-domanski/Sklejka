@@ -20,17 +20,17 @@
         "z": 0.0
     },
     "localScale": {
-        "x": 0.029999999329447746,
-        "y": 0.029999999329447746,
-        "z": 0.029999999329447746
+        "x": 1.029999999329447746,
+        "y": 1.029999999329447746,
+        "z": 1.029999999329447746
     }
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "meshRenderer",
-    "material": "materials/acorn_brown.mat",
+    "material": "Assets/materials/acorn_brown.mat",
     "meshIndex": 0,
-    "model": "models/acorn.fbx"
+    "model": "Assets/models/acorn.FBX"
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {

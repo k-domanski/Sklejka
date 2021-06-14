@@ -19,8 +19,10 @@ namespace Engine::Systems {
   {
     for (auto id : _entities)
     {
-      auto native_script = ECS::EntityManager::GetComponent< NativeScript >(id);
-      native_script->OnKeyPressed(key);
+      if (id != nullptr) {
+        auto native_script = ECS::EntityManager::GetComponent< NativeScript >(id);
+        native_script->OnKeyPressed(key);
+      }
     }
   }
 }  // namespace Engine::Systems

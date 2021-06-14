@@ -35,7 +35,7 @@ auto Boss::OnCreate() -> void {
 
 auto Boss::Update(float deltaTime) -> void {
 
-  _canMove = _player->CurrentNodeIndex() > 90;
+  _canMove = _player->CurrentNodeIndex() > 91;
 
   if (_canMove) {
     SeekTarget(deltaTime);
@@ -52,6 +52,16 @@ auto Boss::CanMove() -> bool {
 
 auto Boss::CanMove(bool value) -> void {
   _canMove = value;
+}
+
+auto Boss::Hit() -> void
+{
+  _hits++;
+  if (_hits >= 3)
+  {
+    Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
+    GameManager::Win();
+  }
 }
 
 auto Boss::SeekTarget(float deltaTime) -> void {

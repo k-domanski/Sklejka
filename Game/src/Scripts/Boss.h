@@ -13,6 +13,7 @@ private:
   std::shared_ptr< PlayerRect > _player;
   glm::vec3 _moveVelocity{0};
 
+  int _hits = 0;
   bool _canMove;
 
   auto SeekTarget(float deltaTime) -> void;
@@ -26,4 +27,5 @@ public:
   auto OnKeyPressed(Engine::Key key) -> void override;
   auto CanMove() -> bool;
   auto CanMove(bool value) -> void;
+  auto Hit() -> void;
 };
