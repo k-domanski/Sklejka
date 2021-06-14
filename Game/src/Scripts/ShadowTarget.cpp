@@ -13,34 +13,34 @@ ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
   renderer->AddElement(_bar->bar);
   _rendererSystem =
       Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
+  _canCollect = false;
 }
 
 auto ShadowTarget::OnCreate() -> void {
   _rendererSystem =
       Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
   _bar->bar->FillRatio(glm::min(1.0f, _currentAmount / _maxAmount));
-  _bar->bar->Horizontal(false);
+  _bar->bar->Horizontal(true);
   _bar->bar->Middle(true);
-  _bar->transform->Position(glm::vec3(100.0f, 400.0f, 0.0f));
+  _bar->transform->Position(glm::vec3(800.0f, 50.0f, 0.0f));
   _bar->bar->BackgroundColor(glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
   _bar->bar->FillColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));
-  _bar->bar->Size(glm::vec2(25.0f, 300.0f));
+  _bar->bar->Size(glm::vec2(300.0f, 25.0f));
   _bar->bar->Padding(glm::vec2(5.0f, 5.0f));
 }
 
 auto ShadowTarget::Update(float deltaTime) -> void {
   if (!_timeSlowed) {
-    SamplesPassed(_rendererSystem->ObjectInShadow(_target));
-    _currentAmount +=
-        _fillSpeed * _shadowRate * deltaTime * GameManager::GetGameSettings()->PlayerTimeScale();
-  }
-  else
-  {
+    if (_canCollect) {
+      SamplesPassed(_rendererSystem->ObjectInShadow(_target));
+      _currentAmount +=
+          _fillSpeed * _shadowRate * deltaTime * GameManager::GetGameSettings()->PlayerTimeScale();
+    }
+  } else {
     _currentAmount -= 10 * deltaTime * GameManager::GetGameSettings()->PlayerTimeScale();
   }
 
-  if (_currentAmount <= 0)
-  {
+  if (_currentAmount <= 0) {
     _currentAmount = 0;
     if (_timeSlowed)
       SetTimeSlowed(false);
@@ -49,15 +49,11 @@ auto ShadowTarget::Update(float deltaTime) -> void {
   _bar->bar->FillRatio(glm::min(1.0f, _currentAmount / _maxAmount));
 }
 
-auto ShadowTarget::OnKeyPressed(Engine::Key key) -> void
-{
-  if (key == Engine::Key::Z)
-  {
+auto ShadowTarget::OnKeyPressed(Engine::Key key) -> void {
+  if (key == Engine::Key::Z) {
     if (_timeSlowed) {
       SetTimeSlowed(false);
-    }
-    else if (_currentAmount > 0)
-    {
+    } else if (_currentAmount > 0) {
       SetTimeSlowed(true);
     }
   }
@@ -85,8 +81,11 @@ auto ShadowTarget::SamplesPassed(GLint samplesPassed) -> void {
   _shadowRate = std::clamp(_shadowRate, 0.0f, 1.0f);
 }
 
-auto ShadowTarget::SetTimeSlowed(bool value) -> void
-{
+auto ShadowTarget::SetTimeSlowed(bool value) -> void {
   _timeSlowed = value;
   GameManager::GetGameSettings()->PlayerTimeScale(value ? 0.25f : 1.f);
+}
+
+auto ShadowTarget::CanColect(bool canCollect) -> void {
+  _canCollect = canCollect;
 }

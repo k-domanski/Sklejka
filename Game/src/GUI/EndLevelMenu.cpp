@@ -112,8 +112,6 @@ EndLevelMenu::EndLevelMenu() {
 }
 
 auto EndLevelMenu::Show(bool win, float time, int bells) -> void {
-  // debug
-  win = true;
   if (_visible)
     return;
   if (win) {

@@ -8,8 +8,8 @@
 #include "Components/UIRenderer.h"
 
 StartTimer::StartTimer(std::shared_ptr< PlayerRect > playerRect,
-                       std::shared_ptr< FlightTimer > flightTimer)
-    : Script(), _time(0.0f), _precision(0), _playerRect(playerRect), _flightTimer(flightTimer) {
+                       std::shared_ptr< FlightTimer > flightTimer, std::shared_ptr<ShadowTarget> shadowTarget)
+    : Script(), _time(0.0f), _precision(0), _playerRect(playerRect), _flightTimer(flightTimer), _shadowTarget(shadowTarget) {
   auto entity    = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   auto renderer  = entity->AddComponent< Engine::Components::UIRenderer >();
   _text          = std::make_shared< Engine::Renderer::Text >();
@@ -36,6 +36,7 @@ auto StartTimer::Update(float deltaTime) -> void {
     if (_time <= 1.0f) {
       _playerRect->CanMove(true);
       _flightTimer->CanCount(true);
+      _shadowTarget->CanColect(true);
       _text->SetText("GO");
       // TODO: Remove timer object
     }

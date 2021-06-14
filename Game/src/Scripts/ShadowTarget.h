@@ -25,6 +25,7 @@ public:
   auto ShadowRate(float shadowRate) -> void;
   auto SamplesPassed(GLint samplesPassed) -> void;
   auto SetTimeSlowed(bool value) -> void;
+  auto CanColect(bool canCollect) -> void;
 
 private:
   std::shared_ptr<Engine::ECS::Entity> _target;
@@ -33,6 +34,7 @@ private:
   float _currentAmount;
   float _fillSpeed;
   bool _timeSlowed;
+  bool _canCollect;
   GLint _maxSamplesPassed;
   std::shared_ptr< BarData > _bar;
   std::shared_ptr< Engine::Systems::Renderer > _rendererSystem;

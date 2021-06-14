@@ -425,7 +425,7 @@ auto GameManager::SetupScripts() -> void {
   native_script->Attach(flightTimer);
 
   // native_script->Attach(std::make_shared< StartTimer >(player_rect, flightTimer));
-  auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer);
+  auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer, shadowTarget);
   start_timer->CanCount(true);
 
   native_script = _model->AddComponent< Engine::NativeScript >();
@@ -529,7 +529,7 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   native_script->Attach(flightTimer);
 
   // native_script->Attach(std::make_shared< StartTimer >(player_rect, flightTimer));
-  auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer);
+  auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer, shadowTarget);
   start_timer->CanCount(true);
 
   native_script = _model->AddComponent< Engine::NativeScript >();

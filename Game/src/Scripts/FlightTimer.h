@@ -20,6 +20,7 @@ private:
   bool _canCount;
   float _time;
   std::shared_ptr< Engine::Renderer::Text > _text;
+  std::shared_ptr< Engine::Renderer::Image > _clockImage;
   std::shared_ptr< Engine::Transform > _textTransform;
   std::stringstream _stream;
   int _precision;
