@@ -7,6 +7,9 @@
 #include "Engine/Script.h"
 #include "Renderer/Text.h"
 #include "Systems/Renderer.h"
+#include <Utility/Utility.h>
+
+using Engine::Utility::LerpFloat;
 
 struct BarData {
   std::shared_ptr< Engine::Transform > transform;
@@ -37,4 +40,7 @@ private:
   GLint _maxSamplesPassed;
   std::shared_ptr< BarData > _bar;
   std::shared_ptr< Engine::Systems::Renderer > _rendererSystem;
+  LerpFloat _gameTimeLerp;
+  LerpFloat _playerTimeLerp;
+  float _lerpTime;
 };

@@ -13,6 +13,9 @@ ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
   renderer->AddElement(_bar->bar);
   _rendererSystem =
       Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
+  _gameTimeLerp.Set(1.0f, 1.0f, 1.0f);
+  _playerTimeLerp.Set(1.0f, 1.0f, 1.0f);
+  _lerpTime = 0.5f;
 }
 
 auto ShadowTarget::OnCreate() -> void {
@@ -36,6 +39,7 @@ auto ShadowTarget::Update(float deltaTime) -> void {
   if (Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_A)) {
     SlowTime();
   }
+
   const auto player_settings = GameManager::GetPlayerSettings();
   if (!_timeSlowed) {
     if (IsInShadow()) {
@@ -46,13 +50,16 @@ auto ShadowTarget::Update(float deltaTime) -> void {
   } else {
     /* Decrease energy */
     if (_currentAmount > 0.0f) {
-      _currentAmount -= (1.0f / player_settings->SlowTimeDuration()) * deltaTime;
+      _currentAmount -= (1.0f / (player_settings->SlowTimeDuration() + 2 * _lerpTime)) * deltaTime;
     } else {
       SetTimeSlowed(false);
       _currentAmount = 0.0f;
     }
   }
   _bar->bar->FillRatio(glm::min(0.01f, _currentAmount));
+
+  GameManager::GetGameSettings()->GameTimeScale(_gameTimeLerp.Update(deltaTime));
+  GameManager::GetGameSettings()->PlayerTimeScale(_playerTimeLerp.Update(deltaTime));
 }
 
 auto ShadowTarget::OnKeyPressed(Engine::Key key) -> void {
@@ -95,8 +102,10 @@ auto ShadowTarget::SamplesPassed(GLint samplesPassed) -> void {
 
 auto ShadowTarget::SetTimeSlowed(bool value) -> void {
   _timeSlowed = value;
-  GameManager::GetGameSettings()->PlayerTimeScale(value ? 0.75f : 1.f);
-  GameManager::GetGameSettings()->GameTimeScale(value ? 0.5f : 1.f);
+  _playerTimeLerp.Set((!value ? 0.75f : 1.f), (value ? 0.75f : 1.f), _lerpTime);
+  _gameTimeLerp.Set((!value ? 0.5f : 1.f), (value ? 0.5f : 1.f), _lerpTime);
+  GameManager::GetGameSettings()->GameTimeScale(_gameTimeLerp.Value());
+  GameManager::GetGameSettings()->PlayerTimeScale(_playerTimeLerp.Value());
 }
 
 auto ShadowTarget::IsInShadow() -> bool {
