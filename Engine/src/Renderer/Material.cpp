@@ -63,6 +63,28 @@ namespace Engine::Renderer {
   auto Material::Queue(uint32_t queue) noexcept -> uint32_t {
     return _queue = queue;
   }
+  auto Material::Tiling() const noexcept -> glm::vec2 {
+    return {_tilingOffset.x, _tilingOffset.y};
+  }
+  auto Material::Tiling(const glm::vec2& tiling) noexcept -> glm::vec2 {
+    _tilingOffset.x = tiling.x;
+    _tilingOffset.y = tiling.y;
+    return tiling;
+  }
+  auto Material::Offset() const noexcept -> glm::vec2 {
+    return {_tilingOffset.z, _tilingOffset.w};
+  }
+  auto Material::Offset(const glm::vec2& offset) noexcept -> glm::vec2 {
+    _tilingOffset.z = offset.x;
+    _tilingOffset.w = offset.y;
+    return offset;
+  }
+  auto Material::TilingOffset() const noexcept -> glm::vec4 {
+    return _tilingOffset;
+  }
+  auto Material::TilingOffset(const glm::vec4& tilingOffset) noexcept -> glm::vec4 {
+    return _tilingOffset = tilingOffset;
+  }
   auto Material::UseStencil() const noexcept -> bool {
     return _useStencil;
   }
@@ -111,6 +133,8 @@ namespace Engine::Renderer {
         {"roughnessMap", (_roughnessMap != nullptr ? _roughnessMap->FilePath() : "")},
         {"metalnessMap", (_metalnessMap != nullptr ? _metalnessMap->FilePath() : "")},
         {"mainColor", json::array({_mainColor.r, _mainColor.g, _mainColor.b, _mainColor.a})},
+        {"tilingOffset",
+         json::array({_tilingOffset.x, _tilingOffset.y, _tilingOffset.z, _tilingOffset.w})},
         {"roughness", _roughness},
         {"metalness", _metalness},
         {"useStencil", _useStencil},
@@ -163,6 +187,7 @@ namespace Engine::Renderer {
   }
   auto Material::SetShaderData() noexcept -> void {
     _shader->Use();
+    _shader->SetVector("u_TilingOffset", _tilingOffset);
     _shader->SetValue("u_MainTexture", 0);
     _shader->SetValue("u_RoughnessMap", 1);
     _shader->SetValue("u_MetalnessMap", 2);

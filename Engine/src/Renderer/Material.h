@@ -16,6 +16,7 @@ namespace Engine::Renderer {
     std::shared_ptr< GL::Texture2D > _roughnessMap;
     std::shared_ptr< GL::Texture2D > _metalnessMap;
     glm::vec4 _mainColor{1.0f, 1.0f, 1.0f, 1.0f};
+    glm::vec4 _tilingOffset{1.0f, 1.0f, 0.0f, 0.0f};
     float _roughness = 0.0f;
     float _metalness = 0.0f;
 
@@ -49,6 +50,15 @@ namespace Engine::Renderer {
     auto MainColorPtr() -> float*;
     auto Queue() const noexcept -> uint32_t;
     auto Queue(uint32_t queue) noexcept -> uint32_t;
+    /* Texture */
+    auto Tiling() const noexcept -> glm::vec2;
+    auto Tiling(const glm::vec2& tiling) noexcept -> glm::vec2;
+    auto Offset() const noexcept -> glm::vec2;
+    auto Offset(const glm::vec2& offset) noexcept -> glm::vec2;
+    auto TilingOffset() const noexcept -> glm::vec4;
+    auto TilingOffset(const glm::vec4& tilingOffset) noexcept -> glm::vec4;
+    /* -=-=-=- */
+
     /* Stencil */
     auto UseStencil() const noexcept -> bool;
     auto UseStencil(bool value) noexcept -> bool;
