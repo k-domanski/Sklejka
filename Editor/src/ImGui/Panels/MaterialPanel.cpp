@@ -180,6 +180,16 @@ namespace Editor {
         ImGui::EndCombo();
       }
     };
+
+    auto tiling = _material->Tiling();
+    if (ImGui::SliderFloat2("Tiling", &tiling[0], 0.0f, 4.0f)) {
+      _material->Tiling(tiling);
+    }
+    auto offset = _material->Offset();
+    if (ImGui::SliderFloat2("Offset", &offset[0], -1.0f, 1.0f)) {
+      _material->Offset(offset);
+    }
+
     DrawCombo(main_texture, "Main Texture",
               [&](auto texture) { _material->SetMainTexture(texture); });
     DrawCombo(roughness_map, "Roughness Map",

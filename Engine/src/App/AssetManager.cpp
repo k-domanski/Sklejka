@@ -188,6 +188,12 @@ namespace Engine {
         auto vec = json["mainColor"].get< std::vector< float > >();
         material->MainColor({vec[0], vec[1], vec[2], vec[3]});
       }
+      if (json.count("tilingOffset") > 0) {
+        auto vec = json["tilingOffset"].get< std::vector< float > >();
+        material->TilingOffset({vec[0], vec[1], vec[2], vec[3]});
+      } else {
+        material->TilingOffset(glm::vec4(1.0f, 1.0f, 0.0f, 0.0f));
+      }
       material->Roughness(READ_VALUE(json, "roughness", 0));
       material->Metalness(READ_VALUE(json, "metalness", 0));
       material->RoughnessMap(GetTexture2D(READ_VALUE(json, "roughnessMap", "")));

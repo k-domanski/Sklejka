@@ -1,0 +1,27 @@
+{
+    "assetID": "2016165413420530287",
+    "diffuseFilepath": "Assets/textures/particle_dot.png",
+    "mainColor": [
+        1.0,
+        1.0,
+        1.0,
+        0.05
+    ],
+    "metalness": 0.0,
+    "metalnessMap": "",
+    "roughness": 0.0,
+    "roughnessMap": "",
+    "sfail": "Keep",
+    "shaderFilepath": "Assets/shaders/particle.glsl",
+    "stencilFunc": "Always",
+    "stencilRef": 0,
+    "tilingOffset": [
+        1.0,
+        1.0,
+        0.0,
+        0.0
+    ],
+    "useStencil": false,
+    "zfail": "Keep",
+    "zpass": "Keep"
+}

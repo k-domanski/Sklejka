@@ -1,0 +1,27 @@
+{
+    "assetID": "14875588129121569032",
+    "diffuseFilepath": "",
+    "mainColor": [
+        0.5535707473754883,
+        1.0,
+        0.0,
+        1.0
+    ],
+    "metalness": 0.11999999731779099,
+    "metalnessMap": "",
+    "roughness": 0.7369999885559082,
+    "roughnessMap": "",
+    "sfail": "Keep",
+    "shaderFilepath": "Assets/shaders/default.glsl",
+    "stencilFunc": "Always",
+    "stencilRef": 0,
+    "tilingOffset": [
+        1.0,
+        1.0,
+        0.0,
+        0.0
+    ],
+    "useStencil": false,
+    "zfail": "Keep",
+    "zpass": "Keep"
+}

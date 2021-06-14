@@ -3,19 +3,20 @@
 
 class PlayerSettings {
 private:
-  float _speedMultiplier  = 2.0f;
-  float _forwardSpeedBase = 7.5f;
+  float _speedMultiplier      = 2.0f;
+  float _forwardSpeedBase     = 7.5f;
   float _bossForwardSpeedBase = 8.5f;
-  float _bossForwardSpeed = 8.5f;
-  float _forwardSpeed     = 7.5f; /* Forward Speed (Player Rect) */
-  float _controlSpeedBase = 3.2f; /* Left, Right, Up, Down Speed */
-  float _controlSpeed     = 3.2f; /* Left, Right, Up, Down Speed */
-  float _moveRotationSpeed = 1.25f; 
-  float _rollSpeed        = 2.2f; /* Roll speed */
-  float _seekSpeed        = 2.0f; /* Direction seek speed */
-  float _minNodeDistance  = 4.0f; /* Min distance to the target node */
-  float _maxMoveRotation   = 0.22f;
-  glm::vec2 _rectSize     = {4.75, 4.5};
+  float _bossForwardSpeed     = 8.5f;
+  float _forwardSpeed         = 7.5f; /* Forward Speed (Player Rect) */
+  float _controlSpeedBase     = 3.2f; /* Left, Right, Up, Down Speed */
+  float _controlSpeed         = 3.2f; /* Left, Right, Up, Down Speed */
+  float _moveRotationSpeed    = 1.25f;
+  float _rollSpeed            = 2.2f; /* Roll speed */
+  float _seekSpeed            = 2.0f; /* Direction seek speed */
+  float _minNodeDistance      = 4.0f; /* Min distance to the target node */
+  float _maxMoveRotation      = 0.22f;
+  glm::vec2 _rectSize         = {4.75, 4.5};
+  float _throwDistance        = 15.0f;
 
 public:
   PlayerSettings() = default;
@@ -41,4 +42,5 @@ public:
   auto MinNodeDistance(float value) noexcept -> float;
   auto RectSize() const noexcept -> glm::vec2;
   auto RectSize(const glm::vec2& size) noexcept -> glm::vec2;
+  auto ThrowDistance() const noexcept -> float;
 };

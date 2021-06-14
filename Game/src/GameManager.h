@@ -11,7 +11,7 @@
 #include "GUI/OptionsMenu.h"
 #include "GUI/PauseMenu.h"
 
-BETTER_ENUM(__SceneName, int, MainMenu, Options, Loading, Cutscene, LevelSelection, LVL_1);
+BETTER_ENUM(__SceneName, int, MainMenu, Options, Cutscene, LevelSelection, LVL_1);
 typedef __SceneName SceneName;
 
 class GameManager {
@@ -19,29 +19,47 @@ private:
   inline static std::shared_ptr< GameManager > _instance = nullptr;
 
 private:
+  /* Settigns */
   std::shared_ptr< GameSettings > _gameSettings;
   std::shared_ptr< PlayerSettings > _playerSettings;
+  /* -=-=-=-=- */
+
+  /* State */
+  SceneName _currentSceneName = SceneName::MainMenu;
+  /* -=-=- */
+
+  /* Panels */
   std::shared_ptr< OptionsMenu > _options;
-  std::shared_ptr< LoadingScreen > _loadingScreen;
   std::shared_ptr< Cutscene > _cutscene;
   std::shared_ptr< MainMenu > _mainMenu;
   std::shared_ptr< LevelSelection > _levelSelection;
   std::shared_ptr< PauseMenu > _pauseMenu;
   std::shared_ptr< EndLevelMenu > _endLevelMenu;
-  std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
-  SceneName _currentSceneName = SceneName::MainMenu;
-  GameManager();
-  static auto SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void;
+  /* -=-=-=- */
 
-  /* Params */
+  /* Scene References */
   inline static std::shared_ptr< Engine::ECS::Entity > _playerRect = nullptr;
   inline static std::shared_ptr< Engine::ECS::Entity > _player     = nullptr;
   inline static std::shared_ptr< Engine::ECS::Entity > _model      = nullptr;
+  inline static std::vector< std::shared_ptr< Engine::Transform > > _bellsTransform;
+  /* -=-=-=-=-=-=-=-=- */
 
-  float _speedUpDuration = 0.0f;
+  /* Resources */
+  std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
   std::shared_ptr< Engine::GL::Shader > _fishEyeShader;
-  float _speedFactor    = 1.0f;
-  int _frameWaitCounter = 0;
+  std::shared_ptr< Engine::Renderer::Material > _bellOutlineMaterial;
+  /* -=-=-=-=- */
+
+  /* Parameters */
+  float _speedUpDuration = 0.0f;
+  float _speedFactor     = 1.0f;
+  int _frameWaitCounter  = 0;
+  /* -=-=-=-=- */
+
+  GameManager();
+  static auto SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void;
+  static auto FindBells() -> void;
+  static auto UpdateMarkerColor() -> void;
 
 public:
   static auto Initialize() -> void;
@@ -52,13 +70,15 @@ public:
   static auto GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene >;
   static auto GetNextSceneName() -> SceneName;
   static auto GetCurrentSceneName() -> SceneName;
-  static auto ShowLoadingScreen() -> void;
   static auto Update(float deltaTime) -> void;
   static auto PlayerSpeedUp() -> void;
   static auto ShowLevelSumUp(bool win, float time, int bells) -> void;
   static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
   static auto KillPlayer() -> void;
   static auto Win() -> void;
+  static auto IsGameplayState() -> bool;
+  static auto IsGameplayScene() -> bool;
+  static auto IsGameplayInitialized() -> bool;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;

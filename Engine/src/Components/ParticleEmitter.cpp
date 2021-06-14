@@ -52,6 +52,9 @@ namespace Engine {
     return _spawnRate;
   }
   auto ParticleEmitter::SpawnRate(float rate) noexcept -> float {
+    if (rate > 0.0f) {
+      _interval = 1.0f / rate;
+    }
     return _spawnRate = rate;
   }
   auto ParticleEmitter::Scale() const noexcept -> glm::vec2 {

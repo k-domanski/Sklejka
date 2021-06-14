@@ -11,5 +11,17 @@
     "metalnessMap": "",
     "roughness": 1.0,
     "roughnessMap": "Assets/textures/rock-02.png",
-    "shaderFilepath": "Assets/shaders/default.glsl"
+    "sfail": "Keep",
+    "shaderFilepath": "Assets/shaders/default.glsl",
+    "stencilFunc": "Always",
+    "stencilRef": 0,
+    "tilingOffset": [
+        4.0,
+        4.0,
+        0.0,
+        0.0
+    ],
+    "useStencil": false,
+    "zfail": "Keep",
+    "zpass": "Keep"
 }

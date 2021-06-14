@@ -30,9 +30,11 @@ namespace Engine {
     float _sizeDecay{0.0f};
     float _lifetime{1.0f};
     float _spawnRate{1.0f};
+    float _interval{1.0f};
     glm::vec2 _scale{1.0f, 1.0f};
     glm::vec3 _velocity{0.0f};
     float _spawnCache{0.0f};
+    float _intervalCache{0.0f};
     float _velocityRandomness{0.0f};
     std::size_t _maxParticles{0};
     std::size_t _emitCount{0};

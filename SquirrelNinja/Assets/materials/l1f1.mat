@@ -2,14 +2,26 @@
     "assetID": "15902327985924607021",
     "diffuseFilepath": "Assets/textures/grass.png",
     "mainColor": [
-        0.23809540271759033,
+        0.6358760595321655,
         1.0,
-        0.0,
+        0.522088348865509,
         1.0
     ],
     "metalness": 0.0,
     "metalnessMap": "",
     "roughness": 1.0,
     "roughnessMap": "",
-    "shaderFilepath": "Assets/shaders/default.glsl"
+    "sfail": "Keep",
+    "shaderFilepath": "Assets/shaders/default.glsl",
+    "stencilFunc": "Always",
+    "stencilRef": 0,
+    "tilingOffset": [
+        4.0,
+        4.0,
+        0.0,
+        0.0
+    ],
+    "useStencil": false,
+    "zfail": "Keep",
+    "zpass": "Keep"
 }

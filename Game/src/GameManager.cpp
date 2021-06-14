@@ -2,6 +2,8 @@
 #include "GameManager.h"
 #include <Engine.h>
 #include <iomanip>
+#include <regex>
+#include <limits>
 
 #include "Scripts/CameraController.h"
 #include "Scripts/FlightTimer.h"
@@ -16,6 +18,7 @@
 #include "Components/Animator.h"
 #include "Scripts/Boss.h"
 #include "Systems/NodeSystem.h"
+#include "Components/ParticleEmitter.h"
 
 using namespace Engine;
 using namespace Engine::Components;
@@ -25,12 +28,12 @@ GameManager::GameManager() {
   _gameSettings   = std::make_shared< GameSettings >();
   _playerSettings = std::make_shared< PlayerSettings >();
   _soundEngine    = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
-  _loadingScreen  = std::make_shared< LoadingScreen >();
   _cutscene       = std::make_shared< Cutscene >();
   _mainMenu       = std::make_shared< MainMenu >();
   _levelSelection = std::make_shared< LevelSelection >();
   _options        = std::make_shared< OptionsMenu >();
-  _fishEyeShader  = Engine::AssetManager::GetShader("./shaders/fish_eye.glsl");
+  _fishEyeShader  = AssetManager::GetShader("./shaders/fish_eye.glsl");
+  _bellOutlineMaterial = AssetManager::GetMaterial("materials/bell_outline.mat");
 }
 
 auto GameManager::Initialize() -> void {
@@ -55,13 +58,13 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
   _instance->_currentSceneName = scene;
   if (_instance->_pauseMenu != nullptr)
     _instance->_pauseMenu = nullptr;
+
+  _playerRect = nullptr;
+  _player     = nullptr;
+  _model      = nullptr;
   switch (scene) {
     case SceneName::MainMenu: {
       Engine::SceneManager::OpenScene(_instance->_mainMenu->Scene()->GetID());
-      break;
-    }
-    case SceneName::Loading: {
-      ShowLoadingScreen();
       break;
     }
     case SceneName::Cutscene: {
@@ -85,6 +88,10 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
       Engine::SceneManager::OpenScene(_instance->_options->Scene()->GetID());
       break;
     }
+
+      if (IsGameplayScene()) {
+        FindBells();
+      }
   }
 }
 
@@ -107,10 +114,6 @@ auto GameManager::GetNextSceneName() -> SceneName {
 
 auto GameManager::GetCurrentSceneName() -> SceneName {
   return _instance->_currentSceneName;
-}
-
-auto GameManager::ShowLoadingScreen() -> void {
-  Engine::SceneManager::OpenScene(_instance->_loadingScreen->Scene()->GetID());
 }
 
 auto GameManager::Update(float deltaTime) -> void {
@@ -146,14 +149,28 @@ auto GameManager::Win() -> void {
   _instance->WinImpl();
 }
 
+auto GameManager::IsGameplayState() -> bool {
+  const auto is_gameplay_scene = IsGameplayScene();
+  const auto is_initialized    = IsGameplayInitialized();
+
+  return is_gameplay_scene && is_initialized;
+}
+
+auto GameManager::IsGameplayScene() -> bool {
+  const auto is_gameplay_scene = (_instance->_currentSceneName == +SceneName::LVL_1);
+  return is_gameplay_scene;
+}
+
+auto GameManager::IsGameplayInitialized() -> bool {
+  const auto is_initialized = (_playerRect != nullptr && _player != nullptr && _model != nullptr);
+  return is_initialized;
+}
+
 auto GameManager::UpdateImpl(float deltaTime) -> void {
 #if defined(_DEBUG)
   if (Input::IsKeyPressed(Key::K)) {
     auto folder = AssetManager::GetAssetsFolders().scenes;
     AssetManager::SaveScene(SceneManager::GetCurrentScene(), folder + "__LEVEL__DUMP__.scene");
-  }
-  if (Input::IsKeyPressed(Key::P)) {
-    ShowLevelSumUp(21.37f, true);
   }
 #endif
 
@@ -183,6 +200,10 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
 
   auto factor = (current_speed - base_speed) / max_speed;
   _fishEyeShader->SetValue("u_Factor", factor);
+
+  if (IsGameplayState()) {
+    UpdateMarkerColor();
+  }
 }
 
 auto GameManager::PlayCutscene() -> void {
@@ -207,6 +228,10 @@ auto GameManager::CreatePlayer() -> void {
   player->Name("Player");
   auto player_model = entity_manager.CreateEntity();
   player_model->Name("Player_Model");
+  auto emitter_left = entity_manager.CreateEntity();
+  emitter_left->Name("Trail Left");
+  auto emitter_right = entity_manager.CreateEntity();
+  emitter_left->Name("Trail Right");
   auto main_camera = entity_manager.CreateEntity();
   main_camera->Name("Main_Camera");
   /* -=-=-=-=-=-=-=-=- */
@@ -254,6 +279,43 @@ auto GameManager::CreatePlayer() -> void {
     animator->SetAnimation(AssetManager::GetModel("./models/squirrel_anim_idle.fbx"));
   }
 
+  {
+    /* Emitters */
+    auto em_l     = emitter_left->AddComponent< ParticleEmitter >(100);
+    auto em_r     = emitter_right->AddComponent< ParticleEmitter >(100);
+    auto material = AssetManager::GetMaterial("materials/trail.mat");
+    em_l->Material(material);
+    em_r->Material(material);
+
+    em_l->EmitCount(100);
+    em_r->EmitCount(100);
+
+    constexpr auto scale    = 0.2f;
+    constexpr auto lifetime = 0.75f;
+    constexpr auto decay    = scale / lifetime;
+
+    em_l->Scale(glm::vec2(scale));
+    em_r->Scale(glm::vec2(scale));
+
+    em_l->Lifetime(lifetime);
+    em_r->Lifetime(lifetime);
+
+    em_l->SizeDecay(decay);
+    em_r->SizeDecay(decay);
+
+    em_l->SpawnRate(50.0f);
+    em_r->SpawnRate(50.0f);
+
+    auto tr_l = emitter_left->AddComponent< Transform >();
+    auto tr_r = emitter_right->AddComponent< Transform >();
+
+    constexpr auto x = 0.70f;
+    constexpr auto y = -0.1f;
+    constexpr auto z = -0.55f;
+    tr_l->Position({-x, y, z});
+    tr_r->Position({x, y, z});
+  }
+
   { /* Camera */
     auto transform = main_camera->AddComponent< Transform >();
     auto camera    = main_camera->AddComponent< Camera >();
@@ -270,6 +332,8 @@ auto GameManager::CreatePlayer() -> void {
     scene_graph->SetParent(player_rect, nullptr);
     scene_graph->SetParent(player, player_rect);
     scene_graph->SetParent(player_model, player);
+    scene_graph->SetParent(emitter_left, player_model);
+    scene_graph->SetParent(emitter_right, player_model);
   }
   /* -=-=-=-=-=- */
 
@@ -473,4 +537,30 @@ auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();
   // scene->RenderSystem()->SetShadowChecker(shadowTarget);
+}
+
+auto GameManager::FindBells() -> void {
+  auto entities = SceneManager::GetCurrentScene()->Entities();
+  _bellsTransform.clear();
+  for (const auto& ent : entities) {
+    const std::regex rx("BELL.*");
+    if (!std::regex_match(ent->Name(), rx)) {
+      continue;
+    }
+    _bellsTransform.push_back(ent->GetComponent< Transform >());
+  }
+}
+
+auto GameManager::UpdateMarkerColor() -> void {
+  float closest2       = std::numeric_limits< float >::max();
+  const auto& model_tr = _model->GetComponent< Transform >();
+  for (const auto& tr : _bellsTransform) {
+    auto d2  = glm::distance2(tr->WorldPosition(), model_tr->WorldPosition());
+    closest2 = glm::min(d2, closest2);
+  }
+  auto closest    = glm::sqrt(closest2);
+  auto throw_dist = _instance->_playerSettings->ThrowDistance();
+  /* Get ratio with remapping into [-1, 1] range */
+  auto ratio = glm::clamp((closest / throw_dist) - 1.0f, -1.0f, 1.0f);
+  _instance->_bellOutlineMaterial->GetShader()->SetValue("u_Ratio", ratio);
 }

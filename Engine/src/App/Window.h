@@ -11,9 +11,11 @@ namespace Engine {
     std::string Name;
     int Width;
     int Height;
+    bool Fullscreen;
 
-    WindowProperties(int width = 1280, int height = 720, const std::string& name = "Engine")
-        : Width(width), Height(height), Name(name) {
+    WindowProperties(int width = 1280, int height = 720, const std::string& name = "Engine",
+                     bool fullscreen = false)
+        : Width(width), Height(height), Name(name), Fullscreen(fullscreen) {
     }
   };
 
@@ -40,8 +42,8 @@ namespace Engine {
       return m_Window;
     }
     auto SetScreenSize(glm::vec2 screenSize) -> void {
-        m_Data.Width = screenSize.x;
-        m_Data.Height = screenSize.y;
+      m_Data.Width  = screenSize.x;
+      m_Data.Height = screenSize.y;
     }
     auto GetScreenSize() const -> glm::vec2 {
       return {GetWidth(), GetHeight()};
