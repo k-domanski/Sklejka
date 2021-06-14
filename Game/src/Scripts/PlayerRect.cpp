@@ -34,6 +34,9 @@ auto PlayerRect::OnCreate() -> void {
 }
 
 auto PlayerRect::Update(float deltaTime) -> void {
+  if (GameManager::IsPaused()) {
+    return;
+  }
   float vertical_move, horizontal_move, roll;
   if (!_enabled) {
     return;
@@ -67,14 +70,6 @@ auto PlayerRect::CurrentNodeIndex() -> int {
   else
     return -1;
 }
-
-// auto PlayerRect::Size() const noexcept -> glm::vec2 {
-//  return _size;
-//}
-//
-// auto PlayerRect::Size(const glm::vec2& size) noexcept -> glm::vec2 {
-//  return _size = size;
-//}
 
 auto PlayerRect::HandleInput(float& vertical, float& horizontal, float& roll) -> void {
   vertical   = ((float)Input::IsKeyPressed(Key::W)) - ((float)Input::IsKeyPressed(Key::S));
@@ -121,31 +116,19 @@ auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -
 
   // move_delta     = (glm::normalize(_moveVelocity) + move_delta) * _speed * deltaTime;
   if (_canMove) {
-    move_delta     = move_delta * _playerSettings->ControlSpeed() * deltaTime;
+    move_delta =
+        move_delta * _playerSettings->ControlSpeed() * deltaTime * _gameSettings->PlayerTimeScale();
     auto pos       = _playerController->Transform()->Position();
     auto new_pos   = pos + move_delta;
     auto half_size = glm::vec3(_playerSettings->RectSize(), 0.0f) * 0.5f;
 
     auto new_pos_clamped = glm::clamp(new_pos, -half_size, half_size);
     _playerController->Transform()->Position(new_pos_clamped);
-
-    auto rotation_delta = (move_delta / deltaTime) * _playerSettings->MoveRotationSpeed() * -1.f;
-    // auto rotation = _playerController->Transform()->Rotation();
-
-    /*if (new_pos.x < half_size.x && new_pos.x > -half_size.x)
-      HandleModelRotation(rotation_delta.x, deltaTime, {0.f, 1.f, 0.f});
-    else
-      HandleModelRotation(0.f, deltaTime, {0.f, 1.f, 0.f});
-
-    if (new_pos.y < half_size.y && new_pos.y > -half_size.y)
-      HandleModelRotation(rotation_delta.y, deltaTime, {1.f, 0.f, 0.f});
-    else
-      HandleModelRotation(0.f, deltaTime, {1.f, 0.f, 0.f});*/
   }
 
   _transform->Position(_transform->Position()
                        + glm::normalize(_moveVelocity) * _playerSettings->ForwardSpeed() * deltaTime
-                             * _gameSettings->PlayerTimeScale());
+                             * _gameSettings->GameTimeScale());
 }
 
 auto PlayerRect::HandleRotation(float roll, float deltaTime, glm::vec3 axis) -> void {
@@ -154,26 +137,11 @@ auto PlayerRect::HandleRotation(float roll, float deltaTime, glm::vec3 axis) -> 
   }
 }
 
-auto PlayerRect::HandleModelRotation(float roll, float deltaTime, glm::vec3 axis) -> void {
-  if (_canMove) {
-    if (roll != 0.f) {
-      if ((abs(_modelTransform->Rotation().x) < _playerSettings->MaxMoveRotation() && axis.x != 0.f)
-          || (abs(_modelTransform->Rotation().y) < _playerSettings->MaxMoveRotation()
-              && axis.y != 0.f)) {
-        _modelTransform->Rotate(roll * deltaTime, axis);
-      }
-    } else {
-      auto currentRot = _modelTransform->Rotation();
-      auto desiredRot =
-          glm::quat(1.f, axis.x == 0.f ? currentRot.x : -0.11f, axis.y == 0.f ? currentRot.y : 0,
-                    axis.z == 0.f ? currentRot.z : 0);
-
-      _modelTransform->Rotation(glm::lerp(currentRot, desiredRot, 0.05f));
-    }
-  }
-}
-
 auto PlayerRect::ModelRotation(float vertical, float horizontal, float deltaTime) -> void {
+  if (!_canMove) {
+    return;
+  }
+
   auto v_target = (vertical > 0 ? _qUp : (vertical < 0 ? _qDown : _qIden));
   auto h_target = (horizontal > 0 ? _qRight : (horizontal < 0 ? _qLeft : _qIden));
 
@@ -207,7 +175,7 @@ auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
     // if (_currentNode->NextIndex() == 3)
     // GameManager::ShowLevelSumUp(10.0f, true);
     _currentNode = _nodeSystem->GetNode(_currentNode->NextIndex(), NodeTag::Player);
-    LOG_DEBUG("Current node: " + std::to_string(_currentNode->Index()));
+    // LOG_DEBUG("Current node: {}", _currentNode->Index());
     _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   }
   return _currentNode;

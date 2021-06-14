@@ -26,6 +26,7 @@ private:
 
   /* State */
   SceneName _currentSceneName = SceneName::MainMenu;
+  bool _isPaused{false};
   /* -=-=- */
 
   /* Panels */
@@ -78,6 +79,8 @@ public:
   static auto IsGameplayState() -> bool;
   static auto IsGameplayScene() -> bool;
   static auto IsGameplayInitialized() -> bool;
+  static auto IsPaused() -> bool;
+  static auto SetPaused(bool value) -> bool;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;

@@ -27,7 +27,7 @@ auto AcornThrower::Update(float deltaTime) -> void {
 
 }
 
-auto AcornThrower::TryThrow() {
+auto AcornThrower::TryThrow() -> void {
   if (_boss == nullptr) {
     _boss          = Engine::SceneManager::GetCurrentScene()->FindEntity("Boss");
     _bossTransform = _boss->GetComponent< Engine::Transform >();

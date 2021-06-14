@@ -71,7 +71,7 @@ PauseMenu::PauseMenu() {
   _optionsButton->TextOffset(glm::vec2(-60.0f, -15.0f));
   _optionsButton->TextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   _optionsButton->OnPress([this]() {
-    //this->Hide();
+    // this->Hide();
     GameManager::SwitchScene(SceneName::Options);
   });
   _optionsButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
@@ -98,8 +98,9 @@ auto PauseMenu::Show() -> void {
   if (_isVisible)
     return;
   // GameManager::GetGameSettings()->GameTimeScale(0.0f);
-  _playerTimeScaleBeforePausing = GameManager::GetGameSettings()->PlayerTimeScale();
-  GameManager::GetGameSettings()->PlayerTimeScale(0.0f);
+  _playerTimeScaleBeforePausing = GameManager::GetGameSettings()->GameTimeScale();
+  GameManager::GetGameSettings()->GameTimeScale(0.0f);
+  GameManager::SetPaused(true);
 
   _background->SetActive(true);
   _title->SetActive(true);
@@ -121,7 +122,8 @@ auto PauseMenu::Hide() -> void {
   if (!_isVisible)
     return;
   // GameManager::GetGameSettings()->GameTimeScale(1.0f);
-  GameManager::GetGameSettings()->PlayerTimeScale(_playerTimeScaleBeforePausing);
+  GameManager::GetGameSettings()->GameTimeScale(_playerTimeScaleBeforePausing);
+  GameManager::SetPaused(false);
 
   _background->SetActive(false);
   _title->SetActive(false);
