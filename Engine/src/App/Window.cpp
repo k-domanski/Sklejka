@@ -30,10 +30,6 @@ namespace Engine {
     return std::make_unique< Window >(data);
   }
   void Window::Init(const WindowProperties& data) {
-    m_Data.Name   = data.Name;
-    m_Data.Width  = data.Width;
-    m_Data.Height = data.Height;
-
     bool init = glfwInit();
     if (!init)
       CORE_ERROR("Could not initialize GLFW.");
@@ -41,7 +37,24 @@ namespace Engine {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    m_Window = glfwCreateWindow(data.Width, data.Height, data.Name.c_str(), NULL, NULL);
+
+    if (data.Fullscreen) {
+      auto monitor            = glfwGetPrimaryMonitor();
+      const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+      glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+      glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+      glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+      glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+      m_Window      = glfwCreateWindow(mode->width, mode->height, data.Name.c_str(), monitor, NULL);
+      m_Data.Width  = mode->width;
+      m_Data.Height = mode->height;
+    } else {
+      m_Window      = glfwCreateWindow(data.Width, data.Height, data.Name.c_str(), NULL, NULL);
+      m_Data.Width  = data.Width;
+      m_Data.Height = data.Height;
+    }
+    m_Data.Name = data.Name;
 
     if (!m_Window) {
       CORE_ERROR("Window not created.");

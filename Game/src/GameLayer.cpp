@@ -12,11 +12,7 @@ GameLayer::GameLayer(): Engine::Layer("Game") {
 auto GameLayer::OnAttach() -> void {
   LOG_TRACE("Current dir: {}", std::filesystem::current_path().string());
   GameManager::SwitchScene(SceneName::LVL_1);
-
-  auto scene = SceneManager::GetCurrentScene();
-  // SetupPlayer(scene);
-
-  // GameManager::ShowLoadingScreen();
+  //GameManager::SwitchScene(SceneName::MainMenu);
 }
 
 auto GameLayer::OnDetach() -> void {
@@ -62,8 +58,7 @@ bool GameLayer::OnMouseButtonRelease(MouseButtonReleasedEvent& e) {
   return false;
 }
 
-bool GameLayer::OnKeyPress(Engine::KeyPressedEvent& e)
-{
+bool GameLayer::OnKeyPress(Engine::KeyPressedEvent& e) {
   SceneManager::GetCurrentScene()->OnKeyPressed((Key)e.GetKeyCode());
   return true;
 }
