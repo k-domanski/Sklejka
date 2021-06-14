@@ -35,7 +35,7 @@ auto Boss::OnCreate() -> void {
 
 auto Boss::Update(float deltaTime) -> void {
 
-  _canMove = _player->CurrentNodeIndex() > 91;
+  _canMove = _player->CurrentNodeIndex() > 89;
 
   if (_canMove) {
     SeekTarget(deltaTime);
@@ -57,7 +57,7 @@ auto Boss::CanMove(bool value) -> void {
 auto Boss::Hit() -> void
 {
   _hits++;
-  GameManager::GetSoundEngine()->play2D("./Assets/sounds/placeholderBeep.wav");
+  //GameManager::GetSoundEngine()->play2D("./Assets/sounds/placeholderBeep.wav");
   if (_hits >= 3)
   {
     Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());

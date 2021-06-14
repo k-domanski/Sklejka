@@ -1,8 +1,8 @@
 {
     "collisionLayer": 4294967295,
     "entityID": "8150593624672918040",
-    "entityName": "Boss",
-    "layer": 8,
+    "entityName": "BossRotationFixBecauseWeHaveNoTimeToRotateModelWithAnimation",
+    "layer": 1,
     "parentID": 0
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
@@ -14,10 +14,10 @@
         "z": 0.0
     },
     "localRotation": {
-        "w": 0.7073181867599487,
-        "x": 0.0,
-        "y": 0.7068952918052673,
-        "z": 0.0
+        "w": -4.371138828673793e-08,
+        "x": -0.0,
+        "y": 1.0,
+        "z": -0.0
     },
     "localScale": {
         "x": 0.4000000059604645,
@@ -31,34 +31,6 @@
     "material": "Assets/materials/weasle.mat",
     "meshIndex": 0,
     "model": "Assets/models/lasica_jetpack_kolor.fbx"
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "center": {
-        "x": 0.0,
-        "y": 0.20000000298023224,
-        "z": -1.2000000476837158
-    },
-    "colliderType": "Box",
-    "componentType": "collider",
-    "size": {
-        "x": 3.4000000953674316,
-        "y": 2.0,
-        "z": 7.0
-    },
-    "static": false,
-    "trigger": true
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-    "componentType": "rigidbody",
-    "kinematic": true,
-    "useGravity": false,
-    "velocity": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    }
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
