@@ -38,7 +38,7 @@ void Engine::Renderer::Text::Offset(glm::vec2 offset) {
 }
 
 Engine::Renderer::Text::Text() {
-  _characters = AssetManager::GetCharacters("./fonts/arialn/Arialn.ttf", 48);
+  _characters = AssetManager::GetCharacters("./fonts/finger-paint/FingerPaint-Regular.ttf", 48);
   _shader     = AssetManager::GetShader("./shaders/text.glsl");
 
   _size   = 48.0f;
