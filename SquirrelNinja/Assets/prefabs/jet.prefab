@@ -30,10 +30,10 @@
     "componentType": "meshRenderer",
     "material": "Assets/materials/weasle_jet.mat",
     "meshIndex": 1,
-    "model": "Assets/models/weasel_jet.fbx"
+    "model": "Assets/models/lasica_jetpack_kolor.fbx"
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
   "componentType": "animator",
-  "model": "Assets/models/weasel_jet.fbx"
+  "model": "Assets/models/lasica_jetpack_kolor.fbx"
 }

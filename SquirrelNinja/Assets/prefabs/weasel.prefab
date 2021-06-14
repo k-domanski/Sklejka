@@ -2,27 +2,27 @@
     "collisionLayer": 4294967295,
     "entityID": "8150593624672918040",
     "entityName": "Boss",
-    "layer": 1,
+    "layer": 8,
     "parentID": 0
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
     "componentType": "transform",
     "localPosition": {
-        "x": -127.80000305175781,
-        "y": -116.4000015258789,
-        "z": -568.7000122070313
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
     },
     "localRotation": {
-        "w": 0.7071067094802856,
+        "w": 0.7073181867599487,
         "x": 0.0,
-        "y": 0.7071067094802856,
+        "y": 0.7068952918052673,
         "z": 0.0
     },
     "localScale": {
-        "x": 0.5,
-        "y": 0.5,
-        "z": 0.5
+        "x": 0.4000000059604645,
+        "y": 0.4000000059604645,
+        "z": 0.4000000059604645
     }
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
@@ -30,12 +30,7 @@
     "componentType": "meshRenderer",
     "material": "Assets/materials/weasle.mat",
     "meshIndex": 0,
-    "model": "Assets/models/weasel_jet.fbx"
-}
-42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
-{
-  "componentType": "animator",
-  "model": "Assets/models/weasel_jet.fbx"
+    "model": "Assets/models/lasica_jetpack_kolor.fbx"
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
@@ -51,8 +46,8 @@
         "y": 2.0,
         "z": 7.0
     },
-    "static": true,
-    "trigger": false
+    "static": false,
+    "trigger": true
 }
 42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
 {
@@ -64,4 +59,9 @@
         "y": 0.0,
         "z": 0.0
     }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+  "componentType": "animator",
+  "model": "Assets/models/lasica_jetpack_kolor.fbx"
 }
