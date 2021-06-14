@@ -181,7 +181,7 @@ auto PlayerRect::ModelRotation(float vertical, float horizontal, float deltaTime
     /* Get ratio to scale lerp time up */
     auto v_rad = glm::pitch(_vLerp.Value());
     auto t_rad = glm::pitch(v_target);
-    auto ratio = glm::abs(v_rad - t_rad) / _vRad;
+    auto ratio = glm::abs(t_rad - v_rad) / _vRad;
     ratio      = glm::max(0.001f, ratio);
 
     _vLerp.Set(_vLerp.Value(), v_target, _lerpTime * ratio);
@@ -190,7 +190,7 @@ auto PlayerRect::ModelRotation(float vertical, float horizontal, float deltaTime
     /* Get ratio to scale lerp time up */
     auto h_rad = glm::yaw(_hLerp.Value());
     auto t_rad = glm::yaw(h_target);
-    auto ratio = glm::abs(h_rad - t_rad) / _hRad;
+    auto ratio = glm::abs(t_rad - h_rad) / _hRad;
     ratio      = glm::max(0.001f, ratio);
     _hLerp.Set(_hLerp.Value(), h_target, _lerpTime * ratio);
   }
@@ -206,7 +206,7 @@ auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
   if (magnitude2 <= (min_mag * min_mag)) {
     // if (_currentNode->NextIndex() == 3)
     // GameManager::ShowLevelSumUp(10.0f, true);
-    _currentNode   = _nodeSystem->GetNode(_currentNode->NextIndex(), NodeTag::Player);
+    _currentNode = _nodeSystem->GetNode(_currentNode->NextIndex(), NodeTag::Player);
     LOG_DEBUG("Current node: " + std::to_string(_currentNode->Index()));
     _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   }
