@@ -36,6 +36,7 @@ GameManager::GameManager() {
   _options        = std::make_shared< OptionsMenu >();
   _fishEyeShader  = AssetManager::GetShader("./shaders/fish_eye.glsl");
   _bellOutlineMaterial = AssetManager::GetMaterial("materials/bell_outline.mat");
+  _speedLerp.Set(_playerSettings->ForwardSpeed(), _playerSettings->ForwardSpeed(), 1.0f);
 }
 
 auto GameManager::Initialize() -> void {
@@ -129,10 +130,16 @@ auto GameManager::Update(float deltaTime) -> void {
 }
 
 auto GameManager::PlayerSpeedUp() -> void {
-  _instance->_speedUpDuration = _instance->GetGameSettings()->PlayerSpeedUpDuration();
-  auto fast_speed             = _instance->GetPlayerSettings()->ForwardSpeedBase()
-                    * _instance->GetPlayerSettings()->SpeedMultiplier();
-  _instance->GetPlayerSettings()->ForwardSpeed(fast_speed);
+  const auto& settings     = _instance->_playerSettings;
+  const auto base_speed    = settings->ForwardSpeedBase();
+  const auto current_speed = settings->ForwardSpeed();
+  const auto target_speed  = settings->ForwardSpeedBase() * settings->SpeedMultiplier();
+  const auto ratio         = 1.0 - ((current_speed - base_speed) / (target_speed - base_speed));
+  const auto lerp_time     = 0.5f;
+  if (ratio > 0.0f) {
+    _instance->_speedLerp.Set(current_speed, target_speed, lerp_time * ratio);
+    _instance->_speedUpDuration = _instance->GetGameSettings()->PlayerSpeedUpDuration();
+  }
 }
 
 auto GameManager::ShowLevelSumUp(bool win, float time, int bells) -> void {
@@ -203,7 +210,7 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
           /* This is delayed 1 frame */
           _instance->CreatePlayer();
           _instance->CreateBoss();
-          if(IsGameplayScene()){
+          if (IsGameplayScene()) {
             FindBells();
           }
           break;
@@ -213,11 +220,21 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
     --_frameWaitCounter;
   }
 
-  if (_speedUpDuration > 0.0f) {
-    _speedUpDuration -= deltaTime;
-  } else {
-    GetPlayerSettings()->ForwardSpeed(GetPlayerSettings()->ForwardSpeedBase());
+  /* Speedup handling */
+  if (_speedLerp.Finished() && _speedUpDuration > 0.0f) {
+    if (_speedUpDuration > 0.0f) {
+      _speedUpDuration -= deltaTime;
+    }
+    if (_speedUpDuration < 0.0f) {
+      const auto current_speed =
+          _playerSettings->ForwardSpeedBase() * _playerSettings->SpeedMultiplier();
+      const auto target_speed = _playerSettings->ForwardSpeedBase();
+      _speedLerp.Set(current_speed, target_speed, 1.0f);
+      _speedUpDuration = -1.0f;
+    }
   }
+  _instance->GetPlayerSettings()->ForwardSpeed(_speedLerp.Update(deltaTime));
+  /* -=-=-=-=-=-=-=-=- */
 
   auto base_speed    = GetPlayerSettings()->ForwardSpeedBase();
   auto max_speed     = base_speed * GetPlayerSettings()->SpeedMultiplier();
@@ -334,9 +351,15 @@ auto GameManager::CreatePlayer() -> void {
     auto tr_l = emitter_left->AddComponent< Transform >();
     auto tr_r = emitter_right->AddComponent< Transform >();
 
+    /* Front 'Legs' */
     constexpr auto x = 0.70f;
+    constexpr auto y = -0.2f;
+    constexpr auto z = 0.55f;
+
+    /* Back Legs */
+    /*constexpr auto x = 0.70f;
     constexpr auto y = -0.1f;
-    constexpr auto z = -0.55f;
+    constexpr auto z = -0.55f;*/
     tr_l->Position({-x, y, z});
     tr_r->Position({x, y, z});
   }

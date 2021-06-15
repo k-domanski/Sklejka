@@ -4,8 +4,8 @@
 #include "Components/UIRenderer.h"
 
 ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
-    : Script(), _shadowRate(0.0f), _bar(std::make_shared< BarData >()), _maxAmount(1.0f),
-      _currentAmount(0.0f), _target(target), _maxSamplesPassed(0) {
+    : _bar(std::make_shared< BarData >()), _maxAmount(1.0f), _currentAmount(0.0f), _target(target),
+      _maxSamplesPassed(0) {
   auto entity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   auto renderer   = entity->AddComponent< Engine::Components::UIRenderer >();
   _bar->transform = entity->AddComponent< Engine::Transform >();
@@ -80,24 +80,6 @@ auto ShadowTarget::SlowTime() -> void {
 
 auto ShadowTarget::GetTarget() -> std::shared_ptr< Engine::ECS::Entity > {
   return _target;
-}
-
-auto ShadowTarget::ShadowRate() -> float {
-  return _shadowRate;
-}
-
-auto ShadowTarget::ShadowRate(float shadowRate) -> void {
-  _shadowRate = shadowRate;
-}
-
-auto ShadowTarget::SamplesPassed(GLint samplesPassed) -> void {
-  samplesPassed = std::clamp(samplesPassed, 0,
-                             1000);  // probably shold be a variable in game setting or somewhere
-  if (samplesPassed > _maxSamplesPassed)
-    _maxSamplesPassed = samplesPassed;
-  _shadowRate = (float)samplesPassed / (float)_maxSamplesPassed;
-  _shadowRate = 1.0f - _shadowRate;
-  _shadowRate = std::clamp(_shadowRate, 0.0f, 1.0f);
 }
 
 auto ShadowTarget::SetTimeSlowed(bool value) -> void {
