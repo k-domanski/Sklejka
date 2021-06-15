@@ -371,8 +371,11 @@ auto GameManager::CreateBoss() -> void {
   weasel->LoadFromJson("./Assets/prefabs/weasel.prefab");
   auto boss_jet = entity_manager.CreateEntity();
   boss_jet->LoadFromJson("./Assets/prefabs/jet.prefab");
+  auto golden_acorn = entity_manager.CreateEntity();
+  golden_acorn->LoadFromJson("./Assets/prefabs/golden_acorn.prefab");
 
   scene_graph->SetParent(weasel, boss);
+  scene_graph->SetParent(golden_acorn, boss);
   scene_graph->SetParent(boss_jet, weasel);
 
   auto transform = boss->GetComponent< Transform >();

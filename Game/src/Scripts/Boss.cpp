@@ -66,6 +66,15 @@ auto Boss::Update(float deltaTime) -> void {
     SeekTarget(deltaTime);
     HandleMove(deltaTime);
   }
+
+  if (_currentSpeedUpDuration > 0.f)
+  {
+    _currentSpeedUpDuration -= deltaTime;
+    if (_currentSpeedUpDuration <= 0.f)
+    {
+      _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase());
+    }
+  }
 }
 
 auto Boss::OnKeyPressed(Engine::Key key) -> void {
@@ -83,6 +92,7 @@ auto Boss::Hit() -> void
 {
   _hits++;
   GameManager::GetSoundEngine()->play2D("./Assets/sounds/placeholderBeep.wav");
+  SpeedUp();
 
   switch (_hits)
   { case 1:
@@ -129,4 +139,11 @@ auto Boss::HandleMove(float deltaTime) -> void {
   _transform->Position(_transform->Position()
                        + glm::normalize(_moveVelocity) * _playerSettings->BossForwardSpeed()
                              * deltaTime);
+}
+
+auto Boss::SpeedUp() -> void
+{
+  _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase()
+                                    * _playerSettings->SpeedMultiplier());
+  _currentSpeedUpDuration = _speedUpDuration;
 }

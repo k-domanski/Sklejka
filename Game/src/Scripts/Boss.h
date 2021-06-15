@@ -16,11 +16,14 @@ private:
   std::shared_ptr< Engine::Renderer::Image > _health2;
   std::shared_ptr< Engine::Renderer::Image > _health3;
 
+  float _speedUpDuration = 1.5f;
+  float _currentSpeedUpDuration = 0.f;
   int _hits = 0;
   bool _canMove;
 
   auto SeekTarget(float deltaTime) -> void;
   auto HandleMove(float deltaTime) -> void;
+  auto SpeedUp() -> void;
   auto GetNode() -> std::shared_ptr< Engine::Node >;
 
 public:

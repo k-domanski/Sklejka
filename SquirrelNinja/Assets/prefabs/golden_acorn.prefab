@@ -1,0 +1,34 @@
+{
+    "collisionLayer": 4294967295,
+    "entityID": "13121130231019381211",
+    "entityName": "GoldenAcorn",
+    "layer": 1,
+    "parentID": 14415410705483338188
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "transform",
+    "localPosition": {
+        "x": -0.10000000149011612,
+        "y": 1.0,
+        "z": 0.10000000149011612
+    },
+    "localRotation": {
+        "w": 0.7071067690849304,
+        "x": -0.7071067690849304,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "localScale": {
+        "x": 3.0,
+        "y": 3.0,
+        "z": 3.0
+    }
+}
+42091169692137SUPERJSONCOMPONENTSEPARATOR42091169692137
+{
+    "componentType": "meshRenderer",
+    "material": "Assets/materials/acorn_gold.mat",
+    "meshIndex": 0,
+    "model": "Assets/models/acorn.FBX"
+}
