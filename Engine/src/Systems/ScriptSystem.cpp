@@ -9,6 +9,8 @@ namespace Engine::Systems {
   }
 
   auto ScriptSystem::Update(float deltaTime) -> void {
+    if (_entities.empty())
+        return;
     for (auto id : _entities) {
       auto native_script = ECS::EntityManager::GetComponent< NativeScript >(id);
       native_script->Update(deltaTime);
@@ -17,6 +19,8 @@ namespace Engine::Systems {
 
   auto ScriptSystem::OnKeyPressed(Key key) -> void
   {
+    if (_entities.empty())
+      return;
     for (auto id : _entities)
     {
       if (id != nullptr) {

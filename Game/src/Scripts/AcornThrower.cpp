@@ -13,6 +13,7 @@ auto AcornThrower::OnCreate() -> void {
   _bells           = sg->GetChildren(bell_parent);
   _playerTransform = GameManager::GetCurrentPlayer()->GetComponent< Engine::Transform >();
   _maxDistance     = GameManager::GetPlayerSettings()->ThrowDistance();
+  _lastStateA      = false;
 }
 
 auto AcornThrower::TryThrow() -> void {
@@ -47,12 +48,12 @@ auto AcornThrower::Update(float deltaTime) -> void {
   if (_currentTimeout >= 0.f) {
     _currentTimeout -= deltaTime;
   }
-
-  if (Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_A))
+  auto currentStataA = Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_A);
+  if (currentStataA && !_lastStateA)
   {
     TryThrow();
   }
-
+  _lastStateA = currentStataA;
 }
 
 
