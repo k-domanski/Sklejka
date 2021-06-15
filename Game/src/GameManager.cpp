@@ -158,9 +158,9 @@ auto GameManager::Win() -> void {
   _instance->WinImpl();
 }
 
-auto GameManager::CreateSecondWeasel(int nodeNumber) -> void
+auto GameManager::CreateSecondWeasel() -> void
 {
-  _instance->CreateSecondWeaselImpl(nodeNumber);
+  _instance->CreateSecondWeaselImpl();
 }
 
 auto GameManager::IsGameplayState() -> bool {
@@ -210,6 +210,7 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
           /* This is delayed 1 frame */
           _instance->CreatePlayer();
           _instance->CreateBoss();
+          _instance->CreateSecondWeasel();
           if (IsGameplayScene()) {
             FindBells();
           }
@@ -437,13 +438,14 @@ auto GameManager::CreateBoss() -> void {
       golden_acorn_native_script->GetScript<GoldenAcorn>()));
 }
 
-auto GameManager::CreateSecondWeaselImpl(int nodeNumber) -> void {
+auto GameManager::CreateSecondWeaselImpl() -> void {
   auto& entity_manager = EntityManager::GetInstance();
   auto& scene_graph    = SceneManager::GetCurrentScene()->SceneGraph();
   auto& node_system    = SceneManager::GetCurrentScene()->NodeSystem();
 
   auto boss = entity_manager.CreateEntity();
   boss->LoadFromJson("./Assets/prefabs/boss.prefab", true);
+  boss->Name("Boss2");
   auto weasel = entity_manager.CreateEntity();
   weasel->LoadFromJson("./Assets/prefabs/weasel.prefab", true);
   auto boss_jet = entity_manager.CreateEntity();
@@ -455,23 +457,23 @@ auto GameManager::CreateSecondWeaselImpl(int nodeNumber) -> void {
 
   auto transform = boss->GetComponent< Transform >();
   /* Skip 1st node */
-  auto n1_pos = node_system->GetNode(nodeNumber - 2, NodeTag::Boss)
+  auto n1_pos = node_system->GetNode(0, NodeTag::Boss)
                     ->GetEntity()
                     ->GetComponent< Transform >()
                     ->WorldPosition();
-  auto n2_pos = node_system->GetNode(nodeNumber - 1, NodeTag::Boss)
+  auto n2_pos = node_system->GetNode(1, NodeTag::Boss)
                     ->GetEntity()
                     ->GetComponent< Transform >()
                     ->WorldPosition();
-  transform->Position(n1_pos);
+  //transform->Position(n1_pos);
+  transform->Position(glm::vec3(0.f, 0.f, 0.f));
   transform->Forward(glm::normalize(n2_pos - n1_pos));
 
   auto existing_golden_acorn = SceneManager::GetCurrentScene()->FindEntity("GoldenAcorn");
 
   auto boss_native_script = boss->AddComponent< NativeScript >();
   boss_native_script->Attach(std::make_shared< SecondWeasel >(
-      existing_golden_acorn->GetComponent< NativeScript >()->GetScript< GoldenAcorn >(),
-      nodeNumber));
+      existing_golden_acorn->GetComponent< NativeScript >()->GetScript< GoldenAcorn >()));
 }
 
 auto GameManager::SetupScripts() -> void {

@@ -23,19 +23,21 @@ private:
   glm::vec3 _offset{0.f, .1f, .0f};
 
   float _getAcornTimer = .2f;
-  float _flightTime    = 1.5f;
+  float _flightTime    = 2.5f;
+
+  bool _canMove = false;
 
   float _speedUpDuration        = 1.5f;
   float _currentSpeedUpDuration = 0.f;
-  int _startNode;
 
   auto SeekTarget(float deltaTime) -> void;
   auto HandleMove(float deltaTime) -> void;
   auto GetNode() -> std::shared_ptr< Engine::Node >;
 
 public:
-  SecondWeasel(std::shared_ptr< GoldenAcorn > goldenAcorn, int startNode);
+  SecondWeasel(std::shared_ptr< GoldenAcorn > goldenAcorn);
   auto OnCreate() -> void override;
+  auto StartCutscene(int startNode) -> void;
   auto Update(float deltaTime) -> void override;
   auto OnKeyPressed(Engine::Key key) -> void override;
 };

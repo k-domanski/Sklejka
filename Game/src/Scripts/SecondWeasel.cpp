@@ -26,7 +26,7 @@ auto SecondWeasel::SeekTarget(float deltaTime) -> void
 
 auto SecondWeasel::HandleMove(float deltaTime) -> void {
   _transform->Position(_transform->Position()
-                       + glm::normalize(_moveVelocity) * _playerSettings->BossForwardSpeed() * 1.5f
+                       + glm::normalize(_moveVelocity) * _playerSettings->BossForwardSpeed() * 1.2f
                              * deltaTime);
 }
 
@@ -47,41 +47,48 @@ auto SecondWeasel::GetNode() -> std::shared_ptr<Engine::Node>
   return _currentNode;
 }
 
-SecondWeasel::SecondWeasel(std::shared_ptr< GoldenAcorn > goldenAcorn, int startNode)
-    : _goldenAcorn(goldenAcorn), _startNode(startNode) {
+SecondWeasel::SecondWeasel(std::shared_ptr< GoldenAcorn > goldenAcorn)
+    : _goldenAcorn(goldenAcorn) {
 }
 
 auto SecondWeasel::OnCreate() -> void
 {
   _transform      = Entity()->GetComponent< Engine::Transform >();
   _nodeSystem     = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::NodeSystem >();
-  _currentNode    = _nodeSystem->GetNode(_startNode, Engine::NodeTag::Boss);
+  _currentNode    = _nodeSystem->GetNode(1, Engine::NodeTag::Boss);
   _nodeTransform  = Engine::ECS::EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   _playerSettings = GameManager::GetPlayerSettings();
 
 }
 
+auto SecondWeasel::StartCutscene(int startNode) -> void
+{
+  _currentNode = _nodeSystem->GetNode(startNode - 2, Engine::NodeTag::Boss);
+  _transform->Position(_currentNode->GetEntity()->GetComponent< Engine::Transform >()->WorldPosition());
+  _canMove = true;
+}
+
+
 auto SecondWeasel::Update(float deltaTime) -> void
 {
-  SeekTarget(deltaTime);
-  HandleMove(deltaTime);
+  if (_canMove) {
+    SeekTarget(deltaTime);
+    HandleMove(deltaTime);
 
-  if (_getAcornTimer > 0.f)
-  {
-    _getAcornTimer -= deltaTime;
-    if (_getAcornTimer <= 0.f)
-    {
-      Engine::SceneManager::GetCurrentScene()->SceneGraph()->SetParent(_goldenAcorn->Entity(),
-                                                                       Entity());
-      _goldenAcorn->ResetLocalPos();
+    if (_getAcornTimer > 0.f) {
+      _getAcornTimer -= deltaTime;
+      if (_getAcornTimer <= 0.f) {
+        Engine::SceneManager::GetCurrentScene()->SceneGraph()->SetParent(_goldenAcorn->Entity(),
+                                                                         Entity());
+        _goldenAcorn->ResetLocalPos();
+      }
     }
-  }
 
-  if (_flightTime > 0.f)
-  {
-    _flightTime -= deltaTime;
-    if (_flightTime <= 0.f)
-      GameManager::Win();
+    if (_flightTime > 0.f) {
+      _flightTime -= deltaTime;
+      if (_flightTime <= 0.f)
+        GameManager::Win();
+    }
   }
 }
 

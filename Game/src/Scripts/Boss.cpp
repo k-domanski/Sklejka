@@ -2,6 +2,9 @@
 #include <Systems/NodeSystem.h>
 #include <GameManager.h>
 
+#include "SecondWeasel.h"
+#include "Components/NativeScript.h"
+
 #include "Components/Rigidbody.h"
 
 using namespace Engine;
@@ -124,7 +127,11 @@ auto Boss::Hit() -> void {
     _rigidbody->SetGravity(true);
     _rigidbody->SetKinematic(true);
     _rigidbody->SetVelocity(glm::vec3(.0f, -5.f, 0.f));
-    GameManager::CreateSecondWeasel(_currentNode->Index());
+    SceneManager::GetCurrentScene()
+        ->FindEntity("Boss2")
+        ->GetComponent< NativeScript >()
+        ->GetScript< SecondWeasel >()
+        ->StartCutscene(_currentNode->Index());
     //Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
     //GameManager::Win();
   }
