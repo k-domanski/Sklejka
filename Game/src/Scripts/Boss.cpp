@@ -21,48 +21,53 @@ auto Boss::GetNode() -> std::shared_ptr< Engine::Node > {
   return _currentNode;
 }
 
-Boss::Boss(std::shared_ptr< PlayerRect > player)
-    : _player(player){}
-
+Boss::Boss(std::shared_ptr< PlayerRect > player): _player(player) {
+}
 
 auto Boss::OnCreate() -> void {
-  _transform  = Entity()->GetComponent< Engine::Transform >();
-  _nodeSystem = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
+  _transform      = Entity()->GetComponent< Engine::Transform >();
+  _nodeSystem     = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
   _currentNode    = _nodeSystem->GetNode(1, NodeTag::Boss);
   _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   _playerSettings = GameManager::GetPlayerSettings();
+  _bossShowUp     = false;
 
   auto entity    = EntityManager::GetInstance().CreateEntity();
-  auto renderer = entity->AddComponent< Components::UIRenderer >();
+  _renderer  = entity->AddComponent< Components::UIRenderer >();
   auto transform = entity->AddComponent< Transform >();
   transform->Position({800.0f, 750.0f, 0.0f});
   stbi_set_flip_vertically_on_load(true);
   _health1 = std::make_shared< Renderer::Image >();
   _health1->Texture(AssetManager::GetTexture2D("./textures/UI/heart_full.png"));
   stbi_set_flip_vertically_on_load(false);
-  _health1->Size({56.0f,50.0f});
+  _health1->Size({56.0f, 50.0f});
   _health1->Offset({60.0f, 0.0f});
 
   _health2 = std::make_shared< Renderer::Image >();
   _health2->Texture(AssetManager::GetTexture2D("./textures/UI/heart_full.png"));
-  _health2->Size({56.0f,50.0f});
+  _health2->Size({56.0f, 50.0f});
   _health2->Offset({0.0f, 0.0f});
 
   _health3 = std::make_shared< Renderer::Image >();
   _health3->Texture(AssetManager::GetTexture2D("./textures/UI/heart_full.png"));
-  _health3->Size({56.0f,50.0f});
+  _health3->Size({56.0f, 50.0f});
   _health3->Offset({-60.0f, 0.0f});
 
-  renderer->AddElement(_health1);
-  renderer->AddElement(_health2);
-  renderer->AddElement(_health3);
+
 }
 
 auto Boss::Update(float deltaTime) -> void {
-
   _canMove = _player->CurrentNodeIndex() > 91;
 
   if (_canMove) {
+    if (!_bossShowUp)
+    {
+      _renderer->AddElement(_health1);
+      _renderer->AddElement(_health2);
+      _renderer->AddElement(_health3);
+      _bossShowUp = true;
+    }
+
     SeekTarget(deltaTime);
     HandleMove(deltaTime);
   }
@@ -79,27 +84,25 @@ auto Boss::CanMove(bool value) -> void {
   _canMove = value;
 }
 
-auto Boss::Hit() -> void
-{
+auto Boss::Hit() -> void {
   _hits++;
   GameManager::GetSoundEngine()->play2D("./Assets/sounds/placeholderBeep.wav");
 
-  switch (_hits)
-  { case 1:
+  switch (_hits) {
+    case 1:
       stbi_set_flip_vertically_on_load(true);
       _health1->Texture(AssetManager::GetTexture2D("./textures/UI/heart_empty.png"));
       stbi_set_flip_vertically_on_load(false);
       break;
     case 2:
       _health2->Texture(AssetManager::GetTexture2D("./textures/UI/heart_empty.png"));
-        break;
+      break;
     case 3:
       _health3->Texture(AssetManager::GetTexture2D("./textures/UI/heart_empty.png"));
       break;
   }
 
-  if (_hits >= 3)
-  {
+  if (_hits >= 3) {
     Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
     GameManager::Win();
   }
