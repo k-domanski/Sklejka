@@ -2,6 +2,8 @@
 #include <Systems/NodeSystem.h>
 #include <GameManager.h>
 
+#include "Components/Rigidbody.h"
+
 using namespace Engine;
 using namespace Engine::ECS;
 
@@ -21,11 +23,13 @@ auto Boss::GetNode() -> std::shared_ptr< Engine::Node > {
   return _currentNode;
 }
 
-Boss::Boss(std::shared_ptr< PlayerRect > player): _player(player) {
+Boss::Boss(std::shared_ptr< PlayerRect > player, std::shared_ptr< GoldenAcorn > goldenAcorn)
+    : _player(player), _goldenAcorn(goldenAcorn) {
 }
 
 auto Boss::OnCreate() -> void {
   _transform      = Entity()->GetComponent< Engine::Transform >();
+  _rigidbody      = Entity()->GetComponent< Components::Rigidbody >();
   _nodeSystem     = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
   _currentNode    = _nodeSystem->GetNode(1, NodeTag::Boss);
   _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
@@ -58,19 +62,20 @@ auto Boss::OnCreate() -> void {
 
 auto Boss::Update(float deltaTime) -> void {
 
-  _canMove = _player->CurrentNodeIndex() > 89;
+  if (!_killed) {
+    _canMove = _player->CurrentNodeIndex() > 89;
 
-  if (_canMove) {
-    if (!_bossShowUp)
-    {
-      _renderer->AddElement(_health1);
-      _renderer->AddElement(_health2);
-      _renderer->AddElement(_health3);
-      _bossShowUp = true;
+    if (_canMove) {
+      if (!_bossShowUp) {
+        _renderer->AddElement(_health1);
+        _renderer->AddElement(_health2);
+        _renderer->AddElement(_health3);
+        _bossShowUp = true;
+      }
+
+      SeekTarget(deltaTime);
+      HandleMove(deltaTime);
     }
-
-    SeekTarget(deltaTime);
-    HandleMove(deltaTime);
   }
 
   if (_currentSpeedUpDuration > 0.f)
@@ -114,8 +119,14 @@ auto Boss::Hit() -> void {
   }
 
   if (_hits >= 3) {
-    Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
-    GameManager::Win();
+    _goldenAcorn->OnBossKilled();
+    _killed = true;
+    _rigidbody->SetGravity(true);
+    _rigidbody->SetKinematic(true);
+    _rigidbody->SetVelocity(glm::vec3(.0f, -5.f, 0.f));
+    GameManager::CreateSecondWeasel(_currentNode->Index());
+    //Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
+    //GameManager::Win();
   }
 }
 
@@ -148,6 +159,6 @@ auto Boss::HandleMove(float deltaTime) -> void {
 auto Boss::SpeedUp() -> void
 {
   _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase()
-                                    * _playerSettings->SpeedMultiplier());
+                                    * _playerSettings->BossSpeedMultiplier());
   _currentSpeedUpDuration = _speedUpDuration;
 }

@@ -19,6 +19,8 @@
 #include "Scripts/Boss.h"
 #include "Systems/NodeSystem.h"
 #include "Components/ParticleEmitter.h"
+#include "Scripts/GoldenAcorn.h"
+#include "Scripts/SecondWeasel.h"
 
 using namespace Engine;
 using namespace Engine::Components;
@@ -149,6 +151,11 @@ auto GameManager::Win() -> void {
   _instance->WinImpl();
 }
 
+auto GameManager::CreateSecondWeasel(int nodeNumber) -> void
+{
+  _instance->CreateSecondWeaselImpl(nodeNumber);
+}
+
 auto GameManager::IsGameplayState() -> bool {
   const auto is_gameplay_scene = IsGameplayScene();
   const auto is_initialized    = IsGameplayInitialized();
@@ -172,6 +179,13 @@ auto GameManager::IsPaused() -> bool {
 
 auto GameManager::SetPaused(bool value) -> bool {
   return _instance->_isPaused = value;
+}
+
+auto GameManager::Time() -> float
+{
+  auto camera = SceneManager::GetCurrentScene()->CameraSystem()->MainCamera();
+  auto timer  = camera->GetEntity()->GetComponent< NativeScript >()->GetScript< FlightTimer >();
+  return timer->GetTime();
 }
 
 auto GameManager::UpdateImpl(float deltaTime) -> void {
@@ -391,9 +405,50 @@ auto GameManager::CreateBoss() -> void {
   transform->Position(n1_pos);
   transform->Forward(glm::normalize(n2_pos - n1_pos));
 
+  auto golden_acorn_native_script = golden_acorn->AddComponent< NativeScript >();
+  golden_acorn_native_script->Attach(std::make_shared< GoldenAcorn >());
+
   auto boss_native_script = boss->AddComponent< NativeScript >();
   boss_native_script->Attach(std::make_shared< Boss >(
-      _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >()));
+      _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >(),
+      golden_acorn_native_script->GetScript<GoldenAcorn>()));
+}
+
+auto GameManager::CreateSecondWeaselImpl(int nodeNumber) -> void {
+  auto& entity_manager = EntityManager::GetInstance();
+  auto& scene_graph    = SceneManager::GetCurrentScene()->SceneGraph();
+  auto& node_system    = SceneManager::GetCurrentScene()->NodeSystem();
+
+  auto boss = entity_manager.CreateEntity();
+  boss->LoadFromJson("./Assets/prefabs/boss.prefab", true);
+  auto weasel = entity_manager.CreateEntity();
+  weasel->LoadFromJson("./Assets/prefabs/weasel.prefab", true);
+  auto boss_jet = entity_manager.CreateEntity();
+  boss_jet->LoadFromJson("./Assets/prefabs/jet.prefab", true);
+
+
+  scene_graph->SetParent(weasel, boss);
+  scene_graph->SetParent(boss_jet, weasel);
+
+  auto transform = boss->GetComponent< Transform >();
+  /* Skip 1st node */
+  auto n1_pos = node_system->GetNode(nodeNumber - 2, NodeTag::Boss)
+                    ->GetEntity()
+                    ->GetComponent< Transform >()
+                    ->WorldPosition();
+  auto n2_pos = node_system->GetNode(nodeNumber - 1, NodeTag::Boss)
+                    ->GetEntity()
+                    ->GetComponent< Transform >()
+                    ->WorldPosition();
+  transform->Position(n1_pos);
+  transform->Forward(glm::normalize(n2_pos - n1_pos));
+
+  auto existing_golden_acorn = SceneManager::GetCurrentScene()->FindEntity("GoldenAcorn");
+
+  auto boss_native_script = boss->AddComponent< NativeScript >();
+  boss_native_script->Attach(std::make_shared< SecondWeasel >(
+      existing_golden_acorn->GetComponent< NativeScript >()->GetScript< GoldenAcorn >(),
+      nodeNumber));
 }
 
 auto GameManager::SetupScripts() -> void {
@@ -495,6 +550,7 @@ auto GameManager::WinImpl() -> void {
 
   ShowLevelSumUp(true, time, 10);  // TODO: get hitted bells value
 }
+
 
 /* Try not to use this shit anymore */
 auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {

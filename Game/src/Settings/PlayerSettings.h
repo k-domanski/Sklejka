@@ -4,6 +4,7 @@
 class PlayerSettings {
 private:
   float _speedMultiplier      = 2.0f;
+  float _bossSpeedMultiplier  = 2.5f;
   float _forwardSpeedBase     = 7.5f;
   float _bossForwardSpeedBase = 8.5f;
   float _bossForwardSpeed     = 8.5f;
@@ -23,6 +24,7 @@ private:
 public:
   PlayerSettings() = default;
   auto SpeedMultiplier() const noexcept -> float;
+  auto BossSpeedMultiplier() const noexcept -> float;
   auto ForwardSpeedBase() const noexcept -> float;
   auto BossForwardSpeedBase() const noexcept -> float;
   auto ControlSpeedBase() const noexcept -> float;

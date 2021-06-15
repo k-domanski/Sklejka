@@ -77,17 +77,20 @@ public:
   static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
   static auto KillPlayer() -> void;
   static auto Win() -> void;
+  static auto CreateSecondWeasel(int nodeNumber) -> void;
   static auto IsGameplayState() -> bool;
   static auto IsGameplayScene() -> bool;
   static auto IsGameplayInitialized() -> bool;
   static auto IsPaused() -> bool;
   static auto SetPaused(bool value) -> bool;
+  static auto Time() -> float;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;
   auto PlayCutscene() -> void;
   auto CreatePlayer() -> void;
   auto CreateBoss() -> void;
+  auto CreateSecondWeaselImpl(int nodeNumber) -> void;
   auto SetupScripts() -> void;
   auto NextFrameTrigger() -> void;
   auto KillPlayerImpl() -> void;

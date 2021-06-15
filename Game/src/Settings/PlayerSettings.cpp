@@ -4,6 +4,10 @@ auto PlayerSettings::SpeedMultiplier() const noexcept -> float {
   return _speedMultiplier;
 }
 
+auto PlayerSettings::BossSpeedMultiplier() const noexcept -> float {
+  return _bossSpeedMultiplier;
+}
+
 auto PlayerSettings::ForwardSpeedBase() const noexcept -> float {
   return _forwardSpeedBase;
 }

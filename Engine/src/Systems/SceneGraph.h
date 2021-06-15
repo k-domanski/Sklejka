@@ -27,6 +27,7 @@ namespace Engine::Systems {
 
     /*Editor Gui*/
     auto GetRootID() -> ECS::EntityID;
+    auto GetRootEntity() -> std::shared_ptr< ECS::Entity >;
     auto GetChildren(const std::shared_ptr< ECS::Entity >& entity)
         -> std::vector< std::shared_ptr< ECS::Entity > >&;
     auto GetParent(const std::shared_ptr< ECS::Entity >& entity) -> std::shared_ptr< ECS::Entity >;

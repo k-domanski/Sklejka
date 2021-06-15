@@ -3,7 +3,6 @@
 #include "GoldenAcorn.h"
 #include "Settings/PlayerSettings.h"
 #include "PlayerRect.h"
-#include "Components/Rigidbody.h"
 
 namespace Engine {
   namespace Components {
@@ -11,10 +10,9 @@ namespace Engine {
   }
 }  // namespace Engine
 
-class Boss : public Engine::Script< Boss > {
+class SecondWeasel : public Engine::Script< SecondWeasel > {
 private:
   std::shared_ptr< Engine::Transform > _transform;
-  std::shared_ptr< Engine::Components::Rigidbody > _rigidbody;
   std::shared_ptr< Engine::NodeSystem > _nodeSystem;
   std::shared_ptr< Engine::Node > _currentNode;
   std::shared_ptr< Engine::Transform > _nodeTransform;
@@ -22,29 +20,22 @@ private:
   std::shared_ptr< PlayerRect > _player;
   std::shared_ptr< GoldenAcorn > _goldenAcorn;
   glm::vec3 _moveVelocity{0};
-  std::shared_ptr< Engine::Components::UIRenderer > _renderer;
-  std::shared_ptr< Engine::Renderer::Image > _health1;
-  std::shared_ptr< Engine::Renderer::Image > _health2;
-  std::shared_ptr< Engine::Renderer::Image > _health3;
+  glm::vec3 _offset{0.f, .1f, .0f};
 
-  float _speedUpDuration = 1.5f;
+  float _getAcornTimer = .2f;
+  float _flightTime    = 1.5f;
+
+  float _speedUpDuration        = 1.5f;
   float _currentSpeedUpDuration = 0.f;
-  int _hits = 0;
-  bool _canMove;
-  bool _bossShowUp;
-  bool _killed = false;
+  int _startNode;
 
   auto SeekTarget(float deltaTime) -> void;
   auto HandleMove(float deltaTime) -> void;
-  auto SpeedUp() -> void;
   auto GetNode() -> std::shared_ptr< Engine::Node >;
 
 public:
-  Boss(std::shared_ptr< PlayerRect > player, std::shared_ptr<GoldenAcorn> goldenAcorn);
+  SecondWeasel(std::shared_ptr< GoldenAcorn > goldenAcorn, int startNode);
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
   auto OnKeyPressed(Engine::Key key) -> void override;
-  auto CanMove() -> bool;
-  auto CanMove(bool value) -> void;
-  auto Hit() -> void;
 };

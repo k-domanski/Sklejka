@@ -82,6 +82,11 @@ namespace Engine::Systems {
   auto SceneGraph::GetRootID() -> ECS::EntityID {
     return _rootID;
   }
+
+  auto SceneGraph::GetRootEntity() -> std::shared_ptr< ECS::Entity > {
+    return _rootEntity;
+  }
+
   auto SceneGraph::GetChildren(const std::shared_ptr< ECS::Entity >& entity)
       -> std::vector< std::shared_ptr< ECS::Entity > >& {
     auto id = entity != nullptr ? entity->GetID() : 0;
