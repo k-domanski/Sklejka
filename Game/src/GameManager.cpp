@@ -366,11 +366,14 @@ auto GameManager::CreateBoss() -> void {
   auto& node_system    = SceneManager::GetCurrentScene()->NodeSystem();
 
   auto boss = entity_manager.CreateEntity();
-  boss->LoadFromJson("./Assets/prefabs/weasel.prefab");
+  boss->LoadFromJson("./Assets/prefabs/boss.prefab");
+  auto weasel = entity_manager.CreateEntity();
+  weasel->LoadFromJson("./Assets/prefabs/weasel.prefab");
   auto boss_jet = entity_manager.CreateEntity();
   boss_jet->LoadFromJson("./Assets/prefabs/jet.prefab");
 
-  scene_graph->SetParent(boss_jet, boss);
+  scene_graph->SetParent(weasel, boss);
+  scene_graph->SetParent(boss_jet, weasel);
 
   auto transform = boss->GetComponent< Transform >();
   /* Skip 1st node */

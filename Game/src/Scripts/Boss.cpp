@@ -57,7 +57,8 @@ auto Boss::OnCreate() -> void {
 }
 
 auto Boss::Update(float deltaTime) -> void {
-  _canMove = _player->CurrentNodeIndex() > 91;
+
+  _canMove = _player->CurrentNodeIndex() > 89;
 
   if (_canMove) {
     if (!_bossShowUp)
