@@ -86,7 +86,7 @@ namespace Engine::Utility {
     }
   };
 
-  typedef TimeLerp< float > LerpFloat;
+  typedef TimeLerp< float > FloatLerp;
 
   class QuatLerp {
   private:

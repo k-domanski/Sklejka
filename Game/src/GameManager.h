@@ -10,6 +10,9 @@
 #include "GUI/MainMenu.h"
 #include "GUI/OptionsMenu.h"
 #include "GUI/PauseMenu.h"
+#include "Utility/Utility.h"
+
+using Engine::Utility::FloatLerp;
 
 BETTER_ENUM(__SceneName, int, MainMenu, Options, Cutscene, LevelSelection, LVL_1);
 typedef __SceneName SceneName;
@@ -55,6 +58,7 @@ private:
   float _speedUpDuration = 0.0f;
   float _speedFactor     = 1.0f;
   int _frameWaitCounter  = 0;
+  FloatLerp _speedLerp;
   /* -=-=-=-=- */
 
   GameManager();
