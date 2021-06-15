@@ -38,7 +38,7 @@ LevelSelection::LevelSelection() {
   auto transform  = entity->AddComponent< Engine::Transform >();
   _lvl1Button     = std::make_shared< Engine::Renderer::Button >();
   _lvl1Button->Background(Engine::AssetManager::GetTexture2D("./textures/UI/but_play.png"));
-  _lvl1Button->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _lvl1Button->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _lvl1Button->SelectedColor(glm::vec4(1.0f));
   _lvl1Button->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   _lvl1Button->OnPress([]() { GameManager::SwitchScene(SceneName::Cutscene); });
@@ -68,7 +68,7 @@ LevelSelection::LevelSelection() {
   _returnButton = std::make_shared< Engine::Renderer::Button >();
   _returnButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/back.png"));
   _returnButton->SelectedColor(glm::vec4(1.0f));
-  _returnButton->Color({0.8f, 0.8f, 0.8f, 1.0f});
+  _returnButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _returnButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   _returnButton->OnPress([]() { GameManager::SwitchScene(SceneName::MainMenu); });
   _returnButton->text("");

@@ -9,8 +9,8 @@ class PauseMenu
 {
 public:
   PauseMenu();
-  auto Show() -> void;
-  auto Hide() -> void;
+  auto Show(bool pause = true) -> void;
+  auto Hide(bool unpause = true) -> void;
   ~PauseMenu();
 private:
   std::shared_ptr< Engine::Renderer::Image > _background;

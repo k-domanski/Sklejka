@@ -40,7 +40,7 @@ auto Boss::OnCreate() -> void {
   _bossShowUp     = false;
 
   auto entity    = EntityManager::GetInstance().CreateEntity();
-  _renderer  = entity->AddComponent< Components::UIRenderer >();
+  _renderer      = entity->AddComponent< Components::UIRenderer >();
   auto transform = entity->AddComponent< Transform >();
   transform->Position({800.0f, 750.0f, 0.0f});
   stbi_set_flip_vertically_on_load(true);
@@ -60,19 +60,24 @@ auto Boss::OnCreate() -> void {
   _health3->Size({56.0f, 50.0f});
   _health3->Offset({-60.0f, 0.0f});
 
+  _renderer->AddElement(_health1);
+  _renderer->AddElement(_health2);
+  _renderer->AddElement(_health3);
 
+  _health1->SetActive(false);
+  _health2->SetActive(false);
+  _health3->SetActive(false);
 }
 
 auto Boss::Update(float deltaTime) -> void {
-
   if (!_killed) {
     _canMove = _player->CurrentNodeIndex() > 89;
 
     if (_canMove) {
       if (!_bossShowUp) {
-        _renderer->AddElement(_health1);
-        _renderer->AddElement(_health2);
-        _renderer->AddElement(_health3);
+        _health1->SetActive(true);
+        _health2->SetActive(true);
+        _health3->SetActive(true);
         _bossShowUp = true;
       }
 
@@ -81,11 +86,9 @@ auto Boss::Update(float deltaTime) -> void {
     }
   }
 
-  if (_currentSpeedUpDuration > 0.f)
-  {
+  if (_currentSpeedUpDuration > 0.f) {
     _currentSpeedUpDuration -= deltaTime;
-    if (_currentSpeedUpDuration <= 0.f)
-    {
+    if (_currentSpeedUpDuration <= 0.f) {
       _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase());
     }
   }
@@ -132,8 +135,8 @@ auto Boss::Hit() -> void {
         ->GetComponent< NativeScript >()
         ->GetScript< SecondWeasel >()
         ->StartCutscene(_currentNode->Index());
-    //Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
-    //GameManager::Win();
+    // Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
+    // GameManager::Win();
   }
 }
 
@@ -163,8 +166,7 @@ auto Boss::HandleMove(float deltaTime) -> void {
                              * deltaTime);
 }
 
-auto Boss::SpeedUp() -> void
-{
+auto Boss::SpeedUp() -> void {
   _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase()
                                     * _playerSettings->BossSpeedMultiplier());
   _currentSpeedUpDuration = _speedUpDuration;

@@ -45,7 +45,7 @@ PauseMenu::PauseMenu() {
     GameManager::SwitchScene(SceneName::MainMenu);
   });
   _mainMenuButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
-  _mainMenuButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _mainMenuButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _mainMenuButton->SelectedColor(glm::vec4(1.0f));
   buttonTransform->Position(glm::vec3(windowSize / 2.0f, 0.0f));
 
@@ -59,7 +59,7 @@ PauseMenu::PauseMenu() {
   _resumeButton->TextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   _resumeButton->OnPress([this]() { this->Hide(); });
   _resumeButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
-  _resumeButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _resumeButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _resumeButton->SelectedColor(glm::vec4(1.0f));
 
   _optionsButton = std::make_shared< Engine::Renderer::Button >();
@@ -72,10 +72,12 @@ PauseMenu::PauseMenu() {
   _optionsButton->TextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   _optionsButton->OnPress([this]() {
     // this->Hide();
-    GameManager::SwitchScene(SceneName::Options);
+    // GameManager::SwitchScene(SceneName::Options);
+    GameManager::ShowOptions([this]() { Show(false); });
+    Hide(false);
   });
   _optionsButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
-  _optionsButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _optionsButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _optionsButton->SelectedColor(glm::vec4(1.0f));
 
   _backroundRenderer->AddElement(_background);
@@ -95,13 +97,15 @@ PauseMenu::PauseMenu() {
   Hide();
 }
 
-auto PauseMenu::Show() -> void {
+auto PauseMenu::Show(bool pause) -> void {
   if (_isVisible)
     return;
-  // GameManager::GetGameSettings()->GameTimeScale(0.0f);
-  _playerTimeScaleBeforePausing = GameManager::GetGameSettings()->GameTimeScale();
-  GameManager::GetGameSettings()->GameTimeScale(0.0f);
-  GameManager::SetPaused(true);
+  if (pause) {
+    // GameManager::GetGameSettings()->GameTimeScale(0.0f);
+    _playerTimeScaleBeforePausing = GameManager::GetGameSettings()->GameTimeScale();
+    GameManager::GetGameSettings()->GameTimeScale(0.0f);
+    GameManager::SetPaused(true);
+  }
 
   _background->SetActive(true);
   _title->SetActive(true);
@@ -120,12 +124,14 @@ auto PauseMenu::Show() -> void {
   Engine::SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
 }
 
-auto PauseMenu::Hide() -> void {
+auto PauseMenu::Hide(bool unpause) -> void {
   if (!_isVisible)
     return;
-  // GameManager::GetGameSettings()->GameTimeScale(1.0f);
-  GameManager::GetGameSettings()->GameTimeScale(_playerTimeScaleBeforePausing);
-  GameManager::SetPaused(false);
+  if (unpause) {
+    // GameManager::GetGameSettings()->GameTimeScale(1.0f);
+    GameManager::GetGameSettings()->GameTimeScale(_playerTimeScaleBeforePausing);
+    GameManager::SetPaused(false);
+  }
 
   _background->SetActive(false);
   _title->SetActive(false);

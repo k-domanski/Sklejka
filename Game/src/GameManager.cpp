@@ -88,7 +88,7 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
       break;
     }
     case SceneName::Options: {
-      Engine::SceneManager::OpenScene(_instance->_options->Scene()->GetID());
+      // Engine::SceneManager::OpenScene(_instance->_options->Scene()->GetID());
       break;
     }
   }
@@ -142,10 +142,19 @@ auto GameManager::PlayerSpeedUp() -> void {
     _instance->_speedLerp.Set(current_speed, target_speed, lerp_time * ratio);
     _instance->_speedUpDuration = _instance->GetGameSettings()->PlayerSpeedUpDuration();
   }
+  _instance->_hittedBells++;
 }
 
 auto GameManager::ShowLevelSumUp(bool win, float time, int bells) -> void {
   _instance->_endLevelMenu->Show(win, time, bells);
+}
+
+auto GameManager::ShowOptions(std::function< void() > returnFunc) -> void {
+  _instance->_options->Show(returnFunc);
+}
+
+auto GameManager::HideOptions() -> void {
+  _instance->_options->Hide();
 }
 
 auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
@@ -396,6 +405,7 @@ auto GameManager::CreatePlayer() -> void {
   SceneManager::GetCurrentScene()->CameraSystem()->FindMainCamera();
   SetupScripts();
   /* -=-=-=-=- */
+  _instance->_hittedBells = 0;
 }
 
 auto GameManager::CreateBoss() -> void {
@@ -577,7 +587,7 @@ auto GameManager::WinImpl() -> void {
   auto time   = timer->GetTime();
   timer->CanCount(false);
 
-  ShowLevelSumUp(true, time, 10);  // TODO: get hitted bells value
+  ShowLevelSumUp(true, time, _instance->_hittedBells);
 }
 
 /* Try not to use this shit anymore */

@@ -21,6 +21,7 @@ void OptionsMenu::OpenedFromScene(size_t opened_from_scene, int name) {
 }
 
 OptionsMenu::OptionsMenu() {
+  _isVisible           = false;
   _openedFromScene     = 696969;
   _openedFromSceneName = SceneName::MainMenu;
   _scene               = std::make_shared< Engine::Scene >(777777);
@@ -33,34 +34,19 @@ OptionsMenu::OptionsMenu() {
 
   stbi_set_flip_vertically_on_load(true);
 
-  auto backgroundEntity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
-  auto backgroundUIRenderer = backgroundEntity->AddComponent< Engine::Components::UIRenderer >();
-  auto backgroundTransform  = backgroundEntity->AddComponent< Engine::Transform >();
-  _background               = std::make_shared< Engine::Renderer::Image >();
-  _background->Size(glm::vec2(window_size));
-  _background->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/tlo_skaly.png"));
-  backgroundTransform->Position(glm::vec3(window_size * 0.5f, 0.0f));
-  backgroundUIRenderer->AddElement(_background);
+  _background = std::make_shared< Engine::Renderer::Image >();
+  _background->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/white_background.png"));
+  _background->Size({500.0f, 600.0f});
+  _background->Color({1.0f, 1.0f, 1.0f, 0.6f});
+  _background->Offset({0.0f, -22.0f});
   _title = std::make_shared< Engine::Renderer::Text >();
   _title->Size(1);
   _title->SetText("");
   _title->Offset(glm::vec2(0.0f, 300.0f));
-  backgroundUIRenderer->AddElement(_title);
 
-  auto titleEntity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
-  auto titleUIRenderer = titleEntity->AddComponent< Engine::Components::UIRenderer >();
-  auto titleTransform  = titleEntity->AddComponent< Engine::Transform >();
-  _titleImage          = std::make_shared< Engine::Renderer::Image >();
+  _titleImage = std::make_shared< Engine::Renderer::Image >();
   _titleImage->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/title_options.png"));
   _titleImage->Size({419.0f, 74.0f});
-  titleUIRenderer->AddElement(_titleImage);
-  titleTransform->Position({window_size.x * 0.5f, window_size.y * 0.75f, 0.0f});
-
-  auto buttonsEntity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
-  auto buttonsUIRenderer = buttonsEntity->AddComponent< Engine::Components::UIRenderer >();
-  auto buttonsTransform  = buttonsEntity->AddComponent< Engine::Transform >();
-
-  buttonsTransform->Position(glm::vec3(window_size * 0.5f, 0.0f));
 
   _musicData.currentValue = 10.0f;
   _musicData.maxValue     = 100.0f;
@@ -87,7 +73,7 @@ OptionsMenu::OptionsMenu() {
   _musicData.downButton->Background(
       Engine::AssetManager::GetTexture2D("./textures/UI/but_minus.png"));
   _musicData.downButton->Size(glm::vec2(66.0f, 64.0f));
-  _musicData.downButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _musicData.downButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _musicData.downButton->SelectedColor(glm::vec4(1.0f));
   _musicData.downButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _musicData.downButton->Offset(glm::vec2(120.0f, 100.0f));
@@ -105,7 +91,7 @@ OptionsMenu::OptionsMenu() {
   _musicData.upButton = std::make_shared< Engine::Renderer::Button >();
   _musicData.upButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/but_plus.png"));
   _musicData.upButton->Size(glm::vec2(66.0f, 64.0f));
-  _musicData.upButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _musicData.upButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _musicData.upButton->SelectedColor(glm::vec4(1.0f));
   _musicData.upButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _musicData.upButton->Offset(glm::vec2(190.0f, 100.0f));
@@ -146,7 +132,7 @@ OptionsMenu::OptionsMenu() {
   _soundData.downButton->Background(
       Engine::AssetManager::GetTexture2D("./textures/UI/but_minus.png"));
   _soundData.downButton->Size(glm::vec2(66.0f, 64.0f));
-  _soundData.downButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _soundData.downButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _soundData.downButton->SelectedColor(glm::vec4(1.0f));
   _soundData.downButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _soundData.downButton->Offset(glm::vec2(120.0f, 25.0f));
@@ -164,7 +150,7 @@ OptionsMenu::OptionsMenu() {
   _soundData.upButton = std::make_shared< Engine::Renderer::Button >();
   _soundData.upButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/but_plus.png"));
   _soundData.upButton->Size(glm::vec2(66.0f, 64.0f));
-  _soundData.upButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _soundData.upButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _soundData.upButton->SelectedColor(glm::vec4(1.0f));
   _soundData.upButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _soundData.upButton->Offset(glm::vec2(190.0f, 25.0f));
@@ -206,7 +192,7 @@ OptionsMenu::OptionsMenu() {
   _brightnessData.downButton->Background(
       Engine::AssetManager::GetTexture2D("./textures/UI/but_minus.png"));
   _brightnessData.downButton->Size(glm::vec2(66.0f, 64.0f));
-  _brightnessData.downButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _brightnessData.downButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _brightnessData.downButton->SelectedColor(glm::vec4(1.0f));
   _brightnessData.downButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _brightnessData.downButton->Offset(glm::vec2(120.0f, -50.0f));
@@ -226,7 +212,7 @@ OptionsMenu::OptionsMenu() {
   _brightnessData.upButton->Background(
       Engine::AssetManager::GetTexture2D("./textures/UI/but_plus.png"));
   _brightnessData.upButton->Size(glm::vec2(66.0f, 64.0f));
-  _brightnessData.upButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _brightnessData.upButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _brightnessData.upButton->SelectedColor(glm::vec4(1.0f));
   _brightnessData.upButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _brightnessData.upButton->Offset(glm::vec2(190.0f, -50.0f));
@@ -269,7 +255,7 @@ OptionsMenu::OptionsMenu() {
   _contrastData.downButton->Background(
       Engine::AssetManager::GetTexture2D("./textures/UI/but_minus.png"));
   _contrastData.downButton->Size(glm::vec2(66.0f, 64.0f));
-  _contrastData.downButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _contrastData.downButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _contrastData.downButton->SelectedColor(glm::vec4(1.0f));
   _contrastData.downButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _contrastData.downButton->Offset(glm::vec2(120.0f, -125.0f));
@@ -289,7 +275,7 @@ OptionsMenu::OptionsMenu() {
   _contrastData.upButton->Background(
       Engine::AssetManager::GetTexture2D("./textures/UI/but_plus.png"));
   _contrastData.upButton->Size(glm::vec2(66.0f, 64.0f));
-  _contrastData.upButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _contrastData.upButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _contrastData.upButton->SelectedColor(glm::vec4(1.0f));
   _contrastData.upButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _contrastData.upButton->Offset(glm::vec2(190.0f, -125.0f));
@@ -331,7 +317,7 @@ OptionsMenu::OptionsMenu() {
   _gammaData.downButton->Background(
       Engine::AssetManager::GetTexture2D("./textures/UI/but_minus.png"));
   _gammaData.downButton->Size(glm::vec2(66.0f, 64.0f));
-  _gammaData.downButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _gammaData.downButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _gammaData.downButton->SelectedColor(glm::vec4(1.0f));
   _gammaData.downButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _gammaData.downButton->Offset(glm::vec2(120.0f, -200.0f));
@@ -350,7 +336,7 @@ OptionsMenu::OptionsMenu() {
   _gammaData.upButton = std::make_shared< Engine::Renderer::Button >();
   _gammaData.upButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/but_plus.png"));
   _gammaData.upButton->Size(glm::vec2(66.0f, 64.0f));
-  _gammaData.upButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _gammaData.upButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _gammaData.upButton->SelectedColor(glm::vec4(1.0f));
   _gammaData.upButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _gammaData.upButton->Offset(glm::vec2(190.0f, -200.0f));
@@ -370,7 +356,7 @@ OptionsMenu::OptionsMenu() {
   _returnButton = std::make_shared< Engine::Renderer::Button >();
   _returnButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/back.png"));
   _returnButton->Size(glm::vec2(230.0f, 65.0f));
-  _returnButton->Color(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
+  _returnButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
   _returnButton->SelectedColor(glm::vec4(1.0f));
   _returnButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _returnButton->Offset(glm::vec2(0.0f, -275.0f));
@@ -379,6 +365,63 @@ OptionsMenu::OptionsMenu() {
   _returnButton->TextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   _returnButton->TextOffset(glm::vec2(-15.0f, -15.0f));
   _returnButton->OnPress([this]() { GameManager::SwitchScene(SceneName::MainMenu); });
+
+  stbi_set_flip_vertically_on_load(false);
+
+  // auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
+  // gui->OnWindowResize(Engine::Window::Get().GetScreenSize());
+
+  _scene->OnWindowResize(Engine::Window::Get().GetScreenSize());
+
+  if (current_scene != nullptr) {
+    Engine::SceneManager::OpenScene(current_scene->GetID());
+  }
+}
+
+auto OptionsMenu::Show(std::function< void() > returnFunc) -> void {
+  if (_isVisible)
+      return;
+  AddAllElements();
+  _returnButton->OnPress([this, returnFunc]() {
+    returnFunc();
+    Hide();
+  });
+  _isVisible = true;
+}
+
+auto OptionsMenu::Hide() -> void {
+  if (!_isVisible)
+      return;
+  RemoveAllElements();
+  _isVisible = false;
+}
+
+auto OptionsMenu::Scene() -> std::shared_ptr< Engine::Scene > {
+  return _scene;
+}
+
+auto OptionsMenu::AddAllElements() -> void {
+  auto window_size          = Engine::Window::Get().GetScreenSize();  // glm::vec2(1600.0f, 900.0f);
+  _backgroundEntity         = Engine::ECS::EntityManager::GetInstance().CreateEntity();
+  auto backgroundUIRenderer = _backgroundEntity->AddComponent< Engine::Components::UIRenderer >();
+  auto backgroundTransform  = _backgroundEntity->AddComponent< Engine::Transform >();
+
+  backgroundTransform->Position(glm::vec3(window_size * 0.5f, 0.0f));
+  backgroundUIRenderer->AddElement(_background);
+  backgroundUIRenderer->AddElement(_title);
+
+  _titleEntity         = Engine::ECS::EntityManager::GetInstance().CreateEntity();
+  auto titleUIRenderer = _titleEntity->AddComponent< Engine::Components::UIRenderer >();
+  auto titleTransform  = _titleEntity->AddComponent< Engine::Transform >();
+
+  titleUIRenderer->AddElement(_titleImage);
+  titleTransform->Position({window_size.x * 0.5f, window_size.y * 0.75f, 0.0f});
+
+  _buttonsEntity         = Engine::ECS::EntityManager::GetInstance().CreateEntity();
+  auto buttonsUIRenderer = _buttonsEntity->AddComponent< Engine::Components::UIRenderer >();
+  auto buttonsTransform  = _buttonsEntity->AddComponent< Engine::Transform >();
+
+  buttonsTransform->Position(glm::vec3(window_size * 0.5f, 0.0f));
 
   buttonsUIRenderer->AddElement(_musicData.downButton);
   buttonsUIRenderer->AddElement(_musicData.upButton);
@@ -413,19 +456,10 @@ OptionsMenu::OptionsMenu() {
   buttonsUIRenderer->AddButton(_gammaData.downButton);
   buttonsUIRenderer->AddButton(_gammaData.upButton);
   buttonsUIRenderer->AddButton(_returnButton);
-
-  stbi_set_flip_vertically_on_load(false);
-
-  //auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
-  //gui->OnWindowResize(Engine::Window::Get().GetScreenSize());
-
-  _scene->OnWindowResize(Engine::Window::Get().GetScreenSize());
-
-  if (current_scene != nullptr) {
-    Engine::SceneManager::OpenScene(current_scene->GetID());
-  }
 }
 
-auto OptionsMenu::Scene() -> std::shared_ptr< Engine::Scene > {
-  return _scene;
+auto OptionsMenu::RemoveAllElements() -> void {
+  Engine::ECS::EntityManager::GetInstance().RemoveEntity(_backgroundEntity);
+  Engine::ECS::EntityManager::GetInstance().RemoveEntity(_buttonsEntity);
+  Engine::ECS::EntityManager::GetInstance().RemoveEntity(_titleEntity);
 }
