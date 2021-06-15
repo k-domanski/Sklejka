@@ -220,6 +220,7 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
           _instance->CreatePlayer();
           _instance->CreateBoss();
           _instance->CreateSecondWeasel();
+          SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
           if (IsGameplayScene()) {
             FindBells();
           }
@@ -543,7 +544,7 @@ auto GameManager::SetupScripts() -> void {
   // scale UIs
   /*auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
   gui->OnWindowResize(Engine::Window::Get().GetScreenSize());*/
-  SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
+  //SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
 }
 
 auto GameManager::NextFrameTrigger() -> void {
