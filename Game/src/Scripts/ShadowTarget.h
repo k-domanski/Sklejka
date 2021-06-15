@@ -9,7 +9,7 @@
 #include "Systems/Renderer.h"
 #include <Utility/Utility.h>
 
-using Engine::Utility::LerpFloat;
+using Engine::Utility::FloatLerp;
 
 struct BarData {
   std::shared_ptr< Engine::Transform > transform;
@@ -25,22 +25,18 @@ public:
   auto OnKeyPressed(Engine::Key key) -> void override;
   auto SlowTime() -> void;
   auto GetTarget() -> std::shared_ptr< Engine::ECS::Entity >;
-  auto ShadowRate() -> float;
-  auto ShadowRate(float shadowRate) -> void;
-  auto SamplesPassed(GLint samplesPassed) -> void;
   auto SetTimeSlowed(bool value) -> void;
   auto IsInShadow() -> bool;
 
 private:
   std::shared_ptr< Engine::ECS::Entity > _target;
-  float _shadowRate;
   float _maxAmount;     /* 1.0f */
   float _currentAmount; /* In range [0.0f, 1.0f] */
   bool _timeSlowed;
   GLint _maxSamplesPassed;
   std::shared_ptr< BarData > _bar;
   std::shared_ptr< Engine::Systems::Renderer > _rendererSystem;
-  LerpFloat _gameTimeLerp;
-  LerpFloat _playerTimeLerp;
+  FloatLerp _gameTimeLerp;
+  FloatLerp _playerTimeLerp;
   float _lerpTime;
 };
