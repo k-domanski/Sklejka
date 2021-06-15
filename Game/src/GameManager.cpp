@@ -91,10 +91,12 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
       Engine::SceneManager::OpenScene(_instance->_options->Scene()->GetID());
       break;
     }
+  }
 
-      if (IsGameplayScene()) {
-        FindBells();
-      }
+  if (IsGameplayScene()) {
+    FindBells();
+  } else {
+    SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
   }
 }
 
@@ -158,8 +160,7 @@ auto GameManager::Win() -> void {
   _instance->WinImpl();
 }
 
-auto GameManager::CreateSecondWeasel() -> void
-{
+auto GameManager::CreateSecondWeasel() -> void {
   _instance->CreateSecondWeaselImpl();
 }
 
@@ -188,8 +189,7 @@ auto GameManager::SetPaused(bool value) -> bool {
   return _instance->_isPaused = value;
 }
 
-auto GameManager::Time() -> float
-{
+auto GameManager::Time() -> float {
   auto camera = SceneManager::GetCurrentScene()->CameraSystem()->MainCamera();
   auto timer  = camera->GetEntity()->GetComponent< NativeScript >()->GetScript< FlightTimer >();
   return timer->GetTime();
@@ -435,7 +435,7 @@ auto GameManager::CreateBoss() -> void {
   auto boss_native_script = boss->AddComponent< NativeScript >();
   boss_native_script->Attach(std::make_shared< Boss >(
       _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >(),
-      golden_acorn_native_script->GetScript<GoldenAcorn>()));
+      golden_acorn_native_script->GetScript< GoldenAcorn >()));
 }
 
 auto GameManager::CreateSecondWeaselImpl() -> void {
@@ -451,7 +451,6 @@ auto GameManager::CreateSecondWeaselImpl() -> void {
   auto boss_jet = entity_manager.CreateEntity();
   boss_jet->LoadFromJson("./Assets/prefabs/jet.prefab", true);
 
-
   scene_graph->SetParent(weasel, boss);
   scene_graph->SetParent(boss_jet, weasel);
 
@@ -465,7 +464,7 @@ auto GameManager::CreateSecondWeaselImpl() -> void {
                     ->GetEntity()
                     ->GetComponent< Transform >()
                     ->WorldPosition();
-  //transform->Position(n1_pos);
+  // transform->Position(n1_pos);
   transform->Position(glm::vec3(0.f, 0.f, 0.f));
   transform->Forward(glm::normalize(n2_pos - n1_pos));
 
@@ -530,6 +529,11 @@ auto GameManager::SetupScripts() -> void {
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();
   // scene->RenderSystem()->SetShadowChecker(shadowTarget);
+
+  // scale UIs
+  /*auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
+  gui->OnWindowResize(Engine::Window::Get().GetScreenSize());*/
+  SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
 }
 
 auto GameManager::NextFrameTrigger() -> void {
@@ -575,7 +579,6 @@ auto GameManager::WinImpl() -> void {
 
   ShowLevelSumUp(true, time, 10);  // TODO: get hitted bells value
 }
-
 
 /* Try not to use this shit anymore */
 auto GameManager::SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void {

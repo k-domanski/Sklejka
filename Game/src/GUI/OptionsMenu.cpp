@@ -21,14 +21,15 @@ void OptionsMenu::OpenedFromScene(size_t opened_from_scene, int name) {
 }
 
 OptionsMenu::OptionsMenu() {
-  _openedFromScene = 696969;
+  _openedFromScene     = 696969;
   _openedFromSceneName = SceneName::MainMenu;
-  _scene             = std::make_shared< Engine::Scene >(777777);
-  auto current_scene = Engine::SceneManager::GetCurrentScene();
+  _scene               = std::make_shared< Engine::Scene >(777777);
+  auto current_scene   = Engine::SceneManager::GetCurrentScene();
   Engine::SceneManager::AddScene(_scene);
   Engine::SceneManager::OpenScene(_scene->GetID());
 
-  auto window_size = Engine::Window::Get().GetScreenSize();
+  auto window_size =
+      glm::vec2(1600.0f, 900.0f);  // reference size  // Engine::Window::Get().GetScreenSize();
 
   stbi_set_flip_vertically_on_load(true);
 
@@ -377,9 +378,7 @@ OptionsMenu::OptionsMenu() {
   _returnButton->text("");
   _returnButton->TextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   _returnButton->TextOffset(glm::vec2(-15.0f, -15.0f));
-  _returnButton->OnPress([this]() {
-    GameManager::SwitchScene(SceneName::MainMenu);
-  });
+  _returnButton->OnPress([this]() { GameManager::SwitchScene(SceneName::MainMenu); });
 
   buttonsUIRenderer->AddElement(_musicData.downButton);
   buttonsUIRenderer->AddElement(_musicData.upButton);
@@ -416,6 +415,11 @@ OptionsMenu::OptionsMenu() {
   buttonsUIRenderer->AddButton(_returnButton);
 
   stbi_set_flip_vertically_on_load(false);
+
+  //auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
+  //gui->OnWindowResize(Engine::Window::Get().GetScreenSize());
+
+  _scene->OnWindowResize(Engine::Window::Get().GetScreenSize());
 
   if (current_scene != nullptr) {
     Engine::SceneManager::OpenScene(current_scene->GetID());

@@ -10,7 +10,7 @@ PauseMenu::PauseMenu() {
   _backroundRenderer = entity->AddComponent< Engine::Components::UIRenderer >();
   auto transform     = entity->AddComponent< Engine::Transform >();
 
-  auto windowSize = Engine::Window::Get().GetScreenSize();
+  auto windowSize = glm::vec2(1600.0f, 900.0f);  // Engine::Window::Get().GetScreenSize();
   stbi_set_flip_vertically_on_load(true);
 
   _background = std::make_shared< Engine::Renderer::Image >();
@@ -91,6 +91,7 @@ PauseMenu::PauseMenu() {
   _buttonRenderer->AddButton(_mainMenuButton);
   _isVisible = true;
   stbi_set_flip_vertically_on_load(false);
+
   Hide();
 }
 
@@ -116,6 +117,7 @@ auto PauseMenu::Show() -> void {
   _mainMenuButtonRenderer->AddElement(_mainMenuButton);
   _mainMenuButtonRenderer->AddButton(_mainMenuButton);*/
   _isVisible = true;
+  Engine::SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
 }
 
 auto PauseMenu::Hide() -> void {

@@ -21,12 +21,16 @@ void Engine::Renderer::Text::Color(const glm::vec4& color) {
   _color = color;
 }
 
-float Engine::Renderer::Text::Size() const {
+glm::vec2 Engine::Renderer::Text::Size() const {
   return _size;
 }
 
-void Engine::Renderer::Text::Size(float size) {
+void Engine::Renderer::Text::Size(glm::vec2 size) {
   _size = size;
+}
+
+void Engine::Renderer::Text::Size(float size) {
+  _size = glm::vec2(size);
 }
 
 glm::vec2 Engine::Renderer::Text::Offset() {
@@ -41,7 +45,7 @@ Engine::Renderer::Text::Text() {
   _characters = AssetManager::GetCharacters("./fonts/finger-paint/FingerPaint-Regular.ttf", 48);
   _shader     = AssetManager::GetShader("./shaders/text.glsl");
 
-  _size   = 48.0f;
+  _size   = {1.0f, 1.0f};
   _color  = glm::vec4(1.0f);
   _text   = "New Text";
   _offset = glm::vec2(0.0f);
@@ -103,7 +107,12 @@ auto Engine::Renderer::Text::Draw(glm::mat4 model, glm::mat4 proj) -> void {
   RenderText(_offset.x, _offset.y, _size);
 }
 
-auto Engine::Renderer::Text::RenderText(float x, float y, float scale) -> void {
+auto Engine::Renderer::Text::OnWindowResize(glm::vec2 ratio) -> void {
+  _size *= ratio;
+  _offset *= ratio;
+}
+
+auto Engine::Renderer::Text::RenderText(float x, float y, glm::vec2 scale) -> void {
   //_shader->Use();
   // glUniform3f(glGetUniformLocation(_shader->GetHandle(), "textColor"), color.x, color.y,
   // color.z);
@@ -117,19 +126,19 @@ auto Engine::Renderer::Text::RenderText(float x, float y, float scale) -> void {
   // iterate through all characters
   std::string::const_iterator c;
   auto& characters = *_characters;
-  for (c = _text.begin(); c != _text.end(); c++) {;
+  for (c = _text.begin(); c != _text.end(); c++) {
     if (*c == (char)10) {
       x = startXPos;
-      y -= _newLineOffset * scale;
+      y -= _newLineOffset * scale.y;
       continue;
     }
     Utility::Character ch = characters[*c];
 
-    float xpos = x + ch.Bearing.x * scale;
-    float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+    float xpos = x + ch.Bearing.x * scale.x;
+    float ypos = y - (ch.Size.y - ch.Bearing.y) * scale.y;
 
-    float w = ch.Size.x * scale;
-    float h = ch.Size.y * scale;
+    float w = ch.Size.x * scale.x;
+    float h = ch.Size.y * scale.y;
     // update VBO for each character
     float vertices[6][4] = {{xpos, ypos + h, 0.0f, 0.0f},    {xpos, ypos, 0.0f, 1.0f},
                             {xpos + w, ypos, 1.0f, 1.0f},
@@ -148,7 +157,7 @@ auto Engine::Renderer::Text::RenderText(float x, float y, float scale) -> void {
     // render quad
     glDrawArrays(GL_TRIANGLES, 0, 6);
     // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-    x += (ch.Advance >> 6) * scale;  // bitshift by 6 to get value in pixels (2^6 = 64)
+    x += (ch.Advance >> 6) * scale.x;  // bitshift by 6 to get value in pixels (2^6 = 64)
   }
   // glBindVertexArray(0);
   // glBindTexture(GL_TEXTURE_2D, 0);

@@ -77,6 +77,12 @@ auto Engine::Components::UIRenderer::TriggerOnPressed() -> void {
     button->TriggerOnPress();
 }
 
+auto Engine::Components::UIRenderer::OnWindowResize(glm::vec2 ratio) -> void{
+  for (auto element : _elements) {
+    element->OnWindowResize(ratio);
+  }
+}
+
 Engine::Components::UIRenderer::UIRenderer()
     : Component("UIRenderer", ECS::GetComponentTypeID< UIRenderer >()) {
   _currentlySelectedButton = 0;

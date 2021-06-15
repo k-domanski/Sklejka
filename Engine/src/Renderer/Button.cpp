@@ -133,6 +133,13 @@ auto Engine::Renderer::Button::OnReleaseHandle(glm::vec2 position) -> void {
   }
 }
 
+auto Engine::Renderer::Button::OnWindowResize(glm::vec2 ratio) -> void {
+  _background.OnWindowResize(ratio);
+  _text.OnWindowResize(ratio);
+  _handleSize *= ratio;
+  _offset *= ratio;
+}
+
 glm::vec4 Engine::Renderer::Button::SelectedColor() const {
   return _selectedColor;
 }

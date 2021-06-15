@@ -13,8 +13,9 @@ namespace Engine::Renderer {
     void SetText(const std::string& text);
     glm::vec4 Color() const;
     void Color(const glm::vec4& color);
-    float Size() const;
     void Size(float size);
+    glm::vec2 Size() const;
+    void Size(glm::vec2 size);
     glm::vec2 Offset();
     void Offset(glm::vec2 offset);
     Text();
@@ -23,12 +24,13 @@ namespace Engine::Renderer {
     auto operator=(Text& other) = delete;
     //~Text() = default;
     auto Draw(glm::mat4 model, glm::mat4 proj) -> void override;
+    auto OnWindowResize(glm::vec2 ratio) -> void override;
 
   private:
     std::shared_ptr< GL::Shader > _shader;
     std::string _text;
     glm::vec4 _color;
-    float _size;
+    glm::vec2 _size;
     glm::vec2 _offset;
     float _newLineOffset{50};
     std::shared_ptr< std::map< char, Utility::Character > > _characters;
@@ -37,8 +39,7 @@ namespace Engine::Renderer {
     /*unsigned int VAO;
     unsigned int VBO;*/
 
-    auto RenderText(float x, float y,
-                    float scale) -> void;
+    auto RenderText(float x, float y, glm::vec2 scale) -> void;
   };
 
 }  // namespace Engine::Renderer

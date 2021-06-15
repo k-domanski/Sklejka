@@ -15,6 +15,7 @@ Engine::Systems::GUISystem::GUISystem(): System() {
   AddSignature< Engine::Transform >();
 
   auto size          = Engine::Window::Get().GetScreenSize();
+  _oldWindowSize     = glm::vec2(1600.0f, 900.0f);//refered size   // size;
   _camProj           = glm::ortho(0.0f, size.x, 0.0f, size.y, -1.0f, 0.0f);
   _breakChecking     = false;
   _useMouse          = true;
@@ -35,7 +36,7 @@ void Engine::Systems::GUISystem::Update(float deltaTime) {
   GL::Context::EnableBlending(true);
   GL::Context::SetBlendFunction(GL::BlendFunc::SrcAlpha, GL::BlendFunc::OneMinusSrcAlpha);
   GL::Context::BindFramebuffer(GL::FramebufferTarget::ReadWrite, 0);
-  //GL::Context::ClearBuffers(GL::BufferBit::Color);
+  // GL::Context::ClearBuffers(GL::BufferBit::Color);
 
   for (auto entityID : _entities) {
     auto transform = Engine::ECS::EntityManager::GetComponent< Engine::Transform >(entityID);
@@ -90,7 +91,15 @@ void Engine::Systems::GUISystem::Update(float deltaTime) {
 }
 
 auto Engine::Systems::GUISystem::OnWindowResize(glm::vec2 windowSize) -> void {
-  _camProj = glm::ortho(0.0f, windowSize.x, 0.0f, windowSize.y, -1.0f, 0.0f);
+  _camProj   = glm::ortho(0.0f, windowSize.x, 0.0f, windowSize.y, -1.0f, 0.0f);
+  auto ratio = windowSize / _oldWindowSize;
+  for (auto entity : _entities) {
+    auto renderer  = entity->GetComponent< Components::UIRenderer >();
+    auto transform = entity->GetComponent< Transform >();
+    renderer->OnWindowResize(ratio);
+    transform->Position(transform->Position() * glm::vec3(ratio, 0.0f));
+  }
+  _oldWindowSize = windowSize;
 }
 
 auto Engine::Systems::GUISystem::HandleMouseRelease(glm::vec2 mousePosition) -> void {

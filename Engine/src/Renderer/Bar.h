@@ -35,6 +35,7 @@ namespace Engine::Renderer {
     Bar();
     ~Bar() = default;
     auto Draw(glm::mat4 model, glm::mat4 proj) -> void override;
+    auto OnWindowResize(glm::vec2 ratio) -> void override;
 
   private:
     Image _background;

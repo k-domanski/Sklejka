@@ -18,6 +18,7 @@ namespace Engine::Components {
     auto SelectButton(int buttonNR) -> void;
     auto DeselectButton() -> void;
     auto TriggerOnPressed() -> void;
+    auto OnWindowResize(glm::vec2 ratio) -> void;
 
   private:
     std::vector< std::shared_ptr< Engine::Renderer::UIElement > > _elements;

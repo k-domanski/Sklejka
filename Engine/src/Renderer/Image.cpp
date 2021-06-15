@@ -97,6 +97,11 @@ auto Engine::Renderer::Image::Draw(glm::mat4 model, glm::mat4 proj) -> void {
   glDrawElements(_mesh->GetPrimitive(), _mesh->ElementCount(), GL_UNSIGNED_INT, NULL);
 }
 
+auto Engine::Renderer::Image::OnWindowResize(glm::vec2 ratio) -> void {
+  _size *= ratio;
+  _offset *= ratio;
+}
+
 // auto Engine::Renderer::Image::Draw() -> void {
 //  //_shader->Use();
 //  auto mesh = Mesh::GetPrimitive(MeshPrimitive::Plane);

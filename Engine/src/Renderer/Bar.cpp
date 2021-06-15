@@ -124,7 +124,7 @@ Engine::Renderer::Bar::Bar(): UIElement() {
   _background.Size(_size);
   _fillArea.Size(_size - _padding);
   _fillArea.Ratio(_fillRatio);
-  _offset = glm::vec2(0.0f);
+  _offset         = glm::vec2(0.0f);
   _fillAreaOffset = glm::vec2(0.0f);
 }
 
@@ -133,4 +133,13 @@ auto Engine::Renderer::Bar::Draw(glm::mat4 model, glm::mat4 proj) -> void {
   _background.Draw(model, proj);
   model = glm::translate(model, glm::vec3(_fillAreaOffset, 0.0f));
   _fillArea.Draw(model, proj);
+}
+
+auto Engine::Renderer::Bar::OnWindowResize(glm::vec2 ratio) -> void {
+  _background.OnWindowResize(ratio);
+  _fillArea.OnWindowResize(ratio);
+  _padding *= ratio;
+  _size *= ratio;
+  _offset *= ratio;
+  _fillAreaOffset *= ratio;
 }

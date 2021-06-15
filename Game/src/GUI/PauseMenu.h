@@ -1,8 +1,6 @@
 #pragma once
 #include <memory>
 
-
-
 #include "Components/UIRenderer.h"
 #include "Renderer/Button.h"
 #include "Renderer/Image.h"

@@ -11,7 +11,7 @@ MainMenu::MainMenu() {
   Engine::SceneManager::AddScene(_scene);
   Engine::SceneManager::OpenScene(_scene->GetID());
 
-  auto window_size = Engine::Window::Get().GetScreenSize();
+  auto window_size = glm::vec2(1600.0f, 900.0f);  // Engine::Window::Get().GetScreenSize();
 
   auto entity3     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   auto uiRenderer3 = entity3->AddComponent< Engine::Components::UIRenderer >();
@@ -90,6 +90,9 @@ MainMenu::MainMenu() {
   uiRenderer->AddElement(_creditsButton);
   uiRenderer->AddButton(_exitButton);
   uiRenderer->AddElement(_exitButton);
+
+  auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
+  gui->OnWindowResize(Engine::Window::Get().GetScreenSize());
 
   if (current_scene != nullptr) {
     Engine::SceneManager::OpenScene(current_scene->GetID());

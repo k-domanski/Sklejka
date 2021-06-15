@@ -14,7 +14,7 @@ EndLevelMenu::EndLevelMenu() {
   _imageRenderer = entity->AddComponent< Engine::Components::UIRenderer >();
   auto transform = entity->AddComponent< Engine::Transform >();
 
-  auto windowSize = Engine::Window::Get().GetScreenSize();
+  auto windowSize = glm::vec2(1600.0f, 900.0f);  // Engine::Window::Get().GetScreenSize();
 
   stbi_set_flip_vertically_on_load(true);
 
@@ -173,6 +173,8 @@ auto EndLevelMenu::Show(bool win, float time, int bells) -> void {
 
   _visible = true;
   _win     = win;
+  auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
+  gui->OnWindowResize(Engine::Window::Get().GetScreenSize());
 }
 
 auto EndLevelMenu::Hide() -> void {

@@ -15,7 +15,7 @@ LevelSelection::LevelSelection() {
   Engine::SceneManager::AddScene(_scene);
   Engine::SceneManager::OpenScene(_scene->GetID());
 
-  auto window_size = Engine::Window::Get().GetScreenSize();
+  auto window_size = glm::vec2(1600.0f, 900.0f);  // Engine::Window::Get().GetScreenSize();
   stbi_set_flip_vertically_on_load(true);
 
   auto backgroundEntity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
@@ -81,6 +81,9 @@ LevelSelection::LevelSelection() {
   uiRenderer->AddElement(_returnButton);
 
   stbi_set_flip_vertically_on_load(false);
+
+  auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
+  gui->OnWindowResize(Engine::Window::Get().GetScreenSize());
 
   if (current_scene != nullptr) {
     Engine::SceneManager::OpenScene(current_scene->GetID());

@@ -30,7 +30,7 @@ auto FlightTimer::OnCreate() -> void {
 
 auto FlightTimer::Update(float deltaTime) -> void {
   if (_canCount) {
-    _time += deltaTime * GameManager::GetGameSettings()->PlayerTimeScale();
+    _time += deltaTime * GameManager::GetGameSettings()->GameTimeScale();
 
     _stream << std::fixed << std::setprecision(_precision) << _time;
     _text->SetText(_stream.str());

@@ -40,6 +40,7 @@ namespace Engine::Renderer {
     auto Draw(glm::mat4 model, glm::mat4 proj) -> void override;
     auto OnPressHandle(glm::vec2 position) -> void;
     auto OnReleaseHandle(glm::vec2 position) -> void;
+    auto OnWindowResize(glm::vec2 ratio) -> void override;
 
   private:
     Image _background;

@@ -18,6 +18,7 @@ namespace Engine::Systems {
     std::shared_ptr< Engine::GL::Shader > _textShader;
     std::shared_ptr< Engine::GL::Shader > _imageShader;
     glm::mat4 _camProj;
+    glm::vec2 _oldWindowSize;
     bool _breakChecking;
     bool _useMouse;
     bool _DPADUpLastFrame;

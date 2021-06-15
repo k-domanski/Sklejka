@@ -34,6 +34,7 @@ namespace Engine::Renderer {
     // auto Draw() -> void override;
 
     auto Draw(glm::mat4 model, glm::mat4 proj) -> void override;
+    auto OnWindowResize(glm::vec2 ratio) -> void override;
 
   private:
     std::shared_ptr< Mesh > _mesh;

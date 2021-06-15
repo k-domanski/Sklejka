@@ -8,6 +8,7 @@ namespace Engine::Renderer {
     }
     virtual ~UIElement()                                       = default;
     auto virtual Draw(glm::mat4 model, glm::mat4 proj) -> void = 0;
+    auto virtual OnWindowResize(glm::vec2 ratio) -> void = 0;
     auto SetActive(bool active) -> void;
     auto IsActive() -> bool;
 
