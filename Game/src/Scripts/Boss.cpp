@@ -163,7 +163,7 @@ auto Boss::SeekTarget(float deltaTime) -> void {
 auto Boss::HandleMove(float deltaTime) -> void {
   _transform->Position(_transform->Position()
                        + glm::normalize(_moveVelocity) * _playerSettings->BossForwardSpeed()
-                             * deltaTime);
+                             * deltaTime * GameManager::GetGameSettings()->PlayerTimeScale() * GameManager::GetGameSettings()->GameTimeScale());
 }
 
 auto Boss::SpeedUp() -> void {
