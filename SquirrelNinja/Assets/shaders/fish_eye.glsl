@@ -35,7 +35,7 @@ void main() {
   vec2 ndc     = uv2ndc(fs_in.uv);
   float theta  = atan(ndc.y, ndc.x);
   float radius = length(ndc);
-  radius       = pow(radius, (1 - radius * u_Factor));
+  radius       = pow(radius, (1 - radius * (min(u_Factor + 0.2f, 1.0f))));
   ndc.x        = radius * cos(theta);
   ndc.y        = radius * sin(theta);
   vec2 uv      = ndc2uv(ndc);
