@@ -70,6 +70,8 @@ namespace Engine {
 
   auto Scene::OnWindowResize(glm::vec2 windowSize) -> void {
     _renderSystem->OnWindowResize(windowSize);
+    if (_cameraSystem->MainCamera() != nullptr)
+        _cameraSystem->MainCamera()->Aspect(Window::Get().GetAspectRatio());
     _GUISystem->OnWindowResize(windowSize);
   }
 

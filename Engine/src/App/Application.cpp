@@ -29,19 +29,17 @@ namespace Engine {
     while (m_Running) {
       timer.Update();
       GL::Context::ClearBuffers();
+      if (!m_Minimized) {
 
-      for (Layer* layer : m_LayerStack)
-        layer->OnUpdate(timer.DeltaTime());
+        for (Layer* layer : m_LayerStack)
+          layer->OnUpdate(timer.DeltaTime());
 
-      /*Na razie tutaj update systemow*/
-      // ECS::EntityManager::GetInstance().Update();
-
-      /*ImGui Render*/
-      m_ImGuiLayer->Begin();
-      for (Layer* layer : m_LayerStack)
-        layer->OnImGuiRender();
-      m_ImGuiLayer->End();
-
+        /*ImGui Render*/
+        m_ImGuiLayer->Begin();
+        for (Layer* layer : m_LayerStack)
+          layer->OnImGuiRender();
+        m_ImGuiLayer->End();
+      }
       m_Window->OnUpdate();
     }
   }
@@ -70,8 +68,14 @@ namespace Engine {
     return true;
   }
   bool Application::OnWindowResize(WindowResizeEvent& e) {
+      if (e.GetWidth() == 0 || e.GetHeight() == 0) {
+      m_Minimized = true;
+        return true;
+    }
+
+    m_Minimized = false;
     m_Window->SetScreenSize({e.GetWidth(), e.GetHeight()});
-    glViewport(0, 0, e.GetWidth(), e.GetHeight());
+    GL::Context::Viewport(0, 0, e.GetWidth(), e.GetHeight());
     return false;
   }
 }  // namespace Engine

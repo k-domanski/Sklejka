@@ -37,6 +37,7 @@ auto GameLayer::OnEvent(Engine::Event& event) -> void {
   dispatcher.Dispatch< MouseButtonPressedEvent >(BIND_EVENT_FN(GameLayer::OnMouseButtonPress));
   dispatcher.Dispatch< MouseButtonReleasedEvent >(BIND_EVENT_FN(GameLayer::OnMouseButtonRelease));
   dispatcher.Dispatch< KeyPressedEvent >(BIND_EVENT_FN(GameLayer::OnKeyPress));
+  dispatcher.Dispatch< WindowResizeEvent >(BIND_EVENT_FN(GameLayer::OnWindowsResize));
 }
 
 bool GameLayer::OnMouseButtonPress(MouseButtonPressedEvent& e) {
@@ -60,5 +61,11 @@ bool GameLayer::OnMouseButtonRelease(MouseButtonReleasedEvent& e) {
 
 bool GameLayer::OnKeyPress(Engine::KeyPressedEvent& e) {
   SceneManager::GetCurrentScene()->OnKeyPressed((Key)e.GetKeyCode());
+  return true;
+}
+
+bool GameLayer::OnWindowsResize(Engine::WindowResizeEvent& e) {
+  glm::vec2 size = {(float)e.GetWidth(), (float)e.GetHeight()};
+  SceneManager::GetDisplayScene()->OnWindowResize(size);
   return true;
 }
