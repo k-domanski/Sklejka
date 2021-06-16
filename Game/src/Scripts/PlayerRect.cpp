@@ -44,8 +44,8 @@ auto PlayerRect::Update(float deltaTime) -> void {
 
   HandleInput(vertical_move, horizontal_move, roll);
   SeekTarget(deltaTime);
-  HandleMove(vertical_move, horizontal_move, deltaTime);
   HandleRotation(roll, deltaTime);
+  HandleMove(vertical_move, horizontal_move, deltaTime);
   ModelRotation(vertical_move, horizontal_move, deltaTime);
 }
 
@@ -110,7 +110,11 @@ auto PlayerRect::SeekTarget(float deltaTime) -> void {
 }
 
 auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -> void {
+  //auto move_delta = glm::vec3{horizontal, -vertical, 0.0f};
   auto move_delta = glm::vec3{horizontal, -vertical, 0.0f};
+  auto quat       = glm::angleAxis(_playerController->Transform()->Euler().z - glm::pi< float >(),
+                             glm::vec3{0.0f, 0.0f, 1.0f});
+  move_delta      = quat * move_delta;
   // move_delta += -vertical * _transform->Up();
   // move_delta += horizontal * _transform->Right();
 

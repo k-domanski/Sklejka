@@ -109,6 +109,7 @@ private:
   auto CreatePlayer() -> void;
   auto CreateBoss() -> void;
   auto CreateSecondWeaselImpl() -> void;
+  auto PrepareJetpack(std::shared_ptr< Engine::ECS::Entity > jetpack) -> void;
   auto SetupScripts() -> void;
   auto NextFrameTrigger() -> void;
   auto KillPlayerImpl() -> void;
