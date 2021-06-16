@@ -11,4 +11,5 @@ public:
   auto Update(float deltaTime) -> void override;
   auto OnKeyPressed(Engine::Key key) -> void override;
   auto Transform() const noexcept -> std::shared_ptr< Engine::Transform >;
+  auto OnCollisionEnter(const std::shared_ptr< Engine::Components::Collider >& collider) -> void override;
 };

@@ -6,7 +6,7 @@
 
 namespace Engine {
   BETTER_ENUM(LayerBit, uint32_t, Default = Helpers::Bit32(0), Player = Helpers::Bit32(1),
-              Acorn = Helpers::Bit32(2));
+              Acorn = Helpers::Bit32(2), Bell = Helpers::Bit32(3), Boss = Helpers::Bit32(4));
   typedef Utility::BitFlags< LayerBit > LayerMask;
 }  // namespace Engine
 

@@ -88,6 +88,7 @@ public:
   static auto IsPaused() -> bool;
   static auto SetPaused(bool value) -> bool;
   static auto Time() -> float;
+  static auto CreateAcorn() -> std::shared_ptr<Engine::ECS::Entity>;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;
