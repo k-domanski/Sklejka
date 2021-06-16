@@ -16,7 +16,7 @@ private:
   float _wobbleAnimAmplitude = .005f;
   float _wobbleAnimInterval = 2.5f;
 
-  float _throwTime = .3f;
+  float _throwTime = .5f;
   float _throwSpeed = .1f;
 
   bool _wobbleAnim = true;
@@ -29,4 +29,5 @@ public:
   auto OnKeyPressed(Engine::Key key) -> void override;
   auto OnBossKilled() -> void;
   auto ResetLocalPos() -> void;
+  auto DetachFromBoss() -> void;
 };

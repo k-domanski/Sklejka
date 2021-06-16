@@ -39,18 +39,23 @@ auto GoldenAcorn::OnKeyPressed(Engine::Key key) -> void {}
 auto GoldenAcorn::OnBossKilled() -> void
 {
   _wobbleAnim = false;
-  ResetLocalPos();
-  glm::vec3 worldPos = _transform->WorldPosition();
-  auto sg     = GameManager::GetScene(GameManager::GetCurrentSceneName())->SceneGraph();
-  sg->SetParent(Entity(), sg->GetRootEntity());
-  _transform->Position(worldPos);
   _throw = true;
-
 }
+
+
 
 auto GoldenAcorn::ResetLocalPos() -> void
 {
   _transform->Position(_startLocalPos);
+}
+
+auto GoldenAcorn::DetachFromBoss() -> void
+{
+  ResetLocalPos();
+  glm::vec3 worldPos = _transform->WorldPosition();
+  auto sg            = GameManager::GetScene(GameManager::GetCurrentSceneName())->SceneGraph();
+  sg->SetParent(Entity(), sg->GetRootEntity());
+  _transform->Position(worldPos);
 }
 
 
