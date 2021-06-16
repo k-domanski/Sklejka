@@ -17,6 +17,9 @@ using Engine::Utility::FloatLerp;
 BETTER_ENUM(__SceneName, int, MainMenu, Options, Cutscene, LevelSelection, LVL_1);
 typedef __SceneName SceneName;
 
+BETTER_ENUM(__GameState, int, MainMenu, Gameplay, Paused);
+typedef __GameState GameState;
+
 class GameManager {
 private:
   inline static std::shared_ptr< GameManager > _instance = nullptr;
@@ -29,7 +32,9 @@ private:
 
   /* State */
   SceneName _currentSceneName = SceneName::MainMenu;
+  GameState _currentGameState = GameState::Gameplay;
   bool _isPaused{false};
+  irrklang::ISound* _bgLoopSound = nullptr;
   /* -=-=- */
 
   /* Panels */
@@ -67,6 +72,7 @@ private:
   GameManager();
   static auto SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void;
   static auto FindBells() -> void;
+  static auto SetupBGMusic(GameState state) -> void;
   static auto ProcessBell(const std::shared_ptr< Engine::ECS::Entity >& bell) -> void;
   static auto UpdateMarkerColor() -> void;
 

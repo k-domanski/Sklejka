@@ -9,8 +9,8 @@ namespace Engine {
     /* Fullscreen */
     m_Window = std::unique_ptr< Window >(
         Window::Create(WindowProperties(1600, 900, "Squirrel Ninja", true)));
-    //m_Window = std::unique_ptr< Window >(
-    //    Window::Create(WindowProperties(1600, 900, "Squirrel Ninja", false)));
+    /*m_Window = std::unique_ptr< Window >(
+        Window::Create(WindowProperties(1600, 900, "Squirrel Ninja", false)));*/
 
     m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
