@@ -7,12 +7,12 @@ namespace Engine::Systems {
   AnimationSystem::AnimationSystem(): m_MeshRenderer(nullptr) {
     AddSignature< Animator >();
 
-    //m_JointBuffer.BindToSlot(GL::UniformBlock::JointData);
+    // m_JointBuffer.BindToSlot(GL::UniformBlock::JointData);
   }
   auto AnimationSystem::Update(float deltaTime) -> void {
     for (auto& entity : _entities) {
       auto& animator = entity->GetComponent< Animator >();
-      animator->UpdateAnimation(deltaTime * 7.0f);  // <- Why is this scaled by 5.0f?
+      animator->UpdateAnimation(deltaTime * 0.3f);  // <- Why is this scaled by 5.0f?
       m_JointBuffer.SetData(animator->GetJointData());
     }
   }
