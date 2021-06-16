@@ -8,6 +8,7 @@ public:
   EndLevelMenu();
   auto Show(bool win, float time, int bells) -> void;
   auto Hide() -> void;
+  auto IsVisible() -> bool;
 private:
 
   bool _win;

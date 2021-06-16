@@ -205,3 +205,7 @@ auto EndLevelMenu::Hide() -> void {
 
   _visible = false;
 }
+
+auto EndLevelMenu::IsVisible() -> bool {
+  return _visible;
+}

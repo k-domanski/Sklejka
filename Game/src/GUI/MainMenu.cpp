@@ -39,6 +39,7 @@ MainMenu::MainMenu() {
   _exitButton->HandleSize(glm::vec2(231.0f, 65.0f));
   // transform->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f - 150.0f, 0.0f));
   transform->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f - 325.0f, 0.0f));
+  _exitButton->Offset({-400.0f,0.0f});
   _exitButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/exit.png"));
 
   _startButton = std::make_shared< Engine::Renderer::Button >();
@@ -53,7 +54,7 @@ MainMenu::MainMenu() {
   _startButton->Size(glm::vec2(231.0f, 65.0f));
   _startButton->HandleSize(glm::vec2(231.0f, 65.0f));
   // transform2->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f + 50.0f, 0.0f));
-  _startButton->Offset(glm::vec2(0.0f, 375.0f));
+  _startButton->Offset(glm::vec2(-400.0f, 375.0f));
   _startButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/start.png"));
 
   _optionsButton = std::make_shared< Engine::Renderer::Button >();
@@ -70,7 +71,7 @@ MainMenu::MainMenu() {
   _optionsButton->TextOffset(glm::vec2(-45.0f, -15.0f));
   _optionsButton->Size(glm::vec2(231.0f, 65.0f));
   _optionsButton->HandleSize(glm::vec2(231.0f, 65.0f));
-  _optionsButton->Offset(glm::vec2(0.0f, 250.0f));
+  _optionsButton->Offset(glm::vec2(-400.0f, 250.0f));
   _optionsButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/options.png"));
 
   _creditsButton = std::make_shared< Engine::Renderer::Button >();
@@ -83,7 +84,7 @@ MainMenu::MainMenu() {
   _creditsButton->TextOffset(glm::vec2(-45.0f, -15.0f));
   _creditsButton->Size(glm::vec2(231.0f, 65.0f));
   _creditsButton->HandleSize(glm::vec2(231.0f, 65.0f));
-  _creditsButton->Offset(glm::vec2(0.0f, 125.0f));
+  _creditsButton->Offset(glm::vec2(-400.0f, 125.0f));
   _creditsButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/credits.png"));
   stbi_set_flip_vertically_on_load(false);
   uiRenderer->AddButton(_startButton);
