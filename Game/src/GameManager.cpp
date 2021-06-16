@@ -22,6 +22,7 @@
 #include "Scripts/GoldenAcorn.h"
 #include "Scripts/SecondWeasel.h"
 #include "Scripts/Acorn.h"
+#include "Scripts/Bell.h"
 
 using namespace Engine;
 using namespace Engine::Components;
@@ -235,7 +236,7 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
   /* Speedup handling */
   if (_speedLerp.Finished() && _speedUpDuration > 0.0f) {
     if (_speedUpDuration > 0.0f) {
-      _speedUpDuration -= deltaTime;
+      _speedUpDuration -= deltaTime * _gameSettings->GameTimeScale();
     }
     if (_speedUpDuration < 0.0f) {
       const auto current_speed =
@@ -245,7 +246,8 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
       _speedUpDuration = -1.0f;
     }
   }
-  _instance->GetPlayerSettings()->ForwardSpeed(_speedLerp.Update(deltaTime));
+  _instance->GetPlayerSettings()->ForwardSpeed(
+      _speedLerp.Update(deltaTime * _gameSettings->GameTimeScale()));
   /* -=-=-=-=-=-=-=-=- */
 
   auto base_speed    = GetPlayerSettings()->ForwardSpeedBase();
@@ -597,7 +599,7 @@ auto GameManager::SetupScripts() -> void {
   // scale UIs
   /*auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
   gui->OnWindowResize(Engine::Window::Get().GetScreenSize());*/
-  //SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
+  // SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
 }
 
 auto GameManager::NextFrameTrigger() -> void {
@@ -713,11 +715,19 @@ auto GameManager::FindBells() -> void {
       continue;
     }
     /* Process Bell */
-    ent->layer.SetState(LayerMask::Flag::Bell);
-    ent->collisionLayer.SetState(LayerMask::Flag::Acorn);
+    ProcessBell(ent);
+
     /* Save transform */
     _bellsTransform.push_back(ent->GetComponent< Transform >());
   }
+}
+
+auto GameManager::ProcessBell(const std::shared_ptr< Engine::ECS::Entity >& bell) -> void {
+  bell->layer.SetState(LayerMask::Flag::Bell);
+  bell->collisionLayer.SetState(LayerMask::Flag::Acorn);
+
+  auto ns = bell->AddComponent< NativeScript >();
+  ns->Attach< Bell >();
 }
 
 auto GameManager::UpdateMarkerColor() -> void {
