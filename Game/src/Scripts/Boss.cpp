@@ -107,7 +107,7 @@ auto Boss::CanMove(bool value) -> void {
 
 auto Boss::Hit() -> void {
   _hits++;
-  GameManager::GetSoundEngine()->play2D("./Assets/sounds/placeholderBeep.wav");
+  GameManager::GetSoundEngine()->play2D("./Assets/sounds/boss_hit.wav");
   SpeedUp();
 
   switch (_hits) {

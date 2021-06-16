@@ -19,9 +19,7 @@ auto CollisionDetector::OnKeyPressed(Engine::Key key) -> void {
 auto CollisionDetector::OnCollisionEnter(const std::shared_ptr< Collider >& collider) -> void {
   auto entity = collider->GetEntity();
   if (entity != nullptr) {
-
-    if (Entity()->Name() == "Acorn" && entity->Name() == "Boss")
-    {
+    if (Entity()->Name() == "Acorn" && entity->Name() == "Boss") {
       entity->GetComponent< Engine::NativeScript >()->GetScript< Boss >()->Hit();
       Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
     }
@@ -29,9 +27,6 @@ auto CollisionDetector::OnCollisionEnter(const std::shared_ptr< Collider >& coll
     LOG_INFO("Collision detected: {}", entity->Name());
     const std::regex bell_rx("BELL.*");
     if (std::regex_match(entity->Name(), bell_rx)) {
-      if (Entity()->Name() == "Player_Model") {
-        return;
-      }
       if (_timeout <= 0.0f) {
         _timeout = _timeoutDuration;
         GameManager::GetSoundEngine()->play2D("./Assets/sounds/bell.wav");
@@ -40,8 +35,9 @@ auto CollisionDetector::OnCollisionEnter(const std::shared_ptr< Collider >& coll
       }
     } else {
       /* Player fucking dies */
-      if (Entity()->Name() != "Acorn" && entity->Name() != "Player_Model")
-        GameManager::KillPlayer();
+      /*if (Entity()->Name() != "Acorn" && entity->Name() != "Player_Model")
+        GameManager::KillPlayer();*/
     }
+    Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
   }
 }

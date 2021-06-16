@@ -25,6 +25,8 @@ namespace Engine {
     }
     auto OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider) -> void {
     }
+    auto OnKeyPressed(Engine::Key key) -> void override {
+    }
     auto Priority() -> int override {
       return _priority;
     }
