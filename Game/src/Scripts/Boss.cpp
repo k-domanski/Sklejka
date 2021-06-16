@@ -73,6 +73,25 @@ auto Boss::Update(float deltaTime) -> void {
   if (!_killed) {
     _canMove = _player->CurrentNodeIndex() > 89;
 
+    _distanceToPlayer =
+        glm::distance(_transform->WorldPosition(),
+                      _player->Entity()->GetComponent< Transform >()->WorldPosition());
+
+    _dotProduct = glm::dot(_transform->Forward(),
+                           glm::normalize(_transform->WorldPosition()
+                               - _player->Entity()->GetComponent< Transform >()->WorldPosition()));
+
+    //LOG_DEBUG("Distance to player: " + std::to_string(_distanceToPlayer));
+    LOG_DEBUG("Dot product: " + std::to_string(_dotProduct));
+
+    if (_dotProduct < 0.f && _distanceToPlayer > 20.f)
+    {
+      _playerSettings->BossForwardSpeed(_playerSettings->ForwardSpeedBase());
+    }
+    else if (_currentSpeedUpDuration <= 0.f) {
+      _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase());
+    }
+
     if (_canMove) {
       if (!_bossShowUp) {
         _health1->SetActive(true);
