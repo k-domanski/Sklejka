@@ -20,10 +20,10 @@ private:
   std::shared_ptr< PlayerRect > _player;
   std::shared_ptr< GoldenAcorn > _goldenAcorn;
   glm::vec3 _moveVelocity{0};
-  glm::vec3 _offset{0.f, .1f, .0f};
+  glm::vec3 _offset{0.f, .05f, .0f};
 
-  float _getAcornTimer = .2f;
-  float _flightTime    = 2.5f;
+  float _getAcornTimer = 1.0f;
+  float _flightTime    = 3.5f;
 
   bool _canMove = false;
 

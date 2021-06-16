@@ -524,7 +524,7 @@ auto GameManager::CreateSecondWeaselImpl() -> void {
   auto& node_system    = SceneManager::GetCurrentScene()->NodeSystem();
 
   auto boss = entity_manager.CreateEntity();
-  boss->LoadFromJson("./Assets/prefabs/boss.prefab", true);
+  boss->LoadFromJson("./Assets/prefabs/boss2.prefab", true);
   boss->Name("Boss2");
   auto weasel = entity_manager.CreateEntity();
   weasel->LoadFromJson("./Assets/prefabs/weasel.prefab", true);
