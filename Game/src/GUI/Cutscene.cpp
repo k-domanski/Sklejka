@@ -17,7 +17,7 @@ Cutscene::Cutscene() {
   auto entity      = EntityManager::GetInstance().CreateEntity();
   auto ui_renderer = entity->AddComponent< Components::UIRenderer >();
   auto transform   = entity->AddComponent< Transform >();
-  auto window_size = Window::Get().GetScreenSize();
+  auto window_size = glm::vec2(1600.0f, 900.0f);//refered size  // Window::Get().GetScreenSize();
   transform->Position(glm::vec3(window_size * 0.5f, 0.0f));
 
   _image = std::make_shared< Renderer::Image >();
@@ -30,6 +30,8 @@ Cutscene::Cutscene() {
 
   auto native_script = entity->AddComponent< NativeScript >();
   _cutscenePlayer    = native_script->Attach< CutscenePlayer >(_image->Shader());
+
+  SceneManager::GetCurrentScene()->OnWindowResize(Window::Get().GetScreenSize());
 
   if (current_scene != nullptr) {
     SceneManager::OpenScene(current_scene->GetID());
