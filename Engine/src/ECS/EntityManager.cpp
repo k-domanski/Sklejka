@@ -101,8 +101,8 @@ namespace Engine::ECS {
     for (auto& system : SceneManager::GetCurrentScene()->_registeredSystems) {
       RemoveFromSystem(system.first, entity);
     }
-    for (auto signature : *(entity->_signature)) {
-      SceneManager::GetCurrentScene()->_componentLists[signature]->Remove(entity);
+    for (auto comp_id : *(entity->_signature)) {
+      SceneManager::GetCurrentScene()->_componentLists[comp_id]->Remove(entity);
     }
     // entity->_signature->clear();
 

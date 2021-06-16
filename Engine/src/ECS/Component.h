@@ -40,5 +40,7 @@ namespace Engine::ECS {
     auto TypeID() const noexcept -> ComponentTypeID {
       return _typeID;
     }
+    virtual auto OnDestroy() -> void {
+    }
   };
 }  // namespace Engine::ECS

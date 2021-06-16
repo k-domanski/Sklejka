@@ -27,6 +27,7 @@ namespace Engine {
     auto Update(float deltaTime) -> void;
     auto OnKeyPressed(Key key) -> void;
     auto OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider) -> void;
+    auto OnDestroy() -> void override;
 
     template< typename T, typename... Args >
     auto Attach(Args&&... args) -> std::shared_ptr< T > {

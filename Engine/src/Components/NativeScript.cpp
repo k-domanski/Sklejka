@@ -33,7 +33,8 @@ namespace Engine {
   }
 
   auto NativeScript::Update(float deltaTime) -> void {
-    for (auto& script : _scripts) {
+    auto scripts_cpy = _scripts;
+    for (auto& script : scripts_cpy) {
       script->Update(deltaTime);
     }
   }
@@ -46,9 +47,21 @@ namespace Engine {
 
   auto NativeScript::OnCollisionEnter(const std::shared_ptr< Components::Collider >& collider)
       -> void {
-    for (auto& script : _scripts) {
+    if (_scripts.empty()) {
+      return;
+    }
+    auto scripts_cpy = _scripts;
+    for (auto& script : scripts_cpy) {
       script->OnCollisionEnter(collider);
     }
+  }
+
+  auto NativeScript::OnDestroy() -> void {
+    return;
+    for (auto& script : _scripts) {
+      script->OnDestroy();
+    }
+    _scripts.clear();
   }
 
   auto NativeScript::Entity() -> std::shared_ptr< ECS::Entity > {

@@ -22,7 +22,8 @@ auto ShadowTarget::OnCreate() -> void {
   _rendererSystem =
       Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
   stbi_set_flip_vertically_on_load(true);
-  _bar->bar->BackgroundTexture(Engine::AssetManager::GetTexture2D("./textures/UI/bar_background.png"));
+  _bar->bar->BackgroundTexture(
+      Engine::AssetManager::GetTexture2D("./textures/UI/bar_background.png"));
   _bar->bar->FillTexture(Engine::AssetManager::GetTexture2D("./textures/UI/bar_fill.png"));
   _bar->bar->FillRatio(glm::min(1.0f, _currentAmount / _maxAmount));
   _bar->bar->Horizontal(true);
@@ -38,6 +39,10 @@ auto ShadowTarget::OnCreate() -> void {
 auto ShadowTarget::Update(float deltaTime) -> void {
   if (GameManager::IsPaused()) {
     return;
+  }
+
+  if (Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_X)) {
+    SlowTime();
   }
 
   const auto player_settings = GameManager::GetPlayerSettings();
@@ -92,7 +97,8 @@ auto ShadowTarget::SetTimeSlowed(bool value) -> void {
 
 auto ShadowTarget::IsInShadow() -> bool {
   auto samplesPassed = _rendererSystem->ObjectInShadow(_target);
-  _maxSamplesPassed  = 1000; //this is not working because squirrel is then in its own shadow -> glm::max(samplesPassed, _maxSamplesPassed);
-  auto test_against  = glm::max(100.0f, _maxSamplesPassed / 2.0f);
+  _maxSamplesPassed  = 1000;  // this is not working because squirrel is then in its own shadow ->
+                              // glm::max(samplesPassed, _maxSamplesPassed);
+  auto test_against = glm::max(100.0f, _maxSamplesPassed / 2.0f);
   return samplesPassed < test_against;
 }
