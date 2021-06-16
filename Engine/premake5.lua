@@ -61,7 +61,7 @@ project "Engine"
         "ImGui",
         "rttr",
         "opengl32.lib",
-        "assimp-vc142-mtd.lib",
+        "assimp-vc142-mt.lib",
         "irrKlang.lib",
         "freetype.lib"
     }
