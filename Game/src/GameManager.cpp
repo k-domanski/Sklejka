@@ -221,6 +221,7 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
           _instance->CreatePlayer();
           _instance->CreateBoss();
           _instance->CreateSecondWeasel();
+          GetSoundEngine()->play2D("./Assets/sounds/main_gameplay.wav", true);
           SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
           if (IsGameplayScene()) {
             FindBells();

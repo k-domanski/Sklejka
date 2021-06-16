@@ -6,8 +6,8 @@ private:
   float _speedMultiplier      = 2.0f;
   float _bossSpeedMultiplier  = 2.5f;
   float _forwardSpeedBase     = 7.5f;
-  float _bossForwardSpeedBase = 9.0f;
-  float _bossForwardSpeed     = 9.0f;
+  float _bossForwardSpeedBase = 9.5f;
+  float _bossForwardSpeed     = 9.5f;
   float _forwardSpeed         = 7.5f; /* Forward Speed (Player Rect) */
   float _controlSpeedBase     = 3.2f; /* Left, Right, Up, Down Speed */
   float _controlSpeed         = 3.2f; /* Left, Right, Up, Down Speed */
