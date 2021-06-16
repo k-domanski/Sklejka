@@ -79,6 +79,7 @@ namespace Engine::Systems {
     std::shared_ptr< Engine::Renderer::PingPongBuffer > _pingPongBuffer;
     std::shared_ptr< Engine::Renderer::Mesh > _quad;
     std::shared_ptr< Engine::GL::Shader > _blurShader;
+    std::shared_ptr< Engine::GL::Shader > _aberrationShader;
     std::shared_ptr< Engine::GL::Shader > _fishEyeShader;
     std::shared_ptr< Engine::GL::Shader > _finalPassShader;
     /* -=-=-=-=-=-=-=- */

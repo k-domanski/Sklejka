@@ -53,6 +53,7 @@ private:
   /* Resources */
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
   std::shared_ptr< Engine::GL::Shader > _fishEyeShader;
+  std::shared_ptr< Engine::GL::Shader > _aberrationShader;
   std::shared_ptr< Engine::Renderer::Material > _bellOutlineMaterial;
   /* -=-=-=-=- */
 
