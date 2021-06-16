@@ -19,6 +19,7 @@ ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
   _playerTimeLerp.Set(1.0f, 1.0f, 1.0f);
   _lerpTime   = 0.5f;
   _lastStateX = false;
+  _timeSlowed = false;
 }
 
 auto ShadowTarget::OnCreate() -> void {
@@ -66,6 +67,7 @@ auto ShadowTarget::Update(float deltaTime) -> void {
       _currentAmount -= (1.0f / (player_settings->SlowTimeDuration() + 2 * _lerpTime)) * deltaTime;
     } else {
       SetTimeSlowed(false);
+      GameManager::GetSoundEngine()->play2D("./Assets/sounds/resume_time.wav");
       _currentAmount = 0.0f;
     }
   }
