@@ -3,7 +3,7 @@
 class AcornThrower : public Engine::Script< AcornThrower > {
 private:
   float _maxDistance;
-  float _timeout        = 3.f;
+  float _timeout        = 2.f;
   float _currentTimeout = 0.0f;
   std::vector< std::shared_ptr< Engine::ECS::Entity > > _bells;
   std::shared_ptr< Engine::ECS::Entity > _boss;
@@ -13,6 +13,7 @@ private:
   bool _lastStateA;
   auto TryThrow() -> void;
   auto Throw(std::shared_ptr< Engine::Transform > target) -> void;
+  auto Throw(glm::vec3 direction) -> void;
 
 public:
   auto OnCreate() -> void override;

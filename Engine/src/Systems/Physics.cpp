@@ -24,7 +24,8 @@ void Engine::Systems::Physics::Update(float deltaTime) {
 
     for (int j = i + 1; j < _entities.size(); ++j) {
       const auto& ent2       = _entities[j];
-      const auto layer_check = ent1->collisionLayer.Get(ent2->layer.GetState());
+      const auto layer_check = ent1->collisionLayer.Get(ent2->layer.GetState())
+                               | ent2->collisionLayer.Get(ent1->layer.GetState());
 
       if (layer_check == 0) {
         continue;

@@ -40,7 +40,7 @@ auto Boss::OnCreate() -> void {
   _bossShowUp     = false;
 
   auto entity    = EntityManager::GetInstance().CreateEntity();
-  _renderer  = entity->AddComponent< Components::UIRenderer >();
+  _renderer      = entity->AddComponent< Components::UIRenderer >();
   auto transform = entity->AddComponent< Transform >();
   transform->Position({800.0f, 750.0f, 0.0f});
   stbi_set_flip_vertically_on_load(true);
@@ -60,19 +60,43 @@ auto Boss::OnCreate() -> void {
   _health3->Size({56.0f, 50.0f});
   _health3->Offset({-60.0f, 0.0f});
 
+  _renderer->AddElement(_health1);
+  _renderer->AddElement(_health2);
+  _renderer->AddElement(_health3);
 
+  _health1->SetActive(false);
+  _health2->SetActive(false);
+  _health3->SetActive(false);
 }
 
 auto Boss::Update(float deltaTime) -> void {
-
   if (!_killed) {
     _canMove = _player->CurrentNodeIndex() > 89;
 
+    _distanceToPlayer =
+        glm::distance(_transform->WorldPosition(),
+                      _player->Entity()->GetComponent< Transform >()->WorldPosition());
+
+    _dotProduct = glm::dot(_transform->Forward(),
+                           glm::normalize(_transform->WorldPosition()
+                               - _player->Entity()->GetComponent< Transform >()->WorldPosition()));
+
+    //LOG_DEBUG("Distance to player: " + std::to_string(_distanceToPlayer));
+    LOG_DEBUG("Dot product: " + std::to_string(_dotProduct));
+
+    if (_dotProduct < 0.f && _distanceToPlayer > 20.f)
+    {
+      _playerSettings->BossForwardSpeed(_playerSettings->ForwardSpeedBase());
+    }
+    else if (_currentSpeedUpDuration <= 0.f) {
+      _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase());
+    }
+
     if (_canMove) {
       if (!_bossShowUp) {
-        _renderer->AddElement(_health1);
-        _renderer->AddElement(_health2);
-        _renderer->AddElement(_health3);
+        _health1->SetActive(true);
+        _health2->SetActive(true);
+        _health3->SetActive(true);
         _bossShowUp = true;
       }
 
@@ -81,11 +105,9 @@ auto Boss::Update(float deltaTime) -> void {
     }
   }
 
-  if (_currentSpeedUpDuration > 0.f)
-  {
+  if (_currentSpeedUpDuration > 0.f) {
     _currentSpeedUpDuration -= deltaTime;
-    if (_currentSpeedUpDuration <= 0.f)
-    {
+    if (_currentSpeedUpDuration <= 0.f) {
       _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase());
     }
   }
@@ -104,7 +126,7 @@ auto Boss::CanMove(bool value) -> void {
 
 auto Boss::Hit() -> void {
   _hits++;
-  GameManager::GetSoundEngine()->play2D("./Assets/sounds/placeholderBeep.wav");
+  GameManager::GetSoundEngine()->play2D("./Assets/sounds/boss_hit.wav");
   SpeedUp();
 
   switch (_hits) {
@@ -132,8 +154,8 @@ auto Boss::Hit() -> void {
         ->GetComponent< NativeScript >()
         ->GetScript< SecondWeasel >()
         ->StartCutscene(_currentNode->Index());
-    //Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
-    //GameManager::Win();
+    // Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
+    // GameManager::Win();
   }
 }
 
@@ -160,11 +182,10 @@ auto Boss::SeekTarget(float deltaTime) -> void {
 auto Boss::HandleMove(float deltaTime) -> void {
   _transform->Position(_transform->Position()
                        + glm::normalize(_moveVelocity) * _playerSettings->BossForwardSpeed()
-                             * deltaTime);
+                             * deltaTime * GameManager::GetGameSettings()->PlayerTimeScale() * GameManager::GetGameSettings()->GameTimeScale());
 }
 
-auto Boss::SpeedUp() -> void
-{
+auto Boss::SpeedUp() -> void {
   _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase()
                                     * _playerSettings->BossSpeedMultiplier());
   _currentSpeedUpDuration = _speedUpDuration;

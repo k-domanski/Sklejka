@@ -21,6 +21,7 @@
 #include "Components/ParticleEmitter.h"
 #include "Scripts/GoldenAcorn.h"
 #include "Scripts/SecondWeasel.h"
+#include "Scripts/Acorn.h"
 
 using namespace Engine;
 using namespace Engine::Components;
@@ -88,7 +89,7 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
       break;
     }
     case SceneName::Options: {
-      Engine::SceneManager::OpenScene(_instance->_options->Scene()->GetID());
+      // Engine::SceneManager::OpenScene(_instance->_options->Scene()->GetID());
       break;
     }
   }
@@ -142,10 +143,19 @@ auto GameManager::PlayerSpeedUp() -> void {
     _instance->_speedLerp.Set(current_speed, target_speed, lerp_time * ratio);
     _instance->_speedUpDuration = _instance->GetGameSettings()->PlayerSpeedUpDuration();
   }
+  _instance->_hittedBells++;
 }
 
 auto GameManager::ShowLevelSumUp(bool win, float time, int bells) -> void {
   _instance->_endLevelMenu->Show(win, time, bells);
+}
+
+auto GameManager::ShowOptions(std::function< void() > returnFunc) -> void {
+  _instance->_options->Show(returnFunc);
+}
+
+auto GameManager::HideOptions() -> void {
+  _instance->_options->Hide();
 }
 
 auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
@@ -211,6 +221,7 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
           _instance->CreatePlayer();
           _instance->CreateBoss();
           _instance->CreateSecondWeasel();
+          SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
           if (IsGameplayScene()) {
             FindBells();
           }
@@ -396,6 +407,57 @@ auto GameManager::CreatePlayer() -> void {
   SceneManager::GetCurrentScene()->CameraSystem()->FindMainCamera();
   SetupScripts();
   /* -=-=-=-=- */
+  _instance->_hittedBells = 0;
+}
+
+auto GameManager::CreateAcorn() -> std::shared_ptr< Engine::ECS::Entity > {
+  auto ent = EntityManager::GetInstance().CreateEntity();
+  ent->layer.SetState(Engine::LayerMask::Flag::Acorn);
+  ent->collisionLayer.SetState(0xFF);
+  ent->collisionLayer.Clear(Engine::LayerMask::Flag::Player);
+  ent->Name("Arcon");
+
+  { /* Transform */
+    ent->AddComponent< Transform >();
+  }
+
+  { /* Mesh Renderer */
+    auto mr = ent->AddComponent< MeshRenderer >();
+    mr->SetModel(AssetManager::GetModel("Assets/models/acorn.fbx"));
+    mr->SetMaterial(AssetManager::GetMaterial("Assets/materials/acorn_brown.mat"));
+  }
+
+  { /* Collider */
+    auto cl       = ent->AddComponent< Collider >();
+    cl->Size      = glm::vec3(0.4f);
+    cl->IsTrigger = true;
+  }
+
+  { /* Rigidbody */
+    auto rb = ent->AddComponent< Rigidbody >();
+    rb->SetGravity(false);
+    rb->SetKinematic(true);
+  }
+
+  { /* Particle Emitter */
+    auto em = ent->AddComponent< ParticleEmitter >(100);
+    em->Material(AssetManager::GetMaterial("Assets/materials/trail.mat"));
+    em->EmitCount(100);
+    em->SpawnRate(100.0f);
+    constexpr auto scale    = 0.2f;
+    constexpr auto lifetime = 0.75f;
+    constexpr auto decay    = scale / lifetime;
+    em->Scale(glm::vec2(scale));
+    em->Lifetime(lifetime);
+    em->SizeDecay(decay);
+  }
+
+  { /* Native Script */
+    auto ns = ent->AddComponent< NativeScript >();
+    ns->Attach< Acorn >();
+  }
+
+  return ent;
 }
 
 auto GameManager::CreateBoss() -> void {
@@ -405,6 +467,8 @@ auto GameManager::CreateBoss() -> void {
 
   auto boss = entity_manager.CreateEntity();
   boss->LoadFromJson("./Assets/prefabs/boss.prefab");
+  boss->layer.SetState(LayerMask::Flag::Boss);
+  boss->collisionLayer.SetState(LayerMask::Flag::Acorn);
   auto weasel = entity_manager.CreateEntity();
   weasel->LoadFromJson("./Assets/prefabs/weasel.prefab");
   auto boss_jet = entity_manager.CreateEntity();
@@ -493,38 +557,38 @@ auto GameManager::SetupScripts() -> void {
   auto camera_tr = camera_entity->GetComponent< Engine::Transform >();
   camera_tr->Position(player_tr->Position());
 
-  auto native_script = _player->AddComponent< Engine::NativeScript >();
-  player_tr->Position(glm::vec3{0.0f});
-  auto player_controller = native_script->Attach< PlayerController >(player_tr);
+  std::shared_ptr< PlayerController > player_controller;
+  std::shared_ptr< PlayerRect > player_rect;
+  { /* Player */
+    auto native_script = _player->AddComponent< Engine::NativeScript >();
+    player_tr->Position(glm::vec3{0.0f});
+    player_controller = native_script->Attach< PlayerController >(player_tr);
+  }
 
-  native_script    = _playerRect->AddComponent< Engine::NativeScript >();
-  auto player_rect = std::make_shared< PlayerRect >(
-      player_controller,
-      _model->GetComponent< Transform >());  // Save it to variable, because I cannot retrive
-                                             // anything from attached scripts.......
-  player_rect->CanMove(false);
-  native_script->Attach(player_rect);
+  { /* Player Rect */
+    auto native_script = _playerRect->AddComponent< Engine::NativeScript >();
+    player_rect =
+        native_script->Attach< PlayerRect >(player_controller, _model->GetComponent< Transform >());
+    player_rect->CanMove(false);
+  }
 
-  native_script = camera_entity->AddComponent< Engine::NativeScript >();
-  native_script->Attach(std::make_shared< CameraController >(player_controller));
+  { /* Camera */
+    auto native_script = camera_entity->AddComponent< Engine::NativeScript >();
 
-  native_script->Attach(std::make_shared< PlayerController >(player_tr));
-  auto shadowTarget = std::make_shared< ShadowTarget >(_model);
-  native_script->Attach(shadowTarget);
-  auto flightTimer =
-      std::make_shared< FlightTimer >();  // Save it to variable, because I cannot retrive anything
-                                          // from attached scripts.......
-  flightTimer->CanCount(false);
-  native_script->Attach(flightTimer);
+    native_script->Attach< CameraController >(player_controller);
+    auto shadowTarget = native_script->Attach< ShadowTarget >(_model);
+    auto flightTimer  = native_script->Attach< FlightTimer >();
+    flightTimer->CanCount(false);
+    auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer, shadowTarget);
+    start_timer->CanCount(true);
+  }
 
-  // native_script->Attach(std::make_shared< StartTimer >(player_rect, flightTimer));
-  auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer, shadowTarget);
-  start_timer->CanCount(true);
+  { /* Model */
+    auto native_script = _model->AddComponent< Engine::NativeScript >();
 
-  native_script = _model->AddComponent< Engine::NativeScript >();
-  native_script->Attach< CollisionDetector >();
-
-  native_script->Attach< AcornThrower >();
+    native_script->Attach< AcornThrower >();
+    native_script->Attach< PlayerController >(player_tr);
+  }
 
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
   _instance->_endLevelMenu = std::make_shared< EndLevelMenu >();
@@ -533,7 +597,7 @@ auto GameManager::SetupScripts() -> void {
   // scale UIs
   /*auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
   gui->OnWindowResize(Engine::Window::Get().GetScreenSize());*/
-  SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
+  //SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
 }
 
 auto GameManager::NextFrameTrigger() -> void {
@@ -577,7 +641,7 @@ auto GameManager::WinImpl() -> void {
   auto time   = timer->GetTime();
   timer->CanCount(false);
 
-  ShowLevelSumUp(true, time, 10);  // TODO: get hitted bells value
+  ShowLevelSumUp(true, time, _instance->_hittedBells);
 }
 
 /* Try not to use this shit anymore */
@@ -648,6 +712,10 @@ auto GameManager::FindBells() -> void {
     if (!std::regex_match(ent->Name(), rx)) {
       continue;
     }
+    /* Process Bell */
+    ent->layer.SetState(LayerMask::Flag::Bell);
+    ent->collisionLayer.SetState(LayerMask::Flag::Acorn);
+    /* Save transform */
     _bellsTransform.push_back(ent->GetComponent< Transform >());
   }
 }

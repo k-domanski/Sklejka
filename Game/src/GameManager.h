@@ -48,6 +48,8 @@ private:
   inline static std::vector< std::shared_ptr< Engine::Transform > > _bellsTransform;
   /* -=-=-=-=-=-=-=-=- */
 
+  int _hittedBells;
+
   /* Resources */
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
   std::shared_ptr< Engine::GL::Shader > _fishEyeShader;
@@ -78,6 +80,8 @@ public:
   static auto Update(float deltaTime) -> void;
   static auto PlayerSpeedUp() -> void;
   static auto ShowLevelSumUp(bool win, float time, int bells) -> void;
+  static auto ShowOptions(std::function<void()> returnFunc) -> void;
+  static auto HideOptions() -> void;
   static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
   static auto KillPlayer() -> void;
   static auto Win() -> void;
@@ -88,6 +92,7 @@ public:
   static auto IsPaused() -> bool;
   static auto SetPaused(bool value) -> bool;
   static auto Time() -> float;
+  static auto CreateAcorn() -> std::shared_ptr<Engine::ECS::Entity>;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;

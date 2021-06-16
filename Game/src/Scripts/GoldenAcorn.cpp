@@ -18,7 +18,8 @@ auto GoldenAcorn::Update(float deltaTime) -> void
         _transform->Position()
         + glm::vec3(0.f, 1.f, 0.f)
               * glm::sin(GameManager::Time() * 2 * glm::pi< float >() / _wobbleAnimInterval)
-              * _wobbleAnimAmplitude);
+              * _wobbleAnimAmplitude * GameManager::GetGameSettings()->PlayerTimeScale()
+              * GameManager::GetGameSettings()->GameTimeScale());
   }
 
   if (_throw)

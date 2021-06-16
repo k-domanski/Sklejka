@@ -13,6 +13,8 @@ public:
   MainMenu();
   ~MainMenu() = default;
   auto Scene() -> std::shared_ptr< Engine::Scene >;
+  auto Show() -> void;
+  auto Hide() -> void;
 private:
   std::shared_ptr< Engine::Scene > _scene;
   std::shared_ptr< Engine::Renderer::Image > _image;
