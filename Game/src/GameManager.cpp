@@ -96,6 +96,16 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
     }
   }
 
+  auto new_state = GameState::MainMenu;
+  if (scene == +SceneName::LVL_1) {
+    new_state = GameState::Gameplay;
+  }
+
+  if (+new_state != _instance->_currentGameState) {
+    SetupBGMusic(new_state);
+    _instance->_currentGameState = new_state;
+  }
+
   if (IsGameplayScene()) {
     FindBells();
   } else {
@@ -223,7 +233,6 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
           _instance->CreatePlayer();
           _instance->CreateBoss();
           _instance->CreateSecondWeasel();
-          GetSoundEngine()->play2D("./Assets/sounds/wind_looped.wav", true);
           SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
           if (IsGameplayScene()) {
             FindBells();
@@ -733,6 +742,22 @@ auto GameManager::FindBells() -> void {
 
     /* Save transform */
     _bellsTransform.push_back(ent->GetComponent< Transform >());
+  }
+}
+
+auto GameManager::SetupBGMusic(GameState state) -> void {
+  if (_instance->_bgLoopSound != nullptr) {
+    _instance->_bgLoopSound->stop();
+    _instance->_bgLoopSound->drop();
+    GetSoundEngine()->stopAllSounds();
+  }
+
+  if (state == +GameState::Gameplay) {
+    _instance->_bgLoopSound =
+        GetSoundEngine()->play2D("./Assets/sounds/winter_wind.mp3", true, false, true);
+  } else if (state == +GameState::MainMenu) {
+    _instance->_bgLoopSound =
+        GetSoundEngine()->play2D("./Assets/sounds/menu_bg.wav", true, false, true);
   }
 }
 
