@@ -29,14 +29,15 @@ using namespace Engine::Components;
 using namespace Engine::ECS;
 
 GameManager::GameManager() {
-  _gameSettings   = std::make_shared< GameSettings >();
-  _playerSettings = std::make_shared< PlayerSettings >();
-  _soundEngine    = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
-  _cutscene       = std::make_shared< Cutscene >();
-  _mainMenu       = std::make_shared< MainMenu >();
-  _levelSelection = std::make_shared< LevelSelection >();
-  _options        = std::make_shared< OptionsMenu >();
-  _fishEyeShader  = AssetManager::GetShader("./shaders/fish_eye.glsl");
+  _gameSettings     = std::make_shared< GameSettings >();
+  _playerSettings   = std::make_shared< PlayerSettings >();
+  _soundEngine      = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
+  _cutscene         = std::make_shared< Cutscene >();
+  _mainMenu         = std::make_shared< MainMenu >();
+  _levelSelection   = std::make_shared< LevelSelection >();
+  _options          = std::make_shared< OptionsMenu >();
+  _fishEyeShader    = AssetManager::GetShader("./shaders/fish_eye.glsl");
+  _aberrationShader = AssetManager::GetShader("./shaders/chromatic_aberration.glsl");
   _bellOutlineMaterial = AssetManager::GetMaterial("materials/bell_outline.mat");
   _speedLerp.Set(_playerSettings->ForwardSpeed(), _playerSettings->ForwardSpeed(), 1.0f);
 }
@@ -255,8 +256,20 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
   auto max_speed     = base_speed * GetPlayerSettings()->SpeedMultiplier();
   auto current_speed = GetPlayerSettings()->ForwardSpeed();
 
-  auto factor = (current_speed - base_speed) / max_speed;
-  _fishEyeShader->SetValue("u_Factor", factor);
+  /* Post Process */
+  { /* Fish eye */
+    auto factor = (current_speed - base_speed) / max_speed;
+    _fishEyeShader->SetValue("u_Factor", factor);
+  }
+
+  { /* Aberration */
+    auto ts     = _gameSettings->PlayerTimeScale();
+    auto tb     = 1.0f;
+    auto tl     = 0.75f;
+    auto factor = (tb - ts) / (tb - tl);
+    _aberrationShader->SetValue("u_Factor", factor * 10.0f);
+  }
+  /* -=-=-=-=-=- */
 
   if (IsGameplayState()) {
     UpdateMarkerColor();
@@ -511,7 +524,7 @@ auto GameManager::CreateSecondWeaselImpl() -> void {
   auto& node_system    = SceneManager::GetCurrentScene()->NodeSystem();
 
   auto boss = entity_manager.CreateEntity();
-  boss->LoadFromJson("./Assets/prefabs/boss.prefab", true);
+  boss->LoadFromJson("./Assets/prefabs/boss2.prefab", true);
   boss->Name("Boss2");
   auto weasel = entity_manager.CreateEntity();
   weasel->LoadFromJson("./Assets/prefabs/weasel.prefab", true);

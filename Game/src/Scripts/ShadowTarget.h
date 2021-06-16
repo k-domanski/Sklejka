@@ -39,4 +39,5 @@ private:
   FloatLerp _gameTimeLerp;
   FloatLerp _playerTimeLerp;
   float _lerpTime;
+  bool _lastStateX;
 };

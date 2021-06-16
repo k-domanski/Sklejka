@@ -15,7 +15,8 @@ ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
       Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
   _gameTimeLerp.Set(1.0f, 1.0f, 1.0f);
   _playerTimeLerp.Set(1.0f, 1.0f, 1.0f);
-  _lerpTime = 0.5f;
+  _lerpTime   = 0.5f;
+  _lastStateX = false;
 }
 
 auto ShadowTarget::OnCreate() -> void {
@@ -40,10 +41,11 @@ auto ShadowTarget::Update(float deltaTime) -> void {
   if (GameManager::IsPaused()) {
     return;
   }
-
-  if (Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_X)) {
+  auto currentStataX = Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_X);
+  if (currentStataX && !_lastStateX) {
     SlowTime();
   }
+  _lastStateX = currentStataX;
 
   const auto player_settings = GameManager::GetPlayerSettings();
   if (!_timeSlowed) {
@@ -74,13 +76,8 @@ auto ShadowTarget::OnKeyPressed(Engine::Key key) -> void {
 }
 
 auto ShadowTarget::SlowTime() -> void {
-  if (_timeSlowed) {
-    return;
-  }
-  if (_currentAmount < 1.0f) {
-    return;
-  }
-  SetTimeSlowed(true);
+  _timeSlowed = !_timeSlowed;
+  SetTimeSlowed(_timeSlowed);
 }
 
 auto ShadowTarget::GetTarget() -> std::shared_ptr< Engine::ECS::Entity > {
@@ -88,9 +85,18 @@ auto ShadowTarget::GetTarget() -> std::shared_ptr< Engine::ECS::Entity > {
 }
 
 auto ShadowTarget::SetTimeSlowed(bool value) -> void {
-  _timeSlowed = value;
-  _playerTimeLerp.Set((!value ? 0.75f : 1.f), (value ? 0.75f : 1.f), _lerpTime);
-  _gameTimeLerp.Set((!value ? 0.5f : 1.f), (value ? 0.5f : 1.f), _lerpTime);
+  _timeSlowed  = value;
+  auto p_scale = GameManager::GetGameSettings()->PlayerTimeScale();
+  auto g_scale = GameManager::GetGameSettings()->GameTimeScale();
+
+  auto pt_start = p_scale;
+  auto pt_end   = value ? 0.75 : 1.f;
+
+  auto gt_start = g_scale;
+  auto gt_end   = value ? 0.5 : 1.f;
+
+  _playerTimeLerp.Set(pt_start, pt_end, _lerpTime);
+  _gameTimeLerp.Set(gt_start, gt_end, _lerpTime);
   GameManager::GetGameSettings()->GameTimeScale(_gameTimeLerp.Value());
   GameManager::GetGameSettings()->PlayerTimeScale(_playerTimeLerp.Value());
 }
