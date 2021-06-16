@@ -380,7 +380,7 @@ OptionsMenu::OptionsMenu() {
 
 auto OptionsMenu::Show(std::function< void() > returnFunc) -> void {
   if (_isVisible)
-      return;
+    return;
   AddAllElements();
   _returnButton->OnPress([this, returnFunc]() {
     returnFunc();
@@ -391,9 +391,17 @@ auto OptionsMenu::Show(std::function< void() > returnFunc) -> void {
 
 auto OptionsMenu::Hide() -> void {
   if (!_isVisible)
-      return;
+    return;
   RemoveAllElements();
   _isVisible = false;
+}
+
+auto OptionsMenu::HideFromButton() -> void {
+  _returnButton->TriggerOnPress();
+}
+
+auto OptionsMenu::IsVisible() -> bool {
+  return _isVisible;
 }
 
 auto OptionsMenu::Scene() -> std::shared_ptr< Engine::Scene > {

@@ -136,12 +136,6 @@ auto GameManager::GetCurrentSceneName() -> SceneName {
 
 auto GameManager::Update(float deltaTime) -> void {
   _instance->UpdateImpl(deltaTime);
-
-  // test pause menu:
-  if (Engine::Input::IsKeyPressed(Engine::Key::ESCAPE)) {
-    if (_instance->_pauseMenu != nullptr)
-      _instance->_pauseMenu->Show();
-  }
 }
 
 auto GameManager::PlayerSpeedUp() -> void {
@@ -283,6 +277,21 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
   if (IsGameplayState()) {
     UpdateMarkerColor();
   }
+
+  if (Input::IsKeyPressed(Engine::Key::ESCAPE)
+      || Input::IsGamepadButtonPressed(GamepadCode::BUTTON_START)) {
+    if (_pauseMenu != nullptr && !_endLevelMenu->IsVisible())
+      _pauseMenu->Show();
+  }
+  auto bPressed = Input::IsGamepadButtonPressed(GamepadCode::BUTTON_B);
+  if (bPressed && !_BpressedLastFrame) {
+    if (_pauseMenu != nullptr && !_options->IsVisible())
+      _pauseMenu->Hide();
+    if (_options != nullptr && _options->IsVisible())
+      _options->HideFromButton();
+    // TODO: tutorial hide/back
+  }
+  _BpressedLastFrame = bPressed;
 }
 
 auto GameManager::PlayCutscene() -> void {
