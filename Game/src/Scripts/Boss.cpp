@@ -153,7 +153,7 @@ auto Boss::Hit() -> void {
         ->FindEntity("Boss2")
         ->GetComponent< NativeScript >()
         ->GetScript< SecondWeasel >()
-        ->StartCutscene(_currentNode->Index());
+        ->StartCutscene(_currentNode->Index() - 2);
     // Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
     // GameManager::Win();
   }

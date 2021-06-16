@@ -66,6 +66,7 @@ private:
   GameManager();
   static auto SetupPlayer(std::shared_ptr< Engine::Scene >& scene) -> void;
   static auto FindBells() -> void;
+  static auto ProcessBell(const std::shared_ptr< Engine::ECS::Entity >& bell) -> void;
   static auto UpdateMarkerColor() -> void;
 
 public:
@@ -80,7 +81,7 @@ public:
   static auto Update(float deltaTime) -> void;
   static auto PlayerSpeedUp() -> void;
   static auto ShowLevelSumUp(bool win, float time, int bells) -> void;
-  static auto ShowOptions(std::function<void()> returnFunc) -> void;
+  static auto ShowOptions(std::function< void() > returnFunc) -> void;
   static auto HideOptions() -> void;
   static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
   static auto KillPlayer() -> void;
@@ -92,7 +93,7 @@ public:
   static auto IsPaused() -> bool;
   static auto SetPaused(bool value) -> bool;
   static auto Time() -> float;
-  static auto CreateAcorn() -> std::shared_ptr<Engine::ECS::Entity>;
+  static auto CreateAcorn() -> std::shared_ptr< Engine::ECS::Entity >;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;
