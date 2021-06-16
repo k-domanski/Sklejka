@@ -278,11 +278,20 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
     UpdateMarkerColor();
   }
 
-  if (Engine::Input::IsKeyPressed(Engine::Key::ESCAPE)
+  if (Input::IsKeyPressed(Engine::Key::ESCAPE)
       || Input::IsGamepadButtonPressed(GamepadCode::BUTTON_START)) {
-    if (_instance->_pauseMenu != nullptr && !_instance->_endLevelMenu->IsVisible())
-      _instance->_pauseMenu->Show();
+    if (_pauseMenu != nullptr && !_endLevelMenu->IsVisible())
+      _pauseMenu->Show();
   }
+  auto bPressed = Input::IsGamepadButtonPressed(GamepadCode::BUTTON_B);
+  if (bPressed && !_BpressedLastFrame) {
+    if (_pauseMenu != nullptr && !_options->IsVisible())
+      _pauseMenu->Hide();
+    if (_options != nullptr && _options->IsVisible())
+      _options->HideFromButton();
+    // TODO: tutorial hide/back
+  }
+  _BpressedLastFrame = bPressed;
 }
 
 auto GameManager::PlayCutscene() -> void {

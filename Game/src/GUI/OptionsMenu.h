@@ -38,6 +38,8 @@ public:
   OptionsMenu();
   auto Show(std::function<void()> returnFunc) -> void;
   auto Hide()  -> void;
+  auto HideFromButton()  -> void;
+  auto IsVisible() -> bool;
   ~OptionsMenu() = default;
   auto Scene() -> std::shared_ptr< Engine::Scene >;
 

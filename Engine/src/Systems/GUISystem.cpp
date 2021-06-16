@@ -71,7 +71,7 @@ void Engine::Systems::GUISystem::Update(float deltaTime) {
     }
   }
 
-  if (A && !_gamepadALastFrame) {
+  if (A && !_gamepadALastFrame || DPADUp && !_DPADUpLastFrame || DPADDown && !_DPADDownLastFrame) {
     for (auto entityID : _entities) {
       auto transform = Engine::ECS::EntityManager::GetComponent< Engine::Transform >(entityID);
       auto renderer =

@@ -54,6 +54,7 @@ private:
   /* -=-=-=-=-=-=-=-=- */
 
   int _hittedBells;
+  bool _BpressedLastFrame;
 
   /* Resources */
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
