@@ -29,7 +29,7 @@ MainMenu::MainMenu() {
   auto transform  = entity->AddComponent< Engine::Transform >();
   _exitButton     = std::make_shared< Engine::Renderer::Button >();
   _exitButton->SelectedColor(glm::vec4(1.0f));
-  _exitButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+  _exitButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _exitButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   _exitButton->OnPress([]() { std::exit(0); });
   _exitButton->text("");
@@ -44,7 +44,7 @@ MainMenu::MainMenu() {
   _startButton = std::make_shared< Engine::Renderer::Button >();
   //_startButton->Color(glm::vec4(1.0f, 1.0f, 1.0f, 0.5f));
   _startButton->SelectedColor(glm::vec4(1.0f));
-  _startButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+  _startButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _startButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   _startButton->OnPress([]() { GameManager::SwitchScene(SceneName::LevelSelection); });
   _startButton->text("");
@@ -58,7 +58,7 @@ MainMenu::MainMenu() {
 
   _optionsButton = std::make_shared< Engine::Renderer::Button >();
   _optionsButton->SelectedColor(glm::vec4(1.0f));
-  _optionsButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+  _optionsButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _optionsButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   //_optionsButton->OnPress([this]() { GameManager::SwitchScene(SceneName::Options); });
   _optionsButton->OnPress([this]() {
@@ -75,7 +75,7 @@ MainMenu::MainMenu() {
 
   _creditsButton = std::make_shared< Engine::Renderer::Button >();
   _creditsButton->SelectedColor(glm::vec4(1.0f));
-  _creditsButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+  _creditsButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _creditsButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
   _creditsButton->OnPress([]() { GameManager::SwitchScene(SceneName::LevelSelection); });
   _creditsButton->text("");
