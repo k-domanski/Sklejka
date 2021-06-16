@@ -35,6 +35,9 @@ namespace Engine::Renderer {
     void IsSelected(bool is_selected);
     void TriggerOnPress();
 
+    //std::shared_ptr< GL::Shader > BackgroundShader();
+    void BackgroundShader(std::shared_ptr< GL::Shader > shader);
+
     bool IsMouseOverButton(glm::vec2 mousePos);
     Button();
     auto Draw(glm::mat4 model, glm::mat4 proj) -> void override;

@@ -165,6 +165,10 @@ void Engine::Renderer::Button::TriggerOnPress() {
     _onPress();
 }
 
+void Engine::Renderer::Button::BackgroundShader(std::shared_ptr< GL::Shader > shader) {
+  _background.Shader(shader);
+}
+
 auto Engine::Renderer::Button::OnPressHandle(glm::vec2 position) -> void {
   auto handle = _handleSize / 2.0f;
   if (handle.x > position.x && -handle.x < position.x && handle.y > position.y
