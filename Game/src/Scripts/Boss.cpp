@@ -70,40 +70,36 @@ auto Boss::OnCreate() -> void {
 }
 
 auto Boss::Update(float deltaTime) -> void {
-  if (!_killed) {
-    _canMove = _player->CurrentNodeIndex() > 89;
+  _canMove = _player->CurrentNodeIndex() > 89;
 
-    _distanceToPlayer =
-        glm::distance(_transform->WorldPosition(),
-                      _player->Entity()->GetComponent< Transform >()->WorldPosition());
+  _distanceToPlayer =
+      glm::distance(_transform->WorldPosition(),
+                    _player->Entity()->GetComponent< Transform >()->WorldPosition());
 
-    _dotProduct = glm::dot(_transform->Forward(),
-                           glm::normalize(_transform->WorldPosition()
-                               - _player->Entity()->GetComponent< Transform >()->WorldPosition()));
+  _dotProduct = glm::dot(_transform->Forward(),
+                         glm::normalize(_transform->WorldPosition()
+                             - _player->Entity()->GetComponent< Transform >()->WorldPosition()));
 
-    //LOG_DEBUG("Distance to player: " + std::to_string(_distanceToPlayer));
-    LOG_DEBUG("Dot product: " + std::to_string(_dotProduct));
-
-    if (_dotProduct < 0.f && _distanceToPlayer > 20.f)
-    {
-      _playerSettings->BossForwardSpeed(_playerSettings->ForwardSpeedBase());
-    }
-    else if (_currentSpeedUpDuration <= 0.f) {
-      _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase());
-    }
-
-    if (_canMove) {
-      if (!_bossShowUp) {
-        _health1->SetActive(true);
-        _health2->SetActive(true);
-        _health3->SetActive(true);
-        _bossShowUp = true;
-      }
-
-      SeekTarget(deltaTime);
-      HandleMove(deltaTime);
-    }
+  if (_dotProduct < 0.f && _distanceToPlayer > 20.f)
+  {
+    _playerSettings->BossForwardSpeed(_playerSettings->ForwardSpeedBase());
   }
+  else if (_currentSpeedUpDuration <= 0.f) {
+    _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase());
+  }
+
+  if (_canMove) {
+    if (!_bossShowUp) {
+      _health1->SetActive(true);
+      _health2->SetActive(true);
+      _health3->SetActive(true);
+      _bossShowUp = true;
+    }
+
+    SeekTarget(deltaTime);
+    HandleMove(deltaTime);
+  }
+  
 
   if (_currentSpeedUpDuration > 0.f) {
     _currentSpeedUpDuration -= deltaTime;
@@ -148,12 +144,12 @@ auto Boss::Hit() -> void {
     _killed = true;
     _rigidbody->SetGravity(true);
     _rigidbody->SetKinematic(true);
-    _rigidbody->SetVelocity(glm::vec3(.0f, -5.f, 0.f));
+    //_rigidbody->SetVelocity(glm::vec3(.0f, -2.5f, 0.f));
     SceneManager::GetCurrentScene()
         ->FindEntity("Boss2")
         ->GetComponent< NativeScript >()
         ->GetScript< SecondWeasel >()
-        ->StartCutscene(_currentNode->Index());
+        ->StartCutscene(_currentNode->Index() - 2);
     // Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
     // GameManager::Win();
   }
@@ -180,9 +176,14 @@ auto Boss::SeekTarget(float deltaTime) -> void {
 }
 
 auto Boss::HandleMove(float deltaTime) -> void {
-  _transform->Position(_transform->Position()
-                       + glm::normalize(_moveVelocity) * _playerSettings->BossForwardSpeed()
-                             * deltaTime * GameManager::GetGameSettings()->PlayerTimeScale() * GameManager::GetGameSettings()->GameTimeScale());
+  auto new_pos = _transform->Position()
+                 + glm::normalize(_moveVelocity) * _playerSettings->BossForwardSpeed() * deltaTime
+                       * GameManager::GetGameSettings()->PlayerTimeScale()
+                       * GameManager::GetGameSettings()->GameTimeScale();
+  if (!_killed)
+    _transform->Position(new_pos);
+  else
+    _transform->Position(glm::vec3(new_pos.x, _transform->Position().y - 0.1f * deltaTime, new_pos.z));
 }
 
 auto Boss::SpeedUp() -> void {

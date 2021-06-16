@@ -14,6 +14,7 @@ auto AcornThrower::OnCreate() -> void {
   _playerTransform = GameManager::GetCurrentPlayer()->GetComponent< Engine::Transform >();
   _maxDistance     = GameManager::GetPlayerSettings()->ThrowDistance();
   _lastStateA      = false;
+  _timeout         = 1.0f;
 }
 
 auto AcornThrower::TryThrow() -> void {
@@ -45,8 +46,13 @@ auto AcornThrower::TryThrow() -> void {
 }
 
 auto AcornThrower::Update(float deltaTime) -> void {
+  if (GameManager::IsPaused()) {
+    return;
+  }
+
   if (_currentTimeout >= 0.f) {
     _currentTimeout -= deltaTime;
+    return;
   }
   auto currentStataA = Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_A);
   if (currentStataA && !_lastStateA) {
@@ -57,7 +63,6 @@ auto AcornThrower::Update(float deltaTime) -> void {
 }
 
 auto AcornThrower::OnKeyPressed(Engine::Key key) -> void {
-  
   if (key == Engine::Key::SPACE && _currentTimeout <= 0.f) {
     Throw(_playerTransform->Forward());
     // TryThrow();
@@ -87,7 +92,7 @@ auto AcornThrower::Throw(glm::vec3 direction) -> void {
   auto acorn = GameManager::CreateAcorn();
 
   acorn->GetComponent< Engine::Transform >()->Position(_playerTransform->WorldPosition());
-  auto acorn_rb            = acorn->GetComponent< Engine::Components::Rigidbody >();
+  auto acorn_rb = acorn->GetComponent< Engine::Components::Rigidbody >();
   /*auto acorn_native_script = acorn->AddComponent< Engine::NativeScript >();
   acorn_native_script->Attach< CollisionDetector >();*/
   GameManager::GetSoundEngine()->play2D("./Assets/sounds/throw.wav");

@@ -22,20 +22,22 @@
 #include "Scripts/GoldenAcorn.h"
 #include "Scripts/SecondWeasel.h"
 #include "Scripts/Acorn.h"
+#include "Scripts/Bell.h"
 
 using namespace Engine;
 using namespace Engine::Components;
 using namespace Engine::ECS;
 
 GameManager::GameManager() {
-  _gameSettings   = std::make_shared< GameSettings >();
-  _playerSettings = std::make_shared< PlayerSettings >();
-  _soundEngine    = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
-  _cutscene       = std::make_shared< Cutscene >();
-  _mainMenu       = std::make_shared< MainMenu >();
-  _levelSelection = std::make_shared< LevelSelection >();
-  _options        = std::make_shared< OptionsMenu >();
-  _fishEyeShader  = AssetManager::GetShader("./shaders/fish_eye.glsl");
+  _gameSettings     = std::make_shared< GameSettings >();
+  _playerSettings   = std::make_shared< PlayerSettings >();
+  _soundEngine      = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
+  _cutscene         = std::make_shared< Cutscene >();
+  _mainMenu         = std::make_shared< MainMenu >();
+  _levelSelection   = std::make_shared< LevelSelection >();
+  _options          = std::make_shared< OptionsMenu >();
+  _fishEyeShader    = AssetManager::GetShader("./shaders/fish_eye.glsl");
+  _aberrationShader = AssetManager::GetShader("./shaders/chromatic_aberration.glsl");
   _bellOutlineMaterial = AssetManager::GetMaterial("materials/bell_outline.mat");
   _speedLerp.Set(_playerSettings->ForwardSpeed(), _playerSettings->ForwardSpeed(), 1.0f);
 }
@@ -221,6 +223,7 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
           _instance->CreatePlayer();
           _instance->CreateBoss();
           _instance->CreateSecondWeasel();
+          GetSoundEngine()->play2D("./Assets/sounds/wind_looped.wav", true);
           SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
           if (IsGameplayScene()) {
             FindBells();
@@ -235,7 +238,7 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
   /* Speedup handling */
   if (_speedLerp.Finished() && _speedUpDuration > 0.0f) {
     if (_speedUpDuration > 0.0f) {
-      _speedUpDuration -= deltaTime;
+      _speedUpDuration -= deltaTime * _gameSettings->GameTimeScale();
     }
     if (_speedUpDuration < 0.0f) {
       const auto current_speed =
@@ -245,15 +248,28 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
       _speedUpDuration = -1.0f;
     }
   }
-  _instance->GetPlayerSettings()->ForwardSpeed(_speedLerp.Update(deltaTime));
+  _instance->GetPlayerSettings()->ForwardSpeed(
+      _speedLerp.Update(deltaTime * _gameSettings->GameTimeScale()));
   /* -=-=-=-=-=-=-=-=- */
 
   auto base_speed    = GetPlayerSettings()->ForwardSpeedBase();
   auto max_speed     = base_speed * GetPlayerSettings()->SpeedMultiplier();
   auto current_speed = GetPlayerSettings()->ForwardSpeed();
 
-  auto factor = (current_speed - base_speed) / max_speed;
-  _fishEyeShader->SetValue("u_Factor", factor);
+  /* Post Process */
+  { /* Fish eye */
+    auto factor = (current_speed - base_speed) / max_speed;
+    _fishEyeShader->SetValue("u_Factor", factor);
+  }
+
+  { /* Aberration */
+    auto ts     = _gameSettings->PlayerTimeScale();
+    auto tb     = 1.0f;
+    auto tl     = 0.75f;
+    auto factor = (tb - ts) / (tb - tl);
+    _aberrationShader->SetValue("u_Factor", factor * 10.0f);
+  }
+  /* -=-=-=-=-=- */
 
   if (IsGameplayState()) {
     UpdateMarkerColor();
@@ -508,7 +524,7 @@ auto GameManager::CreateSecondWeaselImpl() -> void {
   auto& node_system    = SceneManager::GetCurrentScene()->NodeSystem();
 
   auto boss = entity_manager.CreateEntity();
-  boss->LoadFromJson("./Assets/prefabs/boss.prefab", true);
+  boss->LoadFromJson("./Assets/prefabs/boss2.prefab", true);
   boss->Name("Boss2");
   auto weasel = entity_manager.CreateEntity();
   weasel->LoadFromJson("./Assets/prefabs/weasel.prefab", true);
@@ -597,7 +613,7 @@ auto GameManager::SetupScripts() -> void {
   // scale UIs
   /*auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
   gui->OnWindowResize(Engine::Window::Get().GetScreenSize());*/
-  //SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
+  // SceneManager::GetCurrentScene()->OnWindowResize(Engine::Window::Get().GetScreenSize());
 }
 
 auto GameManager::NextFrameTrigger() -> void {
@@ -713,11 +729,19 @@ auto GameManager::FindBells() -> void {
       continue;
     }
     /* Process Bell */
-    ent->layer.SetState(LayerMask::Flag::Bell);
-    ent->collisionLayer.SetState(LayerMask::Flag::Acorn);
+    ProcessBell(ent);
+
     /* Save transform */
     _bellsTransform.push_back(ent->GetComponent< Transform >());
   }
+}
+
+auto GameManager::ProcessBell(const std::shared_ptr< Engine::ECS::Entity >& bell) -> void {
+  bell->layer.SetState(LayerMask::Flag::Bell);
+  bell->collisionLayer.SetState(LayerMask::Flag::Acorn);
+
+  auto ns = bell->AddComponent< NativeScript >();
+  ns->Attach< Bell >();
 }
 
 auto GameManager::UpdateMarkerColor() -> void {

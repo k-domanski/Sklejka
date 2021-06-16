@@ -6,8 +6,8 @@ private:
   float _speedMultiplier      = 2.0f;
   float _bossSpeedMultiplier  = 2.5f;
   float _forwardSpeedBase     = 7.5f;
-  float _bossForwardSpeedBase = 9.0f;
-  float _bossForwardSpeed     = 9.0f;
+  float _bossForwardSpeedBase = 9.5f;
+  float _bossForwardSpeed     = 9.5f;
   float _forwardSpeed         = 7.5f; /* Forward Speed (Player Rect) */
   float _controlSpeedBase     = 3.2f; /* Left, Right, Up, Down Speed */
   float _controlSpeed         = 3.2f; /* Left, Right, Up, Down Speed */
@@ -16,10 +16,10 @@ private:
   float _seekSpeed            = 2.0f; /* Direction seek speed */
   float _minNodeDistance      = 4.0f; /* Min distance to the target node */
   float _maxMoveRotation      = 0.22f;
-  glm::vec2 _rectSize         = {4.75, 4.5};
+  glm::vec2 _rectSize         = {5.5f, 4.5f};
   float _throwDistance        = 15.0f;
   float _slowTimeDuration     = 5.0f;  /* Seconds */
-  float _energyFillTime       = 10.0f; /* Fill Time*/
+  float _energyFillTime       = 5.0f; /* Fill Time*/
 
 public:
   PlayerSettings() = default;

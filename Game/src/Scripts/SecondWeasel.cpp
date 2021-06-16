@@ -25,9 +25,10 @@ auto SecondWeasel::SeekTarget(float deltaTime) -> void
 }
 
 auto SecondWeasel::HandleMove(float deltaTime) -> void {
-  _transform->Position(_transform->Position()
-                       + glm::normalize(_moveVelocity) * _playerSettings->BossForwardSpeed() * 1.2f
-                             * deltaTime);
+  auto new_pos =
+      _transform->Position()
+      + glm::normalize(_moveVelocity) * _playerSettings->BossForwardSpeed() * 1.2f * deltaTime;
+  _transform->Position(new_pos + _offset);
 }
 
 auto SecondWeasel::GetNode() -> std::shared_ptr<Engine::Node>
@@ -78,6 +79,7 @@ auto SecondWeasel::Update(float deltaTime) -> void
     if (_getAcornTimer > 0.f) {
       _getAcornTimer -= deltaTime;
       if (_getAcornTimer <= 0.f) {
+        _goldenAcorn->DetachFromBoss();
         Engine::SceneManager::GetCurrentScene()->SceneGraph()->SetParent(_goldenAcorn->Entity(),
                                                                          Entity());
         _goldenAcorn->ResetLocalPos();
