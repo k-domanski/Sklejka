@@ -53,7 +53,7 @@ EndLevelMenu::EndLevelMenu() {
   _tryAgainButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/try_again.png"));
   _tryAgainButton->Size(glm::vec2(230.0f, 65.0));
   _tryAgainButton->HandleSize(glm::vec2(230.0f, 65.0f));
-  _tryAgainButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+  _tryAgainButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _tryAgainButton->SelectedColor(glm::vec4(1.0f));
   _tryAgainButton->PressedColor({0.5f, 0.5f, 0.5f, 1.0f});
   _tryAgainButton->OnPress([]() { GameManager::SwitchScene(GameManager::GetCurrentSceneName()); });
@@ -66,7 +66,7 @@ EndLevelMenu::EndLevelMenu() {
   _nextLevelButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/next.png"));
   _nextLevelButton->Size(glm::vec2(165.0f, 65.0));
   _nextLevelButton->HandleSize(glm::vec2(165.0f, 65.0));
-  _nextLevelButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+  _nextLevelButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _nextLevelButton->SelectedColor(glm::vec4(1.0f));
   _nextLevelButton->PressedColor({0.5f, 0.5f, 0.5f, 1.0f});
   auto nextScene = GameManager::GetNextSceneName();
@@ -82,7 +82,7 @@ EndLevelMenu::EndLevelMenu() {
   _mainMenuButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/main_menu.png"));
   _mainMenuButton->Size(glm::vec2(230.0f, 65.0));
   _mainMenuButton->HandleSize(glm::vec2(230.0f, 65.0f));
-  _mainMenuButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+  _mainMenuButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _mainMenuButton->SelectedColor(glm::vec4(1.0f));
   _mainMenuButton->PressedColor({0.5f, 0.5f, 0.5f, 1.0f});
   _mainMenuButton->OnPress([this]() { GameManager::SwitchScene(SceneName::MainMenu); });

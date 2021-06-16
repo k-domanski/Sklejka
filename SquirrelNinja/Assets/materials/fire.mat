@@ -1,0 +1,27 @@
+{
+    "assetID": "15803703220924650828",
+    "diffuseFilepath": "Assets/textures/circle.png",
+    "mainColor": [
+        1.0,
+        0.2650601863861084,
+        0.0,
+        1.0
+    ],
+    "metalness": 0.0,
+    "metalnessMap": "",
+    "roughness": 0.0,
+    "roughnessMap": "",
+    "sfail": "Keep",
+    "shaderFilepath": "Assets/shaders/particle.glsl",
+    "stencilFunc": "Always",
+    "stencilRef": 0,
+    "tilingOffset": [
+        1.0,
+        1.0,
+        0.0,
+        0.0
+    ],
+    "useStencil": false,
+    "zfail": "Keep",
+    "zpass": "Keep"
+}

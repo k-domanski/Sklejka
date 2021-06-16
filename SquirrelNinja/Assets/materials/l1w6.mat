@@ -1,0 +1,27 @@
+{
+    "assetID": "9829791845024732310",
+    "diffuseFilepath": "Assets/textures/rocks_tex.png",
+    "mainColor": [
+        0.9598393440246582,
+        0.7584476470947266,
+        0.45486363768577576,
+        1.0
+    ],
+    "metalness": 0.45899999141693115,
+    "metalnessMap": "Assets/textures/rocks_tex2.png",
+    "roughness": 1.0,
+    "roughnessMap": "Assets/textures/rock-02.png",
+    "sfail": "Keep",
+    "shaderFilepath": "Assets/shaders/default.glsl",
+    "stencilFunc": "Always",
+    "stencilRef": 0,
+    "tilingOffset": [
+        4.0,
+        1.6200000047683716,
+        0.0,
+        0.0
+    ],
+    "useStencil": false,
+    "zfail": "Keep",
+    "zpass": "Keep"
+}

@@ -45,7 +45,7 @@ PauseMenu::PauseMenu() {
     GameManager::SwitchScene(SceneName::MainMenu);
   });
   _mainMenuButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
-  _mainMenuButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+  _mainMenuButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _mainMenuButton->SelectedColor(glm::vec4(1.0f));
   buttonTransform->Position(glm::vec3(windowSize / 2.0f, 0.0f));
 
@@ -59,7 +59,7 @@ PauseMenu::PauseMenu() {
   _resumeButton->TextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   _resumeButton->OnPress([this]() { this->Hide(); });
   _resumeButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
-  _resumeButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+  _resumeButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _resumeButton->SelectedColor(glm::vec4(1.0f));
 
   _optionsButton = std::make_shared< Engine::Renderer::Button >();
@@ -77,7 +77,7 @@ PauseMenu::PauseMenu() {
     Hide(false);
   });
   _optionsButton->PressedColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
-  _optionsButton->Color(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+  _optionsButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _optionsButton->SelectedColor(glm::vec4(1.0f));
 
   _backroundRenderer->AddElement(_background);

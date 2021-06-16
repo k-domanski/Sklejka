@@ -78,6 +78,12 @@ auto ShadowTarget::OnKeyPressed(Engine::Key key) -> void {
 auto ShadowTarget::SlowTime() -> void {
   _timeSlowed = !_timeSlowed;
   SetTimeSlowed(_timeSlowed);
+
+  if (_timeSlowed) {
+    GameManager::GetSoundEngine()->play2D("./Assets/sounds/slow_time.wav");
+  } else {
+    GameManager::GetSoundEngine()->play2D("./Assets/sounds/resume_time.wav");
+  }
 }
 
 auto ShadowTarget::GetTarget() -> std::shared_ptr< Engine::ECS::Entity > {

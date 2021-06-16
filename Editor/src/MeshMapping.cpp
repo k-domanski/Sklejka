@@ -75,7 +75,10 @@ namespace Editor {
         /* Wall Material */
         AssetManager::GetMaterial("Assets/materials/l1w1.mat"),
         AssetManager::GetMaterial("Assets/materials/l1w2.mat"),
-        AssetManager::GetMaterial("Assets/materials/l1w3.mat")
+        AssetManager::GetMaterial("Assets/materials/l1w3.mat"),
+        AssetManager::GetMaterial("Assets/materials/l1w4.mat"),
+        AssetManager::GetMaterial("Assets/materials/l1w5.mat"),
+        AssetManager::GetMaterial("Assets/materials/l1w6.mat"),
         /**/};
     const std::shared_ptr< Material > floor_material =
         AssetManager::GetMaterial("Assets/materials/l1f1.mat");

@@ -7,10 +7,11 @@
 namespace Engine {
   Application::Application() {
     /* Fullscreen */
+
+    /*m_Window = std::unique_ptr< Window >(
+        Window::Create(WindowProperties(1600, 900, "Squirrel Ninja", true)));*/
     m_Window = std::unique_ptr< Window >(
-        Window::Create(WindowProperties(1600, 900, "Squirrel Ninja", true)));
-    //m_Window = std::unique_ptr< Window >(
-    //    Window::Create(WindowProperties(1600, 900, "Squirrel Ninja", false)));
+        Window::Create(WindowProperties(1600, 900, "Squirrel Ninja", false)));
 
     m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
@@ -30,7 +31,6 @@ namespace Engine {
       timer.Update();
       GL::Context::ClearBuffers();
       if (!m_Minimized) {
-
         for (Layer* layer : m_LayerStack)
           layer->OnUpdate(timer.DeltaTime());
 
@@ -68,9 +68,9 @@ namespace Engine {
     return true;
   }
   bool Application::OnWindowResize(WindowResizeEvent& e) {
-      if (e.GetWidth() == 0 || e.GetHeight() == 0) {
+    if (e.GetWidth() == 0 || e.GetHeight() == 0) {
       m_Minimized = true;
-        return true;
+      return true;
     }
 
     m_Minimized = false;
