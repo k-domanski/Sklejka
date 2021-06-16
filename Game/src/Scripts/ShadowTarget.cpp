@@ -10,13 +10,16 @@ ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
   auto renderer   = entity->AddComponent< Engine::Components::UIRenderer >();
   _bar->transform = entity->AddComponent< Engine::Transform >();
   _bar->bar       = std::make_shared< Engine::Renderer::Bar >();
+  _bar->image       = std::make_shared< Engine::Renderer::Image >();
   renderer->AddElement(_bar->bar);
+  renderer->AddElement(_bar->image);
   _rendererSystem =
       Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
   _gameTimeLerp.Set(1.0f, 1.0f, 1.0f);
   _playerTimeLerp.Set(1.0f, 1.0f, 1.0f);
   _lerpTime   = 0.5f;
   _lastStateX = false;
+  _timeSlowed = false;
 }
 
 auto ShadowTarget::OnCreate() -> void {
@@ -24,16 +27,20 @@ auto ShadowTarget::OnCreate() -> void {
       Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::Renderer >();
   stbi_set_flip_vertically_on_load(true);
   _bar->bar->BackgroundTexture(
-      Engine::AssetManager::GetTexture2D("./textures/UI/bar_background.png"));
-  _bar->bar->FillTexture(Engine::AssetManager::GetTexture2D("./textures/UI/bar_fill.png"));
+      Engine::AssetManager::GetTexture2D("./textures/UI/energy_background_ver.png"));
+  _bar->bar->FillTexture(Engine::AssetManager::GetTexture2D("./textures/UI/energy_fill_ver.png"));
   _bar->bar->FillRatio(glm::min(1.0f, _currentAmount / _maxAmount));
-  _bar->bar->Horizontal(true);
-  _bar->bar->Middle(true);
-  _bar->transform->Position(glm::vec3(800.0f, 50.0f, 0.0f));
+  _bar->bar->Horizontal(false);
+  _bar->bar->Middle(false);
+  _bar->transform->Position(glm::vec3(100.0f, 350.0f, 0.0f));
   _bar->bar->BackgroundColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
   _bar->bar->FillColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-  _bar->bar->Size(glm::vec2(677.0f, 65.0f));
-  _bar->bar->Padding(glm::vec2(20.0f, 20.0f));
+  _bar->bar->Size(glm::vec2(55.0f, 400.0f));
+  _bar->bar->Padding(glm::vec2(10.0f, 10.0f));
+
+  _bar->image->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/spowolnienie_ic.png"));
+  _bar->image->Size({55.0f, 53.0f});
+  _bar->image->Offset({0.0f, 250.0f});
   stbi_set_flip_vertically_on_load(false);
 }
 
@@ -60,6 +67,7 @@ auto ShadowTarget::Update(float deltaTime) -> void {
       _currentAmount -= (1.0f / (player_settings->SlowTimeDuration() + 2 * _lerpTime)) * deltaTime;
     } else {
       SetTimeSlowed(false);
+      GameManager::GetSoundEngine()->play2D("./Assets/sounds/resume_time.wav");
       _currentAmount = 0.0f;
     }
   }

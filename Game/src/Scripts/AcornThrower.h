@@ -10,6 +10,9 @@ private:
   std::shared_ptr< Engine::Transform > _playerTransform;
   std::shared_ptr< Engine::Transform > _bossTransform;
   std::shared_ptr< Engine::Systems::SceneGraph > _sg;
+  std::shared_ptr< Engine::Transform > _transform;
+  std::shared_ptr< Engine::Renderer::Bar > _bar;
+  std::shared_ptr< Engine::Renderer::Image > _image;
   bool _lastStateA;
   auto TryThrow() -> void;
   auto Throw(std::shared_ptr< Engine::Transform > target) -> void;

@@ -19,11 +19,9 @@ MainMenu::MainMenu() {
   _image           = std::make_shared< Engine::Renderer::Image >();
   _image->Size(glm::vec2(window_size));
   stbi_set_flip_vertically_on_load(true);
-  _image->Texture(Engine::AssetManager::GetTexture2D("./textures/squirrelNinja.png"));
-  stbi_set_flip_vertically_on_load(false);
+  _image->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/SN_bezbroni.png"));
   transform3->Position(glm::vec3(window_size * 0.5f, 0.0f));
   uiRenderer3->AddElement(_image);
-  stbi_set_flip_vertically_on_load(true);
   auto entity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
   auto uiRenderer = entity->AddComponent< Engine::Components::UIRenderer >();
   auto transform  = entity->AddComponent< Engine::Transform >();
@@ -78,7 +76,7 @@ MainMenu::MainMenu() {
   _creditsButton->SelectedColor(glm::vec4(1.0f));
   _creditsButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _creditsButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-  _creditsButton->OnPress([]() { GameManager::SwitchScene(SceneName::LevelSelection); });
+  _creditsButton->OnPress([]() { GameManager::SwitchScene(SceneName::Credits); });
   _creditsButton->text("");
   _creditsButton->TextColor(glm::vec4(0, 0, 0, 1));
   _creditsButton->TextOffset(glm::vec2(-45.0f, -15.0f));

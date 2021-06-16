@@ -5,6 +5,7 @@
 #include <GUI/LoadingScreen.h>
 #include <GUI/Cutscene.h>
 #include "irrKlang.h"
+#include "GUI/CreditsMenu.h"
 #include "GUI/EndLevelMenu.h"
 #include "GUI/LevelSelection.h"
 #include "GUI/MainMenu.h"
@@ -14,7 +15,7 @@
 
 using Engine::Utility::FloatLerp;
 
-BETTER_ENUM(__SceneName, int, MainMenu, Options, Cutscene, LevelSelection, LVL_1);
+BETTER_ENUM(__SceneName, int, MainMenu, Options, Credits, Cutscene, LevelSelection, LVL_1);
 typedef __SceneName SceneName;
 
 BETTER_ENUM(__GameState, int, MainMenu, Gameplay, Paused);
@@ -42,6 +43,7 @@ private:
   std::shared_ptr< Cutscene > _cutscene;
   std::shared_ptr< MainMenu > _mainMenu;
   std::shared_ptr< LevelSelection > _levelSelection;
+  std::shared_ptr< CreditsMenu > _creditsMenu;
   std::shared_ptr< PauseMenu > _pauseMenu;
   std::shared_ptr< EndLevelMenu > _endLevelMenu;
   /* -=-=-=- */
@@ -109,6 +111,7 @@ private:
   auto CreatePlayer() -> void;
   auto CreateBoss() -> void;
   auto CreateSecondWeaselImpl() -> void;
+  auto PrepareJetpack(std::shared_ptr< Engine::ECS::Entity > jetpack) -> void;
   auto SetupScripts() -> void;
   auto NextFrameTrigger() -> void;
   auto KillPlayerImpl() -> void;

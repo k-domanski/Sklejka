@@ -23,6 +23,7 @@ private:
   std::shared_ptr< GoldenAcorn > _goldenAcorn;
   glm::vec3 _moveVelocity{0};
   std::shared_ptr< Engine::Components::UIRenderer > _renderer;
+  std::shared_ptr< Engine::Renderer::Image > _weaselImage;
   std::shared_ptr< Engine::Renderer::Image > _health1;
   std::shared_ptr< Engine::Renderer::Image > _health2;
   std::shared_ptr< Engine::Renderer::Image > _health3;

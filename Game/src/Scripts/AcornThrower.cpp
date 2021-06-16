@@ -15,6 +15,31 @@ auto AcornThrower::OnCreate() -> void {
   _maxDistance     = GameManager::GetPlayerSettings()->ThrowDistance();
   _lastStateA      = false;
   _timeout         = 1.0f;
+
+  auto entity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
+  auto renderer   = entity->AddComponent< Engine::Components::UIRenderer >();
+  _transform = entity->AddComponent< Engine::Transform >();
+  _bar       = std::make_shared< Engine::Renderer::Bar >();
+  _image     = std::make_shared< Engine::Renderer::Image >();
+  renderer->AddElement(_bar);
+  renderer->AddElement(_image);
+  stbi_set_flip_vertically_on_load(true);
+  _bar->BackgroundTexture(
+      Engine::AssetManager::GetTexture2D("./textures/UI/energy_background_ver.png"));
+  _bar->FillTexture(Engine::AssetManager::GetTexture2D("./textures/UI/energy_fill_zoladz_ver.png"));
+  _bar->FillRatio(glm::min(1.0f, _currentTimeout / _timeout));
+  _bar->Horizontal(false);
+  _bar->Middle(false);
+  _transform->Position(glm::vec3(1500.0f, 350.0f, 0.0f));
+  _bar->BackgroundColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+  _bar->FillColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+  _bar->Size(glm::vec2(55.0f, 400.0f));
+  _bar->Padding(glm::vec2(10.0f, 10.0f));
+
+  _image->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/zoladz_ic.png"));
+  _image->Size({55.0f, 53.0f});
+  _image->Offset({0.0f, 250.0f});
+  stbi_set_flip_vertically_on_load(false);
 }
 
 auto AcornThrower::TryThrow() -> void {
@@ -52,6 +77,7 @@ auto AcornThrower::Update(float deltaTime) -> void {
 
   if (_currentTimeout >= 0.f) {
     _currentTimeout -= deltaTime;
+    _bar->FillRatio(glm::min(1.0f, (_timeout - _currentTimeout) / _timeout));
     return;
   }
   auto currentStataA = Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_A);

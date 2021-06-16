@@ -23,6 +23,7 @@
 #include "Scripts/SecondWeasel.h"
 #include "Scripts/Acorn.h"
 #include "Scripts/Bell.h"
+#include "Scripts/Jetpack.h"
 
 using namespace Engine;
 using namespace Engine::Components;
@@ -35,6 +36,7 @@ GameManager::GameManager() {
   _cutscene         = std::make_shared< Cutscene >();
   _mainMenu         = std::make_shared< MainMenu >();
   _levelSelection   = std::make_shared< LevelSelection >();
+  _creditsMenu   = std::make_shared< CreditsMenu >();
   _options          = std::make_shared< OptionsMenu >();
   _fishEyeShader    = AssetManager::GetShader("./shaders/fish_eye.glsl");
   _aberrationShader = AssetManager::GetShader("./shaders/chromatic_aberration.glsl");
@@ -92,6 +94,10 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
     }
     case SceneName::Options: {
       // Engine::SceneManager::OpenScene(_instance->_options->Scene()->GetID());
+      break;
+    }
+    case SceneName::Credits: {
+      Engine::SceneManager::OpenScene(_instance->_creditsMenu->Scene()->GetID());
       break;
     }
   }
@@ -391,8 +397,8 @@ auto GameManager::CreatePlayer() -> void {
     em_l->SizeDecay(decay);
     em_r->SizeDecay(decay);
 
-    em_l->SpawnRate(50.0f);
-    em_r->SpawnRate(50.0f);
+    em_l->SpawnRate(100.0f);
+    em_r->SpawnRate(100.0f);
 
     auto tr_l = emitter_left->AddComponent< Transform >();
     auto tr_r = emitter_right->AddComponent< Transform >();
@@ -534,6 +540,8 @@ auto GameManager::CreateBoss() -> void {
   boss_native_script->Attach(std::make_shared< Boss >(
       _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >(),
       golden_acorn_native_script->GetScript< GoldenAcorn >()));
+
+  PrepareJetpack(boss_jet);
 }
 
 auto GameManager::CreateSecondWeaselImpl() -> void {
@@ -571,6 +579,91 @@ auto GameManager::CreateSecondWeaselImpl() -> void {
   auto boss_native_script = boss->AddComponent< NativeScript >();
   boss_native_script->Attach(std::make_shared< SecondWeasel >(
       existing_golden_acorn->GetComponent< NativeScript >()->GetScript< GoldenAcorn >()));
+
+  PrepareJetpack(boss_jet);
+}
+
+auto GameManager::PrepareJetpack(std::shared_ptr< Engine::ECS::Entity > jetpack) -> void {
+  { /* Jetpack Particles */
+    auto em_sl   = EntityManager::GetInstance().CreateEntity();
+    auto smoke_l = em_sl->AddComponent< ParticleEmitter >(100);
+
+    auto em_fl  = EntityManager::GetInstance().CreateEntity();
+    auto fire_l = em_fl->AddComponent< ParticleEmitter >(100);
+
+    auto em_sr   = EntityManager::GetInstance().CreateEntity();
+    auto smoke_r = em_sr->AddComponent< ParticleEmitter >(100);
+
+    auto em_fr  = EntityManager::GetInstance().CreateEntity();
+    auto fire_r = em_fr->AddComponent< ParticleEmitter >(100);
+
+    auto graph = SceneManager::GetCurrentScene()->SceneGraph();
+    graph->SetParent(em_sl, jetpack);
+    graph->SetParent(em_sr, jetpack);
+    graph->SetParent(em_fl, jetpack);
+    graph->SetParent(em_fr, jetpack);
+
+    auto smoke_mat = AssetManager::GetMaterial("materials/smoke.mat");
+    auto fire_mat  = AssetManager::GetMaterial("materials/fire.mat");
+
+    smoke_l->Material(smoke_mat);
+    smoke_r->Material(smoke_mat);
+    fire_l->Material(fire_mat);
+    fire_r->Material(fire_mat);
+
+    smoke_l->EmitCount(100);
+    smoke_r->EmitCount(100);
+    fire_l->EmitCount(100);
+    fire_r->EmitCount(100);
+
+    smoke_l->SpawnRate(75.0f);
+    smoke_r->SpawnRate(75.0f);
+    fire_l->SpawnRate(75.0f);
+    fire_r->SpawnRate(75.0f);
+
+    const auto smoke_rand  = 0.1f;
+    const auto smoke_scale = 0.6f;
+    const auto smoke_life  = 1.0f;
+    const auto smoke_decay = smoke_scale / smoke_life;
+
+    smoke_l->Scale(glm::vec2(smoke_scale));
+    smoke_l->Lifetime(smoke_life);
+    smoke_l->SizeDecay(smoke_decay);
+    smoke_l->VelocityRandomness(smoke_rand);
+
+    smoke_r->Scale(glm::vec2(smoke_scale));
+    smoke_r->Lifetime(smoke_life);
+    smoke_r->SizeDecay(smoke_decay);
+    smoke_r->VelocityRandomness(smoke_rand);
+
+    const auto fire_rand  = 0.03f;
+    const auto fire_scale = 0.3f;
+    const auto fire_life  = 0.45f;
+    const auto fire_decay = fire_scale / fire_life;
+
+    fire_l->Scale(glm::vec2(fire_scale));
+    fire_l->Lifetime(fire_life);
+    fire_l->SizeDecay(fire_decay);
+    fire_l->VelocityRandomness(fire_rand);
+
+    fire_r->Scale(glm::vec2(fire_scale));
+    fire_r->Lifetime(fire_life);
+    fire_r->SizeDecay(fire_decay);
+    fire_r->VelocityRandomness(fire_rand);
+
+    auto tr_sl = em_sl->AddComponent< Transform >();
+    auto tr_sr = em_sr->AddComponent< Transform >();
+    auto tr_fl = em_fl->AddComponent< Transform >();
+    auto tr_fr = em_fr->AddComponent< Transform >();
+
+    tr_sl->Position({1.0f, 0.6f, -1.2f});
+    tr_fl->Position({1.0f, 0.6f, -1.2f});
+    tr_sr->Position({-1.0f, 0.6f, -1.2f});
+    tr_fr->Position({-1.0f, 0.6f, -1.2f});
+
+    auto script = jetpack->AddComponent< NativeScript >()->Attach< Jetpack >();
+    script->SetEmitters({smoke_l, smoke_r, fire_l, fire_r});
+  }
 }
 
 auto GameManager::SetupScripts() -> void {
