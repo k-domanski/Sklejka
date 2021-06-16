@@ -35,6 +35,7 @@ GameManager::GameManager() {
   _cutscene         = std::make_shared< Cutscene >();
   _mainMenu         = std::make_shared< MainMenu >();
   _levelSelection   = std::make_shared< LevelSelection >();
+  _creditsMenu   = std::make_shared< CreditsMenu >();
   _options          = std::make_shared< OptionsMenu >();
   _fishEyeShader    = AssetManager::GetShader("./shaders/fish_eye.glsl");
   _aberrationShader = AssetManager::GetShader("./shaders/chromatic_aberration.glsl");
@@ -92,6 +93,10 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
     }
     case SceneName::Options: {
       // Engine::SceneManager::OpenScene(_instance->_options->Scene()->GetID());
+      break;
+    }
+    case SceneName::Credits: {
+      Engine::SceneManager::OpenScene(_instance->_creditsMenu->Scene()->GetID());
       break;
     }
   }

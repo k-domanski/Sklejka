@@ -14,7 +14,7 @@ using Engine::Utility::FloatLerp;
 struct BarData {
   std::shared_ptr< Engine::Transform > transform;
   std::shared_ptr< Engine::Renderer::Bar > bar;
-  std::shared_ptr< Engine::Renderer::Text > text;
+  std::shared_ptr< Engine::Renderer::Image > image;
 };
 
 class ShadowTarget : public Engine::Script< ShadowTarget > {

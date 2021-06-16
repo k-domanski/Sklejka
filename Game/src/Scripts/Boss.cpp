@@ -42,8 +42,13 @@ auto Boss::OnCreate() -> void {
   auto entity    = EntityManager::GetInstance().CreateEntity();
   _renderer      = entity->AddComponent< Components::UIRenderer >();
   auto transform = entity->AddComponent< Transform >();
-  transform->Position({800.0f, 750.0f, 0.0f});
+  transform->Position({800.0f, 800.0f, 0.0f});
   stbi_set_flip_vertically_on_load(true);
+  _weaselImage = std::make_shared< Renderer::Image >();
+  _weaselImage->Texture(AssetManager::GetTexture2D("./textures/UI/lasica_ic.png"));
+  _weaselImage->Size({56.0f, 50.0f});
+  _weaselImage->Offset({-125.0f, 0.0f});
+
   _health1 = std::make_shared< Renderer::Image >();
   _health1->Texture(AssetManager::GetTexture2D("./textures/UI/heart_full.png"));
   stbi_set_flip_vertically_on_load(false);
@@ -60,10 +65,12 @@ auto Boss::OnCreate() -> void {
   _health3->Size({56.0f, 50.0f});
   _health3->Offset({-60.0f, 0.0f});
 
+  _renderer->AddElement(_weaselImage);
   _renderer->AddElement(_health1);
   _renderer->AddElement(_health2);
   _renderer->AddElement(_health3);
 
+  _weaselImage->SetActive(false);
   _health1->SetActive(false);
   _health2->SetActive(false);
   _health3->SetActive(false);
@@ -90,6 +97,7 @@ auto Boss::Update(float deltaTime) -> void {
 
   if (_canMove) {
     if (!_bossShowUp) {
+      _weaselImage->SetActive(true);
       _health1->SetActive(true);
       _health2->SetActive(true);
       _health3->SetActive(true);
