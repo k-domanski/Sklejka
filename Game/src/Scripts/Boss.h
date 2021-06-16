@@ -34,6 +34,10 @@ private:
   bool _bossShowUp;
   bool _killed = false;
 
+  // DEBUG DEBUG DEBUG
+  float _distanceToPlayer;
+  float _dotProduct;
+
   auto SeekTarget(float deltaTime) -> void;
   auto HandleMove(float deltaTime) -> void;
   auto SpeedUp() -> void;
