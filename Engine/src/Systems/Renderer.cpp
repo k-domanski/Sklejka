@@ -55,7 +55,7 @@ namespace Engine::Systems {
     /* -=-=-=- */
 
     /* Shadow Mapping */
-    _shadowMapSize = glm::vec2(1024.0f, 1024.0f) * 3.0f;
+    _shadowMapSize = glm::vec2(1024.0f, 1024.0f) * 4.0f;
     _shadowTarget  = std::make_shared< GL::RenderTarget >(_shadowMapSize.x, _shadowMapSize.y);
 
     _shadowTexture = std::make_shared< GL::TextureAttachment >(
@@ -67,7 +67,7 @@ namespace Engine::Systems {
     _shadowTarget->Bind(FramebufferTarget::ReadWrite);
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
-    _shadowProjection = glm::ortho(-30.0f, 30.0f, -30.0f, 30.0f, -30.0f, 30.0f);
+    _shadowProjection = glm::ortho(-40.0f, 40.0f, -40.0f, 40.0f, -40.0f, 40.0f);
     _shadowUniformBuffer.BindToSlot(GL::UniformBlock::ShadowData);
     _shadowMapShader     = AssetManager::GetShader("./shaders/shadow_map.glsl");
     _shadowMapAnimShader = AssetManager::GetShader("./shaders/shadow_map_anim.glsl");
@@ -80,11 +80,12 @@ namespace Engine::Systems {
     /* -=-=-=-=-=-=-=-=- */
 
     /* Post Processing */
-    _quad            = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
-    _pingPongBuffer  = std::make_shared< PingPongBuffer >(size);
-    _blurShader      = AssetManager::GetShader("./shaders/blur.glsl");
-    _fishEyeShader   = AssetManager::GetShader("./shaders/fish_eye.glsl");
-    _finalPassShader = AssetManager::GetShader("./shaders/final_pass.glsl");
+    _quad           = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Plane);
+    _pingPongBuffer = std::make_shared< PingPongBuffer >(size);
+    _blurShader     = AssetManager::GetShader("./shaders/blur.glsl");
+    _fishEyeShader  = AssetManager::GetShader("./shaders/fish_eye.glsl");
+    _aberrationShader = AssetManager::GetShader("./shaders/chromatic_aberration.glsl");
+    _finalPassShader  = AssetManager::GetShader("./shaders/final_pass.glsl");
     /* -=-=-=-=-=-=-=- */
 
     /* Bell Outline */
@@ -214,7 +215,7 @@ namespace Engine::Systems {
       if (light != nullptr && light->flags.GetAny(LightFlag::Dirty | LightFlag::NewData)) {
         auto light_tr   = ECS::EntityManager::GetComponent< Transform >(light->GetEntity());
         const auto& fr  = light_tr->Forward();
-        const auto& pos = camera_tr->Position() + camera_tr->Forward() * 5.0f;
+        const auto& pos = camera_tr->Position() + camera_tr->Forward() * 7.0f;
         _shadowUniformData.lightSpaceMatrix =
             _shadowProjection * glm::lookAt(pos, pos + fr, {0.0f, 1.0f, 0.0f});
         _shadowUniformBuffer.SetData(_shadowUniformData);
@@ -332,7 +333,7 @@ namespace Engine::Systems {
     }
 
     DrawSkybox();
-    DrawBellOutline();
+    // DrawBellOutline();
     DrawParticles();
 
 #if defined(_DEBUG)
@@ -629,6 +630,15 @@ namespace Engine::Systems {
     /* Context Setup */
     GL::Context::DepthTest(false);
     _quad->Use();
+
+    /* Chromatic aberration */
+    if (true) {
+      _aberrationShader->Use();
+      _aberrationShader->SetValue("u_MainTexture", 0);
+      _pingPongBuffer->Swap();
+      _pingPongBuffer->BackTexture()->Bind(0);
+      glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
+    }
 
     /* Fish Eye */
     if (true) {

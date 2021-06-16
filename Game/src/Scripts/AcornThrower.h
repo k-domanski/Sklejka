@@ -3,7 +3,7 @@
 class AcornThrower : public Engine::Script< AcornThrower > {
 private:
   float _maxDistance;
-  float _timeout        = 2.f;
+  float _timeout;
   float _currentTimeout = 0.0f;
   std::vector< std::shared_ptr< Engine::ECS::Entity > > _bells;
   std::shared_ptr< Engine::ECS::Entity > _boss;
