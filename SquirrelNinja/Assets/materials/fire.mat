@@ -1,11 +1,11 @@
 {
-    "assetID": "15994822110574494309",
-    "diffuseFilepath": "Assets/textures/smoke.png",
+    "assetID": "15803703220924650828",
+    "diffuseFilepath": "Assets/textures/circle.png",
     "mainColor": [
-        0.09236949682235718,
-        0.08922167122364044,
-        0.08235352486371994,
-        0.1568627506494522
+        1.0,
+        0.2650601863861084,
+        0.0,
+        1.0
     ],
     "metalness": 0.0,
     "metalnessMap": "",
