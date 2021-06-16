@@ -7,10 +7,10 @@
         0.6700053215026855,
         1.0
     ],
-    "metalness": 0.38600000739097595,
+    "metalness": 1.0,
     "metalnessMap": "Assets/textures/rocks_tex3.png",
-    "roughness": 1.0,
-    "roughnessMap": "Assets/textures/rocks_tex2.png",
+    "roughness": 0.7879999876022339,
+    "roughnessMap": "Assets/textures/rocks_tex.png",
     "sfail": "Keep",
     "shaderFilepath": "Assets/shaders/default.glsl",
     "stencilFunc": "Always",

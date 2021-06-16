@@ -302,7 +302,11 @@ namespace Engine::Systems {
 
       // If no material -> Use debug
       if (material == nullptr || material->GetShader() == nullptr) {
+#if defined(_DEBUG)
         material = _debugMaterial;
+#else
+        continue;
+#endif
       }
       auto shader          = material->GetShader();
       const auto transform = ECS::EntityManager::GetComponent< Transform >(entity);

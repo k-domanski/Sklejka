@@ -72,6 +72,9 @@ auto ShadowTarget::Update(float deltaTime) -> void {
 }
 
 auto ShadowTarget::OnKeyPressed(Engine::Key key) -> void {
+  if (GameManager::IsPaused()) {
+    return;
+  }
   if (key == Engine::Key::LEFT_SHIFT) {
     SlowTime();
   }
