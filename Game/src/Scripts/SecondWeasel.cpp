@@ -70,6 +70,7 @@ auto SecondWeasel::StartCutscene(int startNode) -> void
 }
 
 
+
 auto SecondWeasel::Update(float deltaTime) -> void
 {
   if (_canMove) {

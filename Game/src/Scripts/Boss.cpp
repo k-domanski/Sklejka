@@ -178,6 +178,7 @@ auto Boss::UpdateSpeed(float deltaTime) -> void {
     auto current_speed     = _playerSettings->BossForwardSpeed();
     auto player_base_speed = _playerSettings->ForwardSpeedBase();
     auto player_speed      = _playerSettings->ForwardSpeed();
+
     switch (_distState) {
       case Distance::InRange: {
         _speedLerp.Set(current_speed, player_base_speed * 1.2f, _lerpTime);

@@ -16,12 +16,13 @@ private:
   float _wobbleAnimAmplitude = .005f;
   float _wobbleAnimInterval = 2.5f;
 
-  float _throwTime = .5f;
+  float _throwTime = .65f;
   float _throwSpeed = .1f;
 
   bool _wobbleAnim = true;
   bool _throw = false;
-  
+
+
 public:
   GoldenAcorn();
   auto OnCreate() -> void override;
