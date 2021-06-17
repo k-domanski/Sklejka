@@ -11,6 +11,7 @@
 #include "GUI/MainMenu.h"
 #include "GUI/OptionsMenu.h"
 #include "GUI/PauseMenu.h"
+#include "GUI/TutorialMenu.h"
 #include "Utility/Utility.h"
 
 using Engine::Utility::FloatLerp;
@@ -35,8 +36,12 @@ private:
   SceneName _currentSceneName = SceneName::MainMenu;
   GameState _currentGameState = GameState::Gameplay;
   bool _isPaused{false};
-  irrklang::ISound* _bgLoopSound = nullptr;
   /* -=-=- */
+
+  /* Soudns */
+  irrklang::ISound* _bgLoopSound = nullptr;
+  std::vector< irrklang::ISound* > _sceneSounds;
+  /* -=-=-=-*/
 
   /* Panels */
   std::shared_ptr< OptionsMenu > _options;
@@ -44,6 +49,7 @@ private:
   std::shared_ptr< MainMenu > _mainMenu;
   std::shared_ptr< LevelSelection > _levelSelection;
   std::shared_ptr< CreditsMenu > _creditsMenu;
+  std::shared_ptr< TutorialMenu > _tutorialMenu;
   std::shared_ptr< PauseMenu > _pauseMenu;
   std::shared_ptr< EndLevelMenu > _endLevelMenu;
   /* -=-=-=- */
@@ -60,6 +66,7 @@ private:
 
   /* Resources */
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
+  std::shared_ptr< irrklang::ISoundEngine > _musicEngine;
   std::shared_ptr< Engine::GL::Shader > _fishEyeShader;
   std::shared_ptr< Engine::GL::Shader > _aberrationShader;
   std::shared_ptr< Engine::Renderer::Material > _bellOutlineMaterial;
@@ -78,12 +85,15 @@ private:
   static auto SetupBGMusic(GameState state) -> void;
   static auto ProcessBell(const std::shared_ptr< Engine::ECS::Entity >& bell) -> void;
   static auto UpdateMarkerColor() -> void;
+  static auto CleanSounds() -> void;
 
 public:
   static auto Initialize() -> void;
   static auto GetGameSettings() noexcept -> std::shared_ptr< GameSettings >;
   static auto GetPlayerSettings() noexcept -> std::shared_ptr< PlayerSettings >;
   static auto GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine >;
+  static auto GetMusicEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine >;
+  static auto SetVolume(std::shared_ptr< irrklang::ISoundEngine > engine, float value) -> void;
   static auto SwitchScene(SceneName scene) -> void;
   static auto GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene >;
   static auto GetNextSceneName() -> SceneName;
@@ -93,6 +103,8 @@ public:
   static auto ShowLevelSumUp(bool win, float time, int bells) -> void;
   static auto ShowOptions(std::function< void() > returnFunc) -> void;
   static auto HideOptions() -> void;
+  static auto ShowTutorial(std::function< void() > returnFunc) -> void;
+  static auto HideTutorial() -> void;
   static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
   static auto KillPlayer() -> void;
   static auto Win() -> void;
@@ -104,6 +116,7 @@ public:
   static auto SetPaused(bool value) -> bool;
   static auto Time() -> float;
   static auto CreateAcorn() -> std::shared_ptr< Engine::ECS::Entity >;
+  static auto AddSound(irrklang::ISound* sound) -> void;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;

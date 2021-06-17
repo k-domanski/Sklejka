@@ -52,7 +52,7 @@ MainMenu::MainMenu() {
   _startButton->Size(glm::vec2(231.0f, 65.0f));
   _startButton->HandleSize(glm::vec2(231.0f, 65.0f));
   // transform2->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f + 50.0f, 0.0f));
-  _startButton->Offset(glm::vec2(-400.0f, 375.0f));
+  _startButton->Offset(glm::vec2(-400.0f, 500.0f));
   _startButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/start.png"));
 
   _optionsButton = std::make_shared< Engine::Renderer::Button >();
@@ -69,7 +69,7 @@ MainMenu::MainMenu() {
   _optionsButton->TextOffset(glm::vec2(-45.0f, -15.0f));
   _optionsButton->Size(glm::vec2(231.0f, 65.0f));
   _optionsButton->HandleSize(glm::vec2(231.0f, 65.0f));
-  _optionsButton->Offset(glm::vec2(-400.0f, 250.0f));
+  _optionsButton->Offset(glm::vec2(-400.0f, 375.0f));
   _optionsButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/options.png"));
 
   _creditsButton = std::make_shared< Engine::Renderer::Button >();
@@ -84,11 +84,31 @@ MainMenu::MainMenu() {
   _creditsButton->HandleSize(glm::vec2(231.0f, 65.0f));
   _creditsButton->Offset(glm::vec2(-400.0f, 125.0f));
   _creditsButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/credits.png"));
+
+  _tutorialButton = std::make_shared< Engine::Renderer::Button >();
+  _tutorialButton->SelectedColor(glm::vec4(1.0f));
+  _tutorialButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+  _tutorialButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+  _tutorialButton->OnPress([this]() {
+    GameManager::ShowTutorial([this]() { Show(); });
+    Hide();
+  });
+  _tutorialButton->text("");
+  _tutorialButton->TextColor(glm::vec4(0, 0, 0, 1));
+  _tutorialButton->TextOffset(glm::vec2(-100.0f, -14.0f));
+  _tutorialButton->TextSize({1.0f, 1.0f});
+  _tutorialButton->Size(glm::vec2(231.0f, 65.0f));
+  _tutorialButton->HandleSize(glm::vec2(231.0f, 65.0f));
+  _tutorialButton->Offset(glm::vec2(-400.0f, 250.0f));
+  _tutorialButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/HOW_TO_PLAY.png"));
+
   stbi_set_flip_vertically_on_load(false);
   uiRenderer->AddButton(_startButton);
   uiRenderer->AddElement(_startButton);
   uiRenderer->AddButton(_optionsButton);
   uiRenderer->AddElement(_optionsButton);
+  uiRenderer->AddButton(_tutorialButton);
+  uiRenderer->AddElement(_tutorialButton);
   uiRenderer->AddButton(_creditsButton);
   uiRenderer->AddElement(_creditsButton);
   uiRenderer->AddButton(_exitButton);
@@ -111,6 +131,7 @@ auto MainMenu::Show() -> void {
   _optionsButton->SetActive(true);
   _creditsButton->SetActive(true);
   _startButton->SetActive(true);
+  _tutorialButton->SetActive(true);
 }
 
 auto MainMenu::Hide() -> void {
@@ -118,4 +139,5 @@ auto MainMenu::Hide() -> void {
   _optionsButton->SetActive(false);
   _creditsButton->SetActive(false);
   _startButton->SetActive(false);
+  _tutorialButton->SetActive(false);
 }

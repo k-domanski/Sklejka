@@ -18,6 +18,7 @@ private:
   std::shared_ptr< Engine::Renderer::Button > _resumeButton;
   std::shared_ptr< Engine::Renderer::Button > _mainMenuButton;
   std::shared_ptr< Engine::Renderer::Button > _optionsButton;
+  std::shared_ptr< Engine::Renderer::Button > _tutorialButton;
   std::shared_ptr< Engine::Components::UIRenderer > _backroundRenderer;
   std::shared_ptr< Engine::Components::UIRenderer > _buttonRenderer;
   float _playerTimeScaleBeforePausing = 1.f;

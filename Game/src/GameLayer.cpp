@@ -66,8 +66,6 @@ bool GameLayer::OnKeyPress(Engine::KeyPressedEvent& e) {
 
 bool GameLayer::OnWindowsResize(Engine::WindowResizeEvent& e) {
   glm::vec2 size = {(float)e.GetWidth(), (float)e.GetHeight()};
-  GameManager::ShowOptions([]() {});
   SceneManager::GetDisplayScene()->OnWindowResize(size);
-  GameManager::HideOptions();
   return true;
 }

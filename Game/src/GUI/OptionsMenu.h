@@ -63,4 +63,5 @@ private:
 
   auto AddAllElements() -> void;
   auto RemoveAllElements() -> void;
+  auto Scale() -> void;
 };

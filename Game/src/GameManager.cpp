@@ -33,11 +33,13 @@ GameManager::GameManager() {
   _gameSettings     = std::make_shared< GameSettings >();
   _playerSettings   = std::make_shared< PlayerSettings >();
   _soundEngine      = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
+  _musicEngine      = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
   _cutscene         = std::make_shared< Cutscene >();
   _mainMenu         = std::make_shared< MainMenu >();
   _levelSelection   = std::make_shared< LevelSelection >();
-  _creditsMenu   = std::make_shared< CreditsMenu >();
+  _creditsMenu      = std::make_shared< CreditsMenu >();
   _options          = std::make_shared< OptionsMenu >();
+  _tutorialMenu     = std::make_shared< TutorialMenu >();
   _fishEyeShader    = AssetManager::GetShader("./shaders/fish_eye.glsl");
   _aberrationShader = AssetManager::GetShader("./shaders/chromatic_aberration.glsl");
   _bellOutlineMaterial = AssetManager::GetMaterial("materials/bell_outline.mat");
@@ -62,6 +64,15 @@ auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISound
   return _instance->_soundEngine;
 }
 
+auto GameManager::GetMusicEngine() noexcept -> std::shared_ptr<irrklang::ISoundEngine>{
+  return _instance->_musicEngine;
+}
+
+auto GameManager::SetVolume(std::shared_ptr<irrklang::ISoundEngine> engine, float value) -> void
+{
+  engine->setSoundVolume(value);
+}
+
 auto GameManager::SwitchScene(SceneName scene) -> void {
   _instance->_currentSceneName = scene;
   if (_instance->_pauseMenu != nullptr)
@@ -70,6 +81,8 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
   _playerRect = nullptr;
   _player     = nullptr;
   _model      = nullptr;
+
+  CleanSounds();
   switch (scene) {
     case SceneName::MainMenu: {
       Engine::SceneManager::OpenScene(_instance->_mainMenu->Scene()->GetID());
@@ -107,10 +120,8 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
     new_state = GameState::Gameplay;
   }
 
-  if (+new_state != _instance->_currentGameState) {
-    SetupBGMusic(new_state);
-    _instance->_currentGameState = new_state;
-  }
+  SetupBGMusic(new_state);
+  _instance->_currentGameState = new_state;
 
   if (IsGameplayScene()) {
     FindBells();
@@ -170,11 +181,20 @@ auto GameManager::HideOptions() -> void {
   _instance->_options->Hide();
 }
 
+auto GameManager::ShowTutorial(std::function< void() > returnFunc) -> void {
+  _instance->_tutorialMenu->Show(returnFunc);
+}
+
+auto GameManager::HideTutorial() -> void {
+  _instance->_tutorialMenu->Hide();
+}
+
 auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
   return _player;
 }
 
 auto GameManager::KillPlayer() -> void {
+  return;
   _instance->KillPlayerImpl();
 }
 
@@ -291,11 +311,13 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
   }
   auto bPressed = Input::IsGamepadButtonPressed(GamepadCode::BUTTON_B);
   if (bPressed && !_BpressedLastFrame) {
-    if (_pauseMenu != nullptr && !_options->IsVisible())
+    if (_pauseMenu != nullptr && !_options->IsVisible() && !_tutorialMenu->IsVisible())
       _pauseMenu->Hide();
     if (_options != nullptr && _options->IsVisible())
       _options->HideFromButton();
-    // TODO: tutorial hide/back
+    if (_tutorialMenu != nullptr && _tutorialMenu->IsVisible()) {
+      _tutorialMenu->HideFromButton();
+    }
   }
   _BpressedLastFrame = bPressed;
 }
@@ -498,6 +520,10 @@ auto GameManager::CreateAcorn() -> std::shared_ptr< Engine::ECS::Entity > {
   }
 
   return ent;
+}
+
+auto GameManager::AddSound(irrklang::ISound* sound) -> void {
+  _instance->_sceneSounds.push_back(sound);
 }
 
 auto GameManager::CreateBoss() -> void {
@@ -848,6 +874,10 @@ auto GameManager::FindBells() -> void {
 }
 
 auto GameManager::SetupBGMusic(GameState state) -> void {
+  if (state == _instance->_currentGameState) {
+    return;
+  }
+
   if (_instance->_bgLoopSound != nullptr) {
     _instance->_bgLoopSound->stop();
     _instance->_bgLoopSound->drop();
@@ -856,10 +886,10 @@ auto GameManager::SetupBGMusic(GameState state) -> void {
 
   if (state == +GameState::Gameplay) {
     _instance->_bgLoopSound =
-        GetSoundEngine()->play2D("./Assets/sounds/winter_wind.mp3", true, false, true);
+        GetMusicEngine()->play2D("./Assets/sounds/winter_wind.mp3", true, false, true);
   } else if (state == +GameState::MainMenu) {
     _instance->_bgLoopSound =
-        GetSoundEngine()->play2D("./Assets/sounds/menu_bg.wav", true, false, true);
+        GetMusicEngine()->play2D("./Assets/sounds/menu_bg.wav", true, false, true);
   }
 }
 
@@ -883,4 +913,17 @@ auto GameManager::UpdateMarkerColor() -> void {
   /* Get ratio with remapping into [-1, 1] range */
   auto ratio = glm::clamp((closest / throw_dist) - 1.0f, -1.0f, 1.0f);
   _instance->_bellOutlineMaterial->GetShader()->SetValue("u_Ratio", ratio);
+}
+
+auto GameManager::CleanSounds() -> void {
+  for (auto sound : _instance->_sceneSounds) {
+    if (sound == nullptr) {
+      continue;
+    }
+    if (!sound->isFinished()) {
+      sound->stop();
+      sound->drop();
+    }
+  }
+  _instance->_sceneSounds.clear();
 }

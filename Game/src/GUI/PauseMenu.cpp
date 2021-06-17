@@ -15,8 +15,9 @@ PauseMenu::PauseMenu() {
 
   _background = std::make_shared< Engine::Renderer::Image >();
   _background->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/white_background.png"));
-  _background->Size({380.0f, 285.0f});
+  _background->Size({380.0f, 350.0f});
   _background->Color(glm::vec4(1.0f, 1.0f, 1.0f, 0.6f));
+  _background->Offset({0.0f, -50.0f});
   //_background->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   transform->Position(glm::vec3(windowSize / 2.0f, 0.0f));
 
@@ -33,7 +34,7 @@ PauseMenu::PauseMenu() {
   _mainMenuButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/main_menu.png"));
   _mainMenuButton->Size(glm::vec2(230.0f, 65.0f));
   _mainMenuButton->HandleSize(glm::vec2(230.0f, 65.0f));
-  _mainMenuButton->Offset({0.0f, -85.0f});
+  _mainMenuButton->Offset({0.0f, -160.0f});
   _mainMenuButton->text("");
   _mainMenuButton->TextOffset(glm::vec2(-90.0f, -15.0f));
   _mainMenuButton->TextColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -80,6 +81,22 @@ PauseMenu::PauseMenu() {
   _optionsButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
   _optionsButton->SelectedColor(glm::vec4(1.0f));
 
+  _tutorialButton = std::make_shared< Engine::Renderer::Button >();
+  _tutorialButton->SelectedColor(glm::vec4(1.0f));
+  _tutorialButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+  _tutorialButton->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+  _tutorialButton->OnPress([this]() {
+    GameManager::ShowTutorial([this]() { Show(false); });
+    Hide(false);
+  });
+  _tutorialButton->text("");
+  _tutorialButton->TextColor(glm::vec4(0, 0, 0, 1));
+  _tutorialButton->TextOffset(glm::vec2(-15.0f, -15.0f));
+  _tutorialButton->Size(glm::vec2(231.0f, 65.0f));
+  _tutorialButton->HandleSize(glm::vec2(231.0f, 65.0f));
+  _tutorialButton->Offset(glm::vec2(0.0f, -85.0f));
+  _tutorialButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/HOW_TO_PLAY.png"));
+
   _backroundRenderer->AddElement(_background);
   _backroundRenderer->AddElement(_title);
 
@@ -89,8 +106,12 @@ PauseMenu::PauseMenu() {
   _buttonRenderer->AddElement(_optionsButton);
   _buttonRenderer->AddButton(_optionsButton);
 
+  _buttonRenderer->AddElement(_tutorialButton);
+  _buttonRenderer->AddButton(_tutorialButton);
+
   _buttonRenderer->AddElement(_mainMenuButton);
   _buttonRenderer->AddButton(_mainMenuButton);
+
   _isVisible = true;
   stbi_set_flip_vertically_on_load(false);
 
@@ -112,6 +133,7 @@ auto PauseMenu::Show(bool pause) -> void {
   _resumeButton->SetActive(true);
   _mainMenuButton->SetActive(true);
   _optionsButton->SetActive(true);
+  _tutorialButton->SetActive(true);
   /*_backroundRenderer->AddElement(_background);
   _backroundRenderer->AddElement(_text);
 
@@ -138,6 +160,7 @@ auto PauseMenu::Hide(bool unpause) -> void {
   _resumeButton->SetActive(false);
   _mainMenuButton->SetActive(false);
   _optionsButton->SetActive(false);
+  _tutorialButton->SetActive(false);
   /*_backroundRenderer->RemoveElement(_background);
   _backroundRenderer->RemoveElement(_text);
 

@@ -40,9 +40,8 @@ auto GoldenAcorn::OnBossKilled() -> void
 {
   _wobbleAnim = false;
   _throw = true;
+  DetachFromBoss();
 }
-
-
 
 auto GoldenAcorn::ResetLocalPos() -> void
 {

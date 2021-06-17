@@ -63,7 +63,6 @@ auto Acorn::OnCollisionEnter(const std::shared_ptr< Engine::Components::Collider
   if (entity != nullptr) {
     if (entity->Name() == "Boss") {
       entity->GetComponent< Engine::NativeScript >()->GetScript< Boss >()->Hit();
-      // Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
     }
 
     LOG_INFO("Collision detected: {}", entity->Name());
@@ -71,11 +70,10 @@ auto Acorn::OnCollisionEnter(const std::shared_ptr< Engine::Components::Collider
     if (std::regex_match(entity->Name(), bell_rx)) {
       GameManager::GetSoundEngine()->play2D("./Assets/sounds/bell.wav");
       GameManager::PlayerSpeedUp();
-      // Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
     }
-    // Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
   }
   TimeoutDestroy();
+  GameManager::GetSoundEngine()->play2D("./Assets/sounds/acorn_hit.wav");
 }
 
 auto Acorn::TimeoutDestroy() -> void {

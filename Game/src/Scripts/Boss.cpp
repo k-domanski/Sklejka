@@ -26,18 +26,42 @@ auto Boss::GetNode() -> std::shared_ptr< Engine::Node > {
   return _currentNode;
 }
 
+auto Boss::UpdateSound() -> void {
+  if (_jetpackSound == nullptr) {
+    return;
+  }
+  if (_jetpackSound->getIsPaused()) {
+    _jetpackSound->setIsPaused(false);
+  }
+  auto sound_engine = GameManager::GetSoundEngine();
+  auto pos          = _transform->WorldPosition();
+  auto player_pos   = _playerTransform->WorldPosition();
+  auto dir          = _playerTransform->Forward();
+  sound_engine->setListenerPosition({player_pos.x, player_pos.y, player_pos.z},
+                                    {dir.x, dir.y, dir.z});
+  _jetpackSound->setPosition({pos.x, pos.y, pos.z});
+}
+
+auto Boss::StopSound() -> void {
+  if (_jetpackSound) {
+    _jetpackSound->stop();
+    _jetpackSound = nullptr;
+  }
+}
+
 Boss::Boss(std::shared_ptr< PlayerRect > player, std::shared_ptr< GoldenAcorn > goldenAcorn)
-    : _player(player), _goldenAcorn(goldenAcorn) {
+    : _player(player), _goldenAcorn(goldenAcorn), _distState(Distance::TooClose) {
 }
 
 auto Boss::OnCreate() -> void {
-  _transform      = Entity()->GetComponent< Engine::Transform >();
-  _rigidbody      = Entity()->GetComponent< Components::Rigidbody >();
-  _nodeSystem     = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
-  _currentNode    = _nodeSystem->GetNode(1, NodeTag::Boss);
-  _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
-  _playerSettings = GameManager::GetPlayerSettings();
-  _bossShowUp     = false;
+  _transform       = Entity()->GetComponent< Engine::Transform >();
+  _playerTransform = _player->Entity()->GetComponent< Transform >();
+  _rigidbody       = Entity()->GetComponent< Components::Rigidbody >();
+  _nodeSystem      = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
+  _currentNode     = _nodeSystem->GetNode(1, NodeTag::Boss);
+  _nodeTransform   = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
+  _playerSettings  = GameManager::GetPlayerSettings();
+  _bossShowUp      = false;
 
   auto entity    = EntityManager::GetInstance().CreateEntity();
   _renderer      = entity->AddComponent< Components::UIRenderer >();
@@ -74,26 +98,35 @@ auto Boss::OnCreate() -> void {
   _health1->SetActive(false);
   _health2->SetActive(false);
   _health3->SetActive(false);
+
+  auto pos      = _transform->Position();
+  _jetpackSound = GameManager::GetSoundEngine()->play3D("./Assets/sounds/jetpack.wav",
+                                                        {pos.x, pos.y, pos.z}, true, true, true);
+  _jetpackSound->setMinDistance(12.0f);
+  UpdateSound();
+  _jetpackSound->setIsPaused(true);
+  GameManager::AddSound(_jetpackSound);
+
+  _minDistToPlayer = 3.0f;
+  _maxDistToPlayer = 40.0f;
+  _distState       = Distance::TooFar;
+  _lerpTime        = 0.5f;
+
+  _speedLerp.Set(_playerSettings->ForwardSpeedBase(), _playerSettings->ForwardSpeedBase(), 1.0f);
 }
 
 auto Boss::Update(float deltaTime) -> void {
+  if (GameManager::IsPaused()) {
+    return;
+  }
+
   _canMove = _player->CurrentNodeIndex() > 89;
 
-  _distanceToPlayer =
-      glm::distance(_transform->WorldPosition(),
-                    _player->Entity()->GetComponent< Transform >()->WorldPosition());
-
-  _dotProduct = glm::dot(_transform->Forward(),
-                         glm::normalize(_transform->WorldPosition()
-                             - _player->Entity()->GetComponent< Transform >()->WorldPosition()));
-
-  if (_dotProduct < 0.f && _distanceToPlayer > 20.f)
-  {
+  /*if (_dotProduct < 0.f && _distanceToPlayer > 20.f) {
     _playerSettings->BossForwardSpeed(_playerSettings->ForwardSpeedBase());
-  }
-  else if (_currentSpeedUpDuration <= 0.f) {
+  } else if (_currentSpeedUpDuration <= 0.f) {
     _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase());
-  }
+  }*/
 
   if (_canMove) {
     if (!_bossShowUp) {
@@ -104,17 +137,67 @@ auto Boss::Update(float deltaTime) -> void {
       _bossShowUp = true;
     }
 
+    UpdateSpeed(deltaTime);
     SeekTarget(deltaTime);
     HandleMove(deltaTime);
-  }
-  
 
-  if (_currentSpeedUpDuration > 0.f) {
+    UpdateSound();
+  }
+
+  /*if (_currentSpeedUpDuration > 0.f) {
     _currentSpeedUpDuration -= deltaTime;
     if (_currentSpeedUpDuration <= 0.f) {
       _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase());
     }
+  }*/
+}
+
+auto Boss::UpdateSpeed(float deltaTime) -> void {
+  _distanceToPlayer =
+      glm::distance2(_transform->WorldPosition(), _playerTransform->WorldPosition());
+  _dotProduct =
+      glm::dot(_transform->Forward(),
+               glm::normalize(_transform->WorldPosition() - _playerTransform->WorldPosition()));
+
+  auto is_behind_player = _dotProduct > 0.0f;
+  auto is_too_far       = _distanceToPlayer > (_maxDistToPlayer * _maxDistToPlayer);
+  auto is_too_close     = _distanceToPlayer < (_minDistToPlayer * _minDistToPlayer);
+
+  auto new_dist_state = Distance::InRange;
+  if (is_too_close) {
+    new_dist_state = Distance::TooClose;
+  } else if (is_too_far) {
+    new_dist_state = Distance::TooFar;
+  } else if ((is_behind_player && !is_too_far)) {
+    new_dist_state = Distance::Behind;
   }
+
+  if (_distState != +new_dist_state) {
+    _distState = new_dist_state;
+    /* Handle speed change*/
+    auto current_speed     = _playerSettings->BossForwardSpeed();
+    auto player_base_speed = _playerSettings->ForwardSpeedBase();
+    auto player_speed      = _playerSettings->ForwardSpeed();
+
+    switch (_distState) {
+      case Distance::InRange: {
+        _speedLerp.Set(current_speed, player_base_speed * 1.2f, _lerpTime);
+        break;
+      }
+      case Distance::TooFar: {
+        _speedLerp.Set(current_speed, player_base_speed * 0.75f, _lerpTime);
+        break;
+      }
+      case Distance::Behind:
+      case Distance::TooClose: {
+        _speedLerp.Set(current_speed, player_speed * 1.2f, _lerpTime);
+        break;
+      }
+    }
+  }
+
+  auto time_scale = GameManager::GetGameSettings()->GameTimeScale();
+  _playerSettings->BossForwardSpeed(_speedLerp.Update(deltaTime * time_scale));
 }
 
 auto Boss::OnKeyPressed(Engine::Key key) -> void {
@@ -160,13 +243,15 @@ auto Boss::Hit() -> void {
         ->StartCutscene(_currentNode->Index() - 2);
     // Engine::ECS::EntityManager::GetInstance().RemoveEntity(Entity());
     // GameManager::Win();
+    StopSound();
   }
 }
 
 auto Boss::SeekTarget(float deltaTime) -> void {
   auto forward_speed = _playerSettings->ForwardSpeed();
-  auto seek_speed    = _playerSettings->SeekSpeed();
-  auto node          = GetNode();
+  auto ratio      = _playerSettings->BossForwardSpeed() / _playerSettings->BossForwardSpeedBase();
+  auto seek_speed = _playerSettings->SeekSpeed() * ratio;
+  auto node       = GetNode();
   auto desired_velocity =
       glm::normalize(_nodeTransform->WorldPosition() - _transform->Position()) * forward_speed;
   auto velocity_delta = desired_velocity - _moveVelocity;
@@ -191,11 +276,16 @@ auto Boss::HandleMove(float deltaTime) -> void {
   if (!_killed)
     _transform->Position(new_pos);
   else
-    _transform->Position(glm::vec3(new_pos.x, _transform->Position().y - 0.1f * deltaTime, new_pos.z));
+    _transform->Position(
+        glm::vec3(new_pos.x, _transform->Position().y - 0.1f * deltaTime, new_pos.z));
 }
 
 auto Boss::SpeedUp() -> void {
-  _playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase()
-                                    * _playerSettings->BossSpeedMultiplier());
-  _currentSpeedUpDuration = _speedUpDuration;
+  auto base_speed    = _playerSettings->ForwardSpeedBase() * _playerSettings->SpeedMultiplier();
+  auto current_speed = _speedLerp.Value();
+  _speedLerp.Set(current_speed, base_speed * 1.2f, _lerpTime);
+
+  //_playerSettings->BossForwardSpeed(_playerSettings->BossForwardSpeedBase()
+  //                                  * _playerSettings->BossSpeedMultiplier());
+  //_currentSpeedUpDuration = _speedUpDuration;
 }

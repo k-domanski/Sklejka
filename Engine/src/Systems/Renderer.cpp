@@ -48,8 +48,7 @@ namespace Engine::Systems {
 
     /* Skybox */
     _cube    = Engine::Renderer::Mesh::GetPrimitive(Engine::Renderer::MeshPrimitive::Cube);
-    _cubemap = AssetManager::GetCubemap("./Assets/skyboxes/forest");
-    //_cubemap      = AssetManager::GetCubemap("./Assets/skyboxes/blue_sky");
+    _cubemap = AssetManager::GetCubemap("./Assets/skyboxes/mountains");
     _skyboxShader = AssetManager::GetShader("./shaders/skybox.glsl");
     _skyboxShader->SetValue("u_Skybox", (int)_skyboxSlot);
     /* -=-=-=- */
@@ -302,7 +301,11 @@ namespace Engine::Systems {
 
       // If no material -> Use debug
       if (material == nullptr || material->GetShader() == nullptr) {
+#if defined(_DEBUG)
         material = _debugMaterial;
+#else
+        continue;
+#endif
       }
       auto shader          = material->GetShader();
       const auto transform = ECS::EntityManager::GetComponent< Transform >(entity);
