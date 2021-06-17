@@ -36,8 +36,12 @@ private:
   SceneName _currentSceneName = SceneName::MainMenu;
   GameState _currentGameState = GameState::Gameplay;
   bool _isPaused{false};
-  irrklang::ISound* _bgLoopSound = nullptr;
   /* -=-=- */
+
+  /* Soudns */
+  irrklang::ISound* _bgLoopSound = nullptr;
+  std::vector< irrklang::ISound* > _sceneSounds;
+  /* -=-=-=-*/
 
   /* Panels */
   std::shared_ptr< OptionsMenu > _options;
@@ -80,6 +84,7 @@ private:
   static auto SetupBGMusic(GameState state) -> void;
   static auto ProcessBell(const std::shared_ptr< Engine::ECS::Entity >& bell) -> void;
   static auto UpdateMarkerColor() -> void;
+  static auto CleanSounds() -> void;
 
 public:
   static auto Initialize() -> void;
@@ -94,7 +99,7 @@ public:
   static auto PlayerSpeedUp() -> void;
   static auto ShowLevelSumUp(bool win, float time, int bells) -> void;
   static auto ShowOptions(std::function< void() > returnFunc) -> void;
-  static auto HideOptions() -> void;  
+  static auto HideOptions() -> void;
   static auto ShowTutorial(std::function< void() > returnFunc) -> void;
   static auto HideTutorial() -> void;
   static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
@@ -108,6 +113,7 @@ public:
   static auto SetPaused(bool value) -> bool;
   static auto Time() -> float;
   static auto CreateAcorn() -> std::shared_ptr< Engine::ECS::Entity >;
+  static auto AddSound(irrklang::ISound* sound) -> void;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;
