@@ -33,6 +33,7 @@ GameManager::GameManager() {
   _gameSettings     = std::make_shared< GameSettings >();
   _playerSettings   = std::make_shared< PlayerSettings >();
   _soundEngine      = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
+  _musicEngine      = std::shared_ptr< irrklang::ISoundEngine >(irrklang::createIrrKlangDevice());
   _cutscene         = std::make_shared< Cutscene >();
   _mainMenu         = std::make_shared< MainMenu >();
   _levelSelection   = std::make_shared< LevelSelection >();
@@ -61,6 +62,15 @@ auto GameManager::GetPlayerSettings() noexcept -> std::shared_ptr< PlayerSetting
 
 auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine > {
   return _instance->_soundEngine;
+}
+
+auto GameManager::GetMusicEngine() noexcept -> std::shared_ptr<irrklang::ISoundEngine>{
+  return _instance->_musicEngine;
+}
+
+auto GameManager::SetVolume(std::shared_ptr<irrklang::ISoundEngine> engine, float value) -> void
+{
+  engine->setSoundVolume(value);
 }
 
 auto GameManager::SwitchScene(SceneName scene) -> void {
@@ -876,10 +886,10 @@ auto GameManager::SetupBGMusic(GameState state) -> void {
 
   if (state == +GameState::Gameplay) {
     _instance->_bgLoopSound =
-        GetSoundEngine()->play2D("./Assets/sounds/winter_wind.mp3", true, false, true);
+        GetMusicEngine()->play2D("./Assets/sounds/winter_wind.mp3", true, false, true);
   } else if (state == +GameState::MainMenu) {
     _instance->_bgLoopSound =
-        GetSoundEngine()->play2D("./Assets/sounds/menu_bg.wav", true, false, true);
+        GetMusicEngine()->play2D("./Assets/sounds/menu_bg.wav", true, false, true);
   }
 }
 

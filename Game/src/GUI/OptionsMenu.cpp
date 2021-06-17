@@ -48,8 +48,8 @@ OptionsMenu::OptionsMenu() {
   _titleImage->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/title_options.png"));
   _titleImage->Size({419.0f, 74.0f});
 
-  _musicData.currentValue = 10.0f;
-  _musicData.maxValue     = 100.0f;
+  _musicData.currentValue = .1f;
+  _musicData.maxValue     = 1.0f;
   _musicData.minValue     = 0.0f;
   _musicData.bar          = std::make_shared< Engine::Renderer::Bar >();
   _musicData.bar->BackgroundTexture(Engine::AssetManager::GetTexture2D("./textures/UI/music.png"));
@@ -83,8 +83,9 @@ OptionsMenu::OptionsMenu() {
   _musicData.downButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _musicData.downButton->OnPress([this]() {
+    GameManager::SetVolume(GameManager::GetMusicEngine(), _musicData.currentValue);
     _musicData.currentValue =
-        std::clamp(_musicData.currentValue - 1.0f, _musicData.minValue, _musicData.maxValue);
+        std::clamp(_musicData.currentValue - 0.1f, _musicData.minValue, _musicData.maxValue);
     _musicData.bar->FillRatio((_musicData.currentValue - _musicData.minValue)
                               / (_musicData.maxValue - _musicData.minValue));
   });
@@ -101,14 +102,15 @@ OptionsMenu::OptionsMenu() {
   _musicData.upButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _musicData.upButton->OnPress([this]() {
+    GameManager::SetVolume(GameManager::GetMusicEngine(), _musicData.currentValue);
     _musicData.currentValue =
-        std::clamp(_musicData.currentValue + 1.0f, _musicData.minValue, _musicData.maxValue);
+        std::clamp(_musicData.currentValue + 0.1f, _musicData.minValue, _musicData.maxValue);
     _musicData.bar->FillRatio((_musicData.currentValue - _musicData.minValue)
                               / (_musicData.maxValue - _musicData.minValue));
   });
 
-  _soundData.currentValue = 10.0f;
-  _soundData.maxValue     = 100.0f;
+  _soundData.currentValue = .1f;
+  _soundData.maxValue     = 1.0f;
   _soundData.minValue     = 0.0f;
   _soundData.bar          = std::make_shared< Engine::Renderer::Bar >();
   _soundData.bar->BackgroundTexture(Engine::AssetManager::GetTexture2D("./textures/UI/sounds.png"));
@@ -142,8 +144,9 @@ OptionsMenu::OptionsMenu() {
   _soundData.downButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _soundData.downButton->OnPress([this]() {
+    GameManager::SetVolume(GameManager::GetSoundEngine(), _soundData.currentValue);
     _soundData.currentValue =
-        std::clamp(_soundData.currentValue - 1.0f, _soundData.minValue, _soundData.maxValue);
+        std::clamp(_soundData.currentValue - 0.1f, _soundData.minValue, _soundData.maxValue);
     _soundData.bar->FillRatio((_soundData.currentValue - _soundData.minValue)
                               / (_soundData.maxValue - _soundData.minValue));
   });
@@ -160,8 +163,9 @@ OptionsMenu::OptionsMenu() {
   _soundData.upButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _soundData.upButton->OnPress([this]() {
+    GameManager::SetVolume(GameManager::GetSoundEngine(), _soundData.currentValue);
     _soundData.currentValue =
-        std::clamp(_soundData.currentValue + 1.0f, _soundData.minValue, _soundData.maxValue);
+        std::clamp(_soundData.currentValue + .1f, _soundData.minValue, _soundData.maxValue);
     _soundData.bar->FillRatio((_soundData.currentValue - _soundData.minValue)
                               / (_soundData.maxValue - _soundData.minValue));
   });
