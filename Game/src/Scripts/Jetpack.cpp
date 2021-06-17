@@ -6,7 +6,7 @@ using namespace Engine;
 
 auto Jetpack::OnCreate() -> void {
   _transform = Entity()->GetComponent< Transform >();
-  _speed     = 4.0f;
+  _speed     = 2.0f;
 }
 
 auto Jetpack::Update(float deltaTime) -> void {
@@ -16,7 +16,7 @@ auto Jetpack::Update(float deltaTime) -> void {
 
   const auto time_scale = GameManager::GetGameSettings()->GameTimeScale();
   for (auto& em : _emitters) {
-    em->Velocity(_transform->Forward() * _speed);
+    em->Velocity(-_transform->Forward() * _speed);
   }
 }
 
