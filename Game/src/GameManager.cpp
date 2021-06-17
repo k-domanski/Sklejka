@@ -71,6 +71,8 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
   _playerRect = nullptr;
   _player     = nullptr;
   _model      = nullptr;
+
+  CleanSounds();
   switch (scene) {
     case SceneName::MainMenu: {
       Engine::SceneManager::OpenScene(_instance->_mainMenu->Scene()->GetID());
@@ -108,10 +110,8 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
     new_state = GameState::Gameplay;
   }
 
-  if (+new_state != _instance->_currentGameState) {
-    SetupBGMusic(new_state);
-    _instance->_currentGameState = new_state;
-  }
+  SetupBGMusic(new_state);
+  _instance->_currentGameState = new_state;
 
   if (IsGameplayScene()) {
     FindBells();
@@ -184,6 +184,7 @@ auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
 }
 
 auto GameManager::KillPlayer() -> void {
+  return;
   _instance->KillPlayerImpl();
 }
 
@@ -509,6 +510,10 @@ auto GameManager::CreateAcorn() -> std::shared_ptr< Engine::ECS::Entity > {
   }
 
   return ent;
+}
+
+auto GameManager::AddSound(irrklang::ISound* sound) -> void {
+  _instance->_sceneSounds.push_back(sound);
 }
 
 auto GameManager::CreateBoss() -> void {
@@ -859,6 +864,10 @@ auto GameManager::FindBells() -> void {
 }
 
 auto GameManager::SetupBGMusic(GameState state) -> void {
+  if (state == _instance->_currentGameState) {
+    return;
+  }
+
   if (_instance->_bgLoopSound != nullptr) {
     _instance->_bgLoopSound->stop();
     _instance->_bgLoopSound->drop();
@@ -867,10 +876,10 @@ auto GameManager::SetupBGMusic(GameState state) -> void {
 
   if (state == +GameState::Gameplay) {
     _instance->_bgLoopSound =
-        GetSoundEngine()->play2D("./Assets/sounds/winter_wind_normalized.mp3", true, false, true);
+        GetSoundEngine()->play2D("./Assets/sounds/winter_wind.mp3", true, false, true);
   } else if (state == +GameState::MainMenu) {
     _instance->_bgLoopSound =
-        GetSoundEngine()->play2D("./Assets/sounds/menu_bg_normalized.wav", true, false, true);
+        GetSoundEngine()->play2D("./Assets/sounds/menu_bg.wav", true, false, true);
   }
 }
 
@@ -894,4 +903,17 @@ auto GameManager::UpdateMarkerColor() -> void {
   /* Get ratio with remapping into [-1, 1] range */
   auto ratio = glm::clamp((closest / throw_dist) - 1.0f, -1.0f, 1.0f);
   _instance->_bellOutlineMaterial->GetShader()->SetValue("u_Ratio", ratio);
+}
+
+auto GameManager::CleanSounds() -> void {
+  for (auto sound : _instance->_sceneSounds) {
+    if (sound == nullptr) {
+      continue;
+    }
+    if (!sound->isFinished()) {
+      sound->stop();
+      sound->drop();
+    }
+  }
+  _instance->_sceneSounds.clear();
 }

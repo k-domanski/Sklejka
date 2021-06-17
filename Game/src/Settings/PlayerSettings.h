@@ -16,9 +16,9 @@ private:
   float _seekSpeed            = 2.0f; /* Direction seek speed */
   float _minNodeDistance      = 4.0f; /* Min distance to the target node */
   float _maxMoveRotation      = 0.22f;
-  glm::vec2 _rectSize         = {5.5f, 4.5f};
+  glm::vec2 _rectSize         = {10.0f, 5.0f};
   float _throwDistance        = 15.0f;
-  float _slowTimeDuration     = 5.0f;  /* Seconds */
+  float _slowTimeDuration     = 5.0f; /* Seconds */
   float _energyFillTime       = 5.0f; /* Fill Time*/
 
 public:
