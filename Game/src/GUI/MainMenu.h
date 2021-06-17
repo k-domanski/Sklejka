@@ -22,6 +22,7 @@ private:
   std::shared_ptr< Engine::Renderer::Button > _startButton;
   std::shared_ptr< Engine::Renderer::Button > _optionsButton;
   std::shared_ptr< Engine::Renderer::Button > _creditsButton;
+  std::shared_ptr< Engine::Renderer::Button > _tutorialButton;
   std::shared_ptr< Engine::Renderer::Button > _exitButton;
   std::shared_ptr< Engine::Renderer::Text > _title;
 

@@ -3,6 +3,10 @@
 #include <memory>
 
 namespace Engine {
+  namespace ECS {
+    class Entity;
+  }
+
   namespace Components {
     class UIRenderer;
   }
@@ -25,9 +29,11 @@ public:
   auto Show(std::function< void() > returnFunc) -> void;
   auto Hide() -> void;
   auto HideFromButton() -> void;
+  auto AddAllElements() -> void;
+  auto RemoveAllElements() -> void;
 
 private:
-  std::shared_ptr< Engine::Components::UIRenderer > _uiRenderer;
+  std::shared_ptr< Engine::ECS::Entity > _entity;
   std::shared_ptr< Engine::Scene > _scene;
   std::shared_ptr< Engine::Renderer::Image > _background;
   std::shared_ptr< Engine::Renderer::Button > _returnButton;
