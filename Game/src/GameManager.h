@@ -11,6 +11,7 @@
 #include "GUI/MainMenu.h"
 #include "GUI/OptionsMenu.h"
 #include "GUI/PauseMenu.h"
+#include "GUI/TutorialMenu.h"
 #include "Utility/Utility.h"
 
 using Engine::Utility::FloatLerp;
@@ -44,6 +45,7 @@ private:
   std::shared_ptr< MainMenu > _mainMenu;
   std::shared_ptr< LevelSelection > _levelSelection;
   std::shared_ptr< CreditsMenu > _creditsMenu;
+  std::shared_ptr< TutorialMenu > _tutorialMenu;
   std::shared_ptr< PauseMenu > _pauseMenu;
   std::shared_ptr< EndLevelMenu > _endLevelMenu;
   /* -=-=-=- */
@@ -92,7 +94,9 @@ public:
   static auto PlayerSpeedUp() -> void;
   static auto ShowLevelSumUp(bool win, float time, int bells) -> void;
   static auto ShowOptions(std::function< void() > returnFunc) -> void;
-  static auto HideOptions() -> void;
+  static auto HideOptions() -> void;  
+  static auto ShowTutorial(std::function< void() > returnFunc) -> void;
+  static auto HideTutorial() -> void;
   static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
   static auto KillPlayer() -> void;
   static auto Win() -> void;

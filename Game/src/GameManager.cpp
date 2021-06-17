@@ -36,8 +36,9 @@ GameManager::GameManager() {
   _cutscene         = std::make_shared< Cutscene >();
   _mainMenu         = std::make_shared< MainMenu >();
   _levelSelection   = std::make_shared< LevelSelection >();
-  _creditsMenu   = std::make_shared< CreditsMenu >();
+  _creditsMenu      = std::make_shared< CreditsMenu >();
   _options          = std::make_shared< OptionsMenu >();
+  _tutorialMenu     = std::make_shared< TutorialMenu >();
   _fishEyeShader    = AssetManager::GetShader("./shaders/fish_eye.glsl");
   _aberrationShader = AssetManager::GetShader("./shaders/chromatic_aberration.glsl");
   _bellOutlineMaterial = AssetManager::GetMaterial("materials/bell_outline.mat");
@@ -168,6 +169,14 @@ auto GameManager::ShowOptions(std::function< void() > returnFunc) -> void {
 
 auto GameManager::HideOptions() -> void {
   _instance->_options->Hide();
+}
+
+auto GameManager::ShowTutorial(std::function< void() > returnFunc) -> void {
+  _instance->_tutorialMenu->Show(returnFunc);
+}
+
+auto GameManager::HideTutorial() -> void {
+  _instance->_tutorialMenu->Hide();
 }
 
 auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
