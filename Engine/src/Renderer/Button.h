@@ -27,6 +27,7 @@ namespace Engine::Renderer {
     std::function< void() > OnPress() const;
     void OnPress(const std::function< void() >& on_press);
     void Background(std::shared_ptr< GL::Texture2D > texture);
+    void TextSize(glm::vec2 size);
     // void(* on_press() const)();
     // void on_press(void(* on_press)());
     void SelectedColor(const glm::vec4& selected_color);
