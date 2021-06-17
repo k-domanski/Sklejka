@@ -47,13 +47,33 @@ LevelSelection::LevelSelection() {
   _lvl1Button->TextOffset(glm::vec2(-250.0f, -15.0f));
   _lvl1Button->Size(glm::vec2(66.0f, 64.0f));
   _lvl1Button->HandleSize(glm::vec2(66.0f, 64.0f));
-  _lvl1Button->Offset({115.0f, 50.0f});
+  _lvl1Button->Offset({115.0f, 75.0f});
   transform->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f - 100.0f, 0.0f));
 
   _lvl1Image = std::make_shared< Engine::Renderer::Image >();
   _lvl1Image->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/lvl1.png"));
   _lvl1Image->Size({230.0f, 65.0f});
-  _lvl1Image->Offset({-50.0f, 50.0f});
+  _lvl1Image->Offset({-50.0f, 75.0f});
+
+
+  _lvl2Button     = std::make_shared< Engine::Renderer::Button >();
+  _lvl2Button->Background(Engine::AssetManager::GetTexture2D("./textures/UI/but_play.png"));
+  _lvl2Button->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+  _lvl2Button->SelectedColor(glm::vec4(1.0f));
+  _lvl2Button->PressedColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+  _lvl2Button->OnPress([]() { GameManager::SwitchScene(SceneName::Cutscene); });
+  _lvl2Button->text("");
+  _lvl2Button->TextColor(glm::vec4(0, 0, 0, 1));
+  _lvl2Button->TextOffset(glm::vec2(-250.0f, -15.0f));
+  _lvl2Button->Size(glm::vec2(66.0f, 64.0f));
+  _lvl2Button->HandleSize(glm::vec2(66.0f, 64.0f));
+  _lvl2Button->Offset({115.0f, 5.0f});
+  transform->Position(glm::vec3(window_size.x * 0.5f, window_size.y * 0.5f - 100.0f, 0.0f));
+      
+  _lvl2Image = std::make_shared< Engine::Renderer::Image >();
+  _lvl2Image->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/lvl2.png"));
+  _lvl2Image->Size({230.0f, 65.0f});
+  _lvl2Image->Offset({-50.0f, 5.0f});
 
   _buttonBackground = std::make_shared< Engine::Renderer::Image >();
   _buttonBackground->Texture(
@@ -64,6 +84,10 @@ LevelSelection::LevelSelection() {
   uiRenderer->AddButton(_lvl1Button);
   uiRenderer->AddElement(_lvl1Button);
   uiRenderer->AddElement(_lvl1Image);
+
+  uiRenderer->AddButton(_lvl2Button);
+  uiRenderer->AddElement(_lvl2Button);
+  uiRenderer->AddElement(_lvl2Image);
 
   _returnButton = std::make_shared< Engine::Renderer::Button >();
   _returnButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/back.png"));
@@ -76,7 +100,7 @@ LevelSelection::LevelSelection() {
   _returnButton->TextOffset(glm::vec2(-50.0f, -15.0f));
   _returnButton->Size(glm::vec2(230.0f, 65.0f));
   _returnButton->HandleSize(glm::vec2(230.0f, 65.0f));
-  _returnButton->Offset({0.0f, -50.0f});
+  _returnButton->Offset({0.0f, -75.0f});
   uiRenderer->AddButton(_returnButton);
   uiRenderer->AddElement(_returnButton);
 
