@@ -66,6 +66,7 @@ private:
 
   /* Resources */
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
+  std::shared_ptr< irrklang::ISoundEngine > _musicEngine;
   std::shared_ptr< Engine::GL::Shader > _fishEyeShader;
   std::shared_ptr< Engine::GL::Shader > _aberrationShader;
   std::shared_ptr< Engine::Renderer::Material > _bellOutlineMaterial;
@@ -91,6 +92,8 @@ public:
   static auto GetGameSettings() noexcept -> std::shared_ptr< GameSettings >;
   static auto GetPlayerSettings() noexcept -> std::shared_ptr< PlayerSettings >;
   static auto GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine >;
+  static auto GetMusicEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine >;
+  static auto SetVolume(std::shared_ptr< irrklang::ISoundEngine > engine, float value) -> void;
   static auto SwitchScene(SceneName scene) -> void;
   static auto GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene >;
   static auto GetNextSceneName() -> SceneName;
