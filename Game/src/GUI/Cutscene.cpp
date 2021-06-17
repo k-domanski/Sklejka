@@ -32,7 +32,7 @@ Cutscene::Cutscene() {
   _skipButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/empty.png"));
   _skipButton->Size({165.0f, 65.0f});
   _skipButton->HandleSize({165.0f, 65.0f});
-  _skipButton->Offset({600.0f, -300.0f});
+  _skipButton->Offset({650.0f, -400.0f});
   _skipButton->Color({0.6f, 0.6f, 0.6f, 1.0f});
   _skipButton->SelectedColor(glm::vec4(1.0f));
   _skipButton->text("SKIP");

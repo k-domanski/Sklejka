@@ -100,6 +100,10 @@ void Engine::Renderer::Button::Background(std::shared_ptr< GL::Texture2D > textu
   _background.Texture(texture);
 }
 
+void Engine::Renderer::Button::TextSize(glm::vec2 size) {
+  _text.Size(size);
+}
+
 bool Engine::Renderer::Button::IsMouseOverButton(glm::vec2 mousePos) {
   auto handle = _handleSize / 2.0f;
   return (handle.x > mousePos.x && -handle.x < mousePos.x && handle.y > mousePos.y

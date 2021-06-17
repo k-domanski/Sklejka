@@ -300,11 +300,13 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
   }
   auto bPressed = Input::IsGamepadButtonPressed(GamepadCode::BUTTON_B);
   if (bPressed && !_BpressedLastFrame) {
-    if (_pauseMenu != nullptr && !_options->IsVisible())
+    if (_pauseMenu != nullptr && !_options->IsVisible() && !_tutorialMenu->IsVisible())
       _pauseMenu->Hide();
     if (_options != nullptr && _options->IsVisible())
       _options->HideFromButton();
-    // TODO: tutorial hide/back
+    if (_tutorialMenu != nullptr && _tutorialMenu->IsVisible()) {
+      _tutorialMenu->HideFromButton();
+    }
   }
   _BpressedLastFrame = bPressed;
 }
