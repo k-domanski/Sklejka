@@ -865,10 +865,10 @@ auto GameManager::SetupBGMusic(GameState state) -> void {
 
   if (state == +GameState::Gameplay) {
     _instance->_bgLoopSound =
-        GetSoundEngine()->play2D("./Assets/sounds/winter_wind.mp3", true, false, true);
+        GetSoundEngine()->play2D("./Assets/sounds/winter_wind_normalized.mp3", true, false, true);
   } else if (state == +GameState::MainMenu) {
     _instance->_bgLoopSound =
-        GetSoundEngine()->play2D("./Assets/sounds/menu_bg.wav", true, false, true);
+        GetSoundEngine()->play2D("./Assets/sounds/menu_bg_normalized.wav", true, false, true);
   }
 }
 
