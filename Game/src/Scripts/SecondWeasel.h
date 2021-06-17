@@ -22,7 +22,7 @@ private:
   glm::vec3 _moveVelocity{0};
   glm::vec3 _offset{0.f, .05f, .0f};
 
-  float _getAcornTimer = 1.3f;
+  float _getAcornTimer = .6f;
   float _flightTime    = 3.5f;
 
   bool _canMove = false;
