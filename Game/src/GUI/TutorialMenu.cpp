@@ -21,7 +21,6 @@ TutorialMenu::TutorialMenu() {
   stbi_set_flip_vertically_on_load(true);
   _background->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/tutorial.png"));
 
-
   _returnButton = std::make_shared< Engine::Renderer::Button >();
   _returnButton->SelectedColor(glm::vec4(1.0f));
   _returnButton->Color(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
@@ -36,9 +35,9 @@ TutorialMenu::TutorialMenu() {
   _returnButton->Background(Engine::AssetManager::GetTexture2D("./textures/UI/back.png"));
 
   stbi_set_flip_vertically_on_load(false);
-
-  auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
-  gui->OnWindowResize(Engine::Window::Get().GetScreenSize());
+  AddAllElements();
+  Scale();
+  RemoveAllElements();
 
   if (current_scene != nullptr) {
     Engine::SceneManager::OpenScene(current_scene->GetID());
@@ -79,18 +78,23 @@ auto TutorialMenu::HideFromButton() -> void {
 }
 
 auto TutorialMenu::AddAllElements() -> void {
-  auto window_size   = Engine::Window::Get().GetScreenSize();  // glm::vec2(1600.0f, 900.0f);
-  _entity    = Engine::ECS::EntityManager::GetInstance().CreateEntity();
-  auto uiRenderer    = _entity->AddComponent< Engine::Components::UIRenderer >();
-  auto transform = _entity->AddComponent< Engine::Transform >();
+  auto window_size = Engine::Window::Get().GetScreenSize();// glm::vec2(1600.0f, 900.0f);
+  _entity          = Engine::ECS::EntityManager::GetInstance().CreateEntity();
+  auto uiRenderer  = _entity->AddComponent< Engine::Components::UIRenderer >();
+  auto transform   = _entity->AddComponent< Engine::Transform >();
   transform->Position(glm::vec3(window_size * 0.5f, 0.0f));
 
   uiRenderer->AddElement(_background);
   uiRenderer->AddElement(_returnButton);
   uiRenderer->AddButton(_returnButton);
-
+  //_scene->OnWindowResize(Engine::Window::Get().GetScreenSize());
 }
 
 auto TutorialMenu::RemoveAllElements() -> void {
   Engine::ECS::EntityManager::GetInstance().RemoveEntity(_entity);
+}
+
+auto TutorialMenu::Scale() -> void {
+  auto uiRenderer = _entity->AddComponent< Engine::Components::UIRenderer >();
+  uiRenderer->OnWindowResize(Engine::Window::Get().GetScreenSize()  / glm::vec2(1600.0f, 900.0f));
 }

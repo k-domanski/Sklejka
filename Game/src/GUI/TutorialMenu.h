@@ -31,6 +31,7 @@ public:
   auto HideFromButton() -> void;
   auto AddAllElements() -> void;
   auto RemoveAllElements() -> void;
+  auto Scale() -> void;
 
 private:
   std::shared_ptr< Engine::ECS::Entity > _entity;

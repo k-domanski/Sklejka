@@ -370,9 +370,9 @@ OptionsMenu::OptionsMenu() {
 
   // auto gui = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::Systems::GUISystem >();
   // gui->OnWindowResize(Engine::Window::Get().GetScreenSize());
-
-  _scene->OnWindowResize(Engine::Window::Get().GetScreenSize());
-
+  AddAllElements();
+  Scale();
+  RemoveAllElements();
   if (current_scene != nullptr) {
     Engine::SceneManager::OpenScene(current_scene->GetID());
   }
@@ -470,4 +470,13 @@ auto OptionsMenu::RemoveAllElements() -> void {
   Engine::ECS::EntityManager::GetInstance().RemoveEntity(_backgroundEntity);
   Engine::ECS::EntityManager::GetInstance().RemoveEntity(_buttonsEntity);
   Engine::ECS::EntityManager::GetInstance().RemoveEntity(_titleEntity);
+}
+
+auto OptionsMenu::Scale() -> void {
+  auto uiRenderer = _backgroundEntity->AddComponent< Engine::Components::UIRenderer >();
+  uiRenderer->OnWindowResize(Engine::Window::Get().GetScreenSize() / glm::vec2(1600.0f, 900.0f));
+  uiRenderer = _buttonsEntity->AddComponent< Engine::Components::UIRenderer >();
+  uiRenderer->OnWindowResize(Engine::Window::Get().GetScreenSize() / glm::vec2(1600.0f, 900.0f));
+  uiRenderer = _titleEntity->AddComponent< Engine::Components::UIRenderer >();
+  uiRenderer->OnWindowResize(Engine::Window::Get().GetScreenSize() / glm::vec2(1600.0f, 900.0f));
 }
