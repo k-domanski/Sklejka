@@ -20,7 +20,9 @@ EditorLayer::EditorLayer(const std::string& name): Layer(name) {
 }
 void EditorLayer::OnAttach() {
   LOG_TRACE("Working directory: {}", AssetManager::GetWoringDir());
-
+  /*ImGuiLayer*/
+  m_ImGuiLayer = new ImGuiLayer();
+  Application::Get().AddOverlay(m_ImGuiLayer);
   /* ---------Camera--------- */
   auto aspect           = Engine::Window::Get().GetAspectRatio();
   auto camera_entity    = Engine::ECS::EntityManager::GetInstance().CreateEntity();
@@ -80,6 +82,7 @@ void EditorLayer::OnEvent(Event& event) {
 }
 
 void EditorLayer::OnImGuiRender() {
+  m_ImGuiLayer->Begin();
   DrawMenuBar();
   m_FileSystemPanel.OnImGuiRender();
   m_SceneHierarchyPanel.OnImGuiRender();
@@ -87,6 +90,7 @@ void EditorLayer::OnImGuiRender() {
   m_MaterialPanel.OnImGuiRender();
   m_NodeUtilityPanel.OnImGuiRender();
   m_LevelProcessPanel.OnImGuiRender();
+  m_ImGuiLayer->End();
 }
 
 bool EditorLayer::OnWindowResize(Engine::WindowResizeEvent& e) {

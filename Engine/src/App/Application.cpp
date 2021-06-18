@@ -5,7 +5,14 @@
 #include "Systems/Renderer.h"
 
 namespace Engine {
+  Application* Application::s_Instance = nullptr;
   Application::Application() {
+    /*singleton*/
+    if (s_Instance != nullptr) {
+      CORE_INFO("Application already exists.");
+    }
+
+    s_Instance = this;
     /* Fullscreen */
 
     /*m_Window = std::unique_ptr< Window >(

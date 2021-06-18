@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine.h"
+#include "ImGui/ImGui/ImGuiLayer.h"
 
 class EditorLayer;
 namespace Editor {
