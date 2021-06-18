@@ -3,6 +3,7 @@
 #include <GameManager.h>
 #include <regex>
 
+#include "Bell.h"
 #include "Components/NativeScript.h"
 
 using namespace Engine;
@@ -31,6 +32,9 @@ auto PlayerController::OnCollisionEnter(
     if (std::regex_match(ent->Name(), bell_rx)) {
       // if (ent->layer.Get(LayerMask::Flag::Bell)) {
       /* Speed up player if we decide to */
+      auto active = ent->GetComponent< NativeScript >()->GetScript< Bell >()->IsActive();
+      if (!active)
+          return;
       GameManager::GetSoundEngine()->play2D("./Assets/sounds/bell.wav");
       GameManager::PlayerSpeedUp();
       Entity()->GetComponent< NativeScript >()->GetScript< ShadowTarget >()->RemoveEnergy();

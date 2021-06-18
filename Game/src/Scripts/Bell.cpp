@@ -26,7 +26,6 @@ auto Bell::Update(float deltaTime) -> void {
 
   /* Apply rotation */
   _transform->Rotation(_quatLerp.Update(deltaTime * time_scale));
-
 }
 
 auto Bell::OnCollisionEnter(const std::shared_ptr< Engine::Components::Collider >& collider)
@@ -34,6 +33,10 @@ auto Bell::OnCollisionEnter(const std::shared_ptr< Engine::Components::Collider 
   if (_remainingTimeout <= 0.0f) {
     TurnBell(_baseRotation, _turnRotation, _timeout);
   }
+}
+
+auto Bell::IsActive() -> bool {
+  return _remainingTimeout < 0.0f;
 }
 
 auto Bell::TurnBell(glm::quat start, glm::quat end, float timeout) -> void {
