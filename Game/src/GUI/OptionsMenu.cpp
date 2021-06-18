@@ -171,8 +171,8 @@ OptionsMenu::OptionsMenu() {
   });
 
   _brightnessData.currentValue = 0.0f;  // GameManager::GetGameSettings()->Brightness();
-  _brightnessData.maxValue     = 1.0f;
-  _brightnessData.minValue     = -1.0f;
+  _brightnessData.maxValue     = 0.5f;
+  _brightnessData.minValue     = -0.5f;
   _brightnessData.bar          = std::make_shared< Engine::Renderer::Bar >();
   _brightnessData.bar->BackgroundTexture(
       Engine::AssetManager::GetTexture2D("./textures/UI/brightness.png"));
@@ -206,7 +206,7 @@ OptionsMenu::OptionsMenu() {
   _brightnessData.downButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _brightnessData.downButton->OnPress([this]() {
-    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue - 0.05f,
+    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue - 0.01f,
                                               _brightnessData.minValue, _brightnessData.maxValue);
     _brightnessData.bar->FillRatio((_brightnessData.currentValue - _brightnessData.minValue)
                                    / (_brightnessData.maxValue - _brightnessData.minValue));
@@ -226,7 +226,7 @@ OptionsMenu::OptionsMenu() {
   _brightnessData.upButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _brightnessData.upButton->OnPress([this]() {
-    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue + 0.05f,
+    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue + 0.01f,
                                               _brightnessData.minValue, _brightnessData.maxValue);
     _brightnessData.bar->FillRatio((_brightnessData.currentValue - _brightnessData.minValue)
                                    / (_brightnessData.maxValue - _brightnessData.minValue));
@@ -234,8 +234,8 @@ OptionsMenu::OptionsMenu() {
   });
 
   _contrastData.currentValue = 1.0f;  // GameManager::GetGameSettings()->Contrast();
-  _contrastData.maxValue     = 6.0f;
-  _contrastData.minValue     = 0.5f;
+  _contrastData.maxValue     = 1.4f;
+  _contrastData.minValue     = 0.6f;
   _contrastData.bar          = std::make_shared< Engine::Renderer::Bar >();
   _contrastData.bar->BackgroundTexture(
       Engine::AssetManager::GetTexture2D("./textures/UI/contrast.png"));
@@ -269,7 +269,7 @@ OptionsMenu::OptionsMenu() {
   _contrastData.downButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _contrastData.downButton->OnPress([this]() {
-    _contrastData.currentValue = std::clamp(_contrastData.currentValue - 0.05f,
+    _contrastData.currentValue = std::clamp(_contrastData.currentValue - 0.01f,
                                             _contrastData.minValue, _contrastData.maxValue);
     _contrastData.bar->FillRatio((_contrastData.currentValue - _contrastData.minValue)
                                  / (_contrastData.maxValue - _contrastData.minValue));
@@ -289,7 +289,7 @@ OptionsMenu::OptionsMenu() {
   _contrastData.upButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _contrastData.upButton->OnPress([this]() {
-    _contrastData.currentValue = std::clamp(_contrastData.currentValue + 0.05f,
+    _contrastData.currentValue = std::clamp(_contrastData.currentValue + 0.01f,
                                             _contrastData.minValue, _contrastData.maxValue);
     _contrastData.bar->FillRatio((_contrastData.currentValue - _contrastData.minValue)
                                  / (_contrastData.maxValue - _contrastData.minValue));

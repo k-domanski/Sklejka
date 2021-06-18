@@ -10,7 +10,7 @@ ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
   auto renderer   = entity->AddComponent< Engine::Components::UIRenderer >();
   _bar->transform = entity->AddComponent< Engine::Transform >();
   _bar->bar       = std::make_shared< Engine::Renderer::Bar >();
-  _bar->image       = std::make_shared< Engine::Renderer::Image >();
+  _bar->image     = std::make_shared< Engine::Renderer::Image >();
   renderer->AddElement(_bar->bar);
   renderer->AddElement(_bar->image);
   _rendererSystem =
@@ -124,4 +124,8 @@ auto ShadowTarget::IsInShadow() -> bool {
                               // glm::max(samplesPassed, _maxSamplesPassed);
   auto test_against = glm::max(100.0f, _maxSamplesPassed / 2.0f);
   return samplesPassed < test_against;
+}
+
+auto ShadowTarget::RemoveEnergy() -> void {
+  _currentAmount = 0.0f;
 }

@@ -27,6 +27,7 @@ public:
   auto GetTarget() -> std::shared_ptr< Engine::ECS::Entity >;
   auto SetTimeSlowed(bool value) -> void;
   auto IsInShadow() -> bool;
+  auto RemoveEnergy() -> void;
 
 private:
   std::shared_ptr< Engine::ECS::Entity > _target;

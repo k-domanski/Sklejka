@@ -463,7 +463,8 @@ auto GameManager::CreatePlayer() -> void {
 
   /* Finalize */
   player_model->layer.SetState(LayerMask::Flag::Player);
-  player_model->collisionLayer.SetState(LayerMask::Flag::Default);
+  // player_model->collisionLayer.SetState(LayerMask::Flag::Default);
+  player_model->collisionLayer.SetState(LayerMask::Flag::Bell);
   _player     = player;
   _playerRect = player_rect;
   _model      = player_model;
@@ -727,12 +728,13 @@ auto GameManager::SetupScripts() -> void {
     player_rect->CanMove(false);
   }
 
+  auto shadowTarget = std::make_shared< ShadowTarget >(_model);
   { /* Camera */
     auto native_script = camera_entity->AddComponent< Engine::NativeScript >();
 
     native_script->Attach< CameraController >(player_controller);
-    auto shadowTarget = native_script->Attach< ShadowTarget >(_model);
-    auto flightTimer  = native_script->Attach< FlightTimer >();
+    // auto shadowTarget = native_script->Attach< ShadowTarget >(_model);
+    auto flightTimer = native_script->Attach< FlightTimer >();
     flightTimer->CanCount(false);
     auto start_timer = native_script->Attach< StartTimer >(player_rect, flightTimer, shadowTarget);
     start_timer->CanCount(true);
@@ -743,6 +745,7 @@ auto GameManager::SetupScripts() -> void {
 
     native_script->Attach< AcornThrower >();
     native_script->Attach< PlayerController >(player_tr);
+    native_script->Attach(shadowTarget);
   }
 
   _instance->_pauseMenu    = std::make_shared< PauseMenu >();
