@@ -36,7 +36,7 @@ auto Bell::OnCollisionEnter(const std::shared_ptr< Engine::Components::Collider 
 }
 
 auto Bell::IsActive() -> bool {
-  return _remainingTimeout < 0.0f;
+  return _remainingTimeout <= 0.0f || _remainingTimeout == _timeout;
 }
 
 auto Bell::TurnBell(glm::quat start, glm::quat end, float timeout) -> void {

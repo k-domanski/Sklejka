@@ -33,10 +33,10 @@ auto PlayerController::OnCollisionEnter(
       // if (ent->layer.Get(LayerMask::Flag::Bell)) {
       /* Speed up player if we decide to */
       auto active = ent->GetComponent< NativeScript >()->GetScript< Bell >()->IsActive();
-      if (!active)
-          return;
       GameManager::GetSoundEngine()->play2D("./Assets/sounds/bell.wav");
       GameManager::PlayerSpeedUp();
+      if (!active)
+          return;
       Entity()->GetComponent< NativeScript >()->GetScript< ShadowTarget >()->RemoveEnergy();
       return;
     }
