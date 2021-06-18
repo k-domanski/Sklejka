@@ -44,6 +44,8 @@ GameManager::GameManager() {
   _aberrationShader = AssetManager::GetShader("./shaders/chromatic_aberration.glsl");
   _bellOutlineMaterial = AssetManager::GetMaterial("materials/bell_outline.mat");
   _speedLerp.Set(_playerSettings->ForwardSpeed(), _playerSettings->ForwardSpeed(), 1.0f);
+  _delayAction = false;
+  _delayTimer  = 0.0f;
 }
 
 auto GameManager::Initialize() -> void {
@@ -306,6 +308,15 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
     UpdateMarkerColor();
   }
 
+  if (_delayAction) {
+    _delayTimer -= deltaTime;
+    if (_delayTimer < 0.0f) {
+      if (_delayedAction != nullptr)
+        _delayedAction();
+      _delayAction = false;
+    }
+  }
+
   if (Input::IsKeyPressed(Engine::Key::ESCAPE)
       || Input::IsGamepadButtonPressed(GamepadCode::BUTTON_START)) {
     if (_pauseMenu != nullptr && !_endLevelMenu->IsVisible())
@@ -527,6 +538,12 @@ auto GameManager::CreateAcorn() -> std::shared_ptr< Engine::ECS::Entity > {
 
 auto GameManager::AddSound(irrklang::ISound* sound) -> void {
   _instance->_sceneSounds.push_back(sound);
+}
+
+auto GameManager::Delay(std::function< void() > action, float time) -> void {
+  _instance->_delayAction   = true;
+  _instance->_delayTimer    = time;
+  _instance->_delayedAction = std::move(action);
 }
 
 auto GameManager::CreateBoss() -> void {
@@ -777,9 +794,9 @@ auto GameManager::KillPlayerImpl() -> void {
   auto camera = SceneManager::GetCurrentScene()->CameraSystem()->MainCamera();
   auto timer  = camera->GetEntity()->GetComponent< NativeScript >()->GetScript< FlightTimer >();
   auto time   = timer->GetTime();
+  if (timer->CanCount())//HACK: i need some bool so i will reuse it 
+    Delay([]() { ShowLevelSumUp(false, 0, 0); }, 3.0f);
   timer->CanCount(false);
-
-  ShowLevelSumUp(false, 0, 0);
 }
 
 auto GameManager::WinImpl() -> void {

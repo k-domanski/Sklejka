@@ -64,6 +64,11 @@ private:
   int _hittedBells;
   bool _BpressedLastFrame;
 
+  //Delay stuff
+  std::function< void() > _delayedAction;
+  float _delayTimer;
+  bool _delayAction;
+
   /* Resources */
   std::shared_ptr< irrklang::ISoundEngine > _soundEngine;
   std::shared_ptr< irrklang::ISoundEngine > _musicEngine;
@@ -118,6 +123,7 @@ public:
   static auto Time() -> float;
   static auto CreateAcorn() -> std::shared_ptr< Engine::ECS::Entity >;
   static auto AddSound(irrklang::ISound* sound) -> void;
+  static auto Delay(std::function< void() > action, float time) -> void;
 
 private:
   auto UpdateImpl(float deltaTime) -> void;
