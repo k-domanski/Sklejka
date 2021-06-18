@@ -3,6 +3,7 @@
 #include <Components/Transform.h>
 #include <string>
 #include "EditorCameraArgs.h"
+#include "ImGui/ImGui/ImGuiLayer.h"
 #include "ImGui/Panels/SceneHierarchyPanel.h"
 #include "ImGui/Panels/InspectorPanel.h"
 #include "ImGui/Panels/FileSystemPanel.h"
@@ -28,8 +29,10 @@ public:
  /* auto AddObjectOnScene(std::shared_ptr< Renderer::Model > model, int meshIndex,
                         Engine::ECS::EntityID parent, std::vector< ECS::EntityID >* loadedMeshes)
       -> ECS::EntityID;*/
-
-private:
+  ImGuiLayer* GetImGuiLayer() {
+    return m_ImGuiLayer;
+  }
+  private:
   bool OnWindowResize(Engine::WindowResizeEvent& e);
   bool OnMouseScroll(Engine::MouseScrolledEvent& e);
   bool OnMouseButtonPress(Engine::MouseButtonPressedEvent& e);
@@ -52,7 +55,8 @@ private:
 
   /*Scene*/
   ptr_t< Engine::Scene > m_Scene;
-
+  /*ImGuiLayer*/
+  ImGuiLayer* m_ImGuiLayer;
   /*Panels*/
   Editor::SceneHierarchyPanel m_SceneHierarchyPanel;
   Editor::InspectorPanel m_InspectorPanel;

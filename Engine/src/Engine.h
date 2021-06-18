@@ -2,7 +2,6 @@
 
 #include <App/Application.h>
 #include <App/Layer.h>
-#include <ImGui/ImGuiLayer.h>
 #include <App/Log.h>
 
 #include <Renderer/Mesh.h>

@@ -41,6 +41,7 @@ project "Editor"
 
     links
     {
+        "ImGui",
         "Engine"
     }
 

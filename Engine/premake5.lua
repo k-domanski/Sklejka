@@ -37,7 +37,7 @@ project "Engine"
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
         "%{IncludeDir.glm}",
-        "%{IncludeDir.ImGui}",
+        --"%{IncludeDir.ImGui}",
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.assimp}/include",
         "%{IncludeDir.better_enums}/include",
@@ -58,7 +58,7 @@ project "Engine"
     {
         "GLFW",
         "Glad",
-        "ImGui",
+        --"ImGui",
         "rttr",
         "opengl32.lib",
         "assimp-vc142-mt.lib",
