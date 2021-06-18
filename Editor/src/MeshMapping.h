@@ -13,5 +13,7 @@ namespace Editor {
 
   auto ShouldIgnore_1(int index) -> bool;
   auto GetColliderMapping_1() -> std::vector< TransformData >;
+  auto ShouldIgnore_2(int index) -> bool;
+  auto GetColliderMapping_2() -> std::vector< TransformData >;
   auto GetMeshMaterial_1(int index) -> std::shared_ptr< Material >;
 }  // namespace Editor

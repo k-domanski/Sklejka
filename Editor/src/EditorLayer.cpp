@@ -50,12 +50,12 @@ void EditorLayer::OnAttach() {
   m_LevelProcessPanel.SetEditorLayer(this);
 
   /* --Particle System--Remove Me--*/
-  //auto ent = EntityManager::GetInstance().CreateEntity();
-  //ent->Name("Particle System");
-  //ent->AddComponent< Transform >();
-  //ent->AddComponent< ParticleEmitter >(100);
+  // auto ent = EntityManager::GetInstance().CreateEntity();
+  // ent->Name("Particle System");
+  // ent->AddComponent< Transform >();
+  // ent->AddComponent< ParticleEmitter >(100);
 
-  //SceneManager::GetCurrentScene()->SceneGraph()->AddChild(nullptr, ent);
+  // SceneManager::GetCurrentScene()->SceneGraph()->AddChild(nullptr, ent);
   /* ------------------------------*/
 }
 
@@ -248,21 +248,10 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
   auto mat    = AssetManager::GetMaterial("./materials/default.mat");
   std::vector< std::shared_ptr< Entity > > ids(nodes.size());
 
+  auto& scene_graph = SceneManager::GetDisplayScene()->SceneGraph();
   for (int node_index = 0; node_index < nodes.size(); ++node_index) {
-    auto& node        = nodes[node_index];
-    auto& scene_graph = SceneManager::GetDisplayScene()->SceneGraph();
+    auto& node = nodes[node_index];
 #define _SINGLE_MESH
-    //#if !defined(_SINGLE_MESH)
-    //    /* Setup node as parent for meshes */
-    //    auto node_entity = EntityManager::GetInstance().CreateEntity();
-    //    node_entity->Name(node.name);
-    //
-    //    auto transform = node_entity->AddComponent< Transform >();
-    //    transform->SetLocalMatrix(node.transform);
-    //
-    //    ids[node_index] = node_entity;
-    //    scene_graph->AddChild(parent, node_entity);
-    //#endif
 
 #if defined(_SINGLE_MESH)
     if (node.mesh_indexes.size() == 0) {

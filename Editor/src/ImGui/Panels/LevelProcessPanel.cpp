@@ -36,7 +36,7 @@ namespace Editor {
     if (ImGui::Button("Colliders Level 1")) {
       const auto& collider_mapping = GetColliderMapping_1();
       auto& entities               = _scene->RenderSystem()->Entities();
-      AddColliders(collider_mapping, entities);
+      AddColliders(collider_mapping, entities, ShouldIgnore_1);
     }
     if (ImGui::Button("Materials Level 1")) {
       auto& entities = _scene->RenderSystem()->Entities();
@@ -46,10 +46,21 @@ namespace Editor {
         renderer->SetMaterial(mt);
       }
     }
+    /* -=-=-=-=- */
+
+    /* Level 2*/
+    if (ImGui::Button("Colliders Level 2")) {
+      const auto& collider_mapping = GetColliderMapping_2();
+      auto& entities               = _scene->RenderSystem()->Entities();
+      AddColliders(collider_mapping, entities, ShouldIgnore_2);
+    }
+
+    /* -=-=-=-=- */
     ImGui::End();
   }
   auto LevelProcessPanel::AddColliders(const std::vector< Editor::TransformData >& collider_mapping,
-                                       std::vector< std::shared_ptr< Entity > > entities) -> void {
+                                       std::vector< std::shared_ptr< Entity > > entities,
+                                       std::function< bool(int) > IgnoreOp) -> void {
     const auto& scene_graph = _scene->SceneGraph();
     for (auto& entity : entities) {
       auto renderer = entity->GetComponent< Components::MeshRenderer >();
@@ -62,7 +73,7 @@ namespace Editor {
         EntityManager::GetInstance().RemoveEntity(*it);
       }
 
-      if (ShouldIgnore_1(index)) {
+      if (IgnoreOp(index)) {
         continue;
       }
 
