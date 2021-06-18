@@ -13,14 +13,15 @@ namespace Engine {
   }
 }  // namespace Engine
 
-BETTER_ENUM(__Distance, int, InRange, TooFar, TooClose, Behind);
-typedef __Distance Distance;
+BETTER_ENUM(__BossState, int, InRange, TooFar, TooClose, Behind, Escape, Dead);
+typedef __BossState BossState;
 
 class Boss : public Engine::Script< Boss > {
 private:
   std::shared_ptr< Engine::Transform > _transform;
   std::shared_ptr< Engine::Components::Rigidbody > _rigidbody;
   std::shared_ptr< Engine::Transform > _playerTransform;
+  std::shared_ptr< Engine::Transform > _modelTransform;
   std::shared_ptr< Engine::NodeSystem > _nodeSystem;
   std::shared_ptr< Engine::Node > _currentNode;
   std::shared_ptr< Engine::Transform > _nodeTransform;
@@ -39,7 +40,6 @@ private:
   int _hits                     = 0;
   bool _canMove;
   bool _bossShowUp;
-  bool _killed = false;
 
   /* Speed */
   float _distanceToPlayer;
@@ -47,25 +47,35 @@ private:
   float _minDistToPlayer;
   float _maxDistToPlayer;
   float _dotProduct;
-  Distance _distState;
+  BossState _state;
   Engine::Utility::FloatLerp _speedLerp;
-  /* -=-=-*/
+  /* -=-=- */
+
+  /* Offset */
+  glm::vec3 _heightOffset;
+  Engine::Utility::FloatLerp _offsetLerp;
+  float _fallTime;
+  glm::vec3 _rotationAxis1;
+  float _rot1;
+  /* -=-=-=-*/
 
   irrklang::ISound* _jetpackSound{nullptr};
 
   auto SeekTarget(float deltaTime) -> void;
   auto HandleMove(float deltaTime) -> void;
+  auto UpdateModel(float deltaTime) -> void;
   auto SpeedUp() -> void;
   auto GetNode() -> std::shared_ptr< Engine::Node >;
   auto UpdateSound() -> void;
   auto StopSound() -> void;
+  auto Kill() -> void;
 
 public:
-  Boss(std::shared_ptr< PlayerRect > player, std::shared_ptr< GoldenAcorn > goldenAcorn);
+  Boss(std::shared_ptr< Engine::ECS::Entity > model, std::shared_ptr< PlayerRect > player,
+       std::shared_ptr< GoldenAcorn > goldenAcorn);
   auto OnCreate() -> void override;
   auto Update(float deltaTime) -> void override;
   auto UpdateSpeed(float deltaTime) -> void;
-  auto OnKeyPressed(Engine::Key key) -> void override;
   auto CanMove() -> bool;
   auto CanMove(bool value) -> void;
   auto Hit() -> void;

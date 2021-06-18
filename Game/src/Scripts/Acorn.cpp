@@ -65,7 +65,6 @@ auto Acorn::OnCollisionEnter(const std::shared_ptr< Engine::Components::Collider
       entity->GetComponent< Engine::NativeScript >()->GetScript< Boss >()->Hit();
     }
 
-    LOG_INFO("Collision detected: {}", entity->Name());
     const std::regex bell_rx("BELL.*");
     if (std::regex_match(entity->Name(), bell_rx)) {
       GameManager::GetSoundEngine()->play2D("./Assets/sounds/bell.wav");

@@ -19,7 +19,7 @@ namespace Editor {
 
   private:
     auto AddColliders(const std::vector< Editor::TransformData >& collider_mapping,
-                      std::vector< std::shared_ptr< Entity > > entities) -> void;
+                      std::vector< std::shared_ptr< Entity > > entities, std::function<bool(int)> IgnoreOp) -> void;
     auto ProcessBell(std::shared_ptr< Entity >& entity) -> void;
   };
 

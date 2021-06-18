@@ -64,12 +64,11 @@ auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISound
   return _instance->_soundEngine;
 }
 
-auto GameManager::GetMusicEngine() noexcept -> std::shared_ptr<irrklang::ISoundEngine>{
+auto GameManager::GetMusicEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine > {
   return _instance->_musicEngine;
 }
 
-auto GameManager::SetVolume(std::shared_ptr<irrklang::ISoundEngine> engine, float value) -> void
-{
+auto GameManager::SetVolume(std::shared_ptr< irrklang::ISoundEngine > engine, float value) -> void {
   engine->setSoundVolume(value);
 }
 
@@ -193,8 +192,11 @@ auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
   return _player;
 }
 
+auto GameManager::GetCurrentPlayerModel() -> std::shared_ptr< Engine::ECS::Entity > {
+  return _model;
+}
+
 auto GameManager::KillPlayer() -> void {
-  return;
   _instance->KillPlayerImpl();
 }
 
@@ -563,9 +565,9 @@ auto GameManager::CreateBoss() -> void {
   golden_acorn_native_script->Attach(std::make_shared< GoldenAcorn >());
 
   auto boss_native_script = boss->AddComponent< NativeScript >();
-  boss_native_script->Attach(std::make_shared< Boss >(
-      _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >(),
-      golden_acorn_native_script->GetScript< GoldenAcorn >()));
+  boss_native_script->Attach< Boss >(
+      weasel, _playerRect->GetComponent< NativeScript >()->GetScript< PlayerRect >(),
+      golden_acorn_native_script->GetScript< GoldenAcorn >());
 
   PrepareJetpack(boss_jet);
 }
@@ -603,8 +605,8 @@ auto GameManager::CreateSecondWeaselImpl() -> void {
   auto existing_golden_acorn = SceneManager::GetCurrentScene()->FindEntity("GoldenAcorn");
 
   auto boss_native_script = boss->AddComponent< NativeScript >();
-  boss_native_script->Attach(std::make_shared< SecondWeasel >(
-      existing_golden_acorn->GetComponent< NativeScript >()->GetScript< GoldenAcorn >()));
+  boss_native_script->Attach< SecondWeasel >(
+      weasel, existing_golden_acorn->GetComponent< NativeScript >()->GetScript< GoldenAcorn >());
 
   PrepareJetpack(boss_jet);
 }

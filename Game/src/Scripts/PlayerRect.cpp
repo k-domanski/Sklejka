@@ -110,13 +110,12 @@ auto PlayerRect::SeekTarget(float deltaTime) -> void {
 }
 
 auto PlayerRect::HandleMove(float vertical, float horizontal, float deltaTime) -> void {
-  //auto move_delta = glm::vec3{horizontal, -vertical, 0.0f};
   auto move_delta = glm::vec3{horizontal, -vertical, 0.0f};
-  auto quat       = glm::angleAxis(_playerController->Transform()->Euler().z - glm::pi< float >(),
-                             glm::vec3{0.0f, 0.0f, 1.0f});
-  move_delta      = quat * move_delta;
-  // move_delta += -vertical * _transform->Up();
-  // move_delta += horizontal * _transform->Right();
+  // auto move_delta = glm::vec3{horizontal, -vertical, 0.0f};
+  // auto quat       = glm::angleAxis(_playerController->Transform()->Euler().z - glm::pi< float
+  // >(),
+  //                           glm::vec3{0.0f, 0.0f, 1.0f});
+  // move_delta      = quat * move_delta;
 
   // move_delta     = (glm::normalize(_moveVelocity) + move_delta) * _speed * deltaTime;
   if (_canMove) {
@@ -145,9 +144,15 @@ auto PlayerRect::ModelRotation(float vertical, float horizontal, float deltaTime
   if (!_canMove) {
     return;
   }
+  auto move_delta = glm::vec3{-vertical, horizontal, 0.0f};
+  auto quat =
+      glm::angleAxis(_playerController->Transform()->Euler().z, glm::vec3{0.0f, 0.0f, 1.0f});
+  move_delta = quat * move_delta;
 
-  auto v_target = (vertical > 0 ? _qUp : (vertical < 0 ? _qDown : _qIden));
-  auto h_target = (horizontal > 0 ? _qRight : (horizontal < 0 ? _qLeft : _qIden));
+  auto v_target = glm::quat({move_delta.x * _vRad, 0.0f, 0.0f});
+  auto h_target = glm::quat({0.0f, move_delta.y * _hRad, 0.0f});
+  /*auto v_target = (vertical > 0 ? _qUp : (vertical < 0 ? _qDown : _qIden));
+  auto h_target = (horizontal > 0 ? _qRight : (horizontal < 0 ? _qLeft : _qIden));*/
 
   if (_vLerp.End() != v_target) {
     /* Get ratio to scale lerp time up */

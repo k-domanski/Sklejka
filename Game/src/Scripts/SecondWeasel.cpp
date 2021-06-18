@@ -3,10 +3,11 @@
 #include "Systems/SceneGraph.h"
 #include "GameManager.h"
 
-auto SecondWeasel::SeekTarget(float deltaTime) -> void
-{
-  auto forward_speed = _playerSettings->ForwardSpeed();
-  auto seek_speed    = _playerSettings->SeekSpeed();
+using namespace Engine;
+auto SecondWeasel::SeekTarget(float deltaTime) -> void {
+  auto ratio         = _playerSettings->ForwardSpeed() / _playerSettings->ForwardSpeedBase();
+  auto forward_speed = _speed * ratio;
+  auto seek_speed    = _playerSettings->SeekSpeed() * ratio;
   auto node          = GetNode();
   auto desired_velocity =
       glm::normalize(_nodeTransform->WorldPosition() - _transform->Position()) * forward_speed;
@@ -25,14 +26,37 @@ auto SecondWeasel::SeekTarget(float deltaTime) -> void
 }
 
 auto SecondWeasel::HandleMove(float deltaTime) -> void {
-  auto new_pos =
-      _transform->Position()
-      + glm::normalize(_moveVelocity) * _playerSettings->BossForwardSpeed() * 1.2f * deltaTime;
-  _transform->Position(new_pos + _offset);
+  auto ratio = _playerSettings->ForwardSpeed() / _playerSettings->ForwardSpeedBase();
+  auto pos   = _transform->WorldPosition();
+  if (!_continueForward) {
+    auto delta = _bossTr->WorldPosition() - pos;
+    if (glm::length(delta) > 0.5f) {
+      _fwd = glm::normalize(delta);
+
+    } else {
+      _continueForward = true;
+    }
+  }
+
+  auto velocity = _fwd * _speed;
+  auto new_pos  = pos + velocity * deltaTime * ratio;
+  pos           = _transform->Position(new_pos);
+
+  /* Rotate towards movement */
+  auto tmp = glm::lookAt(pos, pos + _fwd, {0.0f, 1.0f, 0.0f});
+  tmp[3]   = glm::vec4(0.0f);
+  tmp      = glm::transpose(tmp);
+  auto rot = glm::quat_cast(tmp);
+  _transform->Rotation(rot);
 }
 
-auto SecondWeasel::GetNode() -> std::shared_ptr<Engine::Node>
-{
+auto SecondWeasel::UpdateModel(float deltaTime) -> void {
+  auto lerp   = _offsetLerp.Update(deltaTime);
+  auto offset = glm::vec3(0.0f, (lerp * lerp), 0.0f);
+  _modelTransform->Position(_offsetBase + offset * 1.5f);
+}
+
+auto SecondWeasel::GetNode() -> std::shared_ptr< Engine::Node > {
   const auto& node_tr =
       Engine::ECS::EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   const auto delta      = node_tr->WorldPosition() - _transform->Position();
@@ -48,43 +72,44 @@ auto SecondWeasel::GetNode() -> std::shared_ptr<Engine::Node>
   return _currentNode;
 }
 
-SecondWeasel::SecondWeasel(std::shared_ptr< GoldenAcorn > goldenAcorn)
-    : _goldenAcorn(goldenAcorn) {
+SecondWeasel::SecondWeasel(std::shared_ptr< Engine::ECS::Entity > model,
+                           std::shared_ptr< GoldenAcorn > goldenAcorn)
+    : _goldenAcorn(goldenAcorn), _model(model) {
+  _modelTransform = model->GetComponent< Engine::Transform >();
 }
 
-auto SecondWeasel::OnCreate() -> void
-{
-  _transform      = Entity()->GetComponent< Engine::Transform >();
-  _nodeSystem     = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::NodeSystem >();
-  _currentNode    = _nodeSystem->GetNode(1, Engine::NodeTag::Boss);
-  _nodeTransform  = Engine::ECS::EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
+auto SecondWeasel::OnCreate() -> void {
+  _transform   = Entity()->GetComponent< Engine::Transform >();
+  _nodeSystem  = Engine::ECS::EntityManager::GetInstance().GetSystem< Engine::NodeSystem >();
+  _currentNode = _nodeSystem->GetNode(1, Engine::NodeTag::Boss);
+  _nodeTransform =
+      Engine::ECS::EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   _playerSettings = GameManager::GetPlayerSettings();
-
+  _offsetLerp.Set(-1.0f, 1.0f, _flightTime);
 }
 
-auto SecondWeasel::StartCutscene(int startNode) -> void
-{
-  _currentNode = _nodeSystem->GetNode(startNode - 2, Engine::NodeTag::Boss);
-  _transform->Position(_currentNode->GetEntity()->GetComponent< Engine::Transform >()->WorldPosition());
+auto SecondWeasel::StartCutscene(std::shared_ptr< PlayerRect > player,
+                                 std::shared_ptr< Transform > bossTr) -> void {
+  _player        = player;
+  _bossTr        = bossTr;
+  auto start_pos = player->Entity()->GetComponent< Transform >()->WorldPosition();
+  auto dir       = glm::normalize(_bossTr->WorldPosition() - start_pos);
+  start_pos      = _transform->Position(start_pos - dir * 7.0f);
+
+  auto dist   = glm::distance(start_pos, _bossTr->WorldPosition());
+  _speed      = _playerSettings->ForwardSpeedBase() * 2.0f;
+  _targetTime = dist / _speed;
+  _offsetLerp.Set(-1.0f, 1.0f, _targetTime);
   _canMove = true;
 }
 
-
-
-auto SecondWeasel::Update(float deltaTime) -> void
-{
+auto SecondWeasel::Update(float deltaTime) -> void {
   if (_canMove) {
-    SeekTarget(deltaTime);
-    HandleMove(deltaTime);
-
-    if (_getAcornTimer > 0.f) {
-      _getAcornTimer -= deltaTime;
-      if (_getAcornTimer <= 0.f) {
-        _goldenAcorn->DetachFromBoss();
-        Engine::SceneManager::GetCurrentScene()->SceneGraph()->SetParent(_goldenAcorn->Entity(),
-                                                                         Entity());
-        _goldenAcorn->ResetLocalPos();
-      }
+    if (_frameCounter > 0) {
+      HandleMove(deltaTime);
+      UpdateModel(deltaTime);
+    } else {
+      ++_frameCounter;
     }
 
     if (_flightTime > 0.f) {
@@ -95,4 +120,13 @@ auto SecondWeasel::Update(float deltaTime) -> void
   }
 }
 
-auto SecondWeasel::OnKeyPressed(Engine::Key key) -> void {}
+auto SecondWeasel::OnKeyPressed(Engine::Key key) -> void {
+}
+
+auto SecondWeasel::TargetTime() -> float {
+  return _targetTime;
+}
+
+auto SecondWeasel::ModelTransform() -> std::shared_ptr< Engine::Transform > {
+  return _modelTransform;
+}
