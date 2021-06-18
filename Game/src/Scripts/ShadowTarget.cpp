@@ -10,7 +10,7 @@ ShadowTarget::ShadowTarget(std::shared_ptr< Engine::ECS::Entity > target)
   auto renderer   = entity->AddComponent< Engine::Components::UIRenderer >();
   _bar->transform = entity->AddComponent< Engine::Transform >();
   _bar->bar       = std::make_shared< Engine::Renderer::Bar >();
-  _bar->image       = std::make_shared< Engine::Renderer::Image >();
+  _bar->image     = std::make_shared< Engine::Renderer::Image >();
   renderer->AddElement(_bar->bar);
   renderer->AddElement(_bar->image);
   _rendererSystem =
@@ -42,12 +42,17 @@ auto ShadowTarget::OnCreate() -> void {
   _bar->image->Size({55.0f, 53.0f});
   _bar->image->Offset({0.0f, 250.0f});
   stbi_set_flip_vertically_on_load(false);
+
+  _vignetteShader = Engine::AssetManager::GetShader("shaders/vignette.glsl");
+  _vignetteLerp.Set(0.0f, 0.0f, 1.0f);
+  _vigLerpTime = 0.75f;
 }
 
 auto ShadowTarget::Update(float deltaTime) -> void {
   if (GameManager::IsPaused()) {
     return;
   }
+  auto time_scale    = GameManager::GetGameSettings()->GameTimeScale();
   auto currentStataX = Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_X);
   if (currentStataX && !_lastStateX) {
     SlowTime();
@@ -58,13 +63,21 @@ auto ShadowTarget::Update(float deltaTime) -> void {
   if (!_timeSlowed) {
     if (IsInShadow()) {
       /* Increase energy */
-      _currentAmount += (1.0f / player_settings->EnergyFillTime()) * deltaTime;
+      _currentAmount += (1.0f / player_settings->EnergyFillTime()) * deltaTime * time_scale;
       _currentAmount = glm::min(_currentAmount, 1.0f);
+      if (_vignetteLerp.End() == 0.0f) {
+        _vignetteLerp.Set(_vignetteLerp.Value(), 1.0f, _vigLerpTime);
+      }
+    } else {
+      if (_vignetteLerp.End() == 1.0f) {
+        _vignetteLerp.Set(_vignetteLerp.Value(), 0.0f, _vigLerpTime);
+      }
     }
   } else {
     /* Decrease energy */
     if (_currentAmount > 0.0f) {
-      _currentAmount -= (1.0f / (player_settings->SlowTimeDuration() + 2 * _lerpTime)) * deltaTime;
+      _currentAmount -=
+          (1.0f / (player_settings->SlowTimeDuration() + 2 * _lerpTime)) * deltaTime * time_scale;
     } else {
       SetTimeSlowed(false);
       GameManager::GetSoundEngine()->play2D("./Assets/sounds/resume_time.wav");
@@ -72,6 +85,7 @@ auto ShadowTarget::Update(float deltaTime) -> void {
     }
   }
   _bar->bar->FillRatio(glm::min(1.0f, _currentAmount));
+  _vignetteShader->SetValue("u_Factor", _vignetteLerp.Update(deltaTime * time_scale));
 
   GameManager::GetGameSettings()->GameTimeScale(_gameTimeLerp.Update(deltaTime));
   GameManager::GetGameSettings()->PlayerTimeScale(_playerTimeLerp.Update(deltaTime));

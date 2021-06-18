@@ -160,7 +160,7 @@ auto Boss::OnCreate() -> void {
 
   { /* Speed */
     _speedLerp.Set(_playerSettings->ForwardSpeedBase(), _playerSettings->ForwardSpeedBase(), 1.0f);
-    _minDistToPlayer = 3.0f;
+    _minDistToPlayer = 6.0f;
     _maxDistToPlayer = 40.0f;
     _state           = BossState::TooFar;
     _lerpTime        = 0.5f;

@@ -36,6 +36,9 @@ private:
   GLint _maxSamplesPassed;
   std::shared_ptr< BarData > _bar;
   std::shared_ptr< Engine::Systems::Renderer > _rendererSystem;
+  std::shared_ptr< Engine::GL::Shader > _vignetteShader;
+  FloatLerp _vignetteLerp;
+  float _vigLerpTime;
   FloatLerp _gameTimeLerp;
   FloatLerp _playerTimeLerp;
   float _lerpTime;
