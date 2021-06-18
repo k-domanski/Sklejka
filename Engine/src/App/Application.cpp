@@ -5,7 +5,14 @@
 #include "Systems/Renderer.h"
 
 namespace Engine {
+  Application* Application::s_Instance = nullptr;
   Application::Application() {
+    /*singleton*/
+    if (s_Instance != nullptr) {
+      CORE_INFO("Application already exists.");
+    }
+
+    s_Instance = this;
     /* Fullscreen */
 
     /*m_Window = std::unique_ptr< Window >(
@@ -14,9 +21,6 @@ namespace Engine {
         Window::Create(WindowProperties(1600, 900, "Squirrel Ninja", false)));
 
     m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
-
-    m_ImGuiLayer = new ImGuiLayer();
-    AddOverlay(m_ImGuiLayer);
 
     GL::Context::Initialize();
     GL::Context::SetClearBufferMask(GL::BufferBit::Color | GL::BufferBit::Depth
@@ -35,10 +39,8 @@ namespace Engine {
           layer->OnUpdate(timer.DeltaTime());
 
         /*ImGui Render*/
-        m_ImGuiLayer->Begin();
         for (Layer* layer : m_LayerStack)
           layer->OnImGuiRender();
-        m_ImGuiLayer->End();
       }
       m_Window->OnUpdate();
     }

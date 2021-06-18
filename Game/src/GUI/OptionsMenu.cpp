@@ -48,7 +48,7 @@ OptionsMenu::OptionsMenu() {
   _titleImage->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/title_options.png"));
   _titleImage->Size({419.0f, 74.0f});
 
-  _musicData.currentValue = .1f;
+  _musicData.currentValue = 1.0f;
   _musicData.maxValue     = 1.0f;
   _musicData.minValue     = 0.0f;
   _musicData.bar          = std::make_shared< Engine::Renderer::Bar >();
@@ -109,7 +109,7 @@ OptionsMenu::OptionsMenu() {
                               / (_musicData.maxValue - _musicData.minValue));
   });
 
-  _soundData.currentValue = .1f;
+  _soundData.currentValue = 1.0f;
   _soundData.maxValue     = 1.0f;
   _soundData.minValue     = 0.0f;
   _soundData.bar          = std::make_shared< Engine::Renderer::Bar >();
@@ -206,7 +206,7 @@ OptionsMenu::OptionsMenu() {
   _brightnessData.downButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _brightnessData.downButton->OnPress([this]() {
-    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue - 0.1f,
+    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue - 0.05f,
                                               _brightnessData.minValue, _brightnessData.maxValue);
     _brightnessData.bar->FillRatio((_brightnessData.currentValue - _brightnessData.minValue)
                                    / (_brightnessData.maxValue - _brightnessData.minValue));
@@ -226,7 +226,7 @@ OptionsMenu::OptionsMenu() {
   _brightnessData.upButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _brightnessData.upButton->OnPress([this]() {
-    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue + 0.1f,
+    _brightnessData.currentValue = std::clamp(_brightnessData.currentValue + 0.05f,
                                               _brightnessData.minValue, _brightnessData.maxValue);
     _brightnessData.bar->FillRatio((_brightnessData.currentValue - _brightnessData.minValue)
                                    / (_brightnessData.maxValue - _brightnessData.minValue));
@@ -269,7 +269,7 @@ OptionsMenu::OptionsMenu() {
   _contrastData.downButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _contrastData.downButton->OnPress([this]() {
-    _contrastData.currentValue = std::clamp(_contrastData.currentValue - 0.1f,
+    _contrastData.currentValue = std::clamp(_contrastData.currentValue - 0.05f,
                                             _contrastData.minValue, _contrastData.maxValue);
     _contrastData.bar->FillRatio((_contrastData.currentValue - _contrastData.minValue)
                                  / (_contrastData.maxValue - _contrastData.minValue));
@@ -289,7 +289,7 @@ OptionsMenu::OptionsMenu() {
   _contrastData.upButton->TextOffset(glm::vec2(-5.0f, -5.0f));
   // TODO: add value changing in game settings
   _contrastData.upButton->OnPress([this]() {
-    _contrastData.currentValue = std::clamp(_contrastData.currentValue + 0.1f,
+    _contrastData.currentValue = std::clamp(_contrastData.currentValue + 0.05f,
                                             _contrastData.minValue, _contrastData.maxValue);
     _contrastData.bar->FillRatio((_contrastData.currentValue - _contrastData.minValue)
                                  / (_contrastData.maxValue - _contrastData.minValue));
@@ -297,8 +297,8 @@ OptionsMenu::OptionsMenu() {
   });
 
   _gammaData.currentValue = 2.2f;  // GameManager::GetGameSettings()->Gamma();
-  _gammaData.maxValue     = 8.0f;
-  _gammaData.minValue     = 0.0f;
+  _gammaData.maxValue     = 2.5f;
+  _gammaData.minValue     = 1.8f;
   _gammaData.bar          = std::make_shared< Engine::Renderer::Bar >();
   _gammaData.bar->BackgroundTexture(Engine::AssetManager::GetTexture2D("./textures/UI/gamma.png"));
   _gammaData.bar->FillTexture(Engine::AssetManager::GetTexture2D("./textures/UI/slider.png"));
@@ -332,7 +332,7 @@ OptionsMenu::OptionsMenu() {
   // TODO: add value changing in game settings
   _gammaData.downButton->OnPress([this]() {
     _gammaData.currentValue =
-        std::clamp(_gammaData.currentValue - 0.1f, _gammaData.minValue, _gammaData.maxValue);
+        std::clamp(_gammaData.currentValue - 0.05f, _gammaData.minValue, _gammaData.maxValue);
     _gammaData.bar->FillRatio((_gammaData.currentValue - _gammaData.minValue)
                               / (_gammaData.maxValue - _gammaData.minValue));
     GameManager::GetGameSettings()->Gamma(_gammaData.currentValue);
@@ -351,7 +351,7 @@ OptionsMenu::OptionsMenu() {
   // TODO: add value changing in game settings
   _gammaData.upButton->OnPress([this]() {
     _gammaData.currentValue =
-        std::clamp(_gammaData.currentValue + 0.1f, _gammaData.minValue, _gammaData.maxValue);
+        std::clamp(_gammaData.currentValue + 0.05f, _gammaData.minValue, _gammaData.maxValue);
     _gammaData.bar->FillRatio((_gammaData.currentValue - _gammaData.minValue)
                               / (_gammaData.maxValue - _gammaData.minValue));
     GameManager::GetGameSettings()->Gamma(_gammaData.currentValue);
