@@ -16,6 +16,7 @@ public:
   auto Update(float deltaTime) -> void override;
   auto OnCollisionEnter(const std::shared_ptr< Engine::Components::Collider >& collider)
       -> void override;
+  auto IsActive() -> bool;
 
 private:
   auto TurnBell(glm::quat start, glm::quat end, float timeout) -> void;
