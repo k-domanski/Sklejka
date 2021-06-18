@@ -48,7 +48,7 @@ OptionsMenu::OptionsMenu() {
   _titleImage->Texture(Engine::AssetManager::GetTexture2D("./textures/UI/title_options.png"));
   _titleImage->Size({419.0f, 74.0f});
 
-  _musicData.currentValue = .1f;
+  _musicData.currentValue = 1.0f;
   _musicData.maxValue     = 1.0f;
   _musicData.minValue     = 0.0f;
   _musicData.bar          = std::make_shared< Engine::Renderer::Bar >();
@@ -109,7 +109,7 @@ OptionsMenu::OptionsMenu() {
                               / (_musicData.maxValue - _musicData.minValue));
   });
 
-  _soundData.currentValue = .1f;
+  _soundData.currentValue = 1.0f;
   _soundData.maxValue     = 1.0f;
   _soundData.minValue     = 0.0f;
   _soundData.bar          = std::make_shared< Engine::Renderer::Bar >();
