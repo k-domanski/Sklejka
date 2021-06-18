@@ -139,3 +139,7 @@ auto ShadowTarget::IsInShadow() -> bool {
   auto test_against = glm::max(100.0f, _maxSamplesPassed / 2.0f);
   return samplesPassed < test_against;
 }
+
+auto ShadowTarget::RemoveEnergy() -> void {
+  _currentAmount = 0.0f;
+}

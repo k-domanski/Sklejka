@@ -39,6 +39,8 @@ void Engine::Systems::GUISystem::Update(float deltaTime) {
   // GL::Context::ClearBuffers(GL::BufferBit::Color);
 
   for (auto entityID : _entities) {
+    if (entityID == nullptr)
+        return;
     auto transform = Engine::ECS::EntityManager::GetComponent< Engine::Transform >(entityID);
     auto renderer =
         Engine::ECS::EntityManager::GetComponent< Engine::Components::UIRenderer >(entityID);
