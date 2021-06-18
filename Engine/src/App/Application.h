@@ -1,7 +1,6 @@
 #pragma once
 #include "Window.h"
 #include "App/LayerStack.h"
-#include "ImGui/ImGuiLayer.h"
 #include "Timer.h"
 #include "ECS/System.h"
 
@@ -23,7 +22,6 @@ namespace Engine {
     std::unique_ptr< Window > m_Window;
     bool m_Running = true;
     bool m_Minimized = false;
-    ImGuiLayer* m_ImGuiLayer;
     LayerStack m_LayerStack;
     Timer timer;
   };
