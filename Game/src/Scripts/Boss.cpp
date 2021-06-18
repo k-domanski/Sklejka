@@ -28,6 +28,7 @@ auto Boss::GetNode() -> std::shared_ptr< Engine::Node > {
     _currentNode = _nodeSystem->GetNode(_currentNode->NextIndex(), Engine::NodeTag::Boss);
     _nodeTransform =
         Engine::ECS::EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
+    LOG_DEBUG("B Ind {}", _currentNode->Index());
   }
   return _currentNode;
 }
@@ -171,6 +172,7 @@ auto Boss::OnCreate() -> void {
     _offsetLerp.Set(0.0f, 0.0f, 1.0f);
     _fallTime = 3.0f;
   }
+  { _startNodeIndex = GameManager::GetCurrentSceneName() == +SceneName::LVL_1 ? 89 : 62; }
 }
 
 auto Boss::Update(float deltaTime) -> void {
@@ -178,7 +180,7 @@ auto Boss::Update(float deltaTime) -> void {
     return;
   }
 
-  _canMove = _player->CurrentNodeIndex() > 89;
+  _canMove = _player->CurrentNodeIndex() > _startNodeIndex;
 
   if (!_canMove) {
     return;
@@ -281,7 +283,7 @@ auto Boss::Hit() -> void {
       break;
   }
 
-   if (_hits >= 3) {
+  if (_hits >= 3) {
     Kill();
     StopSound();
   }

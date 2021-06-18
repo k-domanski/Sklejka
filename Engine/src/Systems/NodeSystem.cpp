@@ -23,6 +23,14 @@ namespace Engine {
   }
 
   auto NodeSystem::GetNode(int index, NodeTag tag) -> std::shared_ptr< Node > {
+    /*auto ind = index;
+    while (ind < _entities.size()) {
+      auto node = _entities[ind]->GetComponent< Node >();
+      if (node->Index() == ind) {
+        return node;
+      }
+      ++ind;
+    }*/
     for (auto id : _entities) {
       auto& node = ECS::EntityManager::GetComponent< Engine::Node >(id);
       if (node->Tag() == tag && node->Index() == index) {

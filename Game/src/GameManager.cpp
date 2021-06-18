@@ -92,9 +92,14 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
       break;
     }
     case SceneName::LVL_1: {
-      // auto scene = Engine::AssetManager::LoadScene("./scenes/_lvl1.scene");
       auto scene = Engine::AssetManager::LoadScene("./scenes/LEVEL_1.scene");
-      // auto scene = Engine::AssetManager::LoadScene("./scenes/LEVEL_1_BOSSNODES.scene");
+      Engine::SceneManager::AddScene(scene);
+      Engine::SceneManager::OpenScene(scene->GetID());
+      _instance->NextFrameTrigger();
+      break;
+    }
+    case SceneName::LVL_2: {
+      auto scene = Engine::AssetManager::LoadScene("./scenes/LEVEL_2.scene");
       Engine::SceneManager::AddScene(scene);
       Engine::SceneManager::OpenScene(scene->GetID());
       _instance->NextFrameTrigger();
@@ -115,7 +120,7 @@ auto GameManager::SwitchScene(SceneName scene) -> void {
   }
 
   auto new_state = GameState::MainMenu;
-  if (scene == +SceneName::LVL_1) {
+  if (scene == +SceneName::LVL_1 || scene == +SceneName::LVL_2) {
     new_state = GameState::Gameplay;
   }
 
@@ -135,9 +140,13 @@ auto GameManager::GetScene(SceneName scene) -> std::shared_ptr< Engine::Scene > 
   }
   switch (scene) {
     case SceneName::LVL_1: {
-      return Engine::AssetManager::LoadScene("./scenes/_lvl1.scene");
+      return Engine::AssetManager::LoadScene("./scenes/Level_1.scene");
+    }
+    case SceneName::LVL_2: {
+      return Engine::AssetManager::LoadScene("./scenes/Level_2.scene");
     }
   }
+  return nullptr;
 }
 
 auto GameManager::GetNextSceneName() -> SceneName {
@@ -216,7 +225,8 @@ auto GameManager::IsGameplayState() -> bool {
 }
 
 auto GameManager::IsGameplayScene() -> bool {
-  const auto is_gameplay_scene = (_instance->_currentSceneName == +SceneName::LVL_1);
+  const auto is_gameplay_scene = (_instance->_currentSceneName == +SceneName::LVL_1)
+                                 || (_instance->_currentSceneName == +SceneName::LVL_2);
   return is_gameplay_scene;
 }
 
@@ -250,7 +260,8 @@ auto GameManager::UpdateImpl(float deltaTime) -> void {
   if (_frameWaitCounter > 0) {
     if (_frameWaitCounter == 1) {
       switch (_currentSceneName) {
-        case SceneName::LVL_1: {
+        case SceneName::LVL_1:
+        case SceneName::LVL_2: {
           /* This is delayed 1 frame */
           _instance->CreatePlayer();
           _instance->CreateBoss();
@@ -360,11 +371,19 @@ auto GameManager::CreatePlayer() -> void {
   { /* Player Rect */
     auto transform = player_rect->AddComponent< Transform >();
     /* Skip 1st node */
-    auto n1_pos = node_system->GetNode(0, NodeTag::Player)
+    /*auto n1_pos = node_system->GetNode(0, NodeTag::Player)
                       ->GetEntity()
                       ->GetComponent< Transform >()
                       ->WorldPosition();
     auto n2_pos = node_system->GetNode(1, NodeTag::Player)
+                      ->GetEntity()
+                      ->GetComponent< Transform >()
+                      ->WorldPosition();*/
+    auto n1_pos = node_system->GetNode(61, NodeTag::Player)
+                      ->GetEntity()
+                      ->GetComponent< Transform >()
+                      ->WorldPosition();
+    auto n2_pos = node_system->GetNode(62, NodeTag::Player)
                       ->GetEntity()
                       ->GetComponent< Transform >()
                       ->WorldPosition();
@@ -600,7 +619,7 @@ auto GameManager::CreateSecondWeaselImpl() -> void {
                     ->GetComponent< Transform >()
                     ->WorldPosition();
   // transform->Position(n1_pos);
-  transform->Position(glm::vec3(0.f, 0.f, 0.f));
+  transform->Position(n1_pos + glm::vec3(0.0f, -50.0f, 0.0f));
   transform->Forward(glm::normalize(n2_pos - n1_pos));
 
   auto existing_golden_acorn = SceneManager::GetCurrentScene()->FindEntity("GoldenAcorn");
