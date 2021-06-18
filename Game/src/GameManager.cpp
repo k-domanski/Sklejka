@@ -550,7 +550,7 @@ auto GameManager::CreateAcorn() -> std::shared_ptr< Engine::ECS::Entity > {
 auto GameManager::AddSound(irrklang::ISound* sound) -> void {
   _instance->_sceneSounds.push_back(sound);
 }
-
+ 
 auto GameManager::Delay(std::function< void() > action, float time) -> void {
   _instance->_delayAction   = true;
   _instance->_delayTimer    = time;
@@ -806,7 +806,7 @@ auto GameManager::KillPlayerImpl() -> void {
   auto timer  = camera->GetEntity()->GetComponent< NativeScript >()->GetScript< FlightTimer >();
   auto time   = timer->GetTime();
   if (timer->CanCount())//HACK: i need some bool so i will reuse it 
-    Delay([]() { ShowLevelSumUp(false, 0, 0); }, 3.0f);
+    Delay([]() { ShowLevelSumUp(false, 0, 0); }, 1.0f);
   timer->CanCount(false);
 }
 
