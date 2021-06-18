@@ -13,8 +13,7 @@ PlayerRect::PlayerRect(const std::shared_ptr< PlayerController >& player_control
 auto PlayerRect::OnCreate() -> void {
   _transform   = Entity()->GetComponent< Engine::Transform >();
   _nodeSystem  = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
-  _currentNode = _nodeSystem->GetNode(62, NodeTag::Player);
-  //_currentNode    = _nodeSystem->GetNode(1, NodeTag::Player);
+  _currentNode    = _nodeSystem->GetNode(1, NodeTag::Player);
   _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   _playerSettings = GameManager::GetPlayerSettings();
   _gameSettings   = GameManager::GetGameSettings();
@@ -189,7 +188,6 @@ auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
     _currentNode    = _nodeSystem->GetNode(_currentNode->NextIndex(), NodeTag::Player);
     // LOG_DEBUG("Current node: {}", _currentNode->Index());
     _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
-    LOG_DEBUG("P Ind {}", _currentNode->Index());
   }
   return _currentNode;
 }

@@ -371,19 +371,11 @@ auto GameManager::CreatePlayer() -> void {
   { /* Player Rect */
     auto transform = player_rect->AddComponent< Transform >();
     /* Skip 1st node */
-    /*auto n1_pos = node_system->GetNode(0, NodeTag::Player)
+    auto n1_pos = node_system->GetNode(0, NodeTag::Player)
                       ->GetEntity()
                       ->GetComponent< Transform >()
                       ->WorldPosition();
     auto n2_pos = node_system->GetNode(1, NodeTag::Player)
-                      ->GetEntity()
-                      ->GetComponent< Transform >()
-                      ->WorldPosition();*/
-    auto n1_pos = node_system->GetNode(61, NodeTag::Player)
-                      ->GetEntity()
-                      ->GetComponent< Transform >()
-                      ->WorldPosition();
-    auto n2_pos = node_system->GetNode(62, NodeTag::Player)
                       ->GetEntity()
                       ->GetComponent< Transform >()
                       ->WorldPosition();

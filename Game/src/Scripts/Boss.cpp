@@ -28,7 +28,6 @@ auto Boss::GetNode() -> std::shared_ptr< Engine::Node > {
     _currentNode = _nodeSystem->GetNode(_currentNode->NextIndex(), Engine::NodeTag::Boss);
     _nodeTransform =
         Engine::ECS::EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
-    LOG_DEBUG("B Ind {}", _currentNode->Index());
   }
   return _currentNode;
 }
