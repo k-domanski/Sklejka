@@ -16,7 +16,7 @@
 
 using Engine::Utility::FloatLerp;
 
-BETTER_ENUM(__SceneName, int, MainMenu, Options, Credits, Cutscene, LevelSelection, LVL_1);
+BETTER_ENUM(__SceneName, int, MainMenu, Options, Credits, Cutscene, LevelSelection, LVL_1, LVL_2);
 typedef __SceneName SceneName;
 
 BETTER_ENUM(__GameState, int, MainMenu, Gameplay, Paused);

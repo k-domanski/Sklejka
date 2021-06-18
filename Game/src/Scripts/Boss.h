@@ -39,6 +39,7 @@ private:
   float _currentSpeedUpDuration = 0.f;
   int _hits                     = 0;
   bool _canMove;
+  int _startNodeIndex;
   bool _bossShowUp;
 
   /* Speed */

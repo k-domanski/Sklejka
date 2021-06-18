@@ -1,0 +1,27 @@
+{
+    "assetID": "12618816673314804379",
+    "diffuseFilepath": "Assets/textures/forest.png",
+    "mainColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "metalness": 0.13500000536441803,
+    "metalnessMap": "",
+    "roughness": 1.0,
+    "roughnessMap": "",
+    "sfail": "Keep",
+    "shaderFilepath": "Assets/shaders/default.glsl",
+    "stencilFunc": "Always",
+    "stencilRef": 0,
+    "tilingOffset": [
+        1.0,
+        1.0,
+        0.0,
+        0.0
+    ],
+    "useStencil": false,
+    "zfail": "Keep",
+    "zpass": "Keep"
+}

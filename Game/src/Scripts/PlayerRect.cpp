@@ -11,8 +11,8 @@ PlayerRect::PlayerRect(const std::shared_ptr< PlayerController >& player_control
 }
 
 auto PlayerRect::OnCreate() -> void {
-  _transform      = Entity()->GetComponent< Engine::Transform >();
-  _nodeSystem     = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
+  _transform   = Entity()->GetComponent< Engine::Transform >();
+  _nodeSystem  = ECS::EntityManager::GetInstance().GetSystem< NodeSystem >();
   _currentNode    = _nodeSystem->GetNode(1, NodeTag::Player);
   _nodeTransform  = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   _playerSettings = GameManager::GetPlayerSettings();
@@ -183,7 +183,9 @@ auto PlayerRect::GetNode() -> std::shared_ptr< Engine::Node > {
   if (magnitude2 <= (min_mag * min_mag)) {
     // if (_currentNode->NextIndex() == 3)
     // GameManager::ShowLevelSumUp(10.0f, true);
-    _currentNode = _nodeSystem->GetNode(_currentNode->NextIndex(), NodeTag::Player);
+    auto last_index = _currentNode->Index();
+    auto next_index = _currentNode->NextIndex();
+    _currentNode    = _nodeSystem->GetNode(_currentNode->NextIndex(), NodeTag::Player);
     // LOG_DEBUG("Current node: {}", _currentNode->Index());
     _nodeTransform = EntityManager::GetComponent< Engine::Transform >(_currentNode->GetEntity());
   }
