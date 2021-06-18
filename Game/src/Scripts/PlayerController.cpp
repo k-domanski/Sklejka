@@ -1,6 +1,9 @@
 #include "PlayerController.h"
 
 #include <GameManager.h>
+#include <regex>
+
+#include "Components/NativeScript.h"
 
 using namespace Engine;
 using namespace Engine::ECS;
@@ -24,8 +27,13 @@ auto PlayerController::Transform() const noexcept -> std::shared_ptr< Engine::Tr
 auto PlayerController::OnCollisionEnter(
     const std::shared_ptr< Engine::Components::Collider >& collider) -> void {
   if (auto& ent = collider->GetEntity(); ent != nullptr) {
-    if (ent->layer.Get(LayerMask::Flag::Bell)) {
+    const std::regex bell_rx("BELL.*");
+    if (std::regex_match(ent->Name(), bell_rx)) {
+      // if (ent->layer.Get(LayerMask::Flag::Bell)) {
       /* Speed up player if we decide to */
+      GameManager::GetSoundEngine()->play2D("./Assets/sounds/bell.wav");
+      GameManager::PlayerSpeedUp();
+      Entity()->GetComponent< NativeScript >()->GetScript< ShadowTarget >()->RemoveEnergy();
       return;
     }
   }

@@ -9,6 +9,7 @@
 #include "Components/Animator.h"
 
 #include "Components/ParticleEmitter.h"
+#include <regex>
 
 using namespace Engine;
 using namespace Engine::ECS;
@@ -255,6 +256,14 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
   auto& scene_graph = SceneManager::GetDisplayScene()->SceneGraph();
   for (int node_index = 0; node_index < nodes.size(); ++node_index) {
     auto& node = nodes[node_index];
+    /* Check for nodes */
+    const std::regex parent_regex("B.*");
+    const std::regex node_regex("[Nn]ode_[0-9]*_[0-9]*");
+    const std::regex boss_regex("[Bb]oss_[0-9]*_[0-9]*");
+    const std::regex number_regex("[0-9]+");
+    if (std::regex_match(node.name, parent_regex)) {
+      LOG_DEBUG("Boss {}", node.name);
+    }
 #define _SINGLE_MESH
 
 #if defined(_SINGLE_MESH)
@@ -302,5 +311,13 @@ auto EditorLayer::AddObjectOnScene(const std::string& path, std::shared_ptr< ECS
       scene_graph->AddChild(parent, mesh_entity);
 #endif
     }
+
+    ///* Check for nodes */
+    // const std::regex node_regex("[Nn]ode_[0-9]*_[0-9]*");
+    // const std::regex boss_regex("[Bb]oss_[0-9]*_[0-9]*");
+    // const std::regex number_regex("[0-9]+");
+    // if(node.name == "NODES"){
+    //  LOG_DEBUG("NODES FOUND");
+    //}
   }
 }

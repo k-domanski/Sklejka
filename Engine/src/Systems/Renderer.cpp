@@ -84,6 +84,7 @@ namespace Engine::Systems {
     _blurShader     = AssetManager::GetShader("./shaders/blur.glsl");
     _fishEyeShader  = AssetManager::GetShader("./shaders/fish_eye.glsl");
     _aberrationShader = AssetManager::GetShader("./shaders/chromatic_aberration.glsl");
+    _vignetteShader   = AssetManager::GetShader("./shaders/vignette.glsl");
     _finalPassShader  = AssetManager::GetShader("./shaders/final_pass.glsl");
     /* -=-=-=-=-=-=-=- */
 
@@ -652,22 +653,31 @@ namespace Engine::Systems {
       glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
     }
 
-    /* Blur */
-    if (false) {
-      _blurShader->Use();
-      _blurShader->SetValue("u_MainTexture", 0);
-      // Horizontal
+    /* Vignette */
+    if (true) {
+      _vignetteShader->Use();
+      _vignetteShader->SetValue("u_MainTexture", 0);
       _pingPongBuffer->Swap();
       _pingPongBuffer->BackTexture()->Bind(0);
-      _blurShader->SetValue("u_Horizontal", 1);
-      glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
-
-      // Vertical
-      _pingPongBuffer->Swap();
-      _pingPongBuffer->BackTexture()->Bind(0);
-      _blurShader->SetValue("u_Horizontal", 0);
       glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
     }
+
+    /* Blur */
+    //if (false) {
+    //  _blurShader->Use();
+    //  _blurShader->SetValue("u_MainTexture", 0);
+    //  // Horizontal
+    //  _pingPongBuffer->Swap();
+    //  _pingPongBuffer->BackTexture()->Bind(0);
+    //  _blurShader->SetValue("u_Horizontal", 1);
+    //  glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
+
+    //  // Vertical
+    //  _pingPongBuffer->Swap();
+    //  _pingPongBuffer->BackTexture()->Bind(0);
+    //  _blurShader->SetValue("u_Horizontal", 0);
+    //  glDrawElements(_quad->GetPrimitive(), _quad->ElementCount(), GL_UNSIGNED_INT, NULL);
+    //}
 
     /* Final Pass */
     _pingPongBuffer->FrontTexture()->Bind(0);
