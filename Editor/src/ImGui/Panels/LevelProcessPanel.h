@@ -19,7 +19,11 @@ namespace Editor {
 
   private:
     auto AddColliders(const std::vector< Editor::TransformData >& collider_mapping,
-                      std::vector< std::shared_ptr< Entity > > entities, std::function<bool(int)> IgnoreOp) -> void;
+                      std::vector< std::shared_ptr< Entity > > entities,
+                      std::function< bool(int) > IgnoreOp) -> void;
+    auto AddTrees(const std::vector< Editor::TreeData >& collider_mapping,
+                  std::vector< std::shared_ptr< Entity > > entities,
+                  std::function< bool(int) > IsTreeOp) -> void;
     auto ProcessBell(std::shared_ptr< Entity >& entity) -> void;
   };
 
