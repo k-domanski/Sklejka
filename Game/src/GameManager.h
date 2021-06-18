@@ -106,6 +106,7 @@ public:
   static auto ShowTutorial(std::function< void() > returnFunc) -> void;
   static auto HideTutorial() -> void;
   static auto GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity >;
+  static auto GetCurrentPlayerModel() -> std::shared_ptr< Engine::ECS::Entity >;
   static auto KillPlayer() -> void;
   static auto Win() -> void;
   static auto CreateSecondWeasel() -> void;

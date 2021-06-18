@@ -64,12 +64,11 @@ auto GameManager::GetSoundEngine() noexcept -> std::shared_ptr< irrklang::ISound
   return _instance->_soundEngine;
 }
 
-auto GameManager::GetMusicEngine() noexcept -> std::shared_ptr<irrklang::ISoundEngine>{
+auto GameManager::GetMusicEngine() noexcept -> std::shared_ptr< irrklang::ISoundEngine > {
   return _instance->_musicEngine;
 }
 
-auto GameManager::SetVolume(std::shared_ptr<irrklang::ISoundEngine> engine, float value) -> void
-{
+auto GameManager::SetVolume(std::shared_ptr< irrklang::ISoundEngine > engine, float value) -> void {
   engine->setSoundVolume(value);
 }
 
@@ -191,6 +190,10 @@ auto GameManager::HideTutorial() -> void {
 
 auto GameManager::GetCurrentPlayer() -> std::shared_ptr< Engine::ECS::Entity > {
   return _player;
+}
+
+auto GameManager::GetCurrentPlayerModel() -> std::shared_ptr< Engine::ECS::Entity > {
+  return _model;
 }
 
 auto GameManager::KillPlayer() -> void {

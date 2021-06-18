@@ -17,6 +17,7 @@ private:
   auto TryThrow() -> void;
   auto Throw(std::shared_ptr< Engine::Transform > target) -> void;
   auto Throw(glm::vec3 direction) -> void;
+  auto ThrowDirection() -> glm::vec3;
 
 public:
   auto OnCreate() -> void override;

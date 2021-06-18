@@ -11,16 +11,17 @@ auto AcornThrower::OnCreate() -> void {
   auto sg          = scene->SceneGraph();
   auto bell_parent = scene->FindEntity("DZWONY");
   _bells           = sg->GetChildren(bell_parent);
+  //_playerTransform = GameManager::GetCurrentPlayerModel()->GetComponent< Engine::Transform >();
   _playerTransform = GameManager::GetCurrentPlayer()->GetComponent< Engine::Transform >();
-  _maxDistance     = GameManager::GetPlayerSettings()->ThrowDistance();
-  _lastStateA      = false;
-  _timeout         = 1.0f;
+  _maxDistance = GameManager::GetPlayerSettings()->ThrowDistance();
+  _lastStateA  = false;
+  _timeout     = 1.0f;
 
-  auto entity     = Engine::ECS::EntityManager::GetInstance().CreateEntity();
-  auto renderer   = entity->AddComponent< Engine::Components::UIRenderer >();
-  _transform = entity->AddComponent< Engine::Transform >();
-  _bar       = std::make_shared< Engine::Renderer::Bar >();
-  _image     = std::make_shared< Engine::Renderer::Image >();
+  auto entity   = Engine::ECS::EntityManager::GetInstance().CreateEntity();
+  auto renderer = entity->AddComponent< Engine::Components::UIRenderer >();
+  _transform    = entity->AddComponent< Engine::Transform >();
+  _bar          = std::make_shared< Engine::Renderer::Bar >();
+  _image        = std::make_shared< Engine::Renderer::Image >();
   renderer->AddElement(_bar);
   renderer->AddElement(_image);
   stbi_set_flip_vertically_on_load(true);
@@ -40,6 +41,12 @@ auto AcornThrower::OnCreate() -> void {
   _image->Size({55.0f, 53.0f});
   _image->Offset({0.0f, 250.0f});
   stbi_set_flip_vertically_on_load(false);
+}
+
+auto AcornThrower::ThrowDirection() -> glm::vec3 {
+  return _playerTransform->Forward();
+  /*return glm::angleAxis(glm::radians(17.0f), _playerTransform->Right())
+   * _playerTransform->Forward();*/
 }
 
 auto AcornThrower::TryThrow() -> void {
@@ -82,7 +89,7 @@ auto AcornThrower::Update(float deltaTime) -> void {
   }
   auto currentStataA = Engine::Input::IsGamepadButtonPressed(Engine::GamepadCode::BUTTON_A);
   if (currentStataA && !_lastStateA) {
-    Throw(_playerTransform->Forward());
+    Throw(ThrowDirection());
     // TryThrow();
   }
   _lastStateA = currentStataA;
@@ -90,8 +97,7 @@ auto AcornThrower::Update(float deltaTime) -> void {
 
 auto AcornThrower::OnKeyPressed(Engine::Key key) -> void {
   if (key == Engine::Key::SPACE && _currentTimeout <= 0.f) {
-    Throw(_playerTransform->Forward());
-    // TryThrow();
+    Throw(ThrowDirection());
   }
 }
 
